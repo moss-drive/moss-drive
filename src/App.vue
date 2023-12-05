@@ -125,7 +125,7 @@ export default {
     checkRoute() {
       const { meta } = this.$route;
       const Login = "/login";
-      if (!this.uid && !meta.noUid && this.path != Login) {
+      if (!this.uid && !meta.noUid && location.pathname != Login) {
         this.$router.replace(Login);
       }
     },

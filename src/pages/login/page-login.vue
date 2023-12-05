@@ -51,7 +51,7 @@ export default {
     async onCode(code) {
       try {
         this.xLoading = true;
-        const { data } = await this.$http.get(`/twitter/user/profile`, {
+        const { data } = await this.$http.get(`$auth/login/twitter/user/profile`, {
           params: {
             code,
           },
@@ -68,7 +68,7 @@ export default {
         this.xLoading = true;
         const { data } = await this.$http.get("$auth/login/twitter");
         // console.log(data);
-        location.href = data;
+        location.href = data.jump;
       } catch (error) {
         console.log(error);
       }
