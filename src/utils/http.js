@@ -1,5 +1,5 @@
 import Axios from "axios";
-import store, { setStore } from "../store";
+import store from "../store";
 import router from "../router";
 
 const { VITE_BASE_URL: baseURL, VITE_AUTH_API, VITE_BUCKET_API, VITE_PAY_API } = import.meta.env;
@@ -12,7 +12,7 @@ let refreshing = false;
 const pendingQueue = [];
 
 function getToken(isRefresh) {
-  const key = isRefresh ? "refreshToken" : "accessToken";
+  const key = isRefresh ? "refreshToken" : "token"; //"accessToken";
   return store.state.loginData[key];
 }
 
@@ -23,11 +23,8 @@ http.interceptors.request.use(
       .replace("$bucket", VITE_BUCKET_API)
       .replace("$pay", VITE_PAY_API);
     let token = getToken();
-    if (config.url.includes(VITE_AUTH_API)) {
-      token = "Bearer " + token;
-    }
     if (token) {
-      config.headers["Authorization"] = token;
+      config.headers["Authorization"] = "Bearer " + token;
     }
     return config;
   },
@@ -59,7 +56,7 @@ http.interceptors.response.use(
   },
   async (error) => {
     // , status, statusText, config = {}
-    const { data = {}, status, config } = error.response || {};
+    const { data = {}, status, config = {} } = error.response || {};
     const msg = data.message || error.message;
     const pending = await handleError(status, config, {
       msg,
@@ -100,21 +97,25 @@ async function handleError(status, config, data) {
       return;
     }
   }
-  if (config._tipMsg) {
+  if (!config._noTip) {
     window.$alert(data.msg);
   }
 }
 
 async function refreshToken() {
+  const refreshToken = getToken(1);
+  if (!refreshToken) {
+    return false;
+  }
   try {
     const res = await Axios.post(
-      VITE_AUTH_API + "/refresh",
+      VITE_AUTH_API + "/login/refresh",
       {
-        refreshToken: getToken(1),
+        refreshToken,
       },
       {
         headers: {
-          Authorization: "Bearer " + getToken(),
+          // Authorization: "Bearer " + getToken(),
         },
       }
     );

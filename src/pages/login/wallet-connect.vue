@@ -165,16 +165,11 @@ export default {
           account,
           signature,
         });
-        const stoken = await this.getStoken(account, {
+        const data = await this.getLoginData(account, {
           signature,
-          walletType: type,
+          inviteCode: "123",
         });
-        console.log({
-          stoken,
-        });
-        this.$emit("login", {
-          stoken,
-        });
+        this.$emit("login", data);
       } catch (error) {
         console.log(error);
         this.$alert(error.message);
@@ -183,19 +178,16 @@ export default {
       this.loading = false;
     },
     async getNonce(account) {
-      const { data } = await this.$http.get(`$auth/web3code/${account}`);
-      return data.nonce;
+      const { data } = await this.$http.get(`$auth//login/eth/wallet/${account.toLowerCase()}`);
+      return data;
     },
-    async getStoken(account, params) {
+    async getLoginData(account, params) {
       const body = {
-        appName: "BUCKET",
-        // inviteCode,
-        type: "ETH",
-        // capT: capToken,
         ...params,
+        twitterId: this.loginData.twitterId,
       };
-      const { data } = await this.$http.post(`$auth/web3login/${account}`, body);
-      return data.stoken;
+      const { data } = await this.$http.post(`$auth/login/eth/wallet/${account}/sign`, body);
+      return data;
     },
   },
 };
