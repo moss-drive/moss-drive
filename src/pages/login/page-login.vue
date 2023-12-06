@@ -62,7 +62,7 @@ export default {
       } catch (error) {
         console.log(error);
         this.xLoading = false;
-        this.$router.replace("/login");
+        // this.$router.replace("/login");
       }
     },
     async onLoginX() {
