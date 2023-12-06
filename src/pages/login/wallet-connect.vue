@@ -119,6 +119,7 @@ export default {
   computed: {
     ...mapState({
       isFocus: (s) => s.isFocus,
+      loginData: (s) => s.loginData,
     }),
     defItem() {
       return this.walletList[0];
