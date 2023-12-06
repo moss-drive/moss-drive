@@ -59,15 +59,18 @@ export default {
         if (data.token) {
           this.onLoginData(data);
         } else {
+          if (!data.twitterId) {
+            this.$alert("Error: No Twitter ID");
+          }
           this.$setStore({
             loginData: data,
           });
         }
       } catch (error) {
         console.log(error);
-        this.xLoading = false;
         // this.$router.replace("/login");
       }
+      this.xLoading = false;
     },
     async onLoginX() {
       try {
