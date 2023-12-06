@@ -58,6 +58,10 @@ export default {
         });
         if (data.token) {
           this.onLoginData(data);
+        } else {
+          this.$setStore({
+            loginData: data,
+          });
         }
       } catch (error) {
         console.log(error);
