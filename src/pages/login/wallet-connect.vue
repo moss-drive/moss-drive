@@ -179,7 +179,7 @@ export default {
     },
     async getNonce(account) {
       const { data } = await this.$http.get(`$auth/login/eth/wallet/${account.toLowerCase()}`);
-      return data;
+      return data.nonce;
     },
     async getLoginData(account, params) {
       const body = {
