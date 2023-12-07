@@ -96,7 +96,7 @@ import TableList from "./list-table.vue";
 import GridList from "./list-grid.vue";
 
 export default {
-  emits: ["update:prefix", "refresh"],
+  emits: ["update:prefix", "refresh", "error"],
   props: {
     isPage: Boolean,
     prefix: String,
