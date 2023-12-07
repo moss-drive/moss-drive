@@ -81,7 +81,7 @@ export default {
   },
   computed: {
     ...mapState({
-      uid: (s) => s.loginData.uid,
+      uid: (s) => s.loginData.uuid,
     }),
     path() {
       return this.$route.path;

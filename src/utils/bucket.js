@@ -2,12 +2,13 @@
 import { S3 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { getFileSize, limitTask } from "./helper";
-const { VITE_BUCKET_ENDPOINT } = import.meta.env;
+const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
 
 const bucket = {
   client: null,
   defBucket: null,
   listParams: null,
+  domain: VITE_BUCKET_DOMAIN,
   getFileSize,
   limitTask,
   setClient(credentials) {
@@ -97,7 +98,7 @@ const bucket = {
               //   type = "text";
               // }
               return {
-                url: `https://${params.Bucket}.4everland.store/${it.Key}`,
+                url: `https://${params.Bucket}.${VITE_BUCKET_DOMAIN}/${it.Key}`,
                 key: it.Key,
                 name,
                 type,

@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     ...mapState({
-      uid: (s) => s.loginData.uid,
+      uid: (s) => s.loginData.uuid,
       stsData: (s) => s.stsData,
     }),
   },

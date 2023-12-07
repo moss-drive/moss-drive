@@ -20,7 +20,7 @@ export default {
   computed: {
     ...mapState({
       showProgress: (s) => s.showProgress,
-      uid: (s) => s.loginData.uid,
+      uid: (s) => s.loginData.uuid,
       // token: (s) => s.loginData.accessToken,
     }),
     path() {
@@ -130,26 +130,20 @@ export default {
       }
     },
     async getUsageInfo() {
-      const { data } = await this.$http.get(`$pay/usage`);
+      const { data } = await this.$http.get(`$pay/combo/user/list`);
       // console.log(data);
-      const {
-        usedIpfsStorage,
-        ipfsStorage,
-        airdropIpfsStorage,
-        // ipfsDefaultStorage,
-        // ipfsStorageExpired,
-        // ipfsStorageStart,
-      } = data;
-      let totalStorage = ipfsStorage;
-      if (!totalStorage) {
-        totalStorage = airdropIpfsStorage;
-      }
+      const { combo, realTimeItems, totalIpfsStorage } = data;
+      if (!combo) return this.$alert("no combo data");
+      const { resourceItems } = combo;
+      const IPFS = "IPFS_STORAGE";
+      const totalStorage = resourceItems.find((it) => (it.resourceType = IPFS)).size * 1;
+      const usedStorage =
+        realTimeItems.find((it) => it.resourceType == IPFS).size * 1 + totalIpfsStorage * 1;
       this.$setStore({
         usageInfo: {
           totalStorage,
-          ipfsStorage,
-          perc: usedIpfsStorage / totalStorage,
-          used: getFileSize(usedIpfsStorage),
+          perc: usedStorage / totalStorage,
+          used: getFileSize(usedStorage),
           total: getFileSize(totalStorage),
         },
       });

@@ -25,7 +25,7 @@ $dark-color: #000;
   --q-dark: #000;
   // --q-dark-page
 }
-body.body--dark {
+body.body--dark, .bg-header {
   background: $dark-color;
 }
 .q-dialog .q-dark {
@@ -37,7 +37,7 @@ body.body--dark {
 .bg-primary, .bg-info {
   color: $dark-color!important;
 }
-.bg-header, .bg-card-1 {
+.bg-card-1 {
   background: #1e293b;
 }
 .bg-card-1 {
