@@ -49,6 +49,12 @@ export default {
   },
   methods: {
     async onCode(code) {
+      if (!localStorage.goX) {
+        this.$alert("?code=" + code);
+        return;
+      } else {
+        localStorage.goX = "";
+      }
       try {
         this.xLoading = true;
         const { data } = await this.$http.get(`$auth/login/twitter/user/profile`, {
@@ -78,6 +84,7 @@ export default {
         this.xLoading = true;
         const { data } = await this.$http.get("$auth/login/twitter");
         // console.log(data);
+        localStorage.goX = 1;
         location.href = data.jump;
       } catch (error) {
         console.log(error);

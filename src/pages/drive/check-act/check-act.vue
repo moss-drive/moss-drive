@@ -1,6 +1,7 @@
 <script setup>
 import ActDelete from "./act-delete.vue";
 import ActMove from "./act-move.vue";
+import ActStone from "./act-stone.vue";
 </script>
 
 <template>
@@ -31,6 +32,7 @@ import ActMove from "./act-move.vue";
 
   <act-delete ref="delete" :check-list="checkList" />
   <act-move ref="move" :check-list="checkList" />
+  <act-stone ref="stone" :check-list="checkList" />
 </template>
 
 <script>
@@ -51,14 +53,18 @@ export default {
     objMenus() {
       const len = this.checked.length;
       let isFile = false;
+      let isRootDir = false;
       if (len == 1) {
         const row = this.checkList[0];
         isFile = !!row.url;
+        if (!isFile) isRootDir = row.key.split("/").length == 2;
+        console.log(row);
       }
       return [
         {
           name: "publish",
           icon: "stone",
+          disabled: !(len == 1 && isRootDir),
         },
         {
           name: "link",
@@ -86,7 +92,9 @@ export default {
     async onAct(name) {
       // console.log(name, rows);
       const item = this.checkList[0];
-      if (name == "link") {
+      if (name == "publish") {
+        this.$refs.stone.showPop = true;
+      } else if (name == "link") {
         await copyToClipboard(item.url);
         this.$toast("Copied", 1);
       } else if (name == "download") {

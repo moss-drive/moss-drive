@@ -175,3 +175,22 @@ body {
     }
   }
 }
+
+
+.stone-cover {
+  position: relative;
+  $shadow_w: 12px;
+  padding-right: $shadow_w;
+  .q-img {
+    background: #fff;
+    border-radius: 10px;
+  }
+  &::after {
+    content: '';
+    @extend .y-center;
+    width: $shadow_w;
+    height: 82%;
+    background: url(/img/mossy/stone_shadow.svg) 0 center no-repeat;
+    background-size: contain;
+  }
+}
