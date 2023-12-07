@@ -57,7 +57,7 @@
 export default {
   data() {
     return {
-      showPop: !false,
+      showPop: false,
       form: {
         stoneName: "",
         avatar: "",

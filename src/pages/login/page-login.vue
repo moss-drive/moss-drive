@@ -50,8 +50,13 @@ export default {
   methods: {
     async onCode(code) {
       if (!localStorage.goX) {
-        this.$alert("?code=" + code);
-        return;
+        try {
+          await this.$confirm("Redirect to localhost?");
+          location.href = "http://localhost:5173/login?code=" + code;
+          return;
+        } catch (error) {
+          //
+        }
       } else {
         localStorage.goX = "";
       }
