@@ -65,10 +65,11 @@ export default {
           this.$setStore({
             loginData: data,
           });
+          this.$router.replace("/login");
         }
       } catch (error) {
         console.log(error);
-        // this.$router.replace("/login");
+        //
       }
       this.xLoading = false;
     },
