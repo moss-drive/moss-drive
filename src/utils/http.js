@@ -24,7 +24,7 @@ http.interceptors.request.use(
       .replace("$pay", VITE_PAY_API);
     let token = getToken();
     if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+      config.headers["Authorization"] = token; // "Bearer " +
     }
     return config;
   },

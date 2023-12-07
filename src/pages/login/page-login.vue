@@ -12,7 +12,7 @@ import WalletConnect from "./wallet-connect.vue";
         :loading="xLoading"
         flat
         rounded
-        style="background: #000; width: 200px"
+        style="background: #222; width: 200px"
       >
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
