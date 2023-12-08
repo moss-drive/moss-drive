@@ -5,11 +5,14 @@ const routes = [
   },
   {
     path: "/",
+    component: () => import("./home-page.vue"),
+  },
+  {
+    path: "/",
     component: () => import("../layouts/main-layout.vue"),
     children: [
-      { path: "", component: () => import("./home-page.vue") },
       {
-        path: "/drive/:catchAll(.*)*",
+        path: "drive/:catchAll(.*)*",
         component: () => import("./drive/page-drive.vue"),
         meta: {
           title: "My Drive",
@@ -35,6 +38,24 @@ const routes = [
         meta: {
           title: "My Resources",
         },
+      },
+    ],
+  },
+  {
+    path: "/mossy",
+    component: () => import("../layouts/mossy-layout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("./mossy/page-explore.vue"),
+      },
+      {
+        path: "stone",
+        component: () => import("./mossy/stone/page-stone.vue"),
+      },
+      {
+        path: "collected",
+        component: () => import("./mossy/page-collected.vue"),
       },
     ],
   },

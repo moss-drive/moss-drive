@@ -113,7 +113,7 @@ export default {
       try {
         this.checkRoute();
         if (this.uid) {
-          this.$router.replace("/drive");
+          // this.$router.replace("/drive");
           await this.getUsageInfo();
         }
       } catch (error) {
