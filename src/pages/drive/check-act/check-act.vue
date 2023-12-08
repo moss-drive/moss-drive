@@ -32,7 +32,7 @@ import ActStone from "./act-stone.vue";
 
   <act-delete ref="delete" :check-list="checkList" />
   <act-move ref="move" :check-list="checkList" />
-  <act-stone ref="stone" :check-list="checkList" />
+  <act-stone ref="stone" :check-item="checkItem" />
 </template>
 
 <script>
@@ -87,11 +87,14 @@ export default {
     checkList() {
       return this.objList.filter((it) => this.checked.includes(it.key));
     },
+    checkItem() {
+      return this.checkList[0];
+    },
   },
   methods: {
     async onAct(name) {
       // console.log(name, rows);
-      const item = this.checkList[0];
+      const item = this.checkItem;
       if (name == "publish") {
         this.$refs.stone.showPop = true;
       } else if (name == "link") {

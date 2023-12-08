@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="showPop" position="top" :persistent="moving">
+  <q-dialog v-model="showPop" position="top" :persistent="saving">
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section class="pos-s top-0 q-dark z-10">
         <div class="al-c">
@@ -22,11 +22,7 @@
           <div class="row mb-6">
             <div class="col-3">
               <div class="stone-cover">
-                <q-img
-                  src="https://qs3.4everland.store/logos/preact.svg"
-                  width="110px"
-                  :ratio="1"
-                />
+                <q-img :src="form.avatar" width="110px" :ratio="1" />
               </div>
             </div>
             <div class="col-9">
@@ -46,7 +42,7 @@
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
-        <q-btn flat color="white" label="Cancel" @click="showPop = false" />
+        <q-btn flat color="white" label="Cancel" :disabled="saving" @click="showPop = false" />
         <q-btn rounded color="primary" :loading="saving" @click="onNext">Next</q-btn>
       </q-card-actions>
     </q-card>
@@ -55,12 +51,15 @@
 
 <script>
 export default {
+  props: {
+    checkItem: Object,
+  },
   data() {
     return {
       showPop: false,
       form: {
         stoneName: "",
-        avatar: "",
+        avatar: "https://qs3.4everland.store/logos/preact.svg",
         bio: "",
         urlPath: "",
       },
@@ -68,8 +67,24 @@ export default {
     };
   },
   methods: {
-    onNext() {
-      this.$toast("test");
+    async onNext() {
+      const form = { ...this.form };
+      form.folderPath = this.checkItem.key;
+      form.bucketName = this.$bucket.defBucket;
+      let msg = "";
+      if (!form.stoneName) msg = "Stone name required";
+      else if (!form.urlPath) msg = "URL Path required";
+      if (msg) {
+        return this.$toast(msg);
+      }
+      try {
+        this.saving = true;
+        const { data } = await this.$http.post("$auth/stone", form);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+      this.saving = false;
     },
   },
 };
