@@ -8,6 +8,9 @@ const routes = [
   {
     path: "/",
     component: () => import("./home-page.vue"),
+    meta: {
+      noUid: 1,
+    },
   },
   {
     path: "/",

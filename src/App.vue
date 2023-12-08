@@ -110,44 +110,11 @@ export default {
   },
   methods: {
     async onInit() {
-      if (location.pathname == "/" && !this.uid) {
-        return;
-      }
-      try {
-        this.checkRoute();
-        if (this.uid) {
-          // this.$router.replace("/drive");
-          await this.getUsageInfo();
-        }
-      } catch (error) {
-        this.$alert(error.message);
-      }
-    },
-    checkRoute() {
       const { meta } = this.$route;
       const Login = "/login";
       if (!this.uid && !meta.noUid && location.pathname != Login) {
         this.$router.replace(Login);
       }
-    },
-    async getUsageInfo() {
-      const { data } = await this.$http.get(`$pay/combo/user/list`);
-      // console.log(data);
-      const { combo, realTimeItems, totalIpfsStorage } = data;
-      if (!combo) return this.$alert("no combo data");
-      const { resourceItems } = combo;
-      const IPFS = "IPFS_STORAGE";
-      const totalStorage = resourceItems.find((it) => (it.resourceType = IPFS)).size * 1;
-      const usedStorage =
-        realTimeItems.find((it) => it.resourceType == IPFS).size * 1 + totalIpfsStorage * 1;
-      this.$setStore({
-        usageInfo: {
-          totalStorage,
-          perc: usedStorage / totalStorage,
-          used: getFileSize(usedStorage),
-          total: getFileSize(totalStorage),
-        },
-      });
     },
   },
 };
