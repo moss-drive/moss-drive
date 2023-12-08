@@ -112,7 +112,8 @@ export default {
     async onInit() {
       const { meta } = this.$route;
       const Login = "/login";
-      if (!this.uid && !meta.noUid && location.pathname != Login) {
+      const noLogin = meta.noUid || ["/", Login].includes(location.pathname);
+      if (!this.uid && !noLogin) {
         this.$router.replace(Login);
       }
     },
