@@ -13,7 +13,6 @@
 <script>
 import { useQuasar } from "quasar";
 import { mapState } from "vuex";
-import { getFileSize } from "./utils/helper";
 
 export default {
   name: "App",

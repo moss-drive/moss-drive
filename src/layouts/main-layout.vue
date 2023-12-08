@@ -55,6 +55,8 @@ import MainDrawer from "./main/main-drawer.vue";
 </template>
 
 <script>
+import { getFileSize } from "../utils/helper";
+
 export default {
   name: "MainLayout",
   computed: {
