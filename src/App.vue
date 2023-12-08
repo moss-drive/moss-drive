@@ -110,6 +110,9 @@ export default {
   },
   methods: {
     async onInit() {
+      if (location.pathname == "/" && !this.uid) {
+        return;
+      }
       try {
         this.checkRoute();
         if (this.uid) {
