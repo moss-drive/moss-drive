@@ -12,7 +12,7 @@ import UploadIndex from "./upload-index.vue";
 </script>
 
 <template>
-  <div class="pos-r flex-1">
+  <!-- <div class="pos-r flex-1">
     <icon-search class="y-center ev-n" style="left: 10px" />
     <input
       v-model="searchKey"
@@ -21,7 +21,7 @@ import UploadIndex from "./upload-index.vue";
       class="bdrs-100 w100p top-search"
       :class="searchKey ? 'bg-white' : 'bg-info'"
     />
-  </div>
+  </div> -->
 
   <q-btn
     v-if="inDrive || inStone"
@@ -39,31 +39,41 @@ import UploadIndex from "./upload-index.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <q-btn
-    v-if="uid"
-    class="ml-3"
-    :class="{
-      'q-px-sm': !asMobile,
-    }"
-    color="info"
-    rounded
-    :round="asMobile"
-    :size="btnSize"
-  >
-    <m-avatar :hash="uid"></m-avatar>
-    <span v-if="!asMobile" class="q-ml-sm">{{ uid.cutStr(4, 4) }}</span>
+  <div class="ml-auto h100p bdl-1 pl-8 pr-4 al-c">
+    <q-btn size="sm" rounded color="info" style="padding: 4px 6px">
+      <img src="/img/mossy/icon/ic-coin.png" width="20" />
+      <span class="text-white">100</span>
+    </q-btn>
+    <q-btn class="ml-4" round flat color="primary">
+      <img src="/img/mossy/icon/ic-bell.svg" width="24" />
+    </q-btn>
 
-    <q-menu style="width: 130px" auto-close>
-      <q-list>
-        <q-item clickable v-if="asMobile">
-          <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
-        </q-item>
-        <q-item clickable @click="onLogout">
-          <q-item-section>Logout</q-item-section>
-        </q-item>
-      </q-list>
-    </q-menu>
-  </q-btn>
+    <q-btn
+      v-if="uid"
+      class="ml-3"
+      :class="{
+        'q-px-sm': !asMobile,
+      }"
+      color="info"
+      rounded
+      :round="asMobile"
+      :size="btnSize"
+    >
+      <m-avatar :hash="uid"></m-avatar>
+      <span v-if="!asMobile" class="q-ml-sm">{{ uid.cutStr(4, 4) }}</span>
+
+      <q-menu style="width: 130px" auto-close>
+        <q-list>
+          <q-item clickable v-if="asMobile">
+            <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
+          </q-item>
+          <q-item clickable @click="onLogout">
+            <q-item-section>Logout</q-item-section>
+          </q-item>
+        </q-list>
+      </q-menu>
+    </q-btn>
+  </div>
 </template>
 
 <script>
