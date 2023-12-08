@@ -44,7 +44,7 @@ export default {
     if (code) {
       this.onCode(code);
     } else if (this.loginData.uid) {
-      this.$router.replace("/");
+      this.onRedirect();
     }
   },
   methods: {
@@ -97,7 +97,7 @@ export default {
       this.xLoading = false;
     },
     onRedirect() {
-      const redirectTo = localStorage.loginTo || "/";
+      const redirectTo = localStorage.loginTo || "/drive";
       this.$router.replace(redirectTo);
     },
     async onLoginData(data) {
