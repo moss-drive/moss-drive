@@ -56,6 +56,7 @@ http.interceptors.response.use(
     const { data = {}, status, config = {} } = error.response || {};
     const msg = data.message || error.message;
     const pending = await handleError(status, config, {
+      ...data,
       msg,
     });
     if (pending) {
@@ -76,6 +77,7 @@ async function handleError(status, config, data) {
       });
     });
   }
+  // console.log(data);
   if (status == 401 || data.code == 401 || data.code == "INVALID_TEAM_TOKEN") {
     refreshing = true;
     const isOk = await refreshToken();
