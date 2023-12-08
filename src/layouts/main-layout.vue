@@ -72,6 +72,9 @@ export default {
   },
   created() {
     this.getUsageInfo();
+    this.$bus.on("update-usage", () => {
+      this.getUsageInfo();
+    });
   },
   methods: {
     async getUsageInfo() {

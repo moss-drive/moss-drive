@@ -76,7 +76,7 @@ async function handleError(status, config, data) {
       });
     });
   }
-  if (status == 401 || data.code == 401) {
+  if (status == 401 || data.code == 401 || data.code == "INVALID_TEAM_TOKEN") {
     refreshing = true;
     const isOk = await refreshToken();
     if (isOk) {

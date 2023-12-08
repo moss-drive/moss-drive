@@ -104,9 +104,6 @@ export default {
   },
   mounted() {
     this.onInit();
-    this.$bus.on("update-usage", () => {
-      this.getUsageInfo();
-    });
   },
   methods: {
     async onInit() {
