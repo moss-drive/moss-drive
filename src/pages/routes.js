@@ -1,7 +1,9 @@
+import PageLogin from "./login/page-login.vue";
+
 const routes = [
   {
     path: "/login",
-    component: () => import("./login/page-login.vue"),
+    component: PageLogin, //import("./login/page-login.vue"),
   },
   {
     path: "/",

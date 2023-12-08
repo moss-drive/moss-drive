@@ -87,7 +87,9 @@ async function handleError(status, config, data) {
     } else {
       console.log("redirect to login");
       store.dispatch("logout");
-      localStorage.loginTo = location.pathname + location.search;
+      if (location.pathname != "/login") {
+        localStorage.loginTo = location.pathname + location.search;
+      }
       router.replace({
         path: "/login",
       });

@@ -40,11 +40,13 @@ export default {
     }),
   },
   created() {
-    const { code } = this.$route.query;
+    const { code, loginTo } = this.$route.query;
     if (code) {
       this.onCode(code);
-    } else if (this.loginData.uid) {
+    } else if (this.loginData.token) {
       this.onRedirect();
+    } else {
+      if (loginTo) localStorage.loginTo = loginTo;
     }
   },
   methods: {
@@ -98,6 +100,7 @@ export default {
     },
     onRedirect() {
       const redirectTo = localStorage.loginTo || "/drive";
+      localStorage.loginTo = "";
       this.$router.replace(redirectTo);
     },
     async onLoginData(data) {
