@@ -71,6 +71,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
+      form.address = "test-addr";
       let msg = "";
       if (!form.stoneName) msg = "Stone name required";
       else if (!form.urlPath) msg = "URL Path required";
@@ -79,7 +80,7 @@ export default {
       }
       try {
         this.saving = true;
-        const { data } = await this.$http.post("$auth/stone", form);
+        const { data } = await this.$http.post("/stone", form);
         console.log(data);
       } catch (error) {
         console.log(error);

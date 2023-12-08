@@ -179,7 +179,7 @@ export default {
       this.loading = false;
     },
     async getNonce(account) {
-      const { data } = await this.$http.get(`$auth/login/eth/wallet/${account.toLowerCase()}`);
+      const { data } = await this.$http.get(`/login/eth/wallet/${account.toLowerCase()}`);
       return data.nonce;
     },
     async getLoginData(account, params) {
@@ -187,7 +187,7 @@ export default {
         ...params,
         twitterId: this.loginData.twitterId,
       };
-      const { data } = await this.$http.post(`$auth/login/eth/wallet/${account}/sign`, body);
+      const { data } = await this.$http.post(`/login/eth/wallet/${account}/sign`, body);
       return data;
     },
   },

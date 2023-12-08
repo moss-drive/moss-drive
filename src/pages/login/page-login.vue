@@ -62,7 +62,7 @@ export default {
       }
       try {
         this.xLoading = true;
-        const { data } = await this.$http.get(`$auth/login/twitter/user/profile`, {
+        const { data } = await this.$http.get(`/login/twitter/user/profile`, {
           params: {
             code,
           },
@@ -87,7 +87,7 @@ export default {
     async onLoginX() {
       try {
         this.xLoading = true;
-        const { data } = await this.$http.get("$auth/login/twitter");
+        const { data } = await this.$http.get("/login/twitter");
         // console.log(data);
         localStorage.goX = 1;
         location.href = data.jump;
@@ -103,7 +103,7 @@ export default {
     async onLoginData(data) {
       try {
         this.$loading("Login....");
-        // const { data } = await this.$http.post(`$auth/st/${stoken}`);
+        // const { data } = await this.$http.post(`/st/${stoken}`);
         this.$store.dispatch("login", data);
         this.onRedirect();
       } catch (error) {

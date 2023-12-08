@@ -18,10 +18,7 @@ function getToken(isRefresh) {
 
 http.interceptors.request.use(
   (config) => {
-    config.url = config.url
-      .replace("$auth", VITE_AUTH_API)
-      .replace("$bucket", VITE_BUCKET_API)
-      .replace("$pay", VITE_PAY_API);
+    config.url = config.url.replace("$bucket", VITE_BUCKET_API).replace("$pay", VITE_PAY_API);
     let token = getToken();
     if (token) {
       config.headers["Authorization"] = token; // "Bearer " +
