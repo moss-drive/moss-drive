@@ -43,7 +43,22 @@ body.body--dark, .bg-header {
     font-weight: bold;
     font-size: 15px;
   }
- 
+}
+
+$dark2: #111729;
+.bg-dark2 {
+  background: $dark2;
+  &.q-touch {
+    cursor: pointer;
+    &:hover {
+      background: #333846;
+    }
+  }
+}
+.bg-card-2 {
+  padding: 15px 20px;
+  background: $dark2;
+  border-radius: 10px;
 }
 
 .q-checkbox__inner {

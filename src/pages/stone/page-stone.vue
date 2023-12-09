@@ -1,18 +1,15 @@
 <template>
   <div class="q-pa-md">
     <div class="row" v-if="!rows">
-      <div v-for="i in 2" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
+      <div v-for="i in 1" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
         <q-card flat>
           <q-skeleton type="text" width="160px" class="text-subtitle1" />
           <q-skeleton height="260px" square />
         </q-card>
       </div>
     </div>
-    <div class="ta-c" v-else-if="!rows.length">
-      <div class="pa-8">
-        <img src="/img/stone/stone-empty.svg" width="280" />
-        <div class="fz-15 op-9">As empty as a cloudless sky</div>
-      </div>
+    <div v-else-if="!rows.length">
+      <empty-stone />
     </div>
     <div class="row" v-else>
       <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">

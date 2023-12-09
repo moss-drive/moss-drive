@@ -10,52 +10,48 @@ import ListRank from "./list-rank.vue";
 </script>
 
 <template>
-  <div class="mb-6 d-center">
-    <div class="bg-dark1 pa-2 bdrs-100">
+  <div class="mt-5 mb-8 d-center">
+    <div class="bg-dark2 pa-2 bdrs-100">
       <q-btn-toggle
         class="rounded"
         v-model="type"
         unelevated
         toggle-color="primary"
-        :options="[
-          { label: 'For you', value: 'foryou' },
-          { label: 'Popular', value: 'pop' },
-          { label: 'Latest', value: 'latest' },
-        ]"
+        :options="typeOpts"
       />
     </div>
   </div>
 
-  <list-stone v-show="type == 'foryou' || type == 'pop'" :list="list" />
-  <list-rank v-show="type == 'latest'" :list="list" />
+  <template v-if="type == 'FOR_YOU' || type == 'LATEST'">
+    <div v-if="!rows" class="row q-col-gutter-md">
+      <div class="col-6 col-sm-4 col-md-3" v-for="i in 4" :key="i">
+        <q-card flat>
+          <q-skeleton height="120px" square />
+        </q-card>
+      </div>
+    </div>
+    <div v-else-if="!rows.length">
+      <empty-stone />
+    </div>
+    <list-stone v-else :list="rows" />
+  </template>
+  <list-rank v-else :list="rows" />
 </template>
 
 <script>
 export default {
   data() {
-    const { type = "foryou" } = this.$route.query;
+    const { type = "FOR_YOU" } = this.$route.query;
     return {
       checkMap: {},
       type,
+      typeOpts: [
+        { label: "For you", value: "FOR_YOU" },
+        { label: "Latest", value: "LATEST" },
+        { label: "Top", value: "RANKING_LIST" },
+      ],
+      rows: null,
       list: [
-        {
-          title: "Preact is a fast 3kB alternative to React with the same modern API.",
-          img: "https://qs3.4everland.store/logos/preact.svg",
-          star: false,
-          starNum: 49,
-        },
-        {
-          title: "Preact is a fast 3kB alternative to React with the same modern API.",
-          img: "https://qs3.4everland.store/logos/preact.svg",
-          star: false,
-          starNum: 49,
-        },
-        {
-          title: "Preact is a fast 3kB alternative to React with the same modern API.",
-          img: "https://qs3.4everland.store/logos/preact.svg",
-          star: false,
-          starNum: 49,
-        },
         {
           title: "Preact is a fast 3kB alternative to React with the same modern API.",
           img: "https://qs3.4everland.store/logos/preact.svg",
@@ -73,6 +69,23 @@ export default {
           type,
         },
       });
+      this.getList();
+    },
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      try {
+        this.rows = null;
+        const { data } = await this.$http.get("/stone/square", {
+          params: {
+            type: this.type,
+          },
+        });
+        this.rows = data;
+      } catch (error) {}
     },
   },
 };
