@@ -1,7 +1,33 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <div class="col-3 col-md-2 pa-2">item</div>
+      <div class="col-12 col-sm-6 col-lg-4 pa-2">
+        <img src="img/stone/stone-head.png" height="40px" class="d-b" />
+        <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
+          <div class="pos-a right-0 top-0 m-3 pa-1 hover-1">
+            <img src="img/stone/stone-edit.svg" width="20" />
+          </div>
+          <div class="al-c">
+            <div class="stone-cover">
+              <q-img src="https://qs3.4everland.store/logos/preact.svg" width="110px" :ratio="1" />
+            </div>
+            <div class="ml-4">
+              <p v-for="i in 3" :key="i">
+                <span class="op-8">Supply</span>
+                <b class="color-2 fz-18 ml-2">230</b>
+              </p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <p class="fw-b fz-20">This is name</p>
+            <p class="mt-2 op-8">Updated today</p>
+          </div>
+          <div class="mt-3 al-c">
+            <q-btn color="primary" class="flex-1" rounded>Stone Page</q-btn>
+            <q-btn color="primary" class="flex-1 ml-4" outline rounded>Open</q-btn>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
