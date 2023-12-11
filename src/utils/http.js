@@ -13,7 +13,8 @@ const pendingQueue = [];
 
 function getToken(isRefresh) {
   const key = isRefresh ? "refreshToken" : "token"; //"accessToken";
-  return store.state.loginData[key];
+  // return store.state.loginData[key];
+  return "3jtbeqaf2acb0ba80964d24ede6bbe4e317ec29e";
 }
 
 http.interceptors.request.use(
@@ -87,15 +88,15 @@ async function handleError(status, config, data) {
       });
       return http(config);
     } else {
-      // console.log("redirect to login");
-      // store.dispatch("logout");
-      // if (location.pathname != "/login") {
-      //   localStorage.loginTo = location.pathname + location.search;
-      // }
-      // router.replace({
-      //   path: "/login",
-      // });
-      // return;
+      console.log("redirect to login");
+      store.dispatch("logout");
+      if (location.pathname != "/login") {
+        localStorage.loginTo = location.pathname + location.search;
+      }
+      router.replace({
+        path: "/login",
+      });
+      return;
     }
   }
   if (!config._noTip) {

@@ -78,6 +78,8 @@
         <div class="recharge-btn cursor-p">Approve</div>
       </div>
     </div>
+
+    <bill-details></bill-details>
   </div>
 </template>
 
@@ -89,7 +91,7 @@ import ResourceCountRow from "./componets/resource-count-row.vue";
 
 import PayNetwork from "./componets/pay-network.vue";
 import PayCoin from "./componets/pay-coin.vue";
-
+import BillDetails from "./componets/bill-details.vue";
 export default {
   data() {
     return {
@@ -199,6 +201,7 @@ export default {
     ResourceCountRow,
     PayNetwork,
     PayCoin,
+    BillDetails,
   },
 };
 </script>
