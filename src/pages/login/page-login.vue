@@ -69,7 +69,7 @@ export default {
             code,
           },
         });
-        if (data.token) {
+        if (data.accessToken) {
           this.onLoginData(data);
         } else {
           if (!data.twitterId) {
