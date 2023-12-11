@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async onCode(code) {
-      if (!localStorage.goX) {
+      if (!localStorage.goX && /\.website/.test(location.href)) {
         try {
           await this.$confirm("Redirect to localhost?");
           location.href = "http://localhost:5173/login?code=" + code;
