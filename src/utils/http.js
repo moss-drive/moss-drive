@@ -87,15 +87,15 @@ async function handleError(status, config, data) {
       });
       return http(config);
     } else {
-      console.log("redirect to login");
-      store.dispatch("logout");
-      if (location.pathname != "/login") {
-        localStorage.loginTo = location.pathname + location.search;
-      }
-      router.replace({
-        path: "/login",
-      });
-      return;
+      // console.log("redirect to login");
+      // store.dispatch("logout");
+      // if (location.pathname != "/login") {
+      //   localStorage.loginTo = location.pathname + location.search;
+      // }
+      // router.replace({
+      //   path: "/login",
+      // });
+      // return;
     }
   }
   if (!config._noTip) {

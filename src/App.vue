@@ -1,4 +1,3 @@
-
 <template>
   <q-linear-progress
     v-show="showProgress"
@@ -102,17 +101,17 @@ export default {
     },
   },
   mounted() {
-    this.onInit();
+    // this.onInit();
   },
   methods: {
-    async onInit() {
-      const { meta } = this.$route;
-      const Login = "/login";
-      const noLogin = meta.noUid || ["/", Login].includes(location.pathname);
-      if (!this.uid && !noLogin) {
-        this.$router.replace(Login);
-      }
-    },
+    // async onInit() {
+    //   const { meta } = this.$route;
+    //   const Login = "/login";
+    //   const noLogin = meta.noUid || ["/", Login].includes(location.pathname);
+    //   if (!this.uid && !noLogin) {
+    //     this.$router.replace(Login);
+    //   }
+    // },
   },
 };
 </script>

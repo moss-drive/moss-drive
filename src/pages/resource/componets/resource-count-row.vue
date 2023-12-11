@@ -177,6 +177,7 @@ export default {
   position: relative;
   border-radius: 2px;
   font-size: 12px;
+  background: #334155;
 
   select {
     border: none;

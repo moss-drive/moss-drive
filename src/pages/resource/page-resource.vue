@@ -38,8 +38,8 @@
     <div class="recharge-container my-6">
       <div class="deposit-container">
         <div class="fz-20 fw-b mb-4">Deposit</div>
-        <div class="deposite-section">
-          <div class="al-c recharge-input">
+        <div class="deposite-section mb-4">
+          <div class="al-c recharge-input" style="width: 50%">
             <input maxlength="8" class="r-ipt flex-1" v-model="amount" type="text" />
             <span class="num">,000,000</span>
             <span class="land-text fz-14">LAND</span>
@@ -48,9 +48,9 @@
         </div>
 
         <div class="fz-20 fw-b mb-4">Calculator</div>
-
-        <div class="al-c">
+        <div class="al-c space-btw flex-wrap" style="gap: 16px">
           <resource-count-row
+            class="flex-1 resource-count-row"
             v-for="item in resourceTagsConfig"
             :key="item.name"
             :tags="item.tags"
@@ -61,6 +61,22 @@
           ></resource-count-row>
         </div>
       </div>
+
+      <div class="recharge-act d-flex">
+        <pay-network class="flex-1"></pay-network>
+        <pay-coin class="flex-1 ml-4" @onSelectCoin="onSelectCoin"></pay-coin>
+      </div>
+
+      <div class="recharge-bar al-c space-btw">
+        <div class="amount-info fw-b">
+          <div class="fz-16">Total</div>
+          <div class="al-c">
+            <span class="amount">999.0000</span>
+            <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
+          </div>
+        </div>
+        <div class="recharge-btn cursor-p">Approve</div>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +86,10 @@ import { mapState } from "vuex";
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
 import ResourceCountRow from "./componets/resource-count-row.vue";
+
+import PayNetwork from "./componets/pay-network.vue";
+import PayCoin from "./componets/pay-coin.vue";
+
 export default {
   data() {
     return {
@@ -157,6 +177,7 @@ export default {
           ],
         },
       ],
+      coinType: "USDC",
     };
   },
   computed: {
@@ -168,11 +189,16 @@ export default {
     countPrice() {
       console.log(2);
     },
+    onSelectCoin(coin) {
+      this.coinType = coin;
+    },
   },
   components: {
     ResourceNotice,
     ResourceProgress,
     ResourceCountRow,
+    PayNetwork,
+    PayCoin,
   },
 };
 </script>
@@ -249,6 +275,32 @@ export default {
 
     .land-to-usd {
       color: #cbd5e1;
+    }
+  }
+
+  .recharge-act {
+    padding: 16px 16px 24px 16px;
+  }
+
+  .recharge-bar {
+    padding: 8px 16px;
+    background: #94f9ca;
+    .amount-info {
+      color: #0f172a;
+
+      .amount {
+        font-family: "DIN Alternate";
+        font-size: 28px;
+      }
+      .coin-type {
+        color: #334155;
+      }
+    }
+    .recharge-btn {
+      padding: 15px 26px 14px 26px;
+      border-radius: 4px;
+      background: #13c68a;
+      font-weight: bold;
     }
   }
 }
