@@ -9,7 +9,7 @@ import LeftList from "./left-list.vue";
 </script>
 
 <template>
-  <div class="bdrs-10 bg-dark1 ov-h">
+  <div class="bdrs-10 bg-dark2 ov-h">
     <div class="row q-col-gutter-md bg-header-s1 pa-4 bdb-1">
       <div class="col-12 col-sm-8">
         <div class="fw-b fz-20">What you get from momo</div>

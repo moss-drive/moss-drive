@@ -28,7 +28,7 @@ $dark-color: #000;
 body.body--dark, .bg-header {
   background: $dark-color;
 }
-.q-dialog .q-dark {
+.q-dialog .q-dark, .bg-card-1 {
   background: #0F172A;
 }
 .q-table__card {
@@ -38,14 +38,27 @@ body.body--dark, .bg-header {
   color: $dark-color!important;
 }
 .bg-card-1 {
-  background: #1e293b;
-}
-.bg-card-1 {
-  border-radius: 4px;
+  border-radius: 12px;
   .title {
     font-weight: bold;
     font-size: 15px;
   }
+}
+
+$dark2: #111729;
+.bg-dark2 {
+  background: $dark2;
+  &.q-touch {
+    cursor: pointer;
+    &:hover {
+      background: #333846;
+    }
+  }
+}
+.bg-card-2 {
+  padding: 15px 20px;
+  background: $dark2;
+  border-radius: 10px;
 }
 
 .q-checkbox__inner {
@@ -82,6 +95,9 @@ body.body--dark, .bg-header {
 
 .color-1, .link {
   color: $primary;
+}
+.color-2 {
+  color: #7E4FED;
 }
 
 .hover-1:active {

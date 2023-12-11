@@ -55,10 +55,10 @@ $corner: 39px;
 </style>
 
 <template>
-  <div class="pa-4">
+  <div class="pa-8 pt-0">
     <div class="row m-auto q-col-gutter-lg" style="max-width: 900px">
       <div class="col-12 col-sm-4" v-for="i in 3" :key="i">
-        <div class="bdrs-10 ov-h bg-dark0">
+        <div class="bdrs-10 ov-h bg-dark2">
           <img
             :src="`/img/mossy/stone/rank-bg${i}.png`"
             style="max-height: 120px"
@@ -83,6 +83,7 @@ $corner: 39px;
         </div>
       </div>
     </div>
+
     <q-markup-table class="no-border" flat square :bordered="false">
       <thead>
         <tr>
@@ -96,7 +97,7 @@ $corner: 39px;
       </thead>
       <tbody>
         <template v-for="i in 3" :key="i">
-          <tr class="bg-dark1 q-touch pos-r">
+          <tr class="bg-dark2 q-touch pos-r">
             <td class="text-left">
               <b class="fz-18">{{ i }}</b>
             </td>
