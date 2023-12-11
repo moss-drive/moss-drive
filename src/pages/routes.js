@@ -44,6 +44,13 @@ const routes = [
           title: "My Resources",
         },
       },
+      {
+        path: "/txs",
+        component: () => import("./myTXS/page-txs.vue"),
+        meta: {
+          title: "My TXS",
+        },
+      },
     ],
   },
   {
