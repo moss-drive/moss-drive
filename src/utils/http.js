@@ -110,7 +110,7 @@ async function refreshToken() {
   }
   try {
     const res = await Axios.post(
-      VITE_AUTH_API + "/login/refresh",
+      VITE_BASE_URL + "/login/refresh",
       {
         refreshToken,
       },

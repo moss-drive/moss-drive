@@ -34,8 +34,22 @@
             <p class="mt-2 op-8">{{ it.bio }}</p>
           </div>
           <div class="mt-3 al-c">
-            <q-btn color="primary" class="flex-1" rounded>Stone Page</q-btn>
-            <q-btn color="primary" class="flex-1 ml-4" outline rounded>Open</q-btn>
+            <q-btn
+              :href="`/mossy/stone?id=${it.id}`"
+              target="_blank"
+              color="primary"
+              class="flex-1"
+              rounded
+              >Stone Page</q-btn
+            >
+            <q-btn
+              :to="`/drive/${it.folderPath.replace(/\/$/, '')}`"
+              color="primary"
+              class="flex-1 ml-4"
+              outline
+              rounded
+              >Open Folder</q-btn
+            >
           </div>
         </div>
       </div>

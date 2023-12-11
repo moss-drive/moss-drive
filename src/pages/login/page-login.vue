@@ -17,7 +17,20 @@ import WalletConnect from "./wallet-connect.vue";
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="!loginData.accessToken">
+    <div v-else-if="loginData.thirdWebToken_">
+      <div class="mt-5 fz-30">ThirdWeb</div>
+      <div class="pa-6"></div>
+      <q-btn
+        @click="onThirdWeb"
+        :loading="thirdLoading"
+        rounded
+        color="primary"
+        style="width: 200px"
+      >
+        Bind
+      </q-btn>
+    </div>
+    <div v-else>
       <div class="mt-5 fz-30">Connect Wallet</div>
       <div class="pa-6"></div>
       <wallet-connect @login="onLoginData" />
@@ -27,11 +40,14 @@ import WalletConnect from "./wallet-connect.vue";
 
 <script>
 import { mapState } from "vuex";
+import { EmbeddedWallet } from "@thirdweb-dev/wallets";
+import { Goerli } from "@thirdweb-dev/chains";
 
 export default {
   data() {
     return {
       xLoading: false,
+      thirdLoading: false,
     };
   },
   computed: {
@@ -86,6 +102,30 @@ export default {
       }
       this.xLoading = false;
     },
+    async onThirdWeb() {
+      try {
+        this.thirdLoading = true;
+        const walletAddr = await this.getThirdWebWallet();
+        console.log(walletAddr);
+      } catch (error) {
+        console.log(error);
+        this.$alert(error.message);
+      }
+      this.thirdLoading = false;
+    },
+    async getThirdWebWallet() {
+      const embeddedWallet = new EmbeddedWallet({
+        chain: Goerli, //  chain to connect to
+        clientId: "8a76a182447af68e014556db57bd6cf9",
+      });
+      const authResult = await embeddedWallet.authenticate({
+        strategy: "jwt",
+        jwt: this.loginData.thirdWebToken,
+      });
+
+      const addr = await embeddedWallet.connect({ authResult });
+      return addr;
+    },
     async onLoginX() {
       try {
         this.xLoading = true;
@@ -103,6 +143,7 @@ export default {
       localStorage.loginTo = "";
       this.$router.replace(redirectTo);
     },
+
     async onLoginData(data) {
       try {
         this.$loading("Login....");

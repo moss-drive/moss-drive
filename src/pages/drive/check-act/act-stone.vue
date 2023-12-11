@@ -15,9 +15,9 @@
           <div class="mt-1 fz-14">You successfully claimed a stone!</div>
           <div class="mt-8">
             <q-btn
-              :href="`/mossy/stone?id=`"
+              :href="`/mossy/stone?id=${stoneId}`"
               target="_blank"
-              @click="showPop = false"
+              @click="onDone"
               color="primary"
               size="large"
               style="width: 160px"
@@ -44,10 +44,11 @@
                 </div>
               </div>
               <div class="col-9">
-                <q-input filled v-model="form.stoneName" label="Stone name *" hint="" />
+                <q-input filled v-model="form.stoneName" dense label="Stone name *" hint="" />
                 <q-input
                   filled
                   v-model="form.bio"
+                  dense=""
                   type="textarea"
                   rows="3"
                   label="Description"
@@ -55,7 +56,23 @@
                 />
               </div>
             </div>
-            <q-input filled label="URL" v-model="form.urlPath" prefix="stone.mymoss.io/" />
+            <q-input filled dense label="URL" v-model="form.urlPath" prefix="stone.mymoss.io/" />
+            <div class="mt-2 row q-col-gutter-md">
+              <div class="col-6">
+                <q-input filled dense label="Floor Price" v-model="form.floorPrice" suffix="ETH" />
+              </div>
+              <div class="col-6">
+                <q-input filled dense label="Initial issuance quantity" v-model="form.quantity" />
+              </div>
+            </div>
+            <div class="mt-6">
+              <q-input
+                filled
+                dense
+                label="How many tokens need to be sold to increase the price once?"
+                v-model="form.tokenNum"
+              />
+            </div>
           </q-form>
         </q-card-section>
 
@@ -74,6 +91,9 @@ const initForm = {
   avatar: "https://qs3.4everland.store/logos/preact.svg",
   bio: "",
   urlPath: "",
+  floorPrice: "",
+  quantity: "",
+  tokenNum: "",
 };
 export default {
   props: {
@@ -88,15 +108,15 @@ export default {
       stoneId: null,
     };
   },
-  watch: {
-    showPop(val) {
-      if (!val && this.isDone) {
-        this.isDone = false;
-        this.form = { ...initForm };
-      }
-    },
-  },
   methods: {
+    onDone() {
+      this.showPop = false;
+      this.isDone = false;
+      this.form = { ...initForm };
+      setTimeout(() => {
+        this.$router.push("/stone");
+      }, 300);
+    },
     async onNext() {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
@@ -111,8 +131,7 @@ export default {
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
-        console.log(data);
-        this.stoneId = data;
+        this.stoneId = data.stoneId;
         this.isDone = true;
       } catch (error) {
         console.log(error);
