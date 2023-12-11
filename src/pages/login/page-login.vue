@@ -17,7 +17,7 @@ import WalletConnect from "./wallet-connect.vue";
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="!loginData.token">
+    <div v-else-if="!loginData.accessToken">
       <div class="mt-5 fz-30">Connect Wallet</div>
       <div class="pa-6"></div>
       <wallet-connect @login="onLoginData" />
@@ -43,7 +43,7 @@ export default {
     const { code, loginTo } = this.$route.query;
     if (code) {
       this.onCode(code);
-    } else if (this.loginData.token) {
+    } else if (this.loginData.accessToken) {
       this.onRedirect();
     } else {
       if (loginTo) localStorage.loginTo = loginTo;
@@ -69,7 +69,7 @@ export default {
             code,
           },
         });
-        if (data.token) {
+        if (data.accessToken) {
           this.onLoginData(data);
         } else {
           if (!data.twitterId) {

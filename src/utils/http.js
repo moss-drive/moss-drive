@@ -12,7 +12,7 @@ let refreshing = false;
 const pendingQueue = [];
 
 function getToken(isRefresh) {
-  const key = isRefresh ? "refreshToken" : "token"; //"accessToken";
+  const key = isRefresh ? "refreshToken" : "accessToken";
   return store.state.loginData[key];
 }
 
