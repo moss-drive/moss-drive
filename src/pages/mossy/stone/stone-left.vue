@@ -43,3 +43,19 @@ import LeftList from "./left-list.vue";
     <left-list />
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    async getList() {
+      try {
+        const { data } = await this.$http.get("/stone/page/list");
+        console.log(data);
+      } catch (error) {}
+    },
+  },
+};
+</script>
