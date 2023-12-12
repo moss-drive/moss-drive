@@ -171,10 +171,16 @@ export default {
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
-        // await this.$http.put("/stone/timeout", {
-        //   stoneId: this.stoneId,
-        //   timeoutAt,
-        // });
+        await this.$http.put(
+          "/stone/timeout",
+          {},
+          {
+            params: {
+              stoneId: this.stoneId,
+              timeoutAt,
+            },
+          }
+        );
         const price = this.mossHub.parseEther(form.floorPrice);
         const tx = await this.mossHub.create([
           this.stoneId,

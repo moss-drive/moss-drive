@@ -23,9 +23,9 @@
               <q-img :src="it.avatar" width="110px" :ratio="1" />
             </div>
             <div class="ml-4">
-              <p v-for="i in 3" :key="i">
-                <span class="op-8">Supply</span>
-                <b class="color-2 fz-18 ml-2">230</b>
+              <p v-for="(row, j) in it.lines" :key="j">
+                <span class="op-8">{{ row.label }}</span>
+                <b class="color-2 fz-18 ml-2">{{ row.val || "-" }}</b>
               </p>
             </div>
           </div>
@@ -72,6 +72,20 @@ export default {
       try {
         const { data } = await this.$http.get("/stone");
         console.log(data);
+        data.lines = [
+          {
+            label: "Supply",
+            val: data.totalSupply,
+          },
+          {
+            label: "Price",
+            val: data.price,
+          },
+          {
+            label: "Floor",
+            val: data.floor,
+          },
+        ];
         this.rows = data;
       } catch (error) {
         console.log(error);
