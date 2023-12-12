@@ -5,7 +5,6 @@
       :rows="rows"
       :columns="columns"
       row-key="name"
-      :filter="filter"
       flat
       hide-pagination
       :rows-per-page-options="[0]"
@@ -28,7 +27,7 @@
             {{ props.row.value }}
           </q-td>
           <q-td key="txHash" :props="props">
-            <a href="" target="_blank">
+            <a href="" target="_blank" class="tx-hash">
               {{ props.row.txHash }}
             </a>
           </q-td>
@@ -78,14 +77,26 @@ const rows = [
     value: 24,
     txHash: "Ox222...222",
   },
+  {
+    stoneName: "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+    createdAt: 1702279706539,
+    action: "BOUGHT",
+    value: 24,
+    txHash: "Ox222...222",
+  },
+  {
+    stoneName: "ABCDEFGHIJKLMNOPQRSTUVWXYZABCD",
+    createdAt: 1702279706539,
+    action: "BOUGHT",
+    value: 24,
+    txHash: "Ox222...222",
+  },
 ];
 
 export default {
   setup() {
     return {
       loading: false,
-      filter: ref(""),
-      selected: ref([]),
       columns,
       rows,
     };
@@ -110,6 +121,9 @@ export default {
     font-style: normal;
     font-weight: 400;
     line-height: 16px; /* 114.286% */
+    .tx-hash {
+      color: #039cff;
+    }
   }
 }
 </style>
