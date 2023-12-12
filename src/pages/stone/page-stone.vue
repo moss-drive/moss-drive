@@ -71,21 +71,23 @@ export default {
     async getList() {
       try {
         const { data } = await this.$http.get("/stone");
-        console.log(data);
-        data.lines = [
-          {
-            label: "Supply",
-            val: data.totalSupply,
-          },
-          {
-            label: "Price",
-            val: data.price,
-          },
-          {
-            label: "Floor",
-            val: data.floor,
-          },
-        ];
+        // console.log(data);
+        for (const it of data) {
+          it.lines = [
+            {
+              label: "Supply",
+              val: it.totalSupply,
+            },
+            {
+              label: "Price",
+              val: it.price,
+            },
+            {
+              label: "Floor",
+              val: it.floor,
+            },
+          ];
+        }
         this.rows = data;
       } catch (error) {
         console.log(error);
