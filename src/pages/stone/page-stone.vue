@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { utils } from "ethers";
+
 export default {
   data() {
     return {
@@ -73,6 +75,11 @@ export default {
         const { data } = await this.$http.get("/stone");
         // console.log(data);
         for (const it of data) {
+          let { price, floor } = it;
+          if (price) {
+            price = utils.formatEther(price);
+            floor = utils.formatEther(floor);
+          }
           it.lines = [
             {
               label: "Supply",
@@ -80,11 +87,11 @@ export default {
             },
             {
               label: "Price",
-              val: it.price,
+              val: price,
             },
             {
               label: "Floor",
-              val: it.floor,
+              val: floor,
             },
           ];
         }
