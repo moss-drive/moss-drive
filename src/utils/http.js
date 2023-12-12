@@ -98,7 +98,7 @@ async function handleError(status, config, data) {
       return;
     }
   }
-  if (!config._noTip) {
+  if (!config.noTip) {
     window.$alert(data.msg);
   }
 }

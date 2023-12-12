@@ -59,10 +59,16 @@
             <q-input filled dense label="URL" v-model="form.urlPath" prefix="stone.mymoss.io/" />
             <div class="mt-2 row q-col-gutter-md">
               <div class="col-6">
-                <q-input filled dense label="Floor Price" v-model="form.floorPrice" suffix="ETH" />
+                <q-input
+                  filled
+                  dense
+                  label="Floor Price"
+                  v-model="mossForm.floorPrice"
+                  suffix="ETH"
+                />
               </div>
               <div class="col-6">
-                <q-input filled dense label="Initial issuance quantity" v-model="form.quantity" />
+                <q-input filled dense label="Initial issuance quantity" v-model="mossForm.intNum" />
               </div>
             </div>
             <div class="mt-6">
@@ -70,14 +76,22 @@
                 filled
                 dense
                 label="How many tokens need to be sold to increase the price once?"
-                v-model="form.tokenNum"
+                v-model="mossForm.tokenNum"
+              />
+            </div>
+            <div class="mt-6">
+              <q-input
+                filled
+                dense
+                label="After each price increase, by how much does the floor price quantity increase?"
+                v-model="mossForm.stepNum"
               />
             </div>
           </q-form>
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat color="white" label="Cancel" :disabled="saving" @click="showPop = false" />
+          <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
           <q-btn rounded color="primary" :loading="saving" @click="onNext">Next</q-btn>
         </q-card-actions>
       </template>
@@ -86,14 +100,19 @@
 </template>
 
 <script>
+import { MossHub } from "../../../utils/moss-hub";
+
 const initForm = {
   stoneName: "",
   avatar: "https://qs3.4everland.store/logos/preact.svg",
   bio: "",
   urlPath: "",
-  floorPrice: "",
-  quantity: "",
-  tokenNum: "",
+};
+const initMossForm = {
+  floorPrice: "0.0002",
+  intNum: "50",
+  tokenNum: "50",
+  stepNum: "5",
 };
 export default {
   props: {
@@ -103,16 +122,22 @@ export default {
     return {
       showPop: false,
       form: { ...initForm },
+      mossForm: { ...initMossForm },
       saving: false,
       isDone: false,
       stoneId: null,
+      mossHub: null,
     };
+  },
+  created() {
+    this.mossHub = new MossHub();
   },
   methods: {
     onDone() {
       this.showPop = false;
       this.isDone = false;
       this.form = { ...initForm };
+      this.mossForm = { ...initMossForm };
       setTimeout(() => {
         this.$router.push("/stone");
       }, 300);
@@ -132,10 +157,43 @@ export default {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
         this.stoneId = data.stoneId;
-        this.isDone = true;
+        this.onCreate();
       } catch (error) {
         console.log(error);
+        this.saving = false;
       }
+    },
+    async onCreate() {
+      try {
+        if (!this.mossHub) {
+          this.mossHub = new MossHub();
+        }
+        const form = this.mossForm;
+        const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
+        this.saving = true;
+        // await this.$http.put("/stone/timeout", {
+        //   stoneId: this.stoneId,
+        //   timeoutAt,
+        // });
+        const price = this.mossHub.parseEther(form.floorPrice);
+        const tx = await this.mossHub.create([
+          this.stoneId,
+          price,
+          form.intNum,
+          form.tokenNum,
+          form.stepNum,
+          timeoutAt,
+          {
+            value: price.add(price.mul(25).div(1e3)),
+          },
+        ]);
+        this.$loading("Creating...");
+        await tx.wait(2);
+        this.isDone = true;
+      } catch (error) {
+        this.$alert(error.message);
+      }
+      this.$loadingClose();
       this.saving = false;
     },
   },
