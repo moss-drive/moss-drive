@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="m-5">
+    <div class="m-5 al-c">
       <q-breadcrumbs gutter="sm">
         <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
         <q-breadcrumbs-el
@@ -11,8 +11,10 @@
           @click.prevent="curFolder = it.folder"
         />
       </q-breadcrumbs>
+      <q-spinner-ios v-show="loading === true" class="ml-3" color="yellow" size="15px" />
     </div>
-    <grid-list :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
+    <empty-stone v-if="!rows.length && !loading" />
+    <grid-list v-else :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
   </div>
 </template>
 

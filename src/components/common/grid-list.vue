@@ -25,7 +25,7 @@ body.touch .grid-item.hover {
 </style>
 
 <template>
-  <div class="row pos-r driver-grid" style="min-height: 300px">
+  <div class="row pos-r driver-grid">
     <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
@@ -69,10 +69,6 @@ body.touch .grid-item.hover {
           {{ row.sizeUnit || "-" }}
         </p>
       </div>
-    </div>
-
-    <div class="x-center" style="top: 180px" v-if="true === loading">
-      <q-spinner-ios color="warning" size="40px" />
     </div>
   </div>
 </template>
