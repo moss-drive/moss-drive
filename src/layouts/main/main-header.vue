@@ -23,8 +23,9 @@ import UploadIndex from "./upload-index.vue";
     />
   </div> -->
 
+  <!-- || inStone -->
   <q-btn
-    v-if="inDrive || inStone"
+    v-if="inDrive"
     class="ml-3"
     color="primary"
     rounded

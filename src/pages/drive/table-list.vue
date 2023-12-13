@@ -4,7 +4,6 @@
 <template>
   <q-table
     color="primary"
-    :loading="loading === true"
     flat
     :rows="rows"
     :columns="columns"

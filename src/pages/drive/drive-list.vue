@@ -93,7 +93,7 @@ import FilePreview from "./preview/preview-index.vue";
 </template>
 
 <script>
-import TableList from "./list-table.vue";
+import TableList from "./table-list.vue";
 
 export default {
   emits: ["update:prefix", "refresh", "error"],
