@@ -85,6 +85,11 @@ export default {
           // link: "https://quasar.dev/vue-components/table",
           to: "/collection",
         },
+        {
+          title: "My TXS",
+          icon: "star",
+          to: "/txs",
+        },
       ],
     };
   },
