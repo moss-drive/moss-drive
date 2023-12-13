@@ -12,8 +12,9 @@ let refreshing = false;
 const pendingQueue = [];
 
 function getToken(isRefresh) {
-  const key = isRefresh ? "refreshToken" : "accessToken";
-  return store.state.loginData[key];
+  const key = isRefresh ? "refreshToken" : "token"; //"accessToken";
+  // return store.state.loginData[key];
+  return "3jtbeqaf2acb0ba80964d24ede6bbe4e317ec29e";
 }
 
 http.interceptors.request.use(
