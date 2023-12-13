@@ -38,8 +38,11 @@ body.body--dark, .bg-header {
 .q-table__card {
   background: transparent;
 }
-.bg-primary, .bg-info {
+.bg-primary {
   color: $dark-color!important;
+}
+.bg-info {
+  color: #fff;
 }
 .bg-card-1 {
   border-radius: 12px;
@@ -96,6 +99,14 @@ $dark2: #111729;
 .bdrs-8 { border-radius: 8px; }
 .bdrs-10 { border-radius: 10px; }
 .bdrs-100 { border-radius: 100px; }
+
+$bd: #334155;
+.bdb-1 {
+  border-bottom: 1px solid $bd !important;
+}
+.bdl-1 {
+  border-left: 1px solid $bd;
+}
 
 .color-1, .link {
   color: $primary;

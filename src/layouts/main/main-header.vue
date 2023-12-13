@@ -33,19 +33,18 @@ import UploadIndex from "./upload-index.vue";
     :style="asMobile ? '' : 'width: 110px'"
     @click="onNew"
   >
-    <icon-new-stone v-if="inStone"></icon-new-stone>
-    <icon-add v-if="inDrive" />
+    <icon-add />
     <span class="ml-2" v-if="!asMobile">{{ inDrive ? "NEW" : "Stone" }}</span>
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <div class="ml-auto h100p bdl-1 pl-8 pr-4 al-c">
-    <q-btn size="sm" rounded color="info" style="padding: 4px 6px">
-      <img src="/img/mossy/icon/ic-coin.png" width="20" />
-      <span class="text-white">100</span>
+  <div class="ml-5 h100p bdl-1 pl-5 pr-4 al-c">
+    <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
+      <img src="/img/mossy/icon/ic-coin.png" width="26" />
+      <span class="text-white ml-1 fz-14">0</span>
     </q-btn>
-    <q-btn class="ml-4" round flat color="primary">
-      <img src="/img/mossy/icon/ic-bell.svg" width="24" />
+    <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
+      <img src="/img/mossy/icon/ic-bell.svg" width="22" />
     </q-btn>
 
     <q-btn
@@ -60,7 +59,7 @@ import UploadIndex from "./upload-index.vue";
       :size="btnSize"
     >
       <m-avatar :hash="uid"></m-avatar>
-      <span v-if="!asMobile" class="q-ml-sm">{{ uid.cutStr(4, 4) }}</span>
+      <span v-if="!asMobile" class="ml-2 fz-14">{{ uid.cutStr(4, 4) }}</span>
 
       <q-menu style="width: 130px" auto-close>
         <q-list>

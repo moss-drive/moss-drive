@@ -14,13 +14,6 @@ body.body--dark {
   background: #0000006e;
   color: #fff;
 }
-$bd: #334155;
-.bdb-1 {
-  border-bottom: 1px solid $bd !important;
-}
-.bdl-1 {
-  border-left: 1px solid $bd;
-}
 </style>
 
 <template>
