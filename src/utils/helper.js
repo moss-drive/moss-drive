@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 export function getFileSize(byte, isObj = false, fix = 2) {
   if (!byte && byte !== 0 && !isObj) {
     return byte;
@@ -72,4 +73,44 @@ export function debounce(func, wait = 500, immediate = false) {
       typeof func === "function" && func();
     }, wait);
   }
+}
+
+export function formatLand(land, isObj = false, isOrigin = true) {
+  let formatVal = BigNumber.from(land);
+  if (isOrigin) {
+    formatVal = formatVal.div((1e18).toString());
+  }
+  let unit = "";
+  const k = BigNumber.from(1e5);
+  const m = BigNumber.from(1e8);
+  const b = BigNumber.from(1e14);
+  const t = BigNumber.from((1e16).toString());
+  const thanT = BigNumber.from("1000000000000000000000");
+
+  if (formatVal.gte(thanT)) {
+    formatVal = "> 99999";
+    unit = "T";
+  } else if (formatVal.gte(t)) {
+    formatVal = formatVal.div(BigNumber.from(1e12)).toString();
+    unit = "T";
+  } else if (formatVal.gte(b)) {
+    formatVal = formatVal.div(BigNumber.from(1e8)).toString();
+    unit = "B";
+  } else if (formatVal.gte(m)) {
+    formatVal = formatVal.div(BigNumber.from(1e6)).toString();
+    unit = "M";
+  } else if (formatVal.gte(k)) {
+    formatVal = formatVal.div(BigNumber.from(1e3)).toString();
+    unit = "K";
+  } else {
+    formatVal = formatVal.toString();
+  }
+
+  if (isObj) {
+    return {
+      land: formatVal,
+      unit,
+    };
+  }
+  return formatVal + " " + unit;
 }

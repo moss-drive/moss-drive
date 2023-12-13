@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-
+import resourceStore from "./resource";
 const SET_DATA = "setData";
 
 const storState = {
@@ -46,6 +46,9 @@ const store = createStore({
         stsData: {},
       });
     },
+  },
+  modules: {
+    resourceStore,
   },
 });
 
