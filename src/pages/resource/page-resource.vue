@@ -7,14 +7,16 @@
         <div class="my-4 al-c space-btw">
           <div class="land-content h-flex">
             <div class="land-content-top">
-              <span class="land-amount">23,233</span>
-              <span class="fz-14">k</span>
+              <span class="land-amount">{{ formatLand.land }}</span>
+              <span class="fz-14">{{ formatLand.unit }}</span>
               <span class="fw-b fz-20 ml-4">LAND</span>
             </div>
 
-            <div class="land-content-bottom mt-1">≈100USD</div>
+            <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
           </div>
-          <div class="conversion-btn cursor-p">Conversion</div>
+          <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
+            Conversion
+          </div>
         </div>
 
         <div class="descrition">
@@ -29,8 +31,17 @@
           <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" />
         </div>
 
-        <template v-for="item in list" :key="item.name">
-          <resource-progress class="mt-4" :name="item.name" :color="item.color"></resource-progress>
+        <template v-for="item in transformUsage" :key="item.name">
+          <resource-progress
+            class="mt-4"
+            :name="item.name"
+            :used="item.used"
+            :total="item.total"
+            :color="item.color"
+            :percent="item.percent"
+            :showConversion="showConversion"
+            :land2Resource="land2Resource[item.type]"
+          ></resource-progress>
         </template>
       </div>
     </div>
@@ -47,19 +58,7 @@
           <div class="mt-1 fz-12 land-to-usd">1,000,000LAND=1USD</div>
         </div>
 
-        <div class="fz-20 fw-b mb-4">Calculator</div>
-        <div class="al-c space-btw flex-wrap" style="gap: 16px">
-          <resource-count-row
-            class="flex-1 resource-count-row"
-            v-for="item in resourceTagsConfig"
-            :key="item.name"
-            :tags="item.tags"
-            :unit="item.unit"
-            :items="item.items"
-            :name="item.name"
-            @countPrice="countPrice"
-          ></resource-count-row>
-        </div>
+        <resource-count @estimateInput="estimateInput"></resource-count>
       </div>
 
       <div class="recharge-act d-flex">
@@ -68,10 +67,10 @@
       </div>
 
       <div class="recharge-bar al-c space-btw">
-        <div class="amount-info fw-b">
-          <div class="fz-16">Total</div>
-          <div class="al-c">
-            <span class="amount">999.0000</span>
+        <div class="amount-info">
+          <div class="fz-16 fw-b">Total</div>
+          <div>
+            <span class="amount fw-b">{{ usdcAmount.toString() }}</span>
             <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
           </div>
         </div>
@@ -84,10 +83,14 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import { getFileSize } from "@/utils/helper";
+import { formatEther } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
+
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
-import ResourceCountRow from "./componets/resource-count-row.vue";
+import ResourceCount from "./componets/resource-count.vue";
 
 import PayNetwork from "./componets/pay-network.vue";
 import PayCoin from "./componets/pay-coin.vue";
@@ -95,110 +98,77 @@ import BillDetails from "./componets/bill-details.vue";
 export default {
   data() {
     return {
-      list: [
-        { name: "Storage (IPFS)", used: "2312312312", total: "23213211", color: "#57B9BC" },
-        { name: "BandWidth", used: "2312312312", total: "23213211", color: "#F3CC5C" },
-      ],
       amount: "",
-      resourceTagsConfig: [
-        {
-          name: "IPFS Storage",
-          tags: [
-            {
-              text: "30 GB",
-              value: 30 * Math.pow(1024, 3),
-            },
-            {
-              text: "80 GB",
-              value: 80 * Math.pow(1024, 3),
-            },
-            {
-              text: "500 GB",
-              value: 500 * Math.pow(1024, 3),
-            },
-          ],
-          unit: Math.pow(1024, 3),
-          items: [
-            {
-              text: "MB",
-              value: Math.pow(1024, 2),
-            },
-            { text: "GB", value: Math.pow(1024, 3) },
-            {
-              text: "TB",
-              value: Math.pow(1024, 4),
-            },
-          ],
-        },
-        {
-          name: "IPFS Storage Days",
-          tags: [
-            {
-              text: "180 Days",
-              value: 180 * 86400,
-            },
-            {
-              text: "365 Days",
-              value: 365 * 86400,
-            },
-            {
-              text: "1096 Days",
-              value: 1096 * 86400,
-            },
-          ],
-          unit: 86400,
-          items: [{ text: "Days" }],
-        },
-        {
-          name: "BindWidth",
-          tags: [
-            {
-              text: "500 MB",
-              value: 500 * Math.pow(1024, 2),
-            },
-            {
-              text: "30 GB",
-              value: 30 * Math.pow(1024, 3),
-            },
-            {
-              text: "100 GB",
-              value: 100 * Math.pow(1024, 3),
-            },
-          ],
-          unit: Math.pow(1024, 3),
-          items: [
-            {
-              text: "MB",
-              value: Math.pow(1024, 2),
-            },
-            { text: "GB", value: Math.pow(1024, 3) },
-            {
-              text: "TB",
-              value: Math.pow(1024, 4),
-            },
-          ],
-        },
-      ],
       coinType: "USDC",
+      showConversion: false,
+      usdcAmount: BigNumber.from("0"),
     };
   },
+  created() {
+    this.$store.dispatch("resourceStore/getLand");
+    this.$store.dispatch("resourceStore/getUsage");
+    this.$store.dispatch("resourceStore/getPrice");
+  },
   computed: {
+    ...mapGetters("resourceStore", ["formatLand", "land2Resource"]),
     ...mapState({
       usage: (s) => s.usageInfo,
     }),
+    ...mapState("resourceStore", ["land", "usage"]),
+    land2Usd() {
+      const land = Number(formatEther(this.land));
+      return Math.floor(land / 1e6);
+    },
+    transformUsage() {
+      const usage = this.usage.filter((it) => it.type == "IPFS_STORAGE" || it.type == "TRAFFIC");
+      return usage.map((it) => {
+        let name = "";
+        let color = "";
+        let total = it.total;
+        if (this.showConversion) {
+          total = it.total + this.land2Resource[it.type].size;
+        }
+        if (it.type == "IPFS_STORAGE") {
+          name = "Storage (IPFS)";
+          color = "#57B9BC";
+        } else {
+          name = "BandWidth";
+          color = "#F3CC5C";
+        }
+        return {
+          type: it.type,
+          name,
+          used: getFileSize(it.used, true),
+          total: getFileSize(it.total),
+          percent: (it.used / total).toFixed(2) * 1,
+          color,
+        };
+      });
+    },
   },
   methods: {
-    countPrice() {
-      console.log(2);
-    },
     onSelectCoin(coin) {
       this.coinType = coin;
+    },
+    estimateInput(val) {
+      this.amount = val;
+    },
+  },
+  watch: {
+    amount() {
+      this.amount = this.amount.replace(/[^\d]/g, "");
+
+      if (this.amount) {
+        this.usdcAmount = BigNumber.from(this.amount);
+      } else {
+        this.usdcAmount = BigNumber.from("0");
+      }
     },
   },
   components: {
     ResourceNotice,
     ResourceProgress,
-    ResourceCountRow,
+    ResourceCount,
     PayNetwork,
     PayCoin,
     BillDetails,
@@ -290,7 +260,6 @@ export default {
     background: #94f9ca;
     .amount-info {
       color: #0f172a;
-
       .amount {
         font-family: "DIN Alternate";
         font-size: 28px;

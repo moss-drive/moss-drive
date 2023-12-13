@@ -3,7 +3,13 @@
     <div class="title fz-20 fw-b mb-2">Network</div>
     <div class="row q-col-gutter-sm">
       <div class="col-xs-12 col-sm-6 col-md-4" v-for="(it, i) in chainList" :key="`md-${i}`">
-        <div class="radio-item al-c cursor-p" @click="onSelect(it.chainId)">
+        <div
+          class="radio-item al-c cursor-p"
+          @click="onSelect(it.chainId)"
+          :class="{
+            active: selected == it.chainId,
+          }"
+        >
           <img
             :src="
               selected == it.chainId
@@ -310,5 +316,7 @@ export default {
 }
 .radio-item.active {
   border: 1px solid #1eefa4;
+  background: #102230;
+  font-weight: bold;
 }
 </style>

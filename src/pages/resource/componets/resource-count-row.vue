@@ -80,6 +80,7 @@ export default {
       default: Math.pow(1024, 3),
     },
   },
+  emits: ["countPrice"],
   data() {
     return {
       value: "",
@@ -92,7 +93,6 @@ export default {
   },
   methods: {
     handleTag(i) {
-      console.log(this.curIndex, i);
       if (this.curIndex == i) {
         this.curIndex = null;
         this.$emit("countPrice", { value: 0, type: this.name });

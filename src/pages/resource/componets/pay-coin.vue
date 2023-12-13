@@ -21,10 +21,10 @@
           />
           <img class="ml-2" :src="it.img" width="32" />
           <div class="fz-12 ml-2">
-            <div class="fz-14" style="line-height: 16px">
+            <div class="fz-14 name">
               {{ it.name }}
             </div>
-            <div class="line-height: normal">{{ it.showLabel }}</div>
+            <div class="name-label">{{ it.showLabel }}</div>
           </div>
         </div>
       </div>
@@ -75,9 +75,6 @@ export default {
 
   watch: {
     chainId() {
-      // if (this.$inDev ? val != 80001 : val != 137) {
-      // this.$emit("onSelectCoin", this.selected);
-      // }
       this.selected = "USDC";
     },
   },
@@ -91,10 +88,21 @@ export default {
   border-radius: 4px;
   background: #1e293b;
   box-sizing: border-box;
+  .name {
+    line-height: 16px;
+  }
+  .name-label {
+    line-height: normal;
+    color: #cbd5e1;
+  }
 }
 .coin-label.active {
-  font-weight: bold;
   border: 1px solid #1eefa4;
+  background: #102230;
+  .name {
+    font-weight: bold;
+    color: #1eefa4;
+  }
 }
 .v-tooltip__content {
   background: rgba(0, 0, 0, 0.9);

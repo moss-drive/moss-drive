@@ -2,15 +2,19 @@
   <div>
     <div class="resource-info mb-2 al-c space-btw">
       <div>{{ name }}</div>
+
       <div class="fz-12 resource-usage">
-        <span class="resource-num fz-20" :style="{ color: color }">500</span>
-        <span class="unit">GB</span>
+        <span class="land-to-resource fz-12 mr-2" v-show="showConversion"
+          >+ {{ land2Resource.transformSize }} {{ name == "Storage (IPFS)" ? " * 1 mo" : "" }}</span
+        >
+        <span class="resource-num fz-20" :style="{ color: color }">{{ used.num }}</span>
+        <span class="unit">{{ used.unit }}</span>
         <span>/</span>
-        <span>5GB</span>
+        <span>{{ total }}</span>
       </div>
     </div>
     <q-linear-progress
-      :value="0.4"
+      :value="percent"
       size="8px"
       rounded
       color="color"
@@ -34,10 +38,35 @@ export default {
       default: "#57B9BC",
     },
     used: {
-      type: String,
-      default: "123123123",
+      type: Object,
+      default: () => {
+        return {
+          num: 0,
+          unit: "GB",
+        };
+      },
     },
-    total: {},
+    total: {
+      type: String,
+      default: "0 GB",
+    },
+    percent: {
+      type: Number,
+      default: 0,
+    },
+    showConversion: {
+      type: Boolean,
+      default: false,
+    },
+    land2Resource: {
+      type: Object,
+      default: () => {
+        return {
+          size: "0",
+          transformSize: "0 GB",
+        };
+      },
+    },
   },
   computed() {},
 };
@@ -50,6 +79,10 @@ export default {
 
 .resource-info {
   color: #cbd5e1;
+
+  .land-to-resource {
+    color: #1eefa4;
+  }
   .resource-usage {
     > span {
       margin-left: 2px;
