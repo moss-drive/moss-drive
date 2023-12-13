@@ -93,7 +93,6 @@ import FilePreview from "./preview/preview-index.vue";
 
 <script>
 import TableList from "./list-table.vue";
-import GridList from "./list-grid.vue";
 
 export default {
   emits: ["update:prefix", "refresh", "error"],
@@ -102,7 +101,6 @@ export default {
     prefix: String,
   },
   components: {
-    GridList,
     TableList,
   },
   data() {
