@@ -24,22 +24,5 @@ export default {
       id,
     };
   },
-  created() {
-    this.getInfo();
-  },
-  methods: {
-    async getInfo() {
-      try {
-        const { data } = await this.$http.get("/stone/meta", {
-          params: {
-            stoneId: this.id,
-          },
-        });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
 };
 </script>
