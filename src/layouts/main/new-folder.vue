@@ -12,7 +12,7 @@
           type="text"
           class="w100p bdrs-3 pa-2"
           :class="{
-            'bg-info': !inputVal.length,
+            'bg-input': !inputVal.length,
           }"
           placeholder="Enter the folder name"
           @keyup.enter="onCreate"
