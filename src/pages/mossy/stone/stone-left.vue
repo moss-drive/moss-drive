@@ -15,10 +15,18 @@ import LeftList from "./left-list.vue";
         <div class="fw-b fz-20">{{ info.stoneName || "-" }}</div>
         <div class="d-flex mt-5">
           <div class="stone-cover">
-            <q-img :src="info.stoneAvatar" :ratio="1" width="100px"></q-img>
+            <q-img :src="info.stoneAvatar" :ratio="1" width="110px"></q-img>
           </div>
-          <div class="ml-3 line-5 op-8">
+          <div class="ml-3 line-5 op-6">
             {{ info.bio || "-" }}
+          </div>
+        </div>
+        <div class="al-c mt-7 fw-b">
+          <div class="mr-9" v-for="(row, j) in kvList" :key="j">
+            <span>{{ row.key }}</span>
+            <span class="fz-25 color-2 ml-2">
+              {{ row.val || "-" }}
+            </span>
           </div>
         </div>
       </div>
@@ -45,7 +53,30 @@ export default {
       info: {},
     };
   },
-
+  computed: {
+    kvList() {
+      const format = (val) => {
+        return this.$ethUtils.formatEther(val) + "ETH";
+      };
+      let { totalSupply: supply, price, floor } = this.info;
+      if (price) price = format(price);
+      if (floor) floor = format(floor);
+      return [
+        {
+          key: "Supply",
+          val: supply,
+        },
+        {
+          key: "Price",
+          val: price,
+        },
+        {
+          key: "Floor",
+          val: floor,
+        },
+      ];
+    },
+  },
   created() {
     this.getInfo();
   },
@@ -57,6 +88,7 @@ export default {
             stoneId: this.id,
           },
         });
+
         this.info = data;
       } catch (error) {
         console.log(error);
