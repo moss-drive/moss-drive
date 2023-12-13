@@ -1,4 +1,3 @@
-
 <template>
   <q-linear-progress
     v-show="showProgress"

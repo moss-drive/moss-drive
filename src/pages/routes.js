@@ -71,6 +71,13 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/share",
+    component: () => import("@/pages/share/index.vue"),
+    meta: {
+      noUid: 1,
+    },
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
