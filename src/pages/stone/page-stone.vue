@@ -23,9 +23,9 @@
               <q-img :src="it.avatar" width="110px" :ratio="1" />
             </div>
             <div class="ml-4">
-              <p v-for="i in 3" :key="i">
-                <span class="op-8">Supply</span>
-                <b class="color-2 fz-18 ml-2">230</b>
+              <p v-for="(row, j) in it.lines" :key="j">
+                <span class="op-8">{{ row.label }}</span>
+                <b class="color-2 fz-18 ml-2">{{ row.val || "-" }}</b>
               </p>
             </div>
           </div>
@@ -34,8 +34,22 @@
             <p class="mt-2 op-8">{{ it.bio }}</p>
           </div>
           <div class="mt-3 al-c">
-            <q-btn color="primary" class="flex-1" rounded>Stone Page</q-btn>
-            <q-btn color="primary" class="flex-1 ml-4" outline rounded>Open</q-btn>
+            <q-btn
+              :href="`/mossy/stone?id=${it.id}`"
+              target="_blank"
+              color="primary"
+              class="flex-1"
+              rounded
+              >Stone Page</q-btn
+            >
+            <q-btn
+              :to="`/drive/${it.folderPath.replace(/\/$/, '')}`"
+              color="primary"
+              class="flex-1 ml-4"
+              outline
+              rounded
+              >Open Folder</q-btn
+            >
           </div>
         </div>
       </div>
@@ -44,6 +58,8 @@
 </template>
 
 <script>
+import { utils } from "ethers";
+
 export default {
   data() {
     return {
@@ -57,7 +73,28 @@ export default {
     async getList() {
       try {
         const { data } = await this.$http.get("/stone");
-        console.log(data);
+        // console.log(data);
+        for (const it of data) {
+          let { price, floor } = it;
+          if (price) {
+            price = utils.formatEther(price);
+            floor = utils.formatEther(floor);
+          }
+          it.lines = [
+            {
+              label: "Supply",
+              val: it.totalSupply,
+            },
+            {
+              label: "Price",
+              val: price,
+            },
+            {
+              label: "Floor",
+              val: floor,
+            },
+          ];
+        }
         this.rows = data;
       } catch (error) {
         console.log(error);

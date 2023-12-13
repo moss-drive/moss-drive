@@ -87,7 +87,7 @@ export default {
         },
         {
           title: "My TXS",
-          icon: "star",
+          icon: "txs",
           to: "/txs",
         },
       ],

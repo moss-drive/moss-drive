@@ -98,7 +98,7 @@ async function handleError(status, config, data) {
       return;
     }
   }
-  if (!config._noTip) {
+  if (!config.noTip) {
     window.$alert(data.msg);
   }
 }
@@ -110,7 +110,7 @@ async function refreshToken() {
   }
   try {
     const res = await Axios.post(
-      VITE_AUTH_API + "/login/refresh",
+      VITE_BASE_URL + "/login/refresh",
       {
         refreshToken,
       },
