@@ -25,7 +25,7 @@ body.touch .grid-item.hover {
 </style>
 
 <template>
-  <div class="row pos-r driver-grid" style="min-height: 300px">
+  <div class="row pos-r driver-grid">
     <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
@@ -40,6 +40,7 @@ body.touch .grid-item.hover {
           :class="{
             'check-wrap': selection == 'multiple',
           }"
+          v-if="checked"
         >
           <q-checkbox size="40px" :model-value="isCheck(row)" @click="onCheck(row)"></q-checkbox>
         </p>
@@ -68,10 +69,6 @@ body.touch .grid-item.hover {
           {{ row.sizeUnit || "-" }}
         </p>
       </div>
-    </div>
-
-    <div class="x-center" style="top: 180px" v-if="true === loading">
-      <q-spinner-ios color="warning" size="40px" />
     </div>
   </div>
 </template>
@@ -108,20 +105,19 @@ export default {
   },
   methods: {
     isCheck(row) {
-      return this.checked.includes(row.key);
+      return (this.checked || []).includes(row.key);
     },
     onCheck(row) {
       this.$emit("row-check", row);
     },
     getIcon(row) {
-      if (row.type == "image") {
+      if (row.type == "image" && row.url) {
         return row.url;
-      } else {
-        return `/img/driver/icon_${row.type}.png`;
       }
+      return `/img/driver/icon_${row.type}.png`;
     },
     onRow(row, index) {
-      if (this.hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
+      if (this.checked && this.hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
         this.hoverIdx = index;
         return;
       }

@@ -10,6 +10,14 @@
       hide-pagination
       :loading="tableLoading"
     >
+      <template v-slot:no-data>
+        <empty-component
+          style="padding-top: 20px"
+          width="280"
+          :emptyImg="emptyImg"
+          :message="emptyMessage"
+        />
+      </template>
     </q-table>
     <div class="pagination q-pa-lg flex flex-center">
       <q-pagination
@@ -29,6 +37,8 @@ import { fetchBillList } from "@/api/resource.js";
 import { formatLand } from "../../../utils/helper";
 import { BigNumber } from "ethers";
 import { formatEther } from "ethers/lib/utils";
+import emptyImg from "/img/stone/default-empty.png";
+
 export default {
   data() {
     return {
@@ -63,6 +73,8 @@ export default {
       tableLoading: false,
       limit: 5,
       totalPage: 0,
+      emptyImg: emptyImg,
+      emptyMessage: "As empty as a cloudless sky",
     };
   },
   created() {

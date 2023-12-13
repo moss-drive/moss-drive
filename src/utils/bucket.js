@@ -58,6 +58,22 @@ const bucket = {
       Bucket,
     });
   },
+  getType(name) {
+    const extMat = /\.(\w+)$/.exec(name) || [];
+    const ext = extMat[1];
+    let type = "other";
+    if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
+      type = "image";
+    } else if (["mp3", "wav", "ogg"].includes(ext)) {
+      type = "audio";
+    } else if (["mp4", "mov", "webm", "mpg", "mpeg"].includes(ext)) {
+      type = "video";
+    }
+    // else if (/txt|js|htm|css|java|kotlin|vue|json|sh|swift|md|go/.test(ext)) {
+    //   type = "text";
+    // }
+    return type;
+  },
   listObjects(params) {
     if (!params.Bucket) {
       params.Bucket = this.defBucket;
@@ -84,24 +100,11 @@ const bucket = {
             })),
             ...(res.Contents || []).map((it) => {
               const name = it.Key.replace(prefix, "");
-              const extMat = /\.(\w+)$/.exec(name) || [];
-              const ext = extMat[1];
-              let type = "other";
-              if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
-                type = "image";
-              } else if (["mp3", "wav", "ogg"].includes(ext)) {
-                type = "audio";
-              } else if (["mp4", "mov", "webm", "mpg", "mpeg"].includes(ext)) {
-                type = "video";
-              }
-              // else if (/txt|js|htm|css|java|kotlin|vue|json|sh|swift|md|go/.test(ext)) {
-              //   type = "text";
-              // }
               return {
                 url: `https://${params.Bucket}.${VITE_BUCKET_DOMAIN}/${it.Key}`,
                 key: it.Key,
                 name,
-                type,
+                type: this.getType(name),
                 size: it.Size,
                 sizeUnit: getFileSize(it.Size),
                 lastModified: it.LastModified,

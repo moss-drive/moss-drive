@@ -42,7 +42,7 @@ import FilePreview from "./preview/preview-index.vue";
     </div>
   </div>
   <div :class="isPage ? 'q-pa-md' : 'in-move-act'">
-    <div :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 q-dark '" style="top: 50px">
+    <div class="al-c" :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 q-dark '" style="top: 50px">
       <q-breadcrumbs gutter="sm">
         <q-breadcrumbs-el
           :label="isPage ? 'All files' : 'My Drive'"
@@ -57,6 +57,7 @@ import FilePreview from "./preview/preview-index.vue";
           @click.prevent="goPath(it.to)"
         />
       </q-breadcrumbs>
+      <q-spinner-ios v-show="objLoading === true" class="ml-3" color="yellow" size="15px" />
     </div>
     <div class="q-mt-md">
       <div class="mt-9 ta-c" v-if="loadErr">
@@ -93,7 +94,6 @@ import FilePreview from "./preview/preview-index.vue";
 
 <script>
 import TableList from "./list-table.vue";
-import GridList from "./list-grid.vue";
 
 export default {
   emits: ["update:prefix", "refresh", "error"],
@@ -102,7 +102,6 @@ export default {
     prefix: String,
   },
   components: {
-    GridList,
     TableList,
   },
   data() {
