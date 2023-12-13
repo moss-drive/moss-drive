@@ -27,7 +27,7 @@ $bd: #334155;
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-dark text-white bdb-1">
       <div class="al-c pl-4 pr-4" style="height: 64px">
-        <a href="/" class="al-c">
+        <a href="/mossy" class="al-c">
           <img src="/img/mossy.png" width="40" />
           <img class="ml-2" src="/img/mossy/mossy-text.svg" height="28" />
         </a>
