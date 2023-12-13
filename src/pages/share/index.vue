@@ -1,10 +1,10 @@
 <template>
-  <div>1111</div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "MossDriveIndex",
+  name: "ShareIndex",
 
   data() {
     return {};

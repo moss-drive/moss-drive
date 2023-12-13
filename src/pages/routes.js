@@ -72,7 +72,7 @@ const routes = [
     ],
   },
   {
-    path: "/share",
+    path: "/s",
     component: () => import("@/pages/share/index.vue"),
     meta: {
       noUid: 1,
