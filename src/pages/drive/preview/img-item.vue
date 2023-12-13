@@ -32,7 +32,7 @@
       <q-spinner-ios color="yellow" size="30px" />
     </div>
     <div class="ta-c">
-      <img ref="img" :src="src" :alt="title" @load="onLoad" @error="onEnd" />
+      <img ref="img" :src="src" @load="onLoad" @error="onEnd" />
       <div class="meta-txt" title="width(px) × height(px)">
         {{ metaTxt }}
       </div>

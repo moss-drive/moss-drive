@@ -16,6 +16,11 @@ body.body--dark {
 }
 </style>
 
+
+<script setup>
+import HeaderRight from "./header-right.vue";
+</script>
+
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-dark text-white bdb-1">
@@ -24,18 +29,8 @@ body.body--dark {
           <img src="/img/mossy.png" width="40" />
           <img class="ml-2" src="/img/mossy/mossy-text.svg" height="28" />
         </a>
-        <div class="ml-auto h100p bdl-1 pl-8 pr-4 al-c">
-          <q-btn size="sm" rounded color="info" style="padding: 4px 6px">
-            <img src="/img/mossy/icon/ic-coin.png" width="20" />
-            <span class="text-white">100</span>
-          </q-btn>
-          <q-btn class="ml-4" round flat color="primary">
-            <img src="/img/mossy/icon/ic-bell.svg" width="24" />
-          </q-btn>
-          <q-avatar class="ml-4" size="36px">
-            <img src="https://cdn.quasar.dev/img/avatar.png" />
-          </q-avatar>
-        </div>
+        <div class="mr-auto"></div>
+        <header-right />
       </div>
     </q-header>
 

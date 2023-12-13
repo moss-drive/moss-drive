@@ -9,6 +9,7 @@
 
 <script setup>
 import UploadIndex from "./upload-index.vue";
+import HeaderRight from "../header-right.vue";
 </script>
 
 <template>
@@ -39,45 +40,10 @@ import UploadIndex from "./upload-index.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <div class="ml-5 h100p bdl-1 pl-5 pr-4 al-c">
-    <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
-      <img src="/img/mossy/icon/ic-coin.png" width="26" />
-      <span class="text-white ml-1 fz-14">0</span>
-    </q-btn>
-    <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
-      <img src="/img/mossy/icon/ic-bell.svg" width="22" />
-    </q-btn>
-
-    <q-btn
-      v-if="uid"
-      class="ml-3"
-      :class="{
-        'q-px-sm': !asMobile,
-      }"
-      color="info"
-      rounded
-      :round="asMobile"
-      :size="btnSize"
-    >
-      <m-avatar :hash="uid"></m-avatar>
-      <span v-if="!asMobile" class="ml-2 fz-14">{{ uid.cutStr(4, 4) }}</span>
-
-      <q-menu style="width: 130px" auto-close>
-        <q-list>
-          <q-item clickable v-if="asMobile">
-            <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
-          </q-item>
-          <q-item clickable @click="onLogout">
-            <q-item-section>Logout</q-item-section>
-          </q-item>
-        </q-list>
-      </q-menu>
-    </q-btn>
-  </div>
+  <header-right />
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
 
@@ -90,9 +56,6 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      uid: (s) => s.loginData.uuid,
-    }),
     path() {
       return this.$route.path;
     },
@@ -123,10 +86,6 @@ export default {
   methods: {
     onNew() {
       this.$bus.emit("click-new");
-    },
-    onLogout() {
-      this.$store.dispatch("logout");
-      this.$router.replace("/login");
     },
   },
 };
