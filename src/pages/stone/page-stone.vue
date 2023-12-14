@@ -31,7 +31,7 @@
           </div>
           <div class="mt-4">
             <p class="fw-b fz-20">{{ it.stoneName }}</p>
-            <p class="mt-2 op-8">{{ it.bio }}</p>
+            <p class="mt-2 op-8 line-1">{{ it.bio || "-" }}</p>
           </div>
           <div class="mt-3 al-c">
             <q-btn
