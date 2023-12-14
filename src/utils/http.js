@@ -2,7 +2,7 @@ import Axios from "axios";
 import store from "../store";
 import router from "../router";
 
-const { VITE_BASE_URL: baseURL, VITE_AUTH_API, VITE_BUCKET_API, VITE_PAY_API } = import.meta.env;
+const { VITE_BASE_URL: baseURL, VITE_BUCKET_API, VITE_PAY_API } = import.meta.env;
 // console.log(baseURL, authURL);
 const http = Axios.create({
   baseURL,

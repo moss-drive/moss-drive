@@ -129,9 +129,7 @@ export default {
       mossHub: null,
     };
   },
-  created() {
-    this.mossHub = new MossHub();
-  },
+  created() {},
   methods: {
     onDone() {
       this.showPop = false;
@@ -143,6 +141,16 @@ export default {
       }, 300);
     },
     async onNext() {
+      try {
+        if (!this.mossHub) {
+          this.mossHub = new MossHub();
+        }
+        await this.mossHub.checkNet();
+      } catch (error) {
+        this.$alert(error.message);
+        return;
+      }
+
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
@@ -165,22 +173,10 @@ export default {
     },
     async onCreate() {
       try {
-        if (!this.mossHub) {
-          this.mossHub = new MossHub();
-        }
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
-        await this.$http.put(
-          "/stone/timeout",
-          {},
-          {
-            params: {
-              stoneId: this.stoneId,
-              timeoutAt,
-            },
-          }
-        );
+        await this.setTimeoutAt(timeoutAt);
         const price = this.mossHub.parseEther(form.floorPrice);
         const tx = await this.mossHub.create([
           this.stoneId,
@@ -194,13 +190,32 @@ export default {
           },
         ]);
         this.$loading("Creating...");
+
         await tx.wait(2);
         this.isDone = true;
       } catch (error) {
-        this.$alert(error.message);
+        console.log(error);
+        let msg = error.message;
+        if (/user reject/.test(msg)) {
+          this.$toast("Rejected");
+        } else {
+          this.$alert(msg);
+        }
       }
       this.$loadingClose();
       this.saving = false;
+    },
+    setTimeoutAt(timeoutAt) {
+      this.$http.put(
+        "/stone/timeout",
+        {},
+        {
+          params: {
+            stoneId: this.stoneId,
+            timeoutAt,
+          },
+        }
+      );
     },
   },
 };

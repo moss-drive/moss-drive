@@ -1,18 +1,80 @@
 import { MossHub__factory, Helpers__factory } from "moss-v5";
 import { providers, utils } from "ethers";
+const { VITE_MOSS_HUB_CONTRACT, VITE_MOSS_HELPER_CONTRACT, VITE_MOSS_CHAINID } = import.meta.env;
 
 export class MossHub {
   constructor() {
-    const signer = this.getSigner();
-    console.log(signer);
-    this.client = MossHub__factory.connect("0xdB4350aaBF0Cb4c159A9cC1FA33d355Fc241BE53", signer);
-    this.helper = Helpers__factory.connect("0x6b146C52bf279d14c5F88f206a8211cB037b3737", signer);
+    this.client = MossHub__factory.connect(VITE_MOSS_HUB_CONTRACT, this.signer);
+    this.helper = Helpers__factory.connect(VITE_MOSS_HELPER_CONTRACT, this.signer);
   }
-  getSigner() {
+  get provider() {
+    return new providers.Web3Provider(window.ethereum);
+  }
+  get signer() {
     if (!window.ethereum) {
-      throw "window.ethereum not found";
+      throw new Error("Wallet not found");
     }
-    return new providers.Web3Provider(window.ethereum).getSigner();
+    return this.provider.getSigner();
+  }
+  get chainId() {
+    return Number(window.ethereum.chainId);
+  }
+
+  async checkNet() {
+    const id = VITE_MOSS_CHAINID;
+    if (this.chainId != id) {
+      return this.switchNet(id);
+    }
+  }
+
+  genChainId(id) {
+    return "0x" + Number(id).toString(16);
+  }
+  async switchNet(id) {
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: this.genChainId(id) }],
+      });
+    } catch (error) {
+      if (error.code == 4902 || error.data?.originalError.code == 4902) {
+        await this.addChainById(id);
+        return this.switchNet(id);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  addChainById(id) {
+    const config = {
+      80001: {
+        chainName: "polygon mumbai",
+        rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+        nativeCurrency: {
+          name: "matic Coin",
+          symbol: "MATIC",
+          decimals: 18,
+        },
+      },
+    };
+    const params = config[id];
+    if (!params) {
+      throw new Error("No Params");
+    }
+    params.chainId = this.genChainId(id);
+    return this.addChain(params);
+  }
+
+  addChain(params) {
+    console.log(params);
+    return window.ethereum.request(
+      {
+        method: "wallet_addEthereumChain",
+        params: [params],
+      }
+      // this.connectAddr
+    );
   }
 
   parseEther(num) {
