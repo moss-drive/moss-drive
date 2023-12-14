@@ -23,7 +23,7 @@
         <q-tr :props="props" class="ta-tr">
           <q-td key="stoneName" :props="props" class="stone-name-td">
             <div class="stone-cover">
-              <q-img src="@/assets/imgs/Rectangle 30.png" width="64px" :ratio="1" />
+              <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" width="64px" :ratio="1" />
             </div>
             <div class="stoneName">
               {{ props.row.stoneName }}
