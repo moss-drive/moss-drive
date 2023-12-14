@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+
 export function getFileSize(byte, isObj = false, fix = 2) {
   if (!byte && byte !== 0 && !isObj) {
     return byte;

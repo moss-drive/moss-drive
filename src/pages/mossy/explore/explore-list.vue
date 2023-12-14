@@ -24,7 +24,7 @@ import ListRank from "./list-rank.vue";
 
   <template v-if="type == 'FOR_YOU' || type == 'LATEST'">
     <div v-if="!rows" class="row q-col-gutter-md">
-      <div class="col-6 col-sm-4 col-md-3" v-for="i in 4" :key="i">
+      <div class="col-6 col-sm-4 col-md-3" v-for="i in 6" :key="i">
         <q-card flat>
           <q-skeleton height="120px" square />
         </q-card>

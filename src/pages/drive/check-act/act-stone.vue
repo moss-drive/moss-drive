@@ -104,7 +104,7 @@ import { MossHub } from "../../../utils/moss-hub";
 
 const initForm = {
   stoneName: "",
-  avatar: "https://qs3.4everland.store/logos/preact.svg",
+  avatar: "/img/stone/stone-cover.png",
   bio: "",
   urlPath: "",
 };

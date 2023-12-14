@@ -23,7 +23,7 @@
               <q-img :src="it.avatar" width="110px" :ratio="1" />
             </div>
             <div class="ml-4">
-              <p v-for="(row, j) in it.lines" :key="j">
+              <p v-for="(row, j) in it.kvList" :key="j">
                 <span class="op-8">{{ row.label }}</span>
                 <b class="color-2 fz-18 ml-2">{{ row.val || "-" }}</b>
               </p>
@@ -58,8 +58,6 @@
 </template>
 
 <script>
-import { utils } from "ethers";
-
 export default {
   data() {
     return {
@@ -73,14 +71,14 @@ export default {
     async getList() {
       try {
         const { data } = await this.$http.get("/stone");
-        // console.log(data);
+        const format = (val) => {
+          return this.$ethUtils.formatEther(val) + "ETH";
+        };
         for (const it of data) {
           let { price, floor } = it;
-          if (price) {
-            price = utils.formatEther(price);
-            floor = utils.formatEther(floor);
-          }
-          it.lines = [
+          if (price) price = format(price);
+          if (floor) floor = format(floor);
+          it.kvList = [
             {
               label: "Supply",
               val: it.totalSupply,

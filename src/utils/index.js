@@ -2,6 +2,7 @@ import "./extend";
 import bucket from "./bucket";
 import http from "./http";
 import { EventBus } from "quasar";
+import { utils } from "ethers";
 const { VITE_BASE_URL } = import.meta.env;
 
 export default {
@@ -9,6 +10,7 @@ export default {
     const global = app.config.globalProperties;
     global.$bucket = bucket;
     global.$http = http;
+    global.$ethUtils = utils;
     global.$inDev = /foreverland/.test(VITE_BASE_URL);
 
     global.$openLink = (url) => {

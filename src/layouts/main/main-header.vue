@@ -9,6 +9,7 @@
 
 <script setup>
 import UploadIndex from "./upload-index.vue";
+import HeaderRight from "../header-right.vue";
 </script>
 
 <template>
@@ -23,8 +24,9 @@ import UploadIndex from "./upload-index.vue";
     />
   </div> -->
 
+  <!-- || inStone -->
   <q-btn
-    v-if="inDrive || inStone"
+    v-if="inDrive"
     class="ml-3"
     color="primary"
     rounded
@@ -33,51 +35,15 @@ import UploadIndex from "./upload-index.vue";
     :style="asMobile ? '' : 'width: 110px'"
     @click="onNew"
   >
-    <icon-new-stone v-if="inStone"></icon-new-stone>
-    <icon-add v-if="inDrive" />
+    <icon-add />
     <span class="ml-2" v-if="!asMobile">{{ inDrive ? "NEW" : "Stone" }}</span>
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <div class="ml-auto h100p bdl-1 pl-8 pr-4 al-c">
-    <q-btn size="sm" rounded color="info" style="padding: 4px 6px">
-      <img src="/img/mossy/icon/ic-coin.png" width="20" />
-      <span class="text-white">100</span>
-    </q-btn>
-    <q-btn class="ml-4" round flat color="primary">
-      <img src="/img/mossy/icon/ic-bell.svg" width="24" />
-    </q-btn>
-
-    <q-btn
-      v-if="uid"
-      class="ml-3"
-      :class="{
-        'q-px-sm': !asMobile,
-      }"
-      color="info"
-      rounded
-      :round="asMobile"
-      :size="btnSize"
-    >
-      <m-avatar :hash="uid"></m-avatar>
-      <span v-if="!asMobile" class="q-ml-sm">{{ uid.cutStr(4, 4) }}</span>
-
-      <q-menu style="width: 130px" auto-close>
-        <q-list>
-          <q-item clickable v-if="asMobile">
-            <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
-          </q-item>
-          <q-item clickable @click="onLogout">
-            <q-item-section>Logout</q-item-section>
-          </q-item>
-        </q-list>
-      </q-menu>
-    </q-btn>
-  </div>
+  <header-right />
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
 
@@ -90,9 +56,6 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      uid: (s) => s.loginData.uuid,
-    }),
     path() {
       return this.$route.path;
     },
@@ -123,10 +86,6 @@ export default {
   methods: {
     onNew() {
       this.$bus.emit("click-new");
-    },
-    onLogout() {
-      this.$store.dispatch("logout");
-      this.$router.replace("/login");
     },
   },
 };
