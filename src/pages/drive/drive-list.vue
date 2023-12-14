@@ -259,6 +259,7 @@ export default {
           }
           this.loadErr = "";
           this.objNextToken = data.nextToken;
+          console.log(this.objList);
         }
       } catch (error) {
         console.log(error);
