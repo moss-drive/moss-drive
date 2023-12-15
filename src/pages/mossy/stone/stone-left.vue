@@ -6,6 +6,7 @@
 
 <script setup>
 import LeftList from "./left-list.vue";
+import LeftMossAct from "./left-moss-act.vue";
 </script>
 
 <template>
@@ -30,10 +31,7 @@ import LeftList from "./left-list.vue";
           </span>
         </div>
       </div>
-      <div class="mt-3 ta-r">
-        <q-btn class="flex-1" color="primary" rounded>BUY STONE</q-btn>
-        <q-btn class="flex-1 ml-4" outline color="primary" rounded>SELL STONE</q-btn>
-      </div>
+      <left-moss-act :id="id" />
     </div>
     <left-list :id="id" />
   </div>
@@ -44,9 +42,6 @@ export default {
   props: {
     id: null,
     info: Object,
-  },
-  data() {
-    return {};
   },
   computed: {
     kvList() {
