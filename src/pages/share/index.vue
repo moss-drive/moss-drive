@@ -1,6 +1,5 @@
 <template>
   <div class="share-box">
-    <div class="header"></div>
     <div class="share">
       <div class="share-left">
         <q-img class="top-img" width="100%" src="@/assets/imgs/share/left-top.png" />
@@ -47,6 +46,8 @@
 </template>
 
 <script>
+import { fetchShare, fetchShareVaild } from "@/api/share.js";
+
 const aaa = [
   {
     name: "4everNFT",
@@ -98,8 +99,34 @@ export default {
 
   mounted() {
     this.list();
+    // this.init();
   },
   methods: {
+    init() {
+      this.getShare();
+    },
+    async getShare() {
+      const params = {
+        id: this.$route.params.id,
+      };
+      const { data } = await fetchShare(params);
+      if (data.expire) {
+        console.log("expire");
+        return;
+      } else if (data.valid) {
+        console.log("need valid");
+        return;
+      } else {
+        this.getVaild();
+      }
+    },
+    async getVaild() {
+      const params = {
+        delimiter: "/",
+        code: "",
+      };
+      const { data } = fetchShareVaild(params);
+    },
     list() {
       this.rows = aaa.map((it, index) => {
         const prefix = it.type == "Folder";
@@ -134,16 +161,11 @@ export default {
 <style lang="scss" scoped>
 .share-box {
   background-color: #000;
-  height: 100vh;
-  .header {
-    height: 64px;
-    width: 100%;
-    background-color: #fff;
-  }
+  height: calc(100vh - 64px);
   .share {
     padding: 24px;
-    height: calc(100vh - 64px);
     display: flex;
+    height: 100%;
     .share-left {
       width: 330px;
       height: 100%;
@@ -168,6 +190,7 @@ export default {
       .left-content {
         text-align: center;
         padding: 0 24px;
+        z-index: 99;
         .user-info {
           padding-bottom: 24px;
           border-bottom: 1px solid #334155;
