@@ -64,10 +64,7 @@ import FilePreview from "./preview/preview-index.vue";
         <p class="op-8 mb-3">{{ loadErr }}</p>
         <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
       </div>
-      <div class="ta-c q-py-lg" v-else-if="objLoading === false && objList.length == 0">
-        <img src="/img/common/empty.svg" width="200" />
-        <div class="op-8">No Data</div>
-      </div>
+      <empty-stone v-else-if="objLoading === false && objList.length == 0" />
       <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
         <component
           :is="showMode + '-list'"
@@ -259,7 +256,6 @@ export default {
           }
           this.loadErr = "";
           this.objNextToken = data.nextToken;
-          console.log(this.objList);
         }
       } catch (error) {
         console.log(error);
