@@ -21,7 +21,7 @@ import LeftMossAct from "./left-moss-act.vue";
             width="110px"
           ></q-img>
         </div>
-        <div class="ml-3 flex-1" style="max-width: 600px">
+        <div class="ml-8 flex-1" style="max-width: 600px">
           <div v-if="!loaded">
             <q-skeleton type="title" />
             <q-skeleton class="mt-2" height="100px" />
