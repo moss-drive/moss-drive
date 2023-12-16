@@ -7,7 +7,7 @@
           <img :src="info.avatarUrl" />
         </q-avatar>
         <div v-else class="d-center">
-          <m-avatar :hash="info.twitterId" size="60"></m-avatar>
+          <m-avatar :hash="info.twitterId" :size="60"></m-avatar>
         </div>
         <div class="mt-4 fz-20 fw-b">{{ info.name || "-" }}</div>
         <div class="op-5 fz-14">@{{ info.username || "-" }}</div>

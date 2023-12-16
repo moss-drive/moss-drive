@@ -18,6 +18,11 @@ export default {
       iconDom: null,
     };
   },
+  watch: {
+    hash() {
+      this.getIcon();
+    },
+  },
   mounted() {
     this.getIcon();
   },
@@ -30,9 +35,14 @@ export default {
   },
   methods: {
     getIcon() {
+      if (!this.hash) return;
       const identicon = jazzicon(this.size, this.addrSeed);
       this.iconDom = identicon.cloneNode(true);
-      this.$refs.content.appendChild(this.iconDom);
+      const $con = this.$refs.content;
+      [].slice.call($con.children).forEach((el) => {
+        $con.removeChild(el);
+      });
+      $con.appendChild(this.iconDom);
     },
   },
 };

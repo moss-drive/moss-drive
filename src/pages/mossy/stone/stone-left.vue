@@ -17,7 +17,7 @@ import LeftMossAct from "./left-moss-act.vue";
           <q-img :src="info.stoneAvatar" :ratio="1" width="110px"></q-img>
         </div>
         <div class="ml-3">
-          <div class="fw-b fz-20">{{ info.stoneName || "-" }}</div>
+          <div class="fw-b fz-20 line-2">{{ info.stoneName || "-" }}</div>
           <div class="mt-2 line-5 op-6">
             {{ info.bio || "-" }}
           </div>
