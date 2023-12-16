@@ -24,13 +24,16 @@
       :round="asMobile"
       :size="btnSize"
     >
-      <m-avatar :hash="uid"></m-avatar>
-      <span v-if="!asMobile" class="ml-2 fz-14">{{ uid.cutStr(4, 4) }}</span>
+      <q-avatar v-if="userInfo.avatarUrl">
+        <img :src="userInfo.avatarUrl" />
+      </q-avatar>
+      <m-avatar v-else :hash="uid"></m-avatar>
+      <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
       <q-menu style="width: 130px" auto-close>
         <q-list>
           <q-item clickable v-if="asMobile">
-            <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
+            <q-item-section>{{ uname }}</q-item-section>
           </q-item>
           <q-item clickable @click="onLogout">
             <q-item-section>Logout</q-item-section>
@@ -62,8 +65,13 @@ export default {
   },
   computed: {
     ...mapState({
+      userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
+    uname() {
+      const { name } = this.userInfo;
+      return name || this.uid.cutStr(6, 4);
+    },
     asMobile() {
       return this.screen.width < 690;
     },

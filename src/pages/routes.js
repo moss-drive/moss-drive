@@ -60,6 +60,7 @@ const routes = [
       {
         path: "",
         component: () => import("./mossy/page-explore.vue"),
+        noUid: 1,
       },
       {
         path: "stone",

@@ -95,16 +95,33 @@ export default {
       });
     };
   },
-  watch: {},
+  watch: {
+    uid() {
+      this.getUserInfo();
+    },
+  },
   mounted() {
     this.onInit();
   },
   methods: {
+    async getUserInfo() {
+      try {
+        const { data } = await this.$http.get("/users/twitter/info");
+        this.$setStore({
+          userInfo: data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async onInit() {
       const { meta } = this.$route;
+      console.log(meta);
       const Login = "/login";
-      const noLogin = meta.noUid || ["/", Login].includes(location.pathname);
-      if (!this.uid && !noLogin) {
+      const noLogin = meta.noUid || ["/", Login, "/mossy"].includes(location.pathname);
+      if (this.uid) {
+        this.getUserInfo();
+      } else if (!noLogin) {
         localStorage.loginTo = location.pathname + location.search;
         this.$router.replace(Login);
       }
