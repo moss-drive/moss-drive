@@ -9,7 +9,7 @@
 
 <script setup>
 import HomeList from "./home-list.vue";
-import HomeCard from "./home-card.vue";
+import HomeLogin from "./home-login.vue";
 import HomeBtm from "./home-btm.vue";
 import HeaderRight from "../../layouts/header-right.vue";
 </script>
@@ -33,7 +33,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         <home-list />
       </div>
       <div class="col-4 h100p pos-r">
-        <home-card :class="cardCls" />
+        <home-login :class="loginCls" />
       </div>
     </div>
     <home-btm />
@@ -61,7 +61,7 @@ export default {
     isFix() {
       return this.screen.width < 1000;
     },
-    cardCls() {
+    loginCls() {
       if (this.isFix) {
         return this.asMobile ? "pos-center pos-f right-0" : "y-center pos-f right-0 mr-5";
       }

@@ -6,7 +6,7 @@
     <div class="py-5">
       <q-btn
         v-if="loginData.uuid"
-        to="/drive"
+        href="/drive"
         rounded
         size="lg"
         style="background: #111"
