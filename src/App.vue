@@ -109,6 +109,7 @@ export default {
       const Login = "/login";
       const noLogin = meta.noUid || ["/", Login].includes(location.pathname);
       if (!this.uid && !noLogin) {
+        localStorage.loginTo = location.pathname + location.search;
         this.$router.replace(Login);
       }
     },
