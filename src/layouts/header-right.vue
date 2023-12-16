@@ -27,7 +27,7 @@
       <q-avatar v-if="userInfo.avatarUrl">
         <img :src="userInfo.avatarUrl" />
       </q-avatar>
-      <m-avatar v-else :hash="uid"></m-avatar>
+      <m-avatar v-else :hash="avatarId"></m-avatar>
       <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
       <q-menu style="width: 130px" auto-close>
@@ -68,6 +68,9 @@ export default {
       userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
+    avatarId() {
+      return this.userInfo.twitterId || this.uid;
+    },
     uname() {
       const { name } = this.userInfo;
       return name || this.uid.cutStr(6, 4);
