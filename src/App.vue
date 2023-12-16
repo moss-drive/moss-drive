@@ -122,8 +122,8 @@ export default {
       if (this.uid) {
         this.getUserInfo();
       } else if (!noLogin) {
-        localStorage.loginTo = location.pathname + location.search;
-        this.$router.replace(Login);
+        // localStorage.loginTo = location.pathname + location.search;
+        // this.$router.replace(Login);
       }
     },
   },

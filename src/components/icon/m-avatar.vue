@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     addrSeed() {
-      const addr = this.hash.slice(2, 10);
+      const addr = (this.hash || "").slice(2, 10);
       const seed = parseInt(addr, 16);
       return seed;
     },
