@@ -207,7 +207,7 @@ export default {
       console.log(this.$refs.form);
       this.$refs.form.validate().then((suc) => {
         if (suc) this.onNext();
-        else this.$toast("Please check the form");
+        // else this.$toast("Please check the form");
       });
     },
     onFile(ev) {
