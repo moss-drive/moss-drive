@@ -53,7 +53,7 @@
                   type="textarea"
                   rows="3"
                   label="Description"
-                  placeholder="Add an optional description"
+                  placeholder="Optional"
                 />
               </div>
             </div>
@@ -72,28 +72,37 @@
                 <q-input filled dense label="Initial issuance quantity" v-model="mossForm.intNum" />
               </div>
             </div>
-            <div class="mt-6">
-              <q-input
-                filled
-                dense
-                label="How many tokens need to be sold to increase the price once?"
-                v-model="mossForm.tokenNum"
-              />
-            </div>
-            <div class="mt-6">
-              <q-input
-                filled
-                dense
-                label="After each price increase, by how much does the floor price quantity increase?"
-                v-model="mossForm.stepNum"
-              />
+            <div v-show="isAll">
+              <div class="mt-6">
+                <q-input
+                  filled
+                  dense
+                  label="How many tokens need to be sold to increase the price once?"
+                  hint="Minimum value is 2"
+                  v-model="mossForm.tokenNum"
+                />
+              </div>
+              <div class="mt-6">
+                <q-input
+                  filled
+                  dense
+                  label="After each price increase, by how much does the floor price quantity increase?"
+                  hint="Must be less than the previous quantity"
+                  v-model="mossForm.stepNum"
+                />
+              </div>
             </div>
           </q-form>
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary">
+        <q-card-actions class="text-primary">
+          <div class="mr-auto ml-1">
+            <q-btn size="small" @click="isAll = !isAll" color="primary" flat>{{
+              isAll ? "Collapse" : "Advanced Settings"
+            }}</q-btn>
+          </div>
           <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-          <q-btn rounded color="primary" :loading="saving" @click="onNext">Next</q-btn>
+          <q-btn rounded color="primary" :loading="saving" @click="onNext">Create</q-btn>
         </q-card-actions>
       </template>
     </q-card>
@@ -122,6 +131,7 @@ export default {
   data() {
     return {
       showPop: false,
+      isAll: false,
       form: { ...initForm },
       mossForm: { ...initMossForm },
       saving: false,
