@@ -105,6 +105,7 @@ export default {
   },
   methods: {
     async getUserInfo() {
+      if (!this.uid) return;
       try {
         const { data } = await this.$http.get("/users/twitter/info");
         this.$setStore({
