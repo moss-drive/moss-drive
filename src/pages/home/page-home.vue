@@ -10,6 +10,7 @@
 <script setup>
 import HomeList from "./home-list.vue";
 import HomeCard from "./home-card.vue";
+import HomeBtm from "./home-btm.vue";
 import HeaderRight from "../../layouts/header-right.vue";
 </script>
 
@@ -35,6 +36,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         <home-card :class="cardCls" />
       </div>
     </div>
+    <home-btm />
   </div>
 </template>
 

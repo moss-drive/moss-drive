@@ -5,11 +5,7 @@ body.body--dark {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.main-wrap {
-  max-width: 1350px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+
 .bg-active {
   background: #0000006e;
   color: #fff;

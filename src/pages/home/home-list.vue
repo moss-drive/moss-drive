@@ -4,6 +4,10 @@
   height: 120px;
   position: relative;
   border-radius: 10px;
+  transition: transform ease 200ms;
+  &:active {
+    transform: scale(0.9);
+  }
 }
 .c_wrap::before {
   content: "";

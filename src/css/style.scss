@@ -118,7 +118,7 @@ $bd: #334155;
   color: #7E4FED;
 }
 
-.hover-1:active {
+.hover-1:hover {
   opacity: .8;
 }
 
@@ -229,6 +229,11 @@ body {
   }
 }
 
+.main-wrap {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 .btn-mossy {
   padding: 6px 22px;
   background: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(0 0 0 / 80%));
