@@ -3,9 +3,12 @@
     <div class="bg-card-2">
       <div class="fw-b fz-18">Author</div>
       <div class="ta-c mt-5">
-        <q-avatar size="60px">
-          <img src="https://cdn.quasar.dev/img/avatar.png" />
+        <q-avatar size="60px" v-if="info.avatarUrl">
+          <img :src="info.avatarUrl" />
         </q-avatar>
+        <div v-else class="d-center">
+          <m-avatar :hash="uid" size="60"></m-avatar>
+        </div>
         <div class="mt-4 fz-20 fw-b">{{ info.name || "-" }}</div>
         <div class="op-5 fz-14">@{{ info.username || "-" }}</div>
       </div>
@@ -31,9 +34,16 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   props: {
     info: Object,
+  },
+  computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
   },
 };
 </script>
