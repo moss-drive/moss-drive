@@ -1,5 +1,5 @@
 <template>
-  <div class="pos-btm w100p pa-3 mb-3">
+  <div class="pos-btm pos-f w100p pa-3 mb-3">
     <div class="main-wrap al-c">
       <div class="al-c">
         <a class="mr-6 hover-1" target="_blank" :href="it.url" v-for="it in socials" :key="it.icon">
