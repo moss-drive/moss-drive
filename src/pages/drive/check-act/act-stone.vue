@@ -1,4 +1,5 @@
 <template>
+  <wallet-check />
   <q-dialog v-model="showPop" position="top" :persistent="saving">
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section class="pos-s top-0 q-dark z-10">

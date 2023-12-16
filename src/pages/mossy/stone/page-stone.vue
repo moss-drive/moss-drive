@@ -14,6 +14,8 @@ import StoneRight from "./stone-right.vue";
       </div>
     </div>
   </div>
+
+  <wallet-check />
 </template>
 
 <script>

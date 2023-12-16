@@ -47,13 +47,7 @@
     </q-card>
   </q-dialog>
 
-  <iframe
-    class="d-n"
-    @load="onLoad"
-    ref="iframe"
-    :src="'/check-wallet.html?t=' + checkTimes"
-    frameborder="0"
-  ></iframe>
+  <wallet-check />
 </template>
 
 <script>
@@ -111,14 +105,12 @@ export default {
       walletList,
       showInstall: false,
       curType: "",
-      checkFlag: -1,
-      checkTimes: 0,
+
       loading: false,
     };
   },
   computed: {
     ...mapState({
-      isFocus: (s) => s.isFocus,
       loginData: (s) => s.loginData,
     }),
     defItem() {
@@ -128,24 +120,8 @@ export default {
       return this.walletList.find((it) => it.type == this.curType) || this.defItem;
     },
   },
-  watch: {
-    isFocus(val) {
-      if (val) this.checkTimes++;
-    },
-    checkFlag(val, old) {
-      console.log("wallet-check", val);
-      if (old == -1) return;
-      this.$toast("Wallet changed");
-      setTimeout(() => {
-        location.reload();
-      }, 2e3);
-    },
-  },
   mounted() {},
   methods: {
-    onLoad() {
-      this.checkFlag = this.$refs.iframe.contentDocument.title;
-    },
     onInstall() {
       window.open(this.curItem.link);
     },

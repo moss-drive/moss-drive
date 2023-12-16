@@ -142,8 +142,10 @@ export default {
         };
       } catch (error) {
         console.log(error);
-        this.$toast(error.message);
         this.calcData = null;
+        this.$alert(error.message, {
+          // title: "Please check your wallet",
+        });
       }
       this.calcLoading = false;
       return data;
@@ -154,7 +156,8 @@ export default {
         return this.$toast("Quantity required");
       }
       if (!this.calcData) {
-        return this.onAmount(amount);
+        const data = await this.onAmount(amount);
+        if (!data) return;
       }
       const mossHub = await this.initMoss();
       if (!mossHub) return;
