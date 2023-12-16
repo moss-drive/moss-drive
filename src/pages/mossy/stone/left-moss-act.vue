@@ -18,6 +18,7 @@
               v-model="form.amount"
               @keyup="checkAmount"
               label="Quantity"
+              autofocus
               stack-label
               filled
             />
