@@ -1,5 +1,10 @@
 <template>
-  <div class="ml-5 h100p bdl-1 pl-5 pr-4 al-c">
+  <div
+    class="ml-5 h100p pl-5 pr-4 al-c"
+    :class="{
+      'bdl-1': border,
+    }"
+  >
     <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
       <img src="/img/mossy/icon/ic-coin.png" width="26" />
       <span class="text-white ml-1 fz-14">0</span>
@@ -42,6 +47,12 @@ import { mapState } from "vuex";
 import { useQuasar } from "quasar";
 
 export default {
+  props: {
+    border: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     const { screen } = useQuasar();
     return {
@@ -63,7 +74,7 @@ export default {
   methods: {
     onLogout() {
       this.$store.dispatch("logout");
-      this.$router.replace("/login");
+      this.$router.replace("/");
     },
   },
 };

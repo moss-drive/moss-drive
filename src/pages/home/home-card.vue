@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary bdrs-10 px-5 py-6" style="width: 360px">
     <p class="py-2">
-      <img src="/img/home/join-txt.svg" height="24" class="d-b" />
+      <img :src="`/img/home/txt-${isLogin ? 'welcome' : 'join'}.svg`" height="24" class="d-b" />
     </p>
     <div class="py-5">
       <q-btn
@@ -58,6 +58,9 @@ export default {
     ...mapState({
       loginData: (s) => s.loginData,
     }),
+    isLogin() {
+      return !!this.loginData.uuid;
+    },
   },
   created() {
     const { code, loginTo } = this.$route.query;
