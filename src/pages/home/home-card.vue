@@ -1,42 +1,46 @@
-<script setup>
-import WalletConnect from "./wallet-connect.vue";
-</script>
-
 <template>
-  <div class="q-pa-lg ta-c">
-    <div v-if="!loginData.twitterId">
-      <div class="mt-5 fz-30">Login</div>
-      <div class="pa-6"></div>
+  <div class="bg-primary bdrs-10 px-5 py-6" style="width: 360px">
+    <p class="py-2">
+      <img src="/img/home/join-txt.svg" height="24" class="d-b" />
+    </p>
+    <div class="py-5">
       <q-btn
+        v-if="loginData.uuid"
+        to="/drive"
+        rounded
+        size="lg"
+        style="background: #111"
+        class="full-width text-white"
+      >
+        <img src="/img/moss.svg" width="38" class="scale-9" />
+        <span class="fz-18 ml-2">Moss Drive</span>
+      </q-btn>
+      <q-btn
+        v-else
         @click="onLoginX"
         :loading="xLoading"
         flat
         rounded
-        style="background: #222; width: 200px"
+        size="lg"
+        style="background: #111"
+        class="full-width text-white"
       >
+        <span class="fz-20 mr-2">Sign in with</span>
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="loginData.thirdWebToken_">
-      <div class="mt-5 fz-30">ThirdWeb</div>
-      <div class="pa-6"></div>
-      <q-btn
-        @click="onThirdWeb"
-        :loading="thirdLoading"
-        rounded
-        color="primary"
-        style="width: 200px"
-      >
-        Bind
-      </q-btn>
+    <div>
+      <img src="/img/home/or-split.svg" class="w100p d-b" />
     </div>
-    <div v-else>
-      <div class="mt-5 fz-30">Connect Wallet</div>
-      <div class="pa-6"></div>
-      <wallet-connect @login="onLoginData" />
+    <div class="py-5">
+      <q-btn href="/mossy" target="_blank" size="lg" rounded class="btn-mossy full-width">
+        <img src="/img/mossy.png" width="38" class="" />
+        <span class="fz-18 ml-2">Mossyland</span>
+      </q-btn>
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapState } from "vuex";
@@ -141,7 +145,7 @@ export default {
     onRedirect() {
       const redirectTo = localStorage.loginTo || "/";
       localStorage.loginTo = "";
-      this.$router.replace(redirectTo);
+      if (redirectTo != "/") this.$router.replace(redirectTo);
     },
 
     async onLoginData(data) {
