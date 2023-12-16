@@ -37,16 +37,46 @@
             </template>
           </q-banner>
 
-          <q-form class="q-gutter-s mt-5">
+          <q-form ref="form" class="q-gutter-s mt-5">
             <div class="row mb-6">
               <div class="col-3">
                 <div class="stone-cover">
-                  <q-img :src="form.avatar" width="110px" :ratio="1" />
+                  <q-img :src="tempImg || form.avatar" width="110px" :ratio="1" />
+                  <div class="pos-center">
+                    <q-btn
+                      size="small"
+                      round
+                      color="info"
+                      icon="upload"
+                      @click="$refs.file.click()"
+                    >
+                    </q-btn>
+                  </div>
+                </div>
+                <div class="d-n">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref="file"
+                    class="pos-mask op-0 cursor-p"
+                    @input="onFile"
+                  />
                 </div>
               </div>
               <div class="col-9">
-                <q-input filled v-model="form.stoneName" dense label="Stone name *" hint="" />
                 <q-input
+                  filled
+                  v-model="form.stoneName"
+                  dense
+                  label="Stone name *"
+                  hint=""
+                  :rules="[
+                    (val) => !!val || 'required',
+                    (val) => val.length <= 30 || 'No more than 30 characters',
+                  ]"
+                />
+                <q-input
+                  class="mt-2"
                   filled
                   v-model="form.bio"
                   dense=""
@@ -57,37 +87,62 @@
                 />
               </div>
             </div>
-            <q-input filled dense label="URL" v-model="form.urlPath" prefix="stone.mymoss.io/" />
-            <div class="mt-2 row q-col-gutter-md">
+            <q-input
+              class="mb-2"
+              filled
+              dense
+              label="URL"
+              v-model="form.urlPath"
+              prefix="stone.mymoss.io/"
+              :rules="[
+                (val) => !!val || 'required',
+                (val) => /^[\w-]+$/.test(val) || 'Invalid path',
+                (val) => val.length <= 30 || 'No more than 30 characters',
+              ]"
+            />
+            <div class="row q-col-gutter-md mt-">
               <div class="col-6">
                 <q-input
                   filled
                   dense
                   label="Floor Price"
                   v-model="mossForm.floorPrice"
+                  :rules="[(val) => val > 0 || 'greater than zero']"
                   suffix="ETH"
                 />
               </div>
               <div class="col-6">
-                <q-input filled dense label="Initial issuance quantity" v-model="mossForm.intNum" />
+                <q-input
+                  filled
+                  dense
+                  label="Initial issuance quantity"
+                  v-model="mossForm.intNum"
+                  :rules="[(val) => val > 0 || 'greater than zero']"
+                />
               </div>
             </div>
             <div v-show="isAll">
-              <div class="mt-6">
+              <div class="mt-2">
                 <q-input
                   filled
                   dense
                   label="How many tokens need to be sold to increase the price once?"
                   hint="Minimum value is 2"
+                  :rules="[(val) => val >= 2 || 'Minimum value is 2']"
                   v-model="mossForm.tokenNum"
                 />
               </div>
-              <div class="mt-6">
+              <div class="mt-4">
                 <q-input
                   filled
                   dense
                   label="After each price increase, by how much does the floor price quantity increase?"
                   hint="Must be less than the previous quantity"
+                  :rules="[
+                    (val) =>
+                      (val >= 0 && val * 1 < mossForm.tokenNum * 1) ||
+                      'Must be less than the previous quantity',
+                  ]"
                   v-model="mossForm.stepNum"
                 />
               </div>
@@ -102,7 +157,7 @@
             }}</q-btn>
           </div>
           <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-          <q-btn rounded color="primary" :loading="saving" @click="onNext">Create</q-btn>
+          <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
         </q-card-actions>
       </template>
     </q-card>
@@ -134,14 +189,42 @@ export default {
       isAll: false,
       form: { ...initForm },
       mossForm: { ...initMossForm },
+      tempImg: null,
       saving: false,
       isDone: false,
       stoneId: null,
       mossHub: null,
     };
   },
+  watch: {
+    showPop(val) {
+      if (val) this.form.stoneName = this.checkItem.name;
+    },
+  },
   created() {},
   methods: {
+    onSubmit() {
+      console.log(this.$refs.form);
+      this.$refs.form.validate().then((suc) => {
+        if (suc) this.onNext();
+        else this.$toast("Please check the form");
+      });
+    },
+    onFile(ev) {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const maxKb = 500;
+      if (file.size > maxKb * 1024) {
+        return this.$alert(`The image size should not exceed ${maxKb}KB.`);
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.tempImg = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      this.$toast("todo: upload");
+      // this.tempImg =
+    },
     onDone() {
       this.showPop = false;
       this.isDone = false;
