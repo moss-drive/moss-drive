@@ -95,11 +95,7 @@ export default {
       });
     };
   },
-  watch: {
-    uid() {
-      this.onInit();
-    },
-  },
+  watch: {},
   mounted() {
     this.onInit();
   },
