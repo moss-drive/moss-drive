@@ -108,6 +108,7 @@ export default {
       return this.mossHub;
     },
     checkAmount() {
+      this.calcData = null;
       debounce(() => {
         this.onAmount(this.form.amount);
       });
