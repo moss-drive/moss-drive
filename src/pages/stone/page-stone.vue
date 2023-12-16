@@ -14,7 +14,8 @@
     <div class="row" v-else>
       <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">
         <!-- <img src="/img/stone/stone-head.png" height="40" class="d-b" /> -->
-        <div class="bg-card-1 stone-card pa-4 pos-r" style1="top: -13px">
+        <!-- style="top: -13px" -->
+        <div class="bg-card-1 stone-card pa-4 pos-r">
           <div class="pos-a right-0 top-0 m-3 pa-1 hover-1">
             <img src="/img/stone/stone-edit.svg" width="20" />
           </div>

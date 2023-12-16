@@ -9,9 +9,9 @@
       <img src="/img/mossy/icon/ic-coin.png" width="26" />
       <span class="text-white ml-1 fz-14">0</span>
     </q-btn>
-    <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
+    <!-- <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
       <img src="/img/mossy/icon/ic-bell.svg" width="22" />
-    </q-btn>
+    </q-btn> -->
 
     <q-btn
       v-if="uid"
