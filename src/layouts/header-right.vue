@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="uid"
     class="ml-5 h100p pl-5 pr-4 al-c"
     :class="{
       'bdl-1': border,
@@ -14,7 +15,6 @@
     </q-btn> -->
 
     <q-btn
-      v-if="uid"
       class="ml-3"
       :class="{
         'q-px-sm': !asMobile,
