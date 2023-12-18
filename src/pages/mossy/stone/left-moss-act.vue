@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="mt-3 ta-r">
-      <q-btn class="flex-1" color="primary" rounded @click="popBuy = true">BUY STONE</q-btn>
-      <q-btn class="flex-1 ml-4" outline color="primary" rounded>SELL STONE</q-btn>
+      <q-btn class="flex-1" color="primary" rounded @click="onPop(true)">BUY STONE</q-btn>
+      <q-btn class="flex-1 ml-4" outline color="primary" rounded @click="onPop()">SELL STONE</q-btn>
     </div>
   </div>
 
-  <q-dialog v-model="popBuy" position="top" :persistent="buying">
+  <q-dialog v-model="showPop" position="top" :persistent="buying">
     <q-card class="full-width pa-2" style="max-width: 600px">
       <q-card-section>
-        <div class="text-h6">Buy Stone Key</div>
+        <div class="text-h6">{{ isBuy ? "Buy" : "Sell" }} Stone Key</div>
       </q-card-section>
       <q-card-section>
         <div class="d-flex mt-3">
@@ -45,10 +45,10 @@
         </div>
       </q-card-section>
       <q-card-actions align="right" class="text-primary">
-        <q-btn flat color="white" label="Cancel" v-if="!buying" @click="popBuy = false" />
-        <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy"
-          >Buy</q-btn
-        >
+        <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
+        <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy">{{
+          isBuy ? "Buy" : "Sell"
+        }}</q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -57,6 +57,7 @@
 <script>
 import { debounce } from "@/utils/helper";
 import { MossHub } from "../../../utils/moss-hub";
+import { mapState } from "vuex";
 
 export default {
   props: {
@@ -65,7 +66,8 @@ export default {
   data() {
     return {
       mossHub: null,
-      popBuy: false,
+      showPop: false,
+      isBuy: false,
       buying: false,
       form: {
         amount: "",
@@ -77,6 +79,9 @@ export default {
   },
   watch: {},
   computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
     buyKvList() {
       const data = this.calcData || {};
       return [
@@ -96,6 +101,15 @@ export default {
     },
   },
   methods: {
+    onPop(isBuy) {
+      if (!this.uid) {
+        localStorage.loginTo = location.pathname + location.search;
+        this.$router.push("/login");
+        return;
+      }
+      this.isBuy = isBuy;
+      this.showPop = true;
+    },
     async initMoss() {
       if (!this.mossHub) {
         try {
@@ -135,7 +149,8 @@ export default {
       let data;
       try {
         this.calcLoading = true;
-        const data = await mossHub.stoneMint([this.id, amount]);
+        const fn = this.isBuy ? "stoneMint" : "stoneBurn";
+        const data = await mossHub[fn]([this.id, amount]);
         console.log(data);
         this.calcData = {
           keyPrice: mossHub.formatEther(data.value),
