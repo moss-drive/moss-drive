@@ -110,6 +110,7 @@ export default {
           method: "wallet_switchEthereumChain",
           params: [{ chainId }],
         });
+        location.reload();
       } catch (error) {
         console.log("switch error 2", error);
         if (error.code == 4902 || error.data?.originalError.code == 4902) {

@@ -1,7 +1,6 @@
 <template>
   <div class="q-pa-md">
     <resource-notice></resource-notice>
-    {{ coinAddr }}
     <div class="resource-plate row q-col-gutter-md">
       <div class="col-12 col-md-6">
         <div class="land-container">
@@ -56,13 +55,7 @@
         <div class="fz-20 fw-b mb-4">Deposit</div>
         <div class="deposite-section mb-4">
           <div class="al-c recharge-input" style="width: 50%">
-            <input
-              maxlength="8"
-              class="r-ipt flex-1"
-              v-model="amount"
-              @input="handleInput"
-              type="text"
-            />
+            <input maxlength="8" class="r-ipt flex-1" v-model="amount" type="text" />
             <span class="num">,000,000</span>
             <span class="land-text fz-14">LAND</span>
           </div>
@@ -86,12 +79,15 @@
       <div class="recharge-bar al-c space-btw">
         <div class="amount-info">
           <div class="fz-16 fw-b">Total</div>
-          <div>
-            <span class="amount fw-b">{{ usdcAmount.toString() }}</span>
+          <div style="height: 42px" class="al-c" v-show="countEthLoading">
+            <q-circular-progress indeterminate rounded size="20px" color="#000" />
+          </div>
+          <div v-show="!countEthLoading">
+            <span class="amount fw-b">{{ transformAmount }}</span>
             <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
           </div>
         </div>
-        <div class="recharge-btn cursor-p">Confirm</div>
+        <div class="recharge-btn cursor-p" @click="handleEthRecharge">Confirm</div>
       </div>
     </div>
 
@@ -101,7 +97,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
-import { getFileSize, debounce } from "@/utils/helper";
+import { getFileSize, debounce, uid2euid } from "@/utils/helper";
 import { formatEther, solidityPack, parseUnits } from "ethers/lib/utils";
 import { BigNumber, providers } from "ethers";
 import { IQuoter__factory, UNILand__factory } from "@4everland-contracts";
@@ -121,7 +117,9 @@ export default {
       showConversion: false,
       stablecoin: true,
       usdcAmount: BigNumber.from("0"),
+      ethAmount: BigNumber.from("0"),
       chainId: "",
+      countEthLoading: false,
     };
   },
   created() {
@@ -133,6 +131,7 @@ export default {
     ...mapGetters("resourceStore", ["formatLand", "land2Resource"]),
     ...mapState({
       usage: (s) => s.usageInfo,
+      userInfo: (s) => s.userInfo,
     }),
     ...mapState("resourceStore", ["land", "usage"]),
     land2Usd() {
@@ -173,35 +172,95 @@ export default {
       const addr = "0x3cA298d7A98262C0598dd91Ce926f23e51c4b293";
       return UNILand__factory.connect(addr, this.signer);
     },
-    chainAddrList() {
-      return chainAddrList;
-    },
     curChainInfo() {
-      return this.chainAddrList.find((it) => it.chainId == this.chainId);
+      return chainAddrList.find((it) => it.chainId == this.chainId);
     },
     coinAddr() {
       const coinType = this.coinType.toLowerCase();
-      // console.log(this.curChainInfo.coin);
       return this.curChainInfo?.coin[coinType];
     },
     euid() {
-      return "";
+      return uid2euid(this.userInfo.uid);
+    },
+    transformAmount() {
+      if (this.stablecoin) {
+        return (formatEther(this.ethAmount) * 1).toFixed(5);
+      } else {
+        return this.usdcAmount.toString();
+      }
     },
   },
   methods: {
     handleNetwork(chain) {
-      console.log(chain);
       this.chainId = chain;
     },
     onSelectCoin(coin) {
       this.coinType = coin.label;
-      console.log(coin);
       this.stablecoin = coin.stablecoin;
     },
     estimateInput(val) {
       this.amount = val;
     },
-    handleInput() {
+    async handleEthRecharge() {
+      try {
+        this.$loading("Loading...");
+        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
+          value: this.ethAmount,
+        });
+        const receipt = await tx.wait();
+        console.log(receipt);
+      } catch (error) {
+        console.log(error);
+        this.$alert(error.message);
+      }
+      this.$loadingClose();
+    },
+
+    async usdc2eth() {
+      try {
+        this.countEthLoading = true;
+        const quoter = IQuoter__factory.connect(
+          "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+          this.signer
+        );
+        console.log(222);
+        const path = solidityPack(
+          ["address", "uint24", "address"],
+          [
+            "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85", // usdc addr
+            500, //
+            this.coinAddr,
+          ]
+        );
+        if (this.usdcAmount.eq(BigNumber.from("0"))) {
+          this.ethAmount = BigNumber.from("0");
+          this.countEthLoading = false;
+          return BigNumber.from("0");
+        }
+        const res = await quoter.callStatic.quoteExactOutput(
+          path,
+          parseUnits(this.usdcAmount.toString(), 6)
+        );
+        console.log(formatEther(res));
+        this.ethAmount = res;
+        this.countEthLoading = false;
+      } catch (error) {
+        console.log(error);
+      }
+      this.countEthLoading = false;
+    },
+  },
+
+  components: {
+    ResourceNotice,
+    ResourceProgress,
+    ResourceCount,
+    PayNetwork,
+    PayCoin,
+    BillDetails,
+  },
+  watch: {
+    amount() {
       this.amount = this.amount.replace(/[^\d]/g, "");
       if (this.amount) {
         this.usdcAmount = BigNumber.from(this.amount);
@@ -214,58 +273,6 @@ export default {
         });
       }
     },
-
-    async handleEthRecharge() {
-      try {
-        this.$loading("Loading...");
-        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
-          value: this.ethAmount,
-        });
-        const receipt = await tx.wait();
-        console.log(receipt);
-        this.$loadingClose();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    async usdc2eth() {
-      const quoter = IQuoter__factory.connect(
-        "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-        this.signer
-      );
-      const path = solidityPack(
-        ["address", "uint24", "address"],
-        [
-          "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85", // usdc addr
-          500, //
-          this.coinAddr,
-        ]
-      );
-      console.log(this.usdcAmount.toString());
-      if (this.usdcAmount.eq(BigNumber.from("0"))) {
-        this.ethAmount = BigNumber.from("0");
-
-        return BigNumber.from("0");
-      }
-      console.log(parseUnits(this.usdcAmount.toString(), 6).toString());
-      const res = await quoter.callStatic.quoteExactOutput(
-        path,
-        parseUnits(this.usdcAmount.toString(), 6)
-      );
-      console.log(formatEther(res));
-      this.ethAmount = res;
-      return res;
-    },
-  },
-
-  components: {
-    ResourceNotice,
-    ResourceProgress,
-    ResourceCount,
-    PayNetwork,
-    PayCoin,
-    BillDetails,
   },
 };
 </script>
