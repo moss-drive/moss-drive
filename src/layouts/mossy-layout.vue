@@ -22,10 +22,17 @@ import HeaderRight from "./header-right.vue";
     <q-header class="bg-dark text-white bdb-1">
       <div class="al-c pl-4 pr-4" style="height: 64px">
         <a href="/mossy" class="al-c">
-          <img src="/img/mossy.png" width="40" />
-          <img class="ml-2" src="/img/mossy/mossy-text.svg" height="28" />
+          <img src="/img/mossy.png" :width="asMobile ? 30 : 40" />
+          <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
         </a>
         <div class="mr-auto"></div>
+        <q-btn href="/drive" rounded color="primary">
+          <span v-if="asMobile">Moss</span>
+          <template v-else>
+            <img src="/img/mossy/my-moss.svg" width="20" class="mr-2" />
+            <span>My Moss</span>
+          </template>
+        </q-btn>
         <header-right />
       </div>
     </q-header>
@@ -35,3 +42,21 @@ import HeaderRight from "./header-right.vue";
     </q-page-container>
   </q-layout>
 </template>
+
+<script>
+import { useQuasar } from "quasar";
+
+export default {
+  data() {
+    const { screen } = useQuasar();
+    return {
+      screen,
+    };
+  },
+  computed: {
+    asMobile() {
+      return this.screen.width < 690;
+    },
+  },
+};
+</script>
