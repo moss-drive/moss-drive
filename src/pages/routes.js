@@ -74,7 +74,7 @@ const routes = [
   },
   {
     path: "/s/:id",
-    component: () => import("../layouts/mossy-layout.vue"),
+    component: () => import("@/pages/share/components/layout.vue"),
     children: [
       {
         path: "",

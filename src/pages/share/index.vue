@@ -34,14 +34,14 @@
               </div>
             </q-form>
           </div>
-          <div class="stone-info">
+          <div class="stone-info" v-if="stoneInfo">
             <div class="stone-cover">
-              <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" width="120px" :ratio="1" />
+              <q-img :src="stoneInfo.avatar" width="120px" :ratio="1" />
             </div>
             <div class="stone-name">
-              <div class="ta-l">ABCDEFGHIJKLMNOPQRSTUVWXYZABCD</div>
+              <div class="ta-l stone-text">{{ stoneInfo.stoneName }}</div>
               <q-btn round class="mt-2">
-                <q-avatar size="40px">
+                <q-avatar size="40px" @click="goStone(stoneInfo.id)">
                   <img src="@/assets/imgs/share/btn-right.png" />
                 </q-avatar>
               </q-btn>
@@ -63,18 +63,47 @@
                 width="24px"
                 style="margin-right: 8px"
               ></q-img>
-              <span style="margin-right: 24px">November 21, 2023, 18:01</span>
-              <span>Expiration time: 7 days</span>
+              <span style="margin-right: 24px">{{ createdTime }}</span>
+              <span>Expiration time: {{ expirationTime }} days</span>
             </div>
           </div>
           <div class="list-bottom">
-            <q-checkbox
-              class="mr-4"
-              size="40px"
-              :label="checked.length + ` selected`"
-              v-model="checkAll"
-              indeterminate-value="not-empty"
-            />
+            <div class="mb-4">
+              <q-checkbox
+                class="mr-4"
+                size="40px"
+                :label="checked.length + ` selected`"
+                v-model="checkAll"
+                indeterminate-value="not-empty"
+              />
+              <q-btn class="valid-btn" rounded color="primary" @click="saveToStone">
+                <q-icon left size="24px">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M11.5 18L14 15.5M14 15.5L11.5 13M14 15.5H8"
+                      stroke="#0F172A"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M19.247 15.0039L20.8887 16.0702V16.0726C22.9365 17.4001 21.9674 20.5 19.5036 20.5H4.49378C4.49129 20.5 4.49378 20.5 4.49129 20.5C4.48879 20.5 4.4888 20.5 4.4888 20.5C3.92328 20.5 3.41755 20.3211 3.01148 20.0261C2.11214 19.3756 1.70607 18.1618 2.2367 17.0592L3.96065 13.4684C4.01795 13.3475 4.08023 13.2314 4.145 13.1178M19.247 15.0039L19.6605 14.143L19.7328 13.9931C20.2933 12.8252 19.81 11.4373 18.6341 10.84C17.7049 10.3685 16.6187 10.5257 15.8713 11.1447L16.1728 10.516L16.245 10.3661C16.8055 9.19819 16.3222 7.81025 15.1464 7.213C14.1548 6.71006 12.9815 6.92526 12.2366 7.65066L12.5106 7.07759L12.5829 6.92768C13.1434 5.75978 12.6601 4.37183 11.4842 3.77459C10.2286 3.13865 8.67908 3.64643 8.08367 4.89413L4.145 13.1178M19.247 15.0039L17.7021 14.0552M4.145 13.1178C6.09091 11.1053 7.45455 10.5759 7.45455 10.5759"
+                      stroke="#0F172A"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </q-icon>
+                <div>Save to My Moss</div>
+              </q-btn>
+            </div>
             <q-breadcrumbs gutter="sm">
               <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="getList('')" />
               <q-breadcrumbs-el
@@ -103,11 +132,16 @@
 </template>
 
 <script>
-import { fetchShare, fetchShareVaild, fetchShareList } from "@/api/share.js";
+import { mapState } from "vuex";
+
+import { fetchShare, fetchShareVaild, fetchShareList, fetchStoneSave } from "@/api/share.js";
 
 export default {
   name: "ShareIndex",
   computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
     basePath() {
       return "/mossy/stone?id=" + this.id;
     },
@@ -125,7 +159,18 @@ export default {
       });
     },
   },
-
+  watch: {
+    checkAll(val) {
+      if (val == "not-empty") return;
+      if (val) this.checked = this.rows.map((it) => it.key);
+      else this.checked = [];
+    },
+    "checked.length"(len) {
+      let isAll = len == this.rows.length;
+      if (!isAll && len > 0) isAll = "not-empty";
+      this.checkAll = isAll;
+    },
+  },
   data() {
     return {
       loading: false,
@@ -137,6 +182,7 @@ export default {
       showFileList: false,
       curFolder: "",
       shareName: "",
+      stoneInfo: null,
     };
   },
 
@@ -158,7 +204,6 @@ export default {
         return;
       } else if (data.valid) {
         console.log("need valid");
-        console.log(this.$route);
         const code = this.$route.query.code;
         if (code) {
           this.code = code;
@@ -180,8 +225,15 @@ export default {
       };
       const { data } = await fetchShareVaild(params);
       const list = data.dataList;
-      this.shareName = list[0].name + "...";
+      const createdTime = new Date(data.createdAt * 1000).toUTCString();
+      const stoneList = data.stoneList;
+      if (stoneList.length > 0) {
+        this.stoneInfo = stoneList[0];
+      }
+      this.createdTime = createdTime;
       this.setList(list);
+      this.handlerDateDurationCurrent(data.expireAt);
+      this.shareName = list[0].name + "...";
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
@@ -220,6 +272,9 @@ export default {
       });
       this.loading = false;
     },
+    goStone(id) {
+      this.$router.push({ path: "/mossy/stone", query: { id: id } });
+    },
     onRowClick({ row, index }) {
       if (!row.prefix) {
         return;
@@ -234,6 +289,34 @@ export default {
       } else {
         this.checked.splice(idx, 1);
       }
+    },
+    handlerDateDurationCurrent(expireAt) {
+      let now = new Date().getTime();
+      let cha = Math.abs(expireAt * 1000 - now);
+      let days = parseInt(cha / (24 * 60 * 60 * 1000));
+      let hours = parseInt((cha % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+      let mins = parseInt((cha % (60 * 60 * 1000)) / (60 * 1000));
+      this.expirationTime = days;
+    },
+    async saveToStone() {
+      console.log(this.checked);
+      let paths = [];
+      let result = this.rows.filter((item) => {
+        return this.checked.some((curVal) => curVal === item.key);
+      });
+      console.log(result);
+      result.forEach((item) => {
+        paths.push(item.path);
+      });
+      const bucketName = `moss-bucket${this.$inDev ? "-dev" : ""}-` + this.uid.slice(-10);
+      const params = {
+        toBucketName: bucketName,
+        toFolderPath: "",
+        type: "SHARE",
+        paths: paths,
+        shareId: this.$route.params.id,
+      };
+      const { data } = await fetchStoneSave(params);
     },
   },
 };
@@ -329,7 +412,7 @@ export default {
         .stone-info {
           display: flex;
           padding: 16px;
-          gap: 8px;
+          gap: 16px;
           border-radius: 12px;
           border: 1px solid #334155;
           max-width: 282px;
@@ -342,6 +425,13 @@ export default {
             font-weight: 700;
             line-height: 18px; /* 112.5% */
             text-align: right;
+            .stone-text {
+              display: -webkit-box;
+              overflow: hidden;
+              -webkit-line-clamp: 4;
+              -webkit-box-orient: vertical;
+              text-overflow: ellipsis;
+            }
           }
         }
       }

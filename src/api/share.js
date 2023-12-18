@@ -17,3 +17,7 @@ export function fetchShareList(params) {
     params,
   });
 }
+
+export function fetchStoneSave(data) {
+  return request.post("/stone/save", data);
+}
