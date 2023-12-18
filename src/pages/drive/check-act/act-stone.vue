@@ -44,6 +44,7 @@
                   <q-img :src="tempImg || form.avatar" width="110px" :ratio="1" />
                   <div class="pos-center">
                     <q-btn
+                      class="op-8"
                       size="small"
                       round
                       color="info"

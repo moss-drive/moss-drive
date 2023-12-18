@@ -34,7 +34,17 @@ import FilePreview from "./preview/preview-index.vue";
 
       <slot name="act" :checked="checked" :obj-list="objList"></slot>
 
-      <div class="ml-auto">
+      <div class="pos-r ml-auto mr-2">
+        <icon-search class="y-center ev-n" style="left: 10px" />
+        <input
+          v-model="searchKey"
+          type="text"
+          placeholder="Search"
+          class="bdrs-100 w100p top-search"
+          :class="searchKey ? 'bg-white' : 'bg-info'"
+        />
+      </div>
+      <div class="">
         <q-btn round flat @click="showMode = modeIcon">
           <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
         </q-btn>
@@ -64,7 +74,10 @@ import FilePreview from "./preview/preview-index.vue";
         <p class="op-8 mb-3">{{ loadErr }}</p>
         <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
       </div>
-      <empty-stone v-else-if="objLoading === false && objList.length == 0" />
+      <empty-stone
+        v-else-if="objLoading === false && objList.length == 0"
+        :desc="searchKey ? `No results for &quot;${searchKey}&quot;` : ''"
+      />
       <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
         <component
           :is="showMode + '-list'"
@@ -147,24 +160,15 @@ export default {
       return this.objList.filter((it) => !it.prefix);
     },
   },
-  created() {
-    this.getList();
-    this.$bus.on("drive-refresh", () => {
-      this.getList();
-    });
-    this.$bus.on("search-key", (val) => {
-      if (!this.inDrive) return;
-      if (this.searchKey == val) return;
-      this.searchKey = val;
-      this.getList();
-    });
-  },
   watch: {
     path() {
       this.searchKey = "";
       if (this.$bucket.client) {
         this.getList();
       }
+    },
+    searchKey() {
+      this.getList();
     },
     checkAll(val) {
       if (val == "not-empty") return;
@@ -185,6 +189,12 @@ export default {
         this.goNext(folder);
       }
     },
+  },
+  created() {
+    this.getList();
+    this.$bus.on("drive-refresh", () => {
+      this.getList();
+    });
   },
   methods: {
     goPath(to) {
