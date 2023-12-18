@@ -9,7 +9,11 @@ export function fetchShare(params) {
 }
 
 export function fetchShareVaild(data) {
-  return request.post("/share/validAndGet", {
-    data,
+  return request.post("/share/validAndGet", data);
+}
+
+export function fetchShareList(params) {
+  return request.get("/share/list", {
+    params,
   });
 }
