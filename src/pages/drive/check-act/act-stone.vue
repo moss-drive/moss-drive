@@ -228,7 +228,7 @@ export default {
       this.uploading = true;
       try {
         const { data } = await this.$http.post("/stone/upload/avatar", form);
-        this.form.avatar = VITE_MEDIA_PRE + data.key;
+        this.form.avatar = data.key.replace("MossStoneProfile", VITE_MEDIA_PRE);
       } catch (error) {
         console.log(error);
       }
