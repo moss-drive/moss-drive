@@ -24,7 +24,7 @@
       :round="asMobile"
       :size="btnSize"
     >
-      <q-avatar v-if="userInfo.avatarUrl">
+      <q-avatar size="22px" v-if="userInfo.avatarUrl">
         <img :src="userInfo.avatarUrl" />
       </q-avatar>
       <m-avatar v-else :hash="avatarId"></m-avatar>

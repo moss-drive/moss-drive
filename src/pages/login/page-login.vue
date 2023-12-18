@@ -12,18 +12,20 @@ import WalletConnect from "./wallet-connect.vue";
         :loading="xLoading"
         flat
         rounded
+        size="lg"
         style="background: #222; width: 200px"
       >
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="loginData.thirdWebToken">
+    <div v-else-if="loginData.thirdWebToken_">
       <div class="mt-5 fz-30">ThirdWeb</div>
       <div class="pa-6"></div>
       <q-btn
         @click="onThirdWeb"
         :loading="thirdLoading"
         rounded
+        size="lg"
         color="primary"
         style="width: 200px"
       >

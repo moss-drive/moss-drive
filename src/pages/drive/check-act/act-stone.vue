@@ -167,7 +167,7 @@
 
 <script>
 import { MossHub } from "../../../utils/moss-hub";
-const { VITE_AUTH_PRE } = import.meta.env;
+const { VITE_MEDIA_PRE } = import.meta.env;
 
 const initForm = {
   stoneName: "",
@@ -228,7 +228,7 @@ export default {
       this.uploading = true;
       try {
         const { data } = await this.$http.post("/stone/upload/avatar", form);
-        this.form.avatar = VITE_AUTH_PRE + "/" + data.key;
+        this.form.avatar = VITE_MEDIA_PRE + data.key;
       } catch (error) {
         console.log(error);
       }
