@@ -6,13 +6,15 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      d="M19 19L14.65 14.65M9 4C11.7614 4 14 6.23858 14 9M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z"
-      stroke="#0F172A"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+    <g opacity="0.9">
+      <path
+        d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+        stroke="#CBD5E1"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </g>
   </svg>
 </template>
 
@@ -21,7 +23,7 @@ export default {
   props: {
     size: {
       type: Number,
-      default: 18,
+      default: 22,
     },
   },
 };

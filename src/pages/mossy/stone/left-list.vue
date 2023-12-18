@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="m-5 al-c">
-      <q-skeleton type="title" v-if="!rows" width="150px" />
+      <q-skeleton type="title" v-if="!rows && uid" width="150px" />
       <template v-else>
         <q-breadcrumbs gutter="sm">
           <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
@@ -17,17 +17,25 @@
       </template>
     </div>
     <div class="pa-3">
-      <grid-list :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
+      <div v-if="!uid">
+        <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
+      </div>
+      <grid-list v-else :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   props: {
     id: null,
   },
   computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
     basePath() {
       return "/mossy/stone?id=" + this.id;
     },
@@ -69,6 +77,7 @@ export default {
       this.curFolder = row.path;
     },
     async getList() {
+      if (!this.uid) return;
       try {
         if (this.loading === false) {
           this.loading = true;

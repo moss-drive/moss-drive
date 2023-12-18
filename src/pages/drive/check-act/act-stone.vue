@@ -44,10 +44,12 @@
                   <q-img :src="tempImg || form.avatar" width="110px" :ratio="1" />
                   <div class="pos-center">
                     <q-btn
+                      class="op-8"
                       size="small"
                       round
                       color="info"
                       icon="upload"
+                      :loading="uploading"
                       @click="$refs.file.click()"
                     >
                     </q-btn>
@@ -166,6 +168,7 @@
 
 <script>
 import { MossHub } from "../../../utils/moss-hub";
+const { VITE_MEDIA_PRE } = import.meta.env;
 
 const initForm = {
   stoneName: "",
@@ -194,6 +197,7 @@ export default {
       isDone: false,
       stoneId: null,
       mossHub: null,
+      uploading: false,
     };
   },
   watch: {
@@ -204,7 +208,6 @@ export default {
   created() {},
   methods: {
     onSubmit() {
-      console.log(this.$refs.form);
       this.$refs.form.validate().then((suc) => {
         if (suc) this.onNext();
         // else this.$toast("Please check the form");
@@ -217,13 +220,21 @@ export default {
       if (file.size > maxKb * 1024) {
         return this.$alert(`The image size should not exceed ${maxKb}KB.`);
       }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.tempImg = e.target.result;
-      };
-      reader.readAsDataURL(file);
-      this.$toast("todo: upload");
-      // this.tempImg =
+      this.tempImg = URL.createObjectURL(file);
+      this.onUpload(file);
+    },
+    async onUpload(file) {
+      const form = new FormData();
+      form.append("file", file);
+      this.uploading = true;
+      try {
+        const { data } = await this.$http.post("/stone/upload/avatar", form);
+        this.form.avatar = data.key.replace("MossStoneProfile", VITE_MEDIA_PRE);
+      } catch (error) {
+        console.log(error);
+      }
+      this.tempImg = null;
+      this.uploading = false;
     },
     onDone() {
       this.showPop = false;
