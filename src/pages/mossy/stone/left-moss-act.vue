@@ -179,11 +179,14 @@ export default {
       const mossHub = await this.initMoss();
       if (!mossHub) return;
       try {
-        // this.mossHub.mint();
-        this.$toast("todo: mint");
+        const fn = this.isBuy ? "mint" : "burn";
+        const args = [this.id];
+        this.buying = true;
+        await this.mossHub[fn](args);
       } catch (error) {
         this.$alert(error.message);
       }
+      this.buying = false;
     },
     async onSell() {},
   },

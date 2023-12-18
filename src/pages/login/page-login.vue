@@ -17,7 +17,7 @@ import WalletConnect from "./wallet-connect.vue";
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="loginData.thirdWebToken_">
+    <div v-else-if="loginData.thirdWebToken">
       <div class="mt-5 fz-30">ThirdWeb</div>
       <div class="pa-6"></div>
       <q-btn
@@ -88,6 +88,7 @@ export default {
         if (data.accessToken) {
           this.onLoginData(data);
         } else {
+          delete data.uuid;
           if (!data.twitterId) {
             this.$alert("Error: No Twitter ID");
           }
@@ -116,7 +117,7 @@ export default {
     async getThirdWebWallet() {
       const embeddedWallet = new EmbeddedWallet({
         chain: Goerli, //  chain to connect to
-        clientId: "8a76a182447af68e014556db57bd6cf9",
+        clientId: "683da9655ebda2cd648a3d55fed27c11",
       });
       const authResult = await embeddedWallet.authenticate({
         strategy: "jwt",
