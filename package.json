@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@4everland-contracts": "npm:@4everland/land-v5@0.0.4",
     "@aws-sdk/client-s3": "^3.427.0",
     "@aws-sdk/lib-storage": "^3.427.0",
     "@quasar/extras": "^1.16.5",

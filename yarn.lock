@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@4everland-contracts@npm:@4everland/land-v5@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@4everland/land-v5/-/land-v5-0.0.4.tgz#a34ffb4a0e479ad2537054933bb4bd99fef3997f"
+  integrity sha512-i9QKwtb+nF36Dv/Ab0eU9NZzubbnRt2Y3ObAJR5MRrknjLej1FSwUiN+xJf760/tgxSRBtNndSTH9xi74QAcUg==
+  dependencies:
+    hardhat-ethers "^1.0.1"
+    solc-0.8.9 "npm:solc@0.8.9"
+    solidity-docgen "^0.5.16"
+    ts-node "^10.9.1"
+
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"

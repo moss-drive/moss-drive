@@ -1,48 +1,53 @@
 <template>
   <div class="q-pa-md">
     <resource-notice></resource-notice>
-    <div class="resource-plate al-c">
-      <div class="land-container">
-        <div class="fz-20 fw-b">Balance</div>
-        <div class="my-4 al-c space-btw">
-          <div class="land-content h-flex">
-            <div class="land-content-top">
-              <span class="land-amount">{{ formatLand.land }}</span>
-              <span class="fz-14">{{ formatLand.unit }}</span>
-              <span class="fw-b fz-20 ml-4">LAND</span>
+    {{ coinAddr }}
+    <div class="resource-plate row q-col-gutter-md">
+      <div class="col-12 col-md-6">
+        <div class="land-container">
+          <div class="fz-20 fw-b">Balance</div>
+          <div class="my-4 al-c space-btw">
+            <div class="land-content h-flex">
+              <div class="land-content-top">
+                <span class="land-amount">{{ formatLand.land }}</span>
+                <span class="fz-14">{{ formatLand.unit }}</span>
+                <span class="fw-b fz-20 ml-4">LAND</span>
+              </div>
+
+              <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
             </div>
-
-            <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
+            <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
+              Conversion
+            </div>
           </div>
-          <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
-            Conversion
-          </div>
-        </div>
 
-        <div class="descrition">
-          <span class="cursor-p">What's LAND?</span>
-          <span class="px-2">|</span>
-          <span class="cursor-p">Pricing</span>
+          <div class="descrition">
+            <span class="cursor-p">What's LAND?</span>
+            <span class="px-2">|</span>
+            <span class="cursor-p">Pricing</span>
+          </div>
         </div>
       </div>
-      <div class="usage-container ml-6">
-        <div class="al-c">
-          <span class="fz-20 fw-b">Usage & Free Resource</span>
-          <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" />
-        </div>
+      <div class="col-12 col-md-6">
+        <div class="usage-container">
+          <div class="al-c">
+            <span class="fz-20 fw-b">Usage & Free Resource</span>
+            <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" />
+          </div>
 
-        <template v-for="item in transformUsage" :key="item.name">
-          <resource-progress
-            class="mt-4"
-            :name="item.name"
-            :used="item.used"
-            :total="item.total"
-            :color="item.color"
-            :percent="item.percent"
-            :showConversion="showConversion"
-            :land2Resource="land2Resource[item.type]"
-          ></resource-progress>
-        </template>
+          <template v-for="item in transformUsage" :key="item.name">
+            <resource-progress
+              class="mt-4"
+              :name="item.name"
+              :used="item.used"
+              :total="item.total"
+              :color="item.color"
+              :percent="item.percent"
+              :showConversion="showConversion"
+              :land2Resource="land2Resource[item.type]"
+            ></resource-progress>
+          </template>
+        </div>
       </div>
     </div>
 
@@ -51,7 +56,13 @@
         <div class="fz-20 fw-b mb-4">Deposit</div>
         <div class="deposite-section mb-4">
           <div class="al-c recharge-input" style="width: 50%">
-            <input maxlength="8" class="r-ipt flex-1" v-model="amount" type="text" />
+            <input
+              maxlength="8"
+              class="r-ipt flex-1"
+              v-model="amount"
+              @input="handleInput"
+              type="text"
+            />
             <span class="num">,000,000</span>
             <span class="land-text fz-14">LAND</span>
           </div>
@@ -62,8 +73,14 @@
       </div>
 
       <div class="recharge-act d-flex">
-        <pay-network class="flex-1"></pay-network>
-        <pay-coin class="flex-1 ml-4" @onSelectCoin="onSelectCoin"></pay-coin>
+        <div class="row q-col-gutter-md" style="width: 100%">
+          <div class="col-12 col-md-6">
+            <pay-network @onNetwork="handleNetwork"></pay-network>
+          </div>
+          <div class="col-12 col-md-6">
+            <pay-coin @onSelectCoin="onSelectCoin"></pay-coin>
+          </div>
+        </div>
       </div>
 
       <div class="recharge-bar al-c space-btw">
@@ -74,7 +91,7 @@
             <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
           </div>
         </div>
-        <div class="recharge-btn cursor-p">Approve</div>
+        <div class="recharge-btn cursor-p">Confirm</div>
       </div>
     </div>
 
@@ -84,10 +101,11 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
-import { getFileSize } from "@/utils/helper";
-import { formatEther } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
-
+import { getFileSize, debounce } from "@/utils/helper";
+import { formatEther, solidityPack, parseUnits } from "ethers/lib/utils";
+import { BigNumber, providers } from "ethers";
+import { IQuoter__factory, UNILand__factory } from "@4everland-contracts";
+import chainAddrList from "./chainAddrs";
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
 import ResourceCount from "./componets/resource-count.vue";
@@ -99,9 +117,11 @@ export default {
   data() {
     return {
       amount: "",
-      coinType: "USDC",
+      coinType: "ETH",
       showConversion: false,
+      stablecoin: true,
       usdcAmount: BigNumber.from("0"),
+      chainId: "",
     };
   },
   created() {
@@ -145,26 +165,100 @@ export default {
         };
       });
     },
+    signer() {
+      let provider = new providers.Web3Provider(window.ethereum);
+      return provider.getSigner();
+    },
+    opEthLandRecharge() {
+      const addr = "0x3cA298d7A98262C0598dd91Ce926f23e51c4b293";
+      return UNILand__factory.connect(addr, this.signer);
+    },
+    chainAddrList() {
+      return chainAddrList;
+    },
+    curChainInfo() {
+      return this.chainAddrList.find((it) => it.chainId == this.chainId);
+    },
+    coinAddr() {
+      const coinType = this.coinType.toLowerCase();
+      // console.log(this.curChainInfo.coin);
+      return this.curChainInfo?.coin[coinType];
+    },
+    euid() {
+      return "";
+    },
   },
   methods: {
+    handleNetwork(chain) {
+      console.log(chain);
+      this.chainId = chain;
+    },
     onSelectCoin(coin) {
-      this.coinType = coin;
+      this.coinType = coin.label;
+      console.log(coin);
+      this.stablecoin = coin.stablecoin;
     },
     estimateInput(val) {
       this.amount = val;
     },
-  },
-  watch: {
-    amount() {
+    handleInput() {
       this.amount = this.amount.replace(/[^\d]/g, "");
-
       if (this.amount) {
         this.usdcAmount = BigNumber.from(this.amount);
       } else {
         this.usdcAmount = BigNumber.from("0");
       }
+      if (this.stablecoin) {
+        debounce(() => {
+          this.usdc2eth();
+        });
+      }
+    },
+
+    async handleEthRecharge() {
+      try {
+        this.$loading("Loading...");
+        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
+          value: this.ethAmount,
+        });
+        const receipt = await tx.wait();
+        console.log(receipt);
+        this.$loadingClose();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async usdc2eth() {
+      const quoter = IQuoter__factory.connect(
+        "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
+        this.signer
+      );
+      const path = solidityPack(
+        ["address", "uint24", "address"],
+        [
+          "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85", // usdc addr
+          500, //
+          this.coinAddr,
+        ]
+      );
+      console.log(this.usdcAmount.toString());
+      if (this.usdcAmount.eq(BigNumber.from("0"))) {
+        this.ethAmount = BigNumber.from("0");
+
+        return BigNumber.from("0");
+      }
+      console.log(parseUnits(this.usdcAmount.toString(), 6).toString());
+      const res = await quoter.callStatic.quoteExactOutput(
+        path,
+        parseUnits(this.usdcAmount.toString(), 6)
+      );
+      console.log(formatEther(res));
+      this.ethAmount = res;
+      return res;
     },
   },
+
   components: {
     ResourceNotice,
     ResourceProgress,
@@ -178,7 +272,6 @@ export default {
 <style lang="scss" scoped>
 .land-container,
 .usage-container {
-  flex: 1;
   border-radius: 16px;
   background: #0f172a;
   padding: 16px;

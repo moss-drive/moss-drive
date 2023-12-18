@@ -3,7 +3,7 @@
     <div class="fz-20 fw-b mb-2">Choose Token</div>
     <div class="al-c flex-wrap" style="gap: 8px">
       <div
-        @click="onSelect(it.label)"
+        @click="onSelect(it)"
         class="coin-label py-2 pl-4 cursor-p d-flex space-btw"
         :class="{
           active: selected == it.label,
@@ -37,29 +37,40 @@ export default {
   emits: ["onSelectCoin"],
   data() {
     return {
-      selected: "USDC",
+      selected: "ETH",
     };
   },
   computed: {
     coinList() {
       const coinList = [
+        // {
+        //   label: "USDC",
+        //   showLabel: "USDC",
+        //   name: "USDC Coin",
+        //   img: "/img/resource/symbal-icons/usdc.svg",
+        //   stablecoin: true,
+        // },
+        // {
+        //   label: "USDT",
+        //   showLabel: "USDT",
+        //   name: "Tether USD",
+        //   img: "/img/resource/symbal-icons/usdt.svg",
+        //   stablecoin: true,
+        // },
+        // {
+        //   label: "DAI",
+        //   showLabel: "DAI",
+        //   name: "Dai Stablecoin",
+        //   img: "/img/resource/symbal-icons/dai.svg",
+        //   stablecoin: true,
+        // },
+
         {
-          label: "USDC",
-          showLabel: "USDC",
-          name: "USDC Coin",
+          label: "ETH",
+          showLabel: "ETH",
+          name: "ETH",
           img: "/img/resource/symbal-icons/usdc.svg",
-        },
-        {
-          label: "USDT",
-          showLabel: "USDT",
-          name: "Tether USD",
-          img: "/img/resource/symbal-icons/usdt.svg",
-        },
-        {
-          label: "DAI",
-          showLabel: "DAI",
-          name: "Dai Stablecoin",
-          img: "/img/resource/symbal-icons/dai.svg",
+          stablecoin: false,
         },
       ];
 
@@ -67,9 +78,9 @@ export default {
     },
   },
   methods: {
-    onSelect(label) {
-      this.selected = label;
-      this.$emit("onSelectCoin", label);
+    onSelect(item) {
+      this.selected = item.label;
+      this.$emit("onSelectCoin", item);
     },
   },
 

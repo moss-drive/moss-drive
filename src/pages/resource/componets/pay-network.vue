@@ -2,7 +2,7 @@
   <div class="network-radio-container">
     <div class="title fz-20 fw-b mb-2">Network</div>
     <div class="row q-col-gutter-sm">
-      <div class="col-xs-12 col-sm-6 col-md-4" v-for="(it, i) in chainList" :key="`md-${i}`">
+      <div class="col-xs-12 col-sm-6" v-for="(it, i) in chainList" :key="`md-${i}`">
         <div
           class="radio-item al-c cursor-p"
           @click="onSelect(it.chainId)"
@@ -42,35 +42,41 @@ export default {
   computed: {
     chainList() {
       const list = [
+        // {
+        //   label: "Polygon",
+        //   name: "Polygon",
+        //   img: "/img/resource/chain-icons/polygon.svg",
+        //   chainId: this.$inDev ? 80001 : 137,
+        // },
+        // {
+        //   label: "Ethereum",
+        //   name: "Ethereum",
+        //   img: "/img/resource/chain-icons/ethereum.svg",
+        //   chainId: this.$inDev ? 11155111 : 1,
+        // },
+        // {
+        //   label: "BSC",
+        //   name: "BSC",
+        //   img: "/img/resource/chain-icons/bsc.svg",
+        //   chainId: this.$inDev ? 97 : 56,
+        // },
+        // {
+        //   label: "Arbitrum",
+        //   name: "Arbitrum",
+        //   img: "/img/resource/chain-icons/arbitrum.svg",
+        //   chainId: this.$inDev ? 421613 : 42161,
+        // },
+        // {
+        //   label: "zkSync",
+        //   name: "zkSync Era",
+        //   img: "/img/resource/chain-icons/zksync.svg",
+        //   chainId: this.$inDev ? 280 : 324,
+        // },
         {
-          label: "Polygon",
-          name: "Polygon",
-          img: "/img/resource/chain-icons/polygon.svg",
-          chainId: this.$inDev ? 80001 : 137,
-        },
-        {
-          label: "Ethereum",
-          name: "Ethereum",
-          img: "/img/resource/chain-icons/ethereum.svg",
-          chainId: this.$inDev ? 11155111 : 1,
-        },
-        {
-          label: "BSC",
-          name: "BSC",
-          img: "/img/resource/chain-icons/bsc.svg",
-          chainId: this.$inDev ? 97 : 56,
-        },
-        {
-          label: "Arbitrum",
-          name: "Arbitrum",
-          img: "/img/resource/chain-icons/arbitrum.svg",
-          chainId: this.$inDev ? 421613 : 42161,
-        },
-        {
-          label: "zkSync",
-          name: "zkSync Era",
-          img: "/img/resource/chain-icons/zksync.svg",
-          chainId: this.$inDev ? 280 : 324,
+          label: "Optimism",
+          name: "Optimism",
+          img: "/img/resource/chain-icons/optimism.svg",
+          chainId: 10,
         },
       ];
 
@@ -84,19 +90,20 @@ export default {
   methods: {
     initSeleted() {
       this.selected = parseInt(window.ethereum.chainId);
-      console.log(this.selected);
+      this.$emit("onNetwork", this.selected);
     },
     async onSelect(chainId) {
-      if (this.selected == chainId) return;
-      this.selected = chainId;
-      await this.switchNet(chainId);
-      this.setContract();
-    },
-    setContract() {
-      console.log(222);
+      try {
+        if (this.selected == chainId) return;
+        this.selected = chainId;
+        await this.switchNet(chainId);
+        this.$emit("onNetwork", this.selected);
+      } catch (error) {
+        console.log(error);
+        this.initSeleted();
+      }
     },
     async switchNet(id) {
-      console.log(window.ethereum);
       const chainId = "0x" + id.toString(16);
       try {
         await window.ethereum.request({
@@ -276,6 +283,17 @@ export default {
           chainId,
           chainName: "Linea",
           rpcUrls: ["https://linea-mainnet.infura.io/v3"],
+          nativeCurrency: {
+            name: "ETH",
+            symbol: "ETH",
+            decimals: 18,
+          },
+          // blockExplorerUrls: [],
+        },
+        10: {
+          chainId,
+          chainName: "Optimism LlamaNodes",
+          rpcUrls: ["https://optimism.llamarpc.com"],
           nativeCurrency: {
             name: "ETH",
             symbol: "ETH",
