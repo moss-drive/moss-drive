@@ -20,18 +20,7 @@ import DriveList from "./drive-list.vue";
       <q-skeleton type="text" class="text-subtitle1" />
       <q-skeleton type="text" width="50%" class="text-subtitle1 mt-6 mb-6" />
     </div>
-    <div class="row">
-      <div v-for="i in 8" :key="i" class="col-4 col-sm-3 col-md-2 pa-2">
-        <q-card flat>
-          <q-skeleton height="150px" square />
-
-          <q-card-section>
-            <q-skeleton type="text" class="text-subtitle1" />
-            <q-skeleton type="text" width="50%" class="text-subtitle1" />
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
+    <grid-loading />
   </div>
 </template>
 

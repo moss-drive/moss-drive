@@ -15,6 +15,10 @@
   animation: anim_show 100ms linear infinite;
 }
 
+.scale-9 {
+  transform: scale(0.9);
+}
+
 @keyframes anim_show {
   100% {
     transform: scale(0.8);

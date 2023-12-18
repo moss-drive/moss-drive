@@ -48,6 +48,25 @@
       opacity: .86;
     }
 
+    .d-flex {
+      display: flex;
+    }
+
+    .right-banner {
+      min-width: 850px;
+      height: 100vh;
+      position: relative;
+      pointer-events: none;
+    }
+
+    .intro {
+      margin-top: 40px;
+      opacity: 0.8;
+      font-size: 24px;
+      max-width: 600px;
+      padding-right: 130px;
+    }
+
     .btm-wrap {
       position: absolute;
       bottom: 30px;
@@ -62,21 +81,22 @@
 <body>
   <div class="y-center left-1">
     <img src="./img/moss-txt.svg" height="80px">
-    <div style="margin-top: 40px; opacity: 0.8; font-size: 24px;">Share Files, Make Bucks, All Around Moss!</div>
+    <div class="intro">Experience the
+      future of file
+      management with Moss -
+      where data control, seamless sharing, and community-driven earnings converge.</div>
 
     <div style="margin-top: 20px;">
-      <a class="btn"
-        href="https://builder.gitcoin.co/#/chains/10/registry/0x8e1bD5Da87C14dd8e08F7ecc2aBf9D1d558ea174/projects/1395"
-        target="_blank">Gitcoin</a>
+      <a class="btn" href="http://docs.mymoss.io/" target="_blank">White Paper</a>
     </div>
   </div>
-  <div class="btm-wrap left-1">
+  <div class="btm-wrap left-1 d-flex">
     <a href="https://twitter.com/mymoss_io" target="_blank">
       <img src="./img/x.svg" width="30">
     </a>
   </div>
 
-  <div style="min-width: 850px; height: 100vh; position: relative; pointer-events: none;">
+  <div class="right-banner">
     <div style="position: absolute;right: 0; top: 0; bottom: 0;">
       <img src="./img/banner.svg" style="height: 100%;">
     </div>

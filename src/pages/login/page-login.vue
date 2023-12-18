@@ -139,7 +139,7 @@ export default {
       this.xLoading = false;
     },
     onRedirect() {
-      const redirectTo = localStorage.loginTo || "/drive";
+      const redirectTo = localStorage.loginTo || "/";
       localStorage.loginTo = "";
       this.$router.replace(redirectTo);
     },

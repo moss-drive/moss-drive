@@ -15,9 +15,9 @@ import NewFolder from "./new-folder.vue";
       <q-item clickable @click="$refs.newFolder.showPop = true">
         <q-item-section>New Folder</q-item-section>
       </q-item>
-      <q-item clickable>
+      <!-- <q-item clickable>
         <q-item-section>Pin by CID</q-item-section>
-      </q-item>
+      </q-item> -->
     </q-list>
   </q-menu>
   <div>

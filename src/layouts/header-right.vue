@@ -1,12 +1,17 @@
 <template>
-  <div class="ml-5 h100p bdl-1 pl-5 pr-4 al-c">
+  <div
+    class="ml-5 h100p pl-5 pr-4 al-c"
+    :class="{
+      'bdl-1': border,
+    }"
+  >
     <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
       <img src="/img/mossy/icon/ic-coin.png" width="26" />
       <span class="text-white ml-1 fz-14">0</span>
     </q-btn>
-    <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
+    <!-- <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
       <img src="/img/mossy/icon/ic-bell.svg" width="22" />
-    </q-btn>
+    </q-btn> -->
 
     <q-btn
       v-if="uid"
@@ -19,13 +24,16 @@
       :round="asMobile"
       :size="btnSize"
     >
-      <m-avatar :hash="uid"></m-avatar>
-      <span v-if="!asMobile" class="ml-2 fz-14">{{ uid.cutStr(4, 4) }}</span>
+      <q-avatar v-if="userInfo.avatarUrl">
+        <img :src="userInfo.avatarUrl" />
+      </q-avatar>
+      <m-avatar v-else :hash="avatarId"></m-avatar>
+      <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
       <q-menu style="width: 130px" auto-close>
         <q-list>
           <q-item clickable v-if="asMobile">
-            <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
+            <q-item-section>{{ uname }}</q-item-section>
           </q-item>
           <q-item clickable @click="onLogout">
             <q-item-section>Logout</q-item-section>
@@ -42,6 +50,12 @@ import { mapState } from "vuex";
 import { useQuasar } from "quasar";
 
 export default {
+  props: {
+    border: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     const { screen } = useQuasar();
     return {
@@ -51,8 +65,16 @@ export default {
   },
   computed: {
     ...mapState({
+      userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
+    avatarId() {
+      return this.userInfo.twitterId || this.uid;
+    },
+    uname() {
+      const { name } = this.userInfo;
+      return name || this.uid.cutStr(6, 4);
+    },
     asMobile() {
       return this.screen.width < 690;
     },
@@ -63,7 +85,7 @@ export default {
   methods: {
     onLogout() {
       this.$store.dispatch("logout");
-      this.$router.replace("/login");
+      this.$router.replace("/");
     },
   },
 };

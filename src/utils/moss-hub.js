@@ -80,6 +80,9 @@ export class MossHub {
   parseEther(num) {
     return utils.parseEther(num);
   }
+  formatEther(num) {
+    return utils.formatEther(num);
+  }
 
   create(arr) {
     console.log(arr);
