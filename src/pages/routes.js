@@ -7,7 +7,7 @@ const routes = [
   },
   {
     path: "/",
-    component: () => import("./home-page.vue"),
+    component: () => import("./home/page-home.vue"),
     meta: {
       noUid: 1,
     },
@@ -60,6 +60,7 @@ const routes = [
       {
         path: "",
         component: () => import("./mossy/page-explore.vue"),
+        noUid: 1,
       },
       {
         path: "stone",

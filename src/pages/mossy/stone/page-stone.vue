@@ -6,14 +6,16 @@ import StoneRight from "./stone-right.vue";
 <template>
   <div class="pa-5">
     <div class="row q-col-gutter-md">
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-md-8 col-lg-9">
         <stone-left :id="id" :info="info" />
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-4 col-lg-3">
         <stone-right :id="id" :info="info.twitterInfo || {}" />
       </div>
     </div>
   </div>
+
+  <wallet-check />
 </template>
 
 <script>

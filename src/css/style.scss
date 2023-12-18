@@ -118,7 +118,7 @@ $bd: #334155;
   color: #7E4FED;
 }
 
-.hover-1:active {
+.hover-1:hover {
   opacity: .8;
 }
 
@@ -213,8 +213,9 @@ body {
 
 .stone-cover {
   position: relative;
+  display: inline-block;
   $shadow_w: 12px;
-  padding-right: $shadow_w;
+  // padding-right: $shadow_w;
   .q-img {
     background: #fff;
     border-radius: 10px;
@@ -222,9 +223,21 @@ body {
   &::after {
     content: '';
     @extend .y-center;
+    left: 100%;
     width: $shadow_w;
     height: 82%;
     background: url(/img/mossy/stone_shadow.svg) 0 center no-repeat;
     background-size: contain;
   }
+}
+
+.main-wrap {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.btn-mossy {
+  padding: 6px 22px;
+  background: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(0 0 0 / 80%));
+  color: #fff;
 }

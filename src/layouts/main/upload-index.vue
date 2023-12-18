@@ -33,7 +33,7 @@ import UploadMenu from "./upload-menu.vue";
           <q-markup-table flat>
             <tbody>
               <tr v-for="it in files" :key="it.name">
-                <td>{{ it.name }}</td>
+                <td>{{ (it.name || "").cutStr(20, 10) }}</td>
                 <td>
                   <span class="op-6">{{ it.size }}</span>
                 </td>

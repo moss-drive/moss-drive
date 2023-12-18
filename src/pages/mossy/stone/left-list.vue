@@ -1,20 +1,24 @@
 <template>
   <div>
     <div class="m-5 al-c">
-      <q-breadcrumbs gutter="sm">
-        <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
-        <q-breadcrumbs-el
-          v-for="it in breadLinks"
-          :key="it.folder"
-          :label="it.label"
-          :to="basePath"
-          @click.prevent="curFolder = it.folder"
-        />
-      </q-breadcrumbs>
-      <q-spinner-ios v-show="loading === true" class="ml-3" color="yellow" size="15px" />
+      <q-skeleton type="title" v-if="!rows" width="150px" />
+      <template v-else>
+        <q-breadcrumbs gutter="sm">
+          <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
+          <q-breadcrumbs-el
+            v-for="it in breadLinks"
+            :key="it.folder"
+            :label="it.label"
+            :to="basePath"
+            @click.prevent="curFolder = it.folder"
+          />
+        </q-breadcrumbs>
+        <q-spinner-ios v-show="loading === true" class="ml-3" color="yellow" size="15px" />
+      </template>
     </div>
-    <empty-stone v-if="!rows.length && !loading" />
-    <grid-list v-else :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
+    <div class="pa-3">
+      <grid-list :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
+    </div>
   </div>
 </template>
 
@@ -44,7 +48,7 @@ export default {
   data() {
     return {
       curFolder: "",
-      rows: [],
+      rows: null,
       loading: false,
     };
   },

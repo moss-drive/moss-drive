@@ -1,9 +1,9 @@
 <template>
   <div class="q-pa-md">
     <div class="row" v-if="!rows">
-      <div v-for="i in 1" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
+      <div v-for="i in 4" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
         <q-card flat>
-          <q-skeleton type="text" width="160px" class="text-subtitle1" />
+          <!-- <q-skeleton type="text" width="160px" class="text-subtitle1" /> -->
           <q-skeleton height="260px" square />
         </q-card>
       </div>
@@ -13,8 +13,9 @@
     </div>
     <div class="row" v-else>
       <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">
-        <img src="img/stone/stone-head.png" height="40px" class="d-b" />
-        <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
+        <!-- <img src="/img/stone/stone-head.png" height="40" class="d-b" /> -->
+        <!-- style="top: -13px" -->
+        <div class="bg-card-1 stone-card pa-4 pos-r">
           <div class="pos-a right-0 top-0 m-3 pa-1 hover-1">
             <img src="/img/stone/stone-edit.svg" width="20" />
           </div>

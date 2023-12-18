@@ -25,6 +25,8 @@ body.touch .grid-item.hover {
 </style>
 
 <template>
+  <grid-loading :num="6" v-if="!rows" />
+  <empty-stone v-else-if="!rows.length" />
   <div class="row pos-r driver-grid">
     <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div

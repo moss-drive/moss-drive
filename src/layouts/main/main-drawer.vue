@@ -11,11 +11,6 @@
     font-weight: bold;
   }
 }
-.btn-mossy {
-  padding: 6px 22px;
-  background: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(0 0 0 / 80%));
-  color: #fff;
-}
 </style>
 
 <script setup>
@@ -24,7 +19,7 @@ import UsageInfo from "./usage-info.vue";
 
 <template>
   <div class="main-drawer h100p h-flex">
-    <a href="./drive" class="">
+    <a href="/" class="">
       <img src="/img/logo.svg" height="80" />
     </a>
     <div class="q-pa-md q-mb-lg ta-c">
