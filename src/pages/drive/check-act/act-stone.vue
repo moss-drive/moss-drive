@@ -254,7 +254,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
-      form.address = "test-addr";
+      form.address = await this.mossHub.getWalletAddr();
       let msg = "";
       if (!form.stoneName) msg = "Stone name required";
       else if (!form.urlPath) msg = "URL Path required";

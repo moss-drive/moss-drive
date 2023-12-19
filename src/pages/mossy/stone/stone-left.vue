@@ -47,7 +47,7 @@ import LeftMossAct from "./left-moss-act.vue";
       </div>
       <left-moss-act v-if="info.stoneId" :stoneId="info.stoneId" />
     </div>
-    <left-list :stoneId="info.stoneId" :id="id" />
+    <left-list :stoneId="info.stoneId" :id="id" :balance="balance" />
   </div>
 </template>
 
@@ -56,6 +56,7 @@ export default {
   props: {
     id: null,
     info: Object,
+    balance: null,
   },
   computed: {
     loaded() {
@@ -81,17 +82,17 @@ export default {
           key: "Current Floor",
           val: floor,
         },
-        {
-          key: "Next Floor",
-          val: floor,
-        },
+        // {
+        //   key: "Next Floor",
+        //   val: floor,
+        // },
         {
           key: "Floor Up Supply",
           val: floorSupply,
         },
         {
           key: "Hold",
-          val: hold,
+          val: this.balance,
         },
       ];
     },

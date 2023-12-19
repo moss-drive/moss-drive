@@ -32,6 +32,7 @@ export default {
   props: {
     id: null,
     stoneId: null,
+    balance: null,
   },
   computed: {
     ...mapState({
@@ -54,7 +55,7 @@ export default {
       });
     },
     notBuy() {
-      return !this.uid || !this.stoneId;
+      return !this.balance;
     },
   },
   data() {
@@ -70,7 +71,7 @@ export default {
     },
   },
   created() {
-    this.getAccount();
+    this.getList();
   },
   methods: {
     onRow({ row, index }) {
@@ -80,24 +81,9 @@ export default {
       this.loading = index;
       this.curFolder = row.path;
     },
-    async getAccount() {
-      if (!this.uid) return;
-      if (!this.stoneId) return;
-      try {
-        const { data } = await this.$http.get("/stone/account", {
-          params: {
-            stoneId: this.stoneId,
-          },
-        });
-        if (data.accountBalance) {
-          this.isBuy = true;
-          this.getList();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+
     async getList() {
+      if (!this.balance) return;
       try {
         if (this.loading === false) {
           this.loading = true;
