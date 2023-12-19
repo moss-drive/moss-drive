@@ -59,7 +59,7 @@ export default {
           field: "land",
           style: " font-size: 14px",
         },
-        { name: "usd", align: "left", label: "Cost", field: "usd", style: "font-size: 14px" },
+        { name: "amount", align: "left", label: "Cost", field: "amount", style: "font-size: 14px" },
         {
           name: "status",
           align: "left",
@@ -75,6 +75,29 @@ export default {
       totalPage: 0,
       emptyImg: emptyImg,
       emptyMessage: "As empty as a cloudless sky",
+      // coinInfo: {
+      //   USDC: [
+      //     MumbaiUSDC,
+      //     GoerliUSDC,
+      //     ChapelUSDC,
+      //     ArbitrumUSDC,
+      //     zkSyncUSDC,
+      //     optimisUSDC,
+      //     everPayUSDC,
+      //   ],
+      //   USDCE: [MumbaiUSDCE],
+      //   USDT: [
+      //     MumbaiUSDT,
+      //     GoerliUSDT,
+      //     ChapelUSDT,
+      //     ArbitrumUSDT,
+      //     zkSyncUSDT,
+      //     optimisUSDT,
+      //     everPayUSDT,
+      //   ],
+      //   DAI: [MumbaiDAI, GoerliDAI, ChapelDAI, ArbitrumDAI, zkSyncDAI, optimisDAI, everPayDAI],
+      //   ETH: [optimisETH],
+      // },
     };
   },
   created() {
@@ -86,13 +109,34 @@ export default {
       try {
         const { data } = await fetchBillList(page, this.limit);
         const curList = data.items.map((it) => {
+          if (it.amountType == "0x4200000000000000000000000000000000000006") {
+            if (!it.originalValue) {
+              it.amount = 0;
+            } else {
+              it.amount = Number(formatEther(BigNumber.from(it.originalValue))).toFixed(5);
+            }
+          } else {
+            it.amount = Number(formatEther(BigNumber.from(it.amount))).toFixed(2);
+          }
+
+          // let coinType = "USDC";
+          // for (const key in this.coinInfo) {
+          //   let findCoinAddr = this.coinInfo[key].find((item) => item == it.amountType);
+          //   if (findCoinAddr) coinType = key;
+          // }
+
+          // if (coinType == "USDCE") {
+          //   coinType = "USDC.e";
+          // }
+          // it.coinType = coinType;
+
           return {
             ...it,
             land: formatLand(it.landAmount),
-            usd: formatEther(BigNumber.from(it.landAmount).div(1e6)),
             status: "Success",
           };
         });
+
         this.rows = curList;
 
         this.totalPage = Math.ceil(data.total / this.limit);
