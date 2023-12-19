@@ -18,20 +18,6 @@ import WalletConnect from "./wallet-connect.vue";
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="loginData.thirdWebToken">
-      <div class="mt-5 fz-30">ThirdWeb</div>
-      <div class="pa-6"></div>
-      <q-btn
-        @click="onThirdWeb"
-        :loading="thirdLoading"
-        rounded
-        size="lg"
-        color="primary"
-        style="width: 200px"
-      >
-        Bind
-      </q-btn>
-    </div>
     <div v-else>
       <div class="mt-5 fz-30">Connect Wallet</div>
       <div class="pa-6"></div>
@@ -42,14 +28,11 @@ import WalletConnect from "./wallet-connect.vue";
 
 <script>
 import { mapState } from "vuex";
-import { EmbeddedWallet } from "@thirdweb-dev/wallets";
-import { Goerli } from "@thirdweb-dev/chains";
 
 export default {
   data() {
     return {
       xLoading: false,
-      thirdLoading: false,
     };
   },
   computed: {
@@ -104,30 +87,6 @@ export default {
         //
       }
       this.xLoading = false;
-    },
-    async onThirdWeb() {
-      try {
-        this.thirdLoading = true;
-        const walletAddr = await this.getThirdWebWallet();
-        console.log(walletAddr);
-      } catch (error) {
-        console.log(error);
-        this.$alert(error.message);
-      }
-      this.thirdLoading = false;
-    },
-    async getThirdWebWallet() {
-      const embeddedWallet = new EmbeddedWallet({
-        chain: Goerli, //  chain to connect to
-        clientId: "683da9655ebda2cd648a3d55fed27c11",
-      });
-      const authResult = await embeddedWallet.authenticate({
-        strategy: "jwt",
-        jwt: this.loginData.thirdWebToken,
-      });
-
-      const addr = await embeddedWallet.connect({ authResult });
-      return addr;
     },
     async onLoginX() {
       try {
