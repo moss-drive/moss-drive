@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="m-5 al-c">
-      <q-skeleton type="title" v-if="!rows && uid" width="150px" />
-      <template v-else>
+      <!-- <q-skeleton type="title" v-if="notBuy" width="150px" /> -->
+      <div>
         <q-breadcrumbs gutter="sm">
           <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
           <q-breadcrumbs-el
@@ -14,10 +14,10 @@
           />
         </q-breadcrumbs>
         <q-spinner-ios v-show="loading === true" class="ml-3" color="yellow" size="15px" />
-      </template>
+      </div>
     </div>
     <div class="pa-3">
-      <div v-if="!uid">
+      <div v-if="notBuy">
         <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
       </div>
       <grid-list v-else :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
@@ -31,6 +31,7 @@ import { mapState } from "vuex";
 export default {
   props: {
     id: null,
+    stoneId: null,
   },
   computed: {
     ...mapState({
@@ -52,6 +53,9 @@ export default {
         };
       });
     },
+    notBuy() {
+      return !this.uid || !this.stoneId;
+    },
   },
   data() {
     return {
@@ -66,7 +70,7 @@ export default {
     },
   },
   created() {
-    this.getList();
+    this.getAccount();
   },
   methods: {
     onRow({ row, index }) {
@@ -76,15 +80,31 @@ export default {
       this.loading = index;
       this.curFolder = row.path;
     },
-    async getList() {
+    async getAccount() {
       if (!this.uid) return;
+      if (!this.stoneId) return;
+      try {
+        const { data } = await this.$http.get("/stone/account", {
+          params: {
+            stoneId: this.stoneId,
+          },
+        });
+        if (data.accountBalance) {
+          this.isBuy = true;
+          this.getList();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getList() {
       try {
         if (this.loading === false) {
           this.loading = true;
         }
         const { data } = await this.$http.get("/stone/page/list", {
           params: {
-            stoneId: this.id,
+            stoneId: this.stoneId,
             relativePath: this.curFolder,
             delimiter: "/",
           },

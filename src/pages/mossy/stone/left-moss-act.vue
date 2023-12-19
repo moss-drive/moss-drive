@@ -61,7 +61,7 @@ import { mapState } from "vuex";
 
 export default {
   props: {
-    id: null,
+    stoneId: null,
   },
   data() {
     return {
@@ -150,12 +150,13 @@ export default {
       try {
         this.calcLoading = true;
         const fn = this.isBuy ? "stoneMint" : "stoneBurn";
-        const data = await mossHub[fn]([this.id, amount]);
+        const data = await mossHub[fn]([this.stoneId, amount]);
         console.log(data);
         this.calcData = {
           keyPrice: mossHub.formatEther(data.value),
           transFee: mossHub.formatEther(data.devFee.add(data.creatorFee)),
           total: mossHub.formatEther(data.total),
+          _total: data.total,
         };
       } catch (error) {
         console.log(error);
@@ -180,9 +181,21 @@ export default {
       if (!mossHub) return;
       try {
         const fn = this.isBuy ? "mint" : "burn";
-        const args = [this.id];
+        const addr = await mossHub.getWalletAddr();
+        const { _total } = this.calcData;
+        const args = [this.stoneId, addr, amount];
+        if (this.isBuy) {
+          args.push({
+            value: _total.mul(100 + slippage).div(100),
+          });
+        } else {
+          args.push(_total.mul(100 - slippage).div(100));
+        }
         this.buying = true;
-        await this.mossHub[fn](args);
+        const tx = await mossHub[fn](args);
+        await tx.wait(2);
+        await this.$alert("Done");
+        location.reload();
       } catch (error) {
         this.$alert(error.message);
       }

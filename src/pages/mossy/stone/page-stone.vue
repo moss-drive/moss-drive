@@ -35,7 +35,7 @@ export default {
       try {
         const { data } = await this.$http.get("/stone/meta", {
           params: {
-            stoneId: this.id,
+            id: this.id,
           },
         });
 
