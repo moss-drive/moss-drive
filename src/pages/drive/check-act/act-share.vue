@@ -69,7 +69,7 @@
             <q-banner dense rounded class="bg-6"> {{ resData.code }} </q-banner>
           </div>
           <div class="mt-7 color-1">
-            <p>Link will be expired at {{ new Date(resData.expireAt).format() }}</p>
+            <p>Link will be expired at {{ new Date(resData.expireAt * 1000).format() }}</p>
           </div>
           <div class="mt-7">
             <q-btn
@@ -152,8 +152,10 @@ export default {
       }
       form.code = code;
       form.bucketName = this.$bucket.defBucket;
-      form.folderPath = this.$route.path.replace(/^\/drive/, "");
-      form.paths = this.checkList.map((it) => it.key);
+      let path = this.$route.path.replace(/^\/drive/, "").replace(/\//, "");
+      if (path) path += "/";
+      form.folderPath = path;
+      form.paths = this.checkList.map((it) => it.key).join(",");
       console.log(form);
       try {
         this.saving = true;
