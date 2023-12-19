@@ -2,10 +2,17 @@
   <div class="bg-black-1 pa-5" v-if="usage.total">
     <div class="al-c">
       <span>IPFS Used</span>
-      <span class="ml-auto">{{ usage.used }}/{{ usage.total }}</span>
     </div>
     <div class="mt-3">
-      <q-linear-progress :value="usage.perc" color="secondary" />
+      <q-linear-progress
+        size="8px"
+        style="background: transparent"
+        :value="usage.perc"
+        color="secondary"
+      />
+    </div>
+    <div class="mt-2 usage-resource">
+      <span class="fz-12">{{ usage.used }}/{{ usage.total }}</span>
     </div>
     <!-- <div class="mt-3 al-c" style="color: #475569">
         <span>Remaining 40GB July 3,2022</span>
@@ -34,3 +41,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.usage-resource {
+  color: #475569;
+}
+</style>

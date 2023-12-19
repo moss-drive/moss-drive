@@ -87,7 +87,9 @@
             <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
           </div>
         </div>
-        <div class="recharge-btn cursor-p" @click="handleEthRecharge">Confirm</div>
+        <div class="recharge-btn fz-16 cursor-p" @click="handleEthRecharge">Confirm</div>
+
+        <!-- <q-btn color="#13C68A" outline label="Confirm" /> -->
       </div>
     </div>
 
@@ -209,21 +211,22 @@ export default {
         });
         const receipt = await tx.wait();
         console.log(receipt);
+        this.$alert("recharge success!!");
       } catch (error) {
-        console.log(error);
-        this.$alert(error.message);
+        this.onErr(error);
       }
       this.$loadingClose();
     },
 
     async usdc2eth() {
+      let provider = new providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
       try {
         this.countEthLoading = true;
         const quoter = IQuoter__factory.connect(
           "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-          this.signer
+          signer
         );
-        console.log(222);
         const path = solidityPack(
           ["address", "uint24", "address"],
           [
@@ -237,6 +240,7 @@ export default {
           this.countEthLoading = false;
           return BigNumber.from("0");
         }
+
         const res = await quoter.callStatic.quoteExactOutput(
           path,
           parseUnits(this.usdcAmount.toString(), 6)
@@ -248,6 +252,44 @@ export default {
         console.log(error);
       }
       this.countEthLoading = false;
+    },
+    onErr(err) {
+      if (!err) return console.log("---- err null");
+      if (/unknown account/.test(err.message)) {
+        return this.getAccount();
+      }
+      const { data } = err;
+      let msg = err.message;
+      if (data) {
+        msg = data.message || msg;
+      }
+      if (/repriced/i.test(msg) && /replaced/i.test(msg)) {
+        return this.$toast("Transaction was replaced.");
+      }
+      if (/missing revert data/i.test(msg)) {
+        msg = "Network Error";
+      } else if (/user rejected/i.test(msg)) {
+        msg = "Your transaction has been canceled.";
+      } else if (/transaction failed/i.test(msg)) {
+        msg = "Transaction Failed";
+      } else if (/ipfs/.test(msg) && /invalid params/.test(msg)) {
+        msg = "IPFS Storage Expired, extending service duration is required.";
+      } else if (
+        /exceeds balance/i.test(msg) ||
+        msg == "overflow" ||
+        /insufficient funds/i.test(msg)
+      ) {
+        msg = "Insufficient balance in your wallet.";
+      } else if (msg.length > 100) {
+        const mat = /^(.+)\[/.exec(msg);
+        if (mat) msg = mat[1];
+      }
+      if (/already pending for origin/gi.test(msg)) {
+        msg = "Wrong network, please switch your wallet network and try again.";
+      }
+
+      console.log(msg);
+      return this.$alert(msg);
     },
   },
 
@@ -373,6 +415,7 @@ export default {
       border-radius: 4px;
       background: #13c68a;
       font-weight: bold;
+      color: #0f172a;
     }
   }
 }
