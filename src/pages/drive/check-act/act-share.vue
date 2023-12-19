@@ -53,14 +53,7 @@
             <q-banner dense rounded class="bg-6">
               {{ shareLink }}
               <template v-slot:action>
-                <q-btn
-                  :href="shareLink"
-                  target="_blank"
-                  outline
-                  size="sm"
-                  label="Open"
-                  color="primary"
-                />
+                <q-btn @click="onOpen" outline size="sm" label="Open" color="primary" />
               </template>
             </q-banner>
           </div>
@@ -135,9 +128,15 @@ export default {
     },
   },
   methods: {
-    async onCopy(txt) {
+    async onOpen() {
+      await this.onCopy(this.resData.code, "Extraction code is copied!");
+      setTimeout(() => {
+        window.open(this.shareLink);
+      }, 500);
+    },
+    async onCopy(txt, msg = "Copied") {
       await copyToClipboard(txt);
-      this.$toast("Copied", 1);
+      if (msg) this.$toast(msg, 1);
     },
     async onSubmit() {
       const form = { ...this.form };
