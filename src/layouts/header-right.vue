@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="uid"
     class="ml-5 h100p pl-5 pr-4 al-c"
     :class="{
       'bdl-1': border,
@@ -14,7 +15,6 @@
     </q-btn> -->
 
     <q-btn
-      v-if="uid"
       class="ml-3"
       :class="{
         'q-px-sm': !asMobile,
@@ -24,7 +24,7 @@
       :round="asMobile"
       :size="btnSize"
     >
-      <q-avatar v-if="userInfo.avatarUrl">
+      <q-avatar size="22px" v-if="userInfo.avatarUrl">
         <img :src="userInfo.avatarUrl" />
       </q-avatar>
       <m-avatar v-else :hash="avatarId"></m-avatar>

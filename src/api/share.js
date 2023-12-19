@@ -1,0 +1,23 @@
+import http from "@/utils/http";
+
+const request = http;
+
+export function fetchShare(params) {
+  return request.get("/share/page", {
+    params,
+  });
+}
+
+export function fetchShareVaild(data) {
+  return request.post("/share/validAndGet", data);
+}
+
+export function fetchShareList(params) {
+  return request.get("/share/list", {
+    params,
+  });
+}
+
+export function fetchStoneSave(data) {
+  return request.post("/stone/save", data);
+}

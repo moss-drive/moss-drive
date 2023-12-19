@@ -85,7 +85,6 @@ export class MossHub {
   }
 
   create(arr) {
-    console.log(arr);
     return this.client.create(...arr);
   }
   mint(arr) {

@@ -2,7 +2,7 @@
 .top-search {
   height: 36px;
   // width: 400px;
-  padding-left: 36px;
+  padding-left: 40px;
   letter-spacing: 1px;
 }
 </style>
@@ -13,17 +13,6 @@ import HeaderRight from "../header-right.vue";
 </script>
 
 <template>
-  <!-- <div class="pos-r flex-1">
-    <icon-search class="y-center ev-n" style="left: 10px" />
-    <input
-      v-model="searchKey"
-      type="text"
-      placeholder="Search"
-      class="bdrs-100 w100p top-search"
-      :class="searchKey ? 'bg-white' : 'bg-info'"
-    />
-  </div> -->
-
   <!-- || inStone -->
   <q-btn
     v-if="inDrive"

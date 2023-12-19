@@ -73,8 +73,14 @@ const routes = [
     ],
   },
   {
-    path: "/s",
-    component: () => import("@/pages/share/index.vue"),
+    path: "/s/:id",
+    component: () => import("@/pages/share/components/layout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/share/index.vue"),
+      },
+    ],
     meta: {
       noUid: 1,
     },

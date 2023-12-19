@@ -12,6 +12,7 @@ import WalletConnect from "./wallet-connect.vue";
         :loading="xLoading"
         flat
         rounded
+        size="lg"
         style="background: #222; width: 200px"
       >
         <img src="/img/common/x.svg" width="20" />
@@ -24,6 +25,7 @@ import WalletConnect from "./wallet-connect.vue";
         @click="onThirdWeb"
         :loading="thirdLoading"
         rounded
+        size="lg"
         color="primary"
         style="width: 200px"
       >
@@ -88,6 +90,7 @@ export default {
         if (data.accessToken) {
           this.onLoginData(data);
         } else {
+          delete data.uuid;
           if (!data.twitterId) {
             this.$alert("Error: No Twitter ID");
           }
@@ -116,7 +119,7 @@ export default {
     async getThirdWebWallet() {
       const embeddedWallet = new EmbeddedWallet({
         chain: Goerli, //  chain to connect to
-        clientId: "8a76a182447af68e014556db57bd6cf9",
+        clientId: "683da9655ebda2cd648a3d55fed27c11",
       });
       const authResult = await embeddedWallet.authenticate({
         strategy: "jwt",
