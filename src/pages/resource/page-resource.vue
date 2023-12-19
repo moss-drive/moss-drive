@@ -103,7 +103,9 @@ import { getFileSize, debounce, uid2euid } from "@/utils/helper";
 import { formatEther, solidityPack, parseUnits } from "ethers/lib/utils";
 import { BigNumber, providers } from "ethers";
 import { IQuoter__factory, UNILand__factory } from "@4everland-contracts";
-import chainAddrList from "./chainAddrs";
+import chainAddrList from "./utils/chainAddrs";
+
+console.log(chainAddrList);
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
 import ResourceCount from "./componets/resource-count.vue";

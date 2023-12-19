@@ -5,6 +5,7 @@
     </div>
     <div class="mt-3">
       <q-linear-progress
+        rounded
         size="8px"
         style="background: transparent"
         :value="usage.perc"
