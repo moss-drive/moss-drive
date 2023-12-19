@@ -26,12 +26,9 @@ import HeaderRight from "./header-right.vue";
           <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
         </a>
         <div class="mr-auto"></div>
-        <q-btn href="/drive" rounded color="primary">
-          <span v-if="asMobile">Moss</span>
-          <template v-else>
-            <img src="/img/mossy/my-moss.svg" width="20" class="mr-2" />
-            <span>My Moss</span>
-          </template>
+        <q-btn :href="isLogin ? '/drive' : '/'" rounded color="primary">
+          <img src="/img/mossy/my-moss.svg" width="20" class="mr-2" />
+          <span>My Moss</span>
         </q-btn>
         <header-right />
       </div>
@@ -45,6 +42,7 @@ import HeaderRight from "./header-right.vue";
 
 <script>
 import { useQuasar } from "quasar";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -54,6 +52,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isLogin: (s) => !!s.loginData.uuid,
+    }),
     asMobile() {
       return this.screen.width < 690;
     },
