@@ -1,6 +1,18 @@
 <template>
-  <!-- <q-btn color="primary" @click="onConnect">Connect Wallet</q-btn> -->
-  <q-btn-dropdown :loading="loading" split color="primary" @click="onConnect(defItem.type)">
+  <q-btn
+    flat
+    rounded
+    size="lg"
+    style="background: #111"
+    class="full-width text-white"
+    :loading="loading"
+    @click="onConnect(defItem.type)"
+  >
+    <img :src="defItem.img" width="30" />
+    <span class="ml-2 fz-18">Connect Wallet</span>
+  </q-btn>
+
+  <!-- <q-btn-dropdown :loading="loading" split color="primary" @click="onConnect(defItem.type)">
     <template #label>
       <img :src="defItem.img" width="26" />
       <span class="ml-3">{{ defItem.label }}</span>
@@ -24,7 +36,7 @@
         </q-item-section>
       </q-item>
     </q-list>
-  </q-btn-dropdown>
+  </q-btn-dropdown> -->
 
   <q-dialog v-model="showInstall">
     <q-card class="full-width" style="max-width: 450px">
@@ -144,7 +156,7 @@ export default {
         });
         const data = await this.getLoginData(account, {
           signature,
-          inviteCode: "123",
+          // inviteCode: "123",
         });
         this.$emit("login", data);
       } catch (error) {
@@ -161,10 +173,30 @@ export default {
     async getLoginData(account, params) {
       const body = {
         ...params,
-        twitterId: this.loginData.twitterId,
       };
       const { data } = await this.$http.post(`/login/eth/wallet/${account}/sign`, body);
-      return data;
+      if (data.token) {
+        data.accessToken = data.token;
+        delete data.token;
+        data.uuid = account;
+      }
+      this.onLoginData(data);
+    },
+    onRedirect() {
+      const redirectTo = localStorage.loginTo || "/";
+      localStorage.loginTo = "";
+      if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
+    },
+    async onLoginData(data) {
+      try {
+        this.$loading("Login....");
+        // const { data } = await this.$http.post(`/st/${stoken}`);
+        this.$store.dispatch("login", data);
+        this.onRedirect();
+      } catch (error) {
+        console.log(error);
+      }
+      this.$loadingClose();
     },
   },
 };

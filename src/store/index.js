@@ -34,8 +34,8 @@ const store = createStore({
   },
   actions: {
     login(_, data) {
-      data.accessExpireAt = new Date(data.accessTokenExpireAt).format();
-      data.refreshExpireAt = new Date(data.refreshTokenExpireAt).format();
+      data.accessExpireAt = new Date(data.expiredAt).format();
+      data.refreshExpireAt = new Date(data.refreshExpiredAt).format();
       setStore({
         loginData: data,
       });

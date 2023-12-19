@@ -39,6 +39,7 @@ import ActShare from "./act-share.vue";
 
 <script>
 import { useQuasar } from "quasar"; // copyToClipboard
+import { mapState } from "vuex";
 
 export default {
   props: {
@@ -52,6 +53,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      userInfo: (s) => s.userInfo,
+    }),
     objMenus() {
       const len = this.checked.length;
       let isFile = false;
@@ -97,6 +101,11 @@ export default {
       // console.log(name, rows);
       const item = this.checkItem;
       if (name == "publish") {
+        if (!this.userInfo.twitterId) {
+          await this.$confirm("Bind X at first");
+          window.open("/login");
+          return;
+        }
         this.$refs.stone.showPop = true;
       } else if (name == "share") {
         this.$refs.share.showPop = true;
