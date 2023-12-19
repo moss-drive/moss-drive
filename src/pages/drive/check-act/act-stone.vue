@@ -16,13 +16,13 @@
           <div class="mt-1 fz-14">You successfully claimed a stone!</div>
           <div class="mt-8">
             <q-btn
-              :href="`/mossy/stone?id=${stoneId}`"
+              :href="`/stone`"
               target="_blank"
               @click="onDone"
               color="primary"
               size="large"
               style="width: 160px"
-              >Stone Page</q-btn
+              >My Stones</q-btn
             >
           </div>
         </div>
@@ -269,7 +269,7 @@ export default {
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
-        this.stoneId = data.stoneId;
+        this.stoneId = data.id;
         this.onCreate();
       } catch (error) {
         console.log(error);

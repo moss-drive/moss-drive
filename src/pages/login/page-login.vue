@@ -18,7 +18,7 @@ import WalletConnect from "./wallet-connect.vue";
         <img src="/img/common/x.svg" width="20" />
       </q-btn>
     </div>
-    <div v-else-if="loginData.thirdWebToken_">
+    <div v-else-if="loginData.thirdWebToken">
       <div class="mt-5 fz-30">ThirdWeb</div>
       <div class="pa-6"></div>
       <q-btn
