@@ -102,7 +102,7 @@ export default {
       const item = this.checkItem;
       if (name == "publish") {
         if (!this.userInfo.twitterId) {
-          await this.$confirm("Bind X at first");
+          // await this.$confirm("Bind X at first");
           window.open("/login");
           return;
         }

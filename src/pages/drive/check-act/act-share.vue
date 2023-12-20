@@ -132,7 +132,7 @@ export default {
       await this.onCopy(this.resData.code, "Extraction code is copied!");
       setTimeout(() => {
         window.open(this.shareLink);
-      }, 500);
+      }, 800);
     },
     async onCopy(txt, msg = "Copied") {
       await copyToClipboard(txt);

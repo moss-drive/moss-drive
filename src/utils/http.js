@@ -89,11 +89,12 @@ async function handleError(status, config, data) {
     } else {
       console.log("redirect to login");
       store.dispatch("logout");
-      if (location.pathname != "/login") {
+      const loginPath = "/";
+      if (location.pathname != loginPath) {
         localStorage.loginTo = location.pathname + location.search;
       }
       router.replace({
-        path: "/login",
+        path: loginPath,
       });
       return;
     }
