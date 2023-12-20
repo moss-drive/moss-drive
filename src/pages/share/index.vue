@@ -73,7 +73,7 @@
                 style="margin-right: 8px"
               ></q-img>
               <span style="margin-right: 24px">{{ createdTime }}</span>
-              <span v-if="expirationTime > 30">Expiration time: {{ expirationTime }} days</span>
+              <span v-if="!expirationTime > 30">Expiration time: {{ expirationTime }} days</span>
             </div>
           </div>
           <div class="list-bottom">
@@ -129,15 +129,27 @@
                 @click.prevent="getList(it.folder)"
               />
             </q-breadcrumbs>
-            <div class="list-scroll">
-              <grid-list
-                :rows="rows"
-                :loading="loading"
-                :checked="checked"
-                selection="multiple"
-                @row-check="onRowCheck"
-                @row-click="onRowClick"
-              ></grid-list>
+            <div class="list-scroll" ref="scrollTargetRef">
+              <q-infinite-scroll
+                @load="onLoad"
+                :offset="250"
+                :scroll-target="scrollTargetRef"
+                :disable="true"
+              >
+                <grid-list
+                  :rows="rows"
+                  :loading="loading"
+                  :checked="checked"
+                  selection="multiple"
+                  @row-check="onRowCheck"
+                  @row-click="onRowClick"
+                ></grid-list>
+                <template v-slot:loading>
+                  <div class="row justify-center q-my-md">
+                    <q-spinner-ios color="yellow" size="30px" />
+                  </div>
+                </template>
+              </q-infinite-scroll>
             </div>
           </div>
         </div>
@@ -155,9 +167,11 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <act-move ref="move" :check-list="checked" />
   </div>
 </template>
 <script setup>
+import ActMove from "@/pages/drive/check-act/act-move.vue";
 import WalletConnect from "@/pages/login/wallet-connect.vue";
 </script>
 
@@ -251,7 +265,7 @@ export default {
         id: this.$route.params.id,
         delimiter: "/",
         code: code,
-        offset: 1,
+        startAfter: "",
         size: 100,
       };
       const { data } = await fetchShareVaild(params);
@@ -272,13 +286,22 @@ export default {
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
+    async onLoad(index, done) {
+      // console.log(index);
+      // await this.getList();
+      setTimeout(() => {
+        console.log(this.rows);
+        // this.rows.push();
+      }, 2000);
+      done();
+    },
     async getList(path) {
       this.curFolder = path;
       const params = {
         shareId: this.$route.params.id,
         relativePath: path,
         delimiter: "/",
-        offset: 1,
+        startAfter: "",
         size: 100,
       };
       if (this.loading === false) {
@@ -339,6 +362,8 @@ export default {
         this.showLogin = true;
         localStorage.loginTo = this.$route.fullPath;
         return;
+      } else {
+        this.$refs.move.showPop = true;
       }
       let paths = [];
       let result = this.rows.filter((item) => {
@@ -524,7 +549,8 @@ export default {
         height: 100%;
         border-radius: 16px;
         background: #0f172a;
-        overflow: hidden;
+        display: flex;
+        flex-direction: column;
         .list-top {
           padding: 24px;
           border-bottom: 1px solid #334155;
@@ -559,10 +585,12 @@ export default {
         }
         .list-bottom {
           padding: 24px;
-          height: 100%;
+          // overflow: hidden;
+          flex: 1;
           .list-scroll {
-            overflow: scroll;
-            height: 100%;
+            max-height: 100%;
+            // max-height: 900px;
+            overflow: auto;
           }
         }
       }
