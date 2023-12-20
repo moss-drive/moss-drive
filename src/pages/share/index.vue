@@ -39,7 +39,9 @@
               <q-img :src="stoneInfo.avatar" width="120px" :ratio="1" />
             </div>
             <div class="stone-name">
-              <div class="ta-l stone-text">{{ stoneInfo.stoneName }}</div>
+              <div class="ta-l stone-text">
+                {{ stoneInfo.stoneName }}
+              </div>
               <q-btn round class="mt-2">
                 <q-avatar size="40px" @click="goStone(stoneInfo.id)">
                   <img src="@/assets/imgs/share/btn-right.png" />
@@ -417,6 +419,10 @@ export default {
           border: 1px solid #334155;
           max-width: 282px;
           .stone-name {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
             word-break: break-all;
             color: #fff;
             font-family: SF Pro Text;
