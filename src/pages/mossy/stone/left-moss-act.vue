@@ -59,6 +59,10 @@ import { debounce } from "@/utils/helper";
 import { MossHub } from "../../../utils/moss-hub";
 import { mapState } from "vuex";
 
+const initForm = {
+  amount: "",
+  slippage: 20,
+};
 export default {
   props: {
     stoneId: null,
@@ -70,8 +74,7 @@ export default {
       isBuy: false,
       buying: false,
       form: {
-        amount: "",
-        slippage: 20,
+        ...initForm,
       },
       calcLoading: false,
       calcData: null,
@@ -112,6 +115,8 @@ export default {
         window.open("/login");
         return;
       }
+      this.form = { ...initForm };
+      this.calcData = null;
       this.isBuy = isBuy;
       this.showPop = true;
     },
