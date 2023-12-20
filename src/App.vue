@@ -17,6 +17,7 @@ export default {
   name: "App",
   computed: {
     ...mapState({
+      isFocus: (s) => s.isFocus,
       showProgress: (s) => s.showProgress,
       uid: (s) => s.loginData.uuid,
       // token: (s) => s.loginData.accessToken,
@@ -99,6 +100,13 @@ export default {
     uid() {
       this.getUserInfo();
     },
+    async isFocus(val) {
+      if (val && localStorage.twitterId) {
+        await this.getUserInfo();
+        localStorage.twitterId = "";
+        this.$toast("X binded", 1);
+      }
+    },
   },
   mounted() {
     this.onInit();
@@ -116,16 +124,7 @@ export default {
       }
     },
     async onInit() {
-      const { meta } = this.$route;
-      console.log(meta);
-      const Login = "/login";
-      const noLogin = meta.noUid || ["/", Login, "/mossy"].includes(location.pathname);
-      if (this.uid) {
-        this.getUserInfo();
-      } else if (!noLogin) {
-        // localStorage.loginTo = location.pathname + location.search;
-        // this.$router.replace(Login);
-      }
+      this.getUserInfo();
     },
   },
 };

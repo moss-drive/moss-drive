@@ -15,14 +15,8 @@
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
           <div class="mt-1 fz-14">You successfully claimed a stone!</div>
           <div class="mt-8">
-            <q-btn
-              :href="`/mossy/stone?id=${stoneId}`"
-              target="_blank"
-              @click="onDone"
-              color="primary"
-              size="large"
-              style="width: 160px"
-              >Stone Page</q-btn
+            <q-btn :to="`/stone`" @click="onDone" color="primary" size="large" style="width: 160px"
+              >My Stones</q-btn
             >
           </div>
         </div>
@@ -89,6 +83,7 @@
                 />
               </div>
             </div>
+            <div class="pt-1"></div>
             <q-input
               class="mb-2"
               filled
@@ -195,7 +190,7 @@ export default {
       tempImg: null,
       saving: false,
       isDone: false,
-      stoneId: null,
+      rowId: null,
       mossHub: null,
       uploading: false,
     };
@@ -259,7 +254,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
-      form.address = "test-addr";
+      form.address = await this.mossHub.getWalletAddr();
       let msg = "";
       if (!form.stoneName) msg = "Stone name required";
       else if (!form.urlPath) msg = "URL Path required";
@@ -269,7 +264,7 @@ export default {
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
-        this.stoneId = data.stoneId;
+        this.rowId = data.id;
         this.onCreate();
       } catch (error) {
         console.log(error);
@@ -281,10 +276,9 @@ export default {
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
-        await this.setTimeoutAt(timeoutAt);
+        // await this.setTimeoutAt(timeoutAt);
         const price = this.mossHub.parseEther(form.floorPrice);
         const tx = await this.mossHub.create([
-          this.stoneId,
           price,
           form.intNum,
           form.tokenNum,
@@ -316,7 +310,7 @@ export default {
         {},
         {
           params: {
-            stoneId: this.stoneId,
+            id: this.rowId,
             timeoutAt,
           },
         }

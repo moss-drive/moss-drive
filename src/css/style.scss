@@ -23,6 +23,11 @@ input {
     color: #888;
   }
 }
+.q-dialog {
+  input::-webkit-input-placeholder {
+    // color: #333;
+  }
+}
 
 $dark-color: #000;
 :root {

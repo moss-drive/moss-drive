@@ -36,7 +36,7 @@ import LeftMossAct from "./left-moss-act.vue";
       </div>
       <div class="mt-7">
         <q-skeleton type="title" v-if="!loaded" style="max-width: 735px" />
-        <div v-else class="al-c mt-7 fw-b">
+        <div v-else class="al-c mt-7 fw-b f-wrap">
           <div class="mr-9" v-for="(row, j) in kvList" :key="j">
             <span>{{ row.key }}</span>
             <span class="fz-25 color-2 ml-2">
@@ -45,9 +45,9 @@ import LeftMossAct from "./left-moss-act.vue";
           </div>
         </div>
       </div>
-      <left-moss-act v-if="info.stoneId" :id="id" />
+      <left-moss-act v-if="info.stoneId" :stoneId="info.stoneId" />
     </div>
-    <left-list :id="id" />
+    <left-list :stoneId="info.stoneId" :id="id" :balance="balance" />
   </div>
 </template>
 
@@ -56,6 +56,7 @@ export default {
   props: {
     id: null,
     info: Object,
+    balance: null,
   },
   computed: {
     loaded() {
@@ -65,21 +66,33 @@ export default {
       const format = (val) => {
         return this.$ethUtils.formatEther(val) + "ETH";
       };
-      let { totalSupply: supply, price, floor } = this.info;
+      let { totalSupply: supply, price, floor, floorSupply, hold } = this.info;
       if (price) price = format(price);
       if (floor) floor = format(floor);
       return [
         {
-          key: "Supply",
+          key: "Current Supply",
           val: supply,
         },
         {
-          key: "Price",
+          key: "Current Price",
           val: price,
         },
         {
-          key: "Floor",
+          key: "Current Floor",
           val: floor,
+        },
+        // {
+        //   key: "Next Floor",
+        //   val: floor,
+        // },
+        {
+          key: "Floor Up Supply",
+          val: floorSupply,
+        },
+        {
+          key: "Hold",
+          val: this.balance,
         },
       ];
     },

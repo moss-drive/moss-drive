@@ -1,3 +1,7 @@
+<script setup>
+import WalletConnect from "../login/wallet-connect.vue";
+</script>
+
 <template>
   <div class="bg-primary bdrs-10 px-5 py-6" style="width: 360px">
     <p class="py-2">
@@ -5,7 +9,7 @@
     </p>
     <div class="py-5">
       <q-btn
-        v-if="loginData.uuid"
+        v-if="isLogin"
         href="/drive"
         rounded
         size="lg"
@@ -15,19 +19,7 @@
         <img src="/img/moss.svg" width="38" class="scale-9" />
         <span class="fz-18 ml-2">Moss Drive</span>
       </q-btn>
-      <q-btn
-        v-else
-        @click="onLoginX"
-        :loading="xLoading"
-        flat
-        rounded
-        size="lg"
-        style="background: #111"
-        class="full-width text-white"
-      >
-        <span class="fz-20 mr-2">Sign in with</span>
-        <img src="/img/common/x.svg" width="20" />
-      </q-btn>
+      <wallet-connect v-else />
     </div>
     <div>
       <img src="/img/home/or-split.svg" class="w100p d-b" />
@@ -59,19 +51,6 @@ export default {
       return !!this.loginData.uuid;
     },
   },
-  methods: {
-    async onLoginX() {
-      try {
-        this.xLoading = true;
-        const { data } = await this.$http.get("/login/twitter");
-        // console.log(data);
-        localStorage.goX = 1;
-        location.href = data.jump;
-      } catch (error) {
-        console.log(error);
-      }
-      this.xLoading = false;
-    },
-  },
+  methods: {},
 };
 </script>

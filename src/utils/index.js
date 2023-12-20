@@ -11,6 +11,12 @@ export default {
     global.$bucket = bucket;
     global.$http = http;
     global.$ethUtils = utils;
+    global.$genNonce = (len = 4) => {
+      return Math.random().toString(36).slice(-len);
+    };
+    global.$getShareLink = (id) => {
+      return `${location.origin}/s/${id}`;
+    };
     global.$inDev = /foreverland/.test(VITE_BASE_URL);
 
     global.$openLink = (url) => {

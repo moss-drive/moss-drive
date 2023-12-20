@@ -6,20 +6,18 @@
       </q-card-section>
 
       <q-card-section>
-        <input
+        <q-input
           autofocus
+          filled
+          dense
           v-model.trim="inputVal"
-          type="text"
-          class="w100p bdrs-3 pa-2"
-          :class="{
-            'bg-input': !inputVal.length,
-          }"
+          class="w100p"
           placeholder="Enter the folder name"
           @keyup.enter="onCreate"
         />
       </q-card-section>
 
-      <q-card-actions align="right">
+      <q-card-actions class="mt-3" align="right">
         <q-btn v-if="!creating" flat color="white" label="Cancel" @click="showPop = false" />
         <q-btn
           :disable="!inputVal.length"

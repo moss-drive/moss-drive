@@ -34,14 +34,14 @@ import FilePreview from "./preview/preview-index.vue";
 
       <slot name="act" :checked="checked" :obj-list="objList"></slot>
 
-      <div class="pos-r ml-auto mr-2">
+      <div class="pos-r ml-auto mr-2 bd-1">
         <icon-search class="y-center ev-n" style="left: 10px" />
         <input
           v-model="searchKey"
           type="text"
           placeholder="Search"
           class="bdrs-100 w100p top-search"
-          :class="searchKey ? 'bg-white' : 'bg-info'"
+          :class="searchKey ? 'bg-info' : 'bg-info'"
         />
       </div>
       <div class="">

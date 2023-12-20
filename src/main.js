@@ -28,13 +28,17 @@ app.use(router);
 app.use(store);
 global.$setState = setState;
 global.$setStore = setStore;
+
 router.beforeEach((to, _, next) => {
   setState({
     showProgress: true,
   });
   next();
 });
-router.afterEach(() => {
+router.afterEach((to) => {
+  if (/\/mossy/.test(to.path)) {
+    document.title = "Mossy";
+  }
   setState({
     showProgress: false,
   });

@@ -1,30 +1,16 @@
 <template>
-  <!-- <q-btn color="primary" @click="onConnect">Connect Wallet</q-btn> -->
-  <q-btn-dropdown :loading="loading" split color="primary" @click="onConnect(defItem.type)">
-    <template #label>
-      <img :src="defItem.img" width="26" />
-      <span class="ml-3">{{ defItem.label }}</span>
-    </template>
-    <q-list>
-      <q-item
-        v-for="it in walletList.slice(1)"
-        :key="it.type"
-        clickable
-        v-close-popup
-        @click="onConnect(it.type)"
-      >
-        <q-item-section avatar>
-          <img :src="it.img" width="26" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ it.label }}</q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <q-item-label caption>{{ it.sub }}</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-btn-dropdown>
+  <q-btn
+    flat
+    rounded
+    size="lg"
+    style="background: #111"
+    class="full-width text-white"
+    :loading="loading"
+    @click="onConnect(defItem.type)"
+  >
+    <img :src="defItem.img" width="30" />
+    <span class="ml-2 fz-18">Connect Wallet</span>
+  </q-btn>
 
   <q-dialog v-model="showInstall">
     <q-card class="full-width" style="max-width: 450px">
@@ -60,42 +46,9 @@ const walletList = [
     type: "METAMASK",
     label: "MetaMask",
     sub: "Popular",
-    img: "https://dashboard.4everland.org/img/metamask.3a5d5844.png",
+    img: "/img/common/metamask.png",
     desc: "Your key to blockchain applications",
     link: "https://metamask.io/download/",
-  },
-  {
-    name: "phantom",
-    type: "SOLANA",
-    label: "Phantom",
-    sub: "solana",
-    img: "https://dashboard.4everland.org/img/phantom.e54e87fd.png",
-    desc: "A friendly crypto wallet for web3",
-    link: "https://phantom.app/",
-  },
-  {
-    name: "coinbase",
-    type: "COINBASE",
-    label: "CoinBase Wallet",
-    img: "https://dashboard.4everland.org/img/coinbase.e8af2fcc.png",
-    desc: "A crypto wallet on CoinBase",
-    link: "https://www.coinbase.com/",
-  },
-  {
-    name: "aptos",
-    type: "PETRA",
-    label: "Petra Aptos Wallet",
-    img: "https://dashboard.4everland.org/img/petra.097a9d78.svg",
-    desc: "A crypto wallet on Aptos",
-    link: "https://petra.app/",
-  },
-  {
-    name: "okxwallet",
-    type: "OKX",
-    label: "OKX Wallet",
-    img: "https://dashboard.4everland.org/img/okx.1028cc3e.svg",
-    desc: "One interoperable wallet for all your Web3 needs",
-    link: "https://chrome.google.com/webstore/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge",
   },
 ];
 export default {
@@ -144,7 +97,7 @@ export default {
         });
         const data = await this.getLoginData(account, {
           signature,
-          inviteCode: "123",
+          // inviteCode: "123",
         });
         this.$emit("login", data);
       } catch (error) {
@@ -161,10 +114,30 @@ export default {
     async getLoginData(account, params) {
       const body = {
         ...params,
-        twitterId: this.loginData.twitterId,
       };
       const { data } = await this.$http.post(`/login/eth/wallet/${account}/sign`, body);
-      return data;
+      if (data.token) {
+        data.accessToken = data.token;
+        delete data.token;
+        data.uuid = account;
+      }
+      this.onLoginData(data);
+    },
+    onRedirect() {
+      const redirectTo = localStorage.loginTo || "/";
+      localStorage.loginTo = "";
+      if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
+    },
+    async onLoginData(data) {
+      try {
+        this.$loading("Login....");
+        // const { data } = await this.$http.post(`/st/${stoken}`);
+        this.$store.dispatch("login", data);
+        this.onRedirect();
+      } catch (error) {
+        console.log(error);
+      }
+      this.$loadingClose();
     },
   },
 };

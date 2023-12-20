@@ -2,6 +2,7 @@
 import ActDelete from "./act-delete.vue";
 import ActMove from "./act-move.vue";
 import ActStone from "./act-stone.vue";
+import ActShare from "./act-share.vue";
 </script>
 
 <template>
@@ -33,10 +34,12 @@ import ActStone from "./act-stone.vue";
   <act-delete ref="delete" :check-list="checkList" />
   <act-move ref="move" :check-list="checkList" />
   <act-stone ref="stone" :check-item="checkItem" />
+  <act-share ref="share" :check-list="checkList" />
 </template>
 
 <script>
-import { useQuasar, copyToClipboard } from "quasar";
+import { useQuasar } from "quasar"; // copyToClipboard
+import { mapState } from "vuex";
 
 export default {
   props: {
@@ -50,6 +53,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      userInfo: (s) => s.userInfo,
+    }),
     objMenus() {
       const len = this.checked.length;
       let isFile = false;
@@ -67,8 +73,7 @@ export default {
           disabled: !(len == 1 && isRootDir),
         },
         {
-          name: "link",
-          disabled: !isFile,
+          name: "share",
         },
         {
           name: "move",
@@ -96,10 +101,16 @@ export default {
       // console.log(name, rows);
       const item = this.checkItem;
       if (name == "publish") {
+        if (!this.userInfo.twitterId) {
+          // await this.$confirm("Bind X at first");
+          window.open("/login");
+          return;
+        }
         this.$refs.stone.showPop = true;
-      } else if (name == "link") {
-        await copyToClipboard(item.url);
-        this.$toast("Copied", 1);
+      } else if (name == "share") {
+        this.$refs.share.showPop = true;
+        // await copyToClipboard(item.url);
+        // this.$toast("Copied", 1);
       } else if (name == "download") {
         window.open(item.url);
       } else if (name == "delete") {
