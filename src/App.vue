@@ -101,9 +101,9 @@ export default {
       this.getUserInfo();
     },
     async isFocus(val) {
-      if (val && localStorage.twitterId) {
+      if (val && localStorage.bindX) {
         await this.getUserInfo();
-        localStorage.twitterId = "";
+        localStorage.bindX = "";
         this.$toast("X binded", 1);
       }
     },
