@@ -4,17 +4,24 @@
       <div class="share-left">
         <q-img class="top-img" width="100%" src="@/assets/imgs/share/left-top.png" />
         <div class="left-content">
-          <div class="user-info">
+          <div class="user-info" v-if="userInfo">
             <q-img
+              v-if="userInfo.twitterAvatar"
               class="user-header"
-              :src="
-                userInfo.twitterAvatar
-                  ? userInfo.twitterAvatar
-                  : 'https://cdn.quasar.dev/img/parallax2.jpg'
-              "
+              :src="userInfo.twitterAvatar"
             />
-            <div class="user-name">{{ userInfo.twitterName }}</div>
-            <div class="user-account">@{{ userInfo.twitterUsername }}</div>
+            <m-avatar
+              v-else-if="!userInfo.twitterUsername && userInfo.address"
+              class="address-header"
+              :hash="userInfo.address"
+              size="64"
+            ></m-avatar>
+            <div v-else class="no-header">{{ userInfo.firstLetter }}</div>
+            <div class="user-name">{{ userInfo.twitterName || userInfo.address }}</div>
+            <div class="user-account" v-if="userInfo.twitterUsername">
+              @{{ userInfo.twitterUsername }}
+            </div>
+            <div class="user-desc">{{ userInfo.twitterDesc }}</div>
           </div>
           <div class="uncode" v-if="userInfo.valid && !showFileList">
             <q-form>
@@ -39,7 +46,9 @@
               <q-img :src="stoneInfo.avatar" width="120px" :ratio="1" />
             </div>
             <div class="stone-name">
-              <div class="ta-l stone-text">{{ stoneInfo.stoneName }}</div>
+              <div class="ta-l stone-text">
+                {{ stoneInfo.stoneName }}
+              </div>
               <q-btn round class="mt-2">
                 <q-avatar size="40px" @click="goStone(stoneInfo.id)">
                   <img src="@/assets/imgs/share/btn-right.png" />
@@ -55,7 +64,7 @@
           <div class="list-top">
             <div class="share-info">
               <q-img src="@/assets/imgs/share/icon_folder.png" width="40px"></q-img>
-              <span>{{ shareName }}</span>
+              <div class="file-name">{{ shareName }}</div>
             </div>
             <div class="share-time">
               <q-img
@@ -64,7 +73,7 @@
                 style="margin-right: 8px"
               ></q-img>
               <span style="margin-right: 24px">{{ createdTime }}</span>
-              <span>Expiration time: {{ expirationTime }} days</span>
+              <span v-if="!expirationTime > 30">Expiration time: {{ expirationTime }} days</span>
             </div>
           </div>
           <div class="list-bottom">
@@ -76,7 +85,13 @@
                 v-model="checkAll"
                 indeterminate-value="not-empty"
               />
-              <q-btn class="valid-btn" rounded color="primary" @click="saveToStone">
+              <q-btn
+                v-show="checked.length > 0"
+                class="valid-btn"
+                rounded
+                color="primary"
+                @click="saveToStone"
+              >
                 <q-icon left size="24px">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -114,22 +129,51 @@
                 @click.prevent="getList(it.folder)"
               />
             </q-breadcrumbs>
-            <div class="list-scroll">
-              <grid-list
-                :rows="rows"
-                :loading="loading"
-                :checked="checked"
-                selection="multiple"
-                @row-check="onRowCheck"
-                @row-click="onRowClick"
-              ></grid-list>
+            <div class="list-scroll" ref="scrollTargetRef">
+              <q-infinite-scroll
+                @load="onLoad"
+                :offset="250"
+                :scroll-target="scrollTargetRef"
+                :disable="true"
+              >
+                <grid-list
+                  :rows="rows"
+                  :loading="loading"
+                  :checked="checked"
+                  selection="multiple"
+                  @row-check="onRowCheck"
+                  @row-click="onRowClick"
+                ></grid-list>
+                <template v-slot:loading>
+                  <div class="row justify-center q-my-md">
+                    <q-spinner-ios color="yellow" size="30px" />
+                  </div>
+                </template>
+              </q-infinite-scroll>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <q-dialog v-model="showLogin">
+      <q-card class="login-dialog">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="fz-16">Sign in</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section>
+          <wallet-connect @login="afterLogin" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <act-move ref="move" :check-list="checked" />
   </div>
 </template>
+<script setup>
+import ActMove from "@/pages/drive/check-act/act-move.vue";
+import WalletConnect from "@/pages/login/wallet-connect.vue";
+</script>
 
 <script>
 import { mapState } from "vuex";
@@ -166,7 +210,7 @@ export default {
       else this.checked = [];
     },
     "checked.length"(len) {
-      let isAll = len == this.rows.length;
+      let isAll = len == this.rows.length && this.rows.length != 0;
       if (!isAll && len > 0) isAll = "not-empty";
       this.checkAll = isAll;
     },
@@ -183,12 +227,13 @@ export default {
       curFolder: "",
       shareName: "",
       stoneInfo: null,
+      showLogin: false,
     };
   },
-
-  mounted() {
+  created() {
     this.init();
   },
+  mounted() {},
   methods: {
     init() {
       this.getShare();
@@ -198,12 +243,12 @@ export default {
         id: this.$route.params.id,
       };
       const { data } = await fetchShare(params);
+      data.firstLetter = data.twitterUsername?.substring(0, 1).toUpperCase();
       this.userInfo = data;
       if (data.expire) {
-        console.log("expire");
+        window.$alert("Oh dear, you're late, this sharing page has already expired.");
         return;
       } else if (data.valid) {
-        console.log("need valid");
         const code = this.$route.query.code;
         if (code) {
           this.code = code;
@@ -220,7 +265,7 @@ export default {
         id: this.$route.params.id,
         delimiter: "/",
         code: code,
-        offset: 1,
+        startAfter: "",
         size: 100,
       };
       const { data } = await fetchShareVaild(params);
@@ -233,9 +278,22 @@ export default {
       this.createdTime = createdTime;
       this.setList(list);
       this.handlerDateDurationCurrent(data.expireAt);
-      this.shareName = list[0].name + "...";
+      let shareName = list[0].name;
+      if (shareName.length > 12) {
+        shareName = shareName.substring(0, 12);
+      }
+      this.shareName = shareName + "...";
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
+    },
+    async onLoad(index, done) {
+      // console.log(index);
+      // await this.getList();
+      setTimeout(() => {
+        console.log(this.rows);
+        // this.rows.push();
+      }, 2000);
+      done();
     },
     async getList(path) {
       this.curFolder = path;
@@ -243,13 +301,14 @@ export default {
         shareId: this.$route.params.id,
         relativePath: path,
         delimiter: "/",
-        offset: 1,
+        startAfter: "",
         size: 100,
       };
       if (this.loading === false) {
         this.loading = true;
       }
       const { data } = await fetchShareList(params);
+      this.checked = [];
       this.setList(data);
     },
     setList(list) {
@@ -299,12 +358,17 @@ export default {
       this.expirationTime = days;
     },
     async saveToStone() {
-      console.log(this.checked);
+      if (!this.uid) {
+        this.showLogin = true;
+        localStorage.loginTo = this.$route.fullPath;
+        return;
+      } else {
+        this.$refs.move.showPop = true;
+      }
       let paths = [];
       let result = this.rows.filter((item) => {
         return this.checked.some((curVal) => curVal === item.key);
       });
-      console.log(result);
       result.forEach((item) => {
         paths.push(item.path);
       });
@@ -317,6 +381,9 @@ export default {
         shareId: this.$route.params.id,
       };
       const { data } = await fetchStoneSave(params);
+    },
+    afterLogin() {
+      this.showLogin = false;
     },
   },
 };
@@ -332,6 +399,7 @@ export default {
     height: 100%;
     .share-left {
       width: 330px;
+      flex: 0 0 330px;
       height: 100%;
       border-radius: 16px;
       background: #0f172a;
@@ -366,6 +434,23 @@ export default {
             border-radius: 50%;
             margin-bottom: 8px;
           }
+          .address-header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+          }
+          .no-header {
+            width: 64px;
+            height: 64px;
+            line-height: 64px;
+            border-radius: 50%;
+            background-color: #7e4fed;
+            color: #fff;
+            text-align: center;
+            font-size: 28px;
+            margin: 0 auto;
+            margin-bottom: 8px;
+          }
           .user-name {
             color: #fff;
             font-family: SF Pro Text;
@@ -378,6 +463,20 @@ export default {
             font-family: SF Pro Text;
             font-size: 14px;
             font-weight: 400;
+          }
+          .user-desc {
+            color: #fff;
+            text-align: center;
+            font-family: SF Pro Text;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
           }
         }
         .uncode {
@@ -417,6 +516,10 @@ export default {
           border: 1px solid #334155;
           max-width: 282px;
           .stone-name {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
             word-break: break-all;
             color: #fff;
             font-family: SF Pro Text;
@@ -446,7 +549,8 @@ export default {
         height: 100%;
         border-radius: 16px;
         background: #0f172a;
-        overflow: hidden;
+        display: flex;
+        flex-direction: column;
         .list-top {
           padding: 24px;
           border-bottom: 1px solid #334155;
@@ -461,6 +565,12 @@ export default {
             font-weight: 700;
             line-height: normal;
             margin-bottom: 16px;
+            .file-name {
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
           }
           .share-time {
             display: flex;
@@ -475,14 +585,32 @@ export default {
         }
         .list-bottom {
           padding: 24px;
-          height: 100%;
+          // overflow: hidden;
+          flex: 1;
           .list-scroll {
-            overflow: scroll;
-            height: 100%;
+            max-height: 100%;
+            // max-height: 900px;
+            overflow: auto;
           }
         }
       }
     }
+  }
+}
+.login-dialog {
+  width: 400px;
+  height: 152px;
+  text-align: center;
+  .connect-btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 24px;
+    color: #0f172a;
+    font-family: SF Pro Text;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px; /* 112.5% */
+    margin-top: 16px;
   }
 }
 </style>
