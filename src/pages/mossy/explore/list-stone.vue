@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-md">
     <router-link
-      :to="`/mossy/stone?id=${it.stoneId}`"
+      :to="`/mossy/stone?id=${it.id}`"
       class="col-6 col-sm-4 col-md-3"
       v-for="(it, i) in list"
       :key="i"
@@ -12,7 +12,7 @@
           <div class="op-5 mt-1 mb-1 fz-13">by {{ it.twitterName }}</div>
           <div class="fz-13 fw-b mt-auto al-c">
             <span>{{ it.price ? formatEther(it.price) : "-" }}ETH</span>
-            <img class="ml-1" src="/img/mossy/icon/trend-up.svg" width="12" />
+            <!-- <img class="ml-1" src="/img/mossy/icon/trend-up.svg" width="12" /> -->
           </div>
         </div>
         <div class="flex-2">
