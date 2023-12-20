@@ -65,12 +65,12 @@ export default {
       }
       try {
         this.xLoading = true;
-        const { data } = await this.$http.get(`/login/twitter/user/profile`, {
+        await this.$http.get(`/login/twitter/user/profile`, {
           params: {
             code,
           },
         });
-        localStorage.twitterId = data.twitterId;
+        localStorage.bindX = 1;
         await this.$alert("Twitter Binded");
         window.close();
       } catch (error) {
