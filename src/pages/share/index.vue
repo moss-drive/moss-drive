@@ -134,7 +134,7 @@
                 @load="onLoad"
                 :offset="250"
                 :scroll-target="scrollTargetRef"
-                :disable="true"
+                :disable="scrollDisable"
               >
                 <grid-list
                   :rows="rows"
@@ -228,6 +228,7 @@ export default {
       shareName: "",
       stoneInfo: null,
       showLogin: false,
+      scrollDisable: false,
     };
   },
   created() {
@@ -287,27 +288,31 @@ export default {
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
     async onLoad(index, done) {
-      // console.log(index);
-      // await this.getList();
-      setTimeout(() => {
-        console.log(this.rows);
-        // this.rows.push();
-      }, 2000);
+      console.log(index);
+      await this.getMore("切图/");
       done();
     },
     async getList(path) {
       this.curFolder = path;
+      let startAfter = "";
+      // if (this.rows.length > 0) {
+      //   console.log(this.rows.slice(-1));
+      //   startAfter = this.rows.slice(-1)[0].path;
+      // }
       const params = {
         shareId: this.$route.params.id,
         relativePath: path,
         delimiter: "/",
-        startAfter: "",
+        startAfter: startAfter,
         size: 100,
       };
       if (this.loading === false) {
         this.loading = true;
       }
       const { data } = await fetchShareList(params);
+      if (data.length < 100) {
+        this.scrollDisable = true;
+      }
       this.checked = [];
       this.setList(data);
     },
@@ -330,6 +335,30 @@ export default {
         };
       });
       this.loading = false;
+    },
+    async getMore(path) {
+      this.curFolder = path;
+      let startAfter = "";
+      if (this.rows.length > 0) {
+        console.log(this.rows.slice(-1));
+        startAfter = this.rows.slice(-1)[0].path;
+      }
+      const params = {
+        shareId: this.$route.params.id,
+        relativePath: path,
+        delimiter: "/",
+        startAfter: startAfter,
+        size: 100,
+      };
+      if (this.loading === false) {
+        this.loading = true;
+      }
+      const { data } = await fetchShareList(params);
+      if (data.length < 100) {
+        this.scrollDisable = true;
+      }
+      this.checked = [];
+      this.setList(data);
     },
     goStone(id) {
       this.$router.push({ path: "/mossy/stone", query: { id: id } });
@@ -585,12 +614,13 @@ export default {
         }
         .list-bottom {
           padding: 24px;
-          // overflow: hidden;
+          overflow: hidden;
           flex: 1;
           .list-scroll {
             max-height: 100%;
             // max-height: 900px;
             overflow: auto;
+            padding-bottom: 50px;
           }
         }
       }
