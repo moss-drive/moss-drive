@@ -18,6 +18,24 @@
           :message="emptyMessage"
         />
       </template>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="txHash" :props="props">
+            <a target="__blank" :href="getTxLink(props.row.txHash, props.row.network)">
+              {{ props.row.txHash }}
+            </a>
+          </q-td>
+          <q-td key="land" :props="props">
+            {{ props.row.land }}
+          </q-td>
+          <q-td key="amount" :props="props">
+            {{ props.row.amount }}
+          </q-td>
+          <q-td key="status" :props="props">
+            {{ props.row.status }}
+          </q-td>
+        </q-tr>
+      </template>
     </q-table>
     <div class="pagination q-pa-lg flex flex-center">
       <q-pagination
@@ -34,10 +52,32 @@
 
 <script>
 import { fetchBillList } from "@/api/resource.js";
-import { formatLand } from "../../../utils/helper";
+import { formatLand, getTxLink } from "../../../utils/helper";
 import { BigNumber } from "ethers";
 import { formatEther } from "ethers/lib/utils";
 import emptyImg from "/img/stone/default-empty.png";
+import {
+  MumbaiUSDC,
+  MumbaiUSDT,
+  MumbaiDAI,
+  MumbaiUSDCE,
+  GoerliUSDC,
+  GoerliUSDT,
+  GoerliDAI,
+  ChapelUSDC,
+  ChapelUSDT,
+  ChapelDAI,
+  ArbitrumUSDC,
+  ArbitrumUSDT,
+  ArbitrumDAI,
+  zkSyncUSDC,
+  zkSyncUSDT,
+  zkSyncDAI,
+  optimisUSDC,
+  optimisUSDT,
+  optimisDAI,
+  optimisETH,
+} from "../utils/chainAddrs";
 
 export default {
   data() {
@@ -75,29 +115,13 @@ export default {
       totalPage: 0,
       emptyImg: emptyImg,
       emptyMessage: "As empty as a cloudless sky",
-      // coinInfo: {
-      //   USDC: [
-      //     MumbaiUSDC,
-      //     GoerliUSDC,
-      //     ChapelUSDC,
-      //     ArbitrumUSDC,
-      //     zkSyncUSDC,
-      //     optimisUSDC,
-      //     everPayUSDC,
-      //   ],
-      //   USDCE: [MumbaiUSDCE],
-      //   USDT: [
-      //     MumbaiUSDT,
-      //     GoerliUSDT,
-      //     ChapelUSDT,
-      //     ArbitrumUSDT,
-      //     zkSyncUSDT,
-      //     optimisUSDT,
-      //     everPayUSDT,
-      //   ],
-      //   DAI: [MumbaiDAI, GoerliDAI, ChapelDAI, ArbitrumDAI, zkSyncDAI, optimisDAI, everPayDAI],
-      //   ETH: [optimisETH],
-      // },
+      coinInfo: {
+        USDC: [MumbaiUSDC, GoerliUSDC, ChapelUSDC, ArbitrumUSDC, zkSyncUSDC, optimisUSDC],
+        USDCE: [MumbaiUSDCE],
+        USDT: [MumbaiUSDT, GoerliUSDT, ChapelUSDT, ArbitrumUSDT, zkSyncUSDT, optimisUSDT],
+        DAI: [MumbaiDAI, GoerliDAI, ChapelDAI, ArbitrumDAI, zkSyncDAI, optimisDAI],
+        ETH: [optimisETH],
+      },
     };
   },
   created() {
@@ -109,27 +133,30 @@ export default {
       try {
         const { data } = await fetchBillList(page, this.limit);
         const curList = data.items.map((it) => {
+          let coinType = "USDC";
+          for (const key in this.coinInfo) {
+            let findCoinAddr = this.coinInfo[key].find((item) => item == it.amountType);
+            if (findCoinAddr) coinType = key;
+          }
+          if (coinType == "USDCE") {
+            coinType = "USDC.e";
+          }
+          it.coinType = coinType;
+
           if (it.amountType == "0x4200000000000000000000000000000000000006") {
             if (!it.originalValue) {
               it.amount = 0;
             } else {
-              it.amount = Number(formatEther(BigNumber.from(it.originalValue))).toFixed(5);
+              it.amount =
+                Number(formatEther(BigNumber.from(it.originalValue))).toFixed(5) +
+                " " +
+                it.coinType;
             }
           } else {
-            it.amount = Number(formatEther(BigNumber.from(it.amount))).toFixed(2);
+            it.amount =
+              Number(formatEther(BigNumber.from(it.amount))).toFixed(2) + " " + it.coinType;
           }
-
-          // let coinType = "USDC";
-          // for (const key in this.coinInfo) {
-          //   let findCoinAddr = this.coinInfo[key].find((item) => item == it.amountType);
-          //   if (findCoinAddr) coinType = key;
-          // }
-
-          // if (coinType == "USDCE") {
-          //   coinType = "USDC.e";
-          // }
-          // it.coinType = coinType;
-
+          it.network = this.getChainType(it.network);
           return {
             ...it,
             land: formatLand(it.landAmount),
@@ -144,6 +171,19 @@ export default {
         console.log(error);
       }
       this.tableLoading = false;
+    },
+    getTxLink: getTxLink,
+    getChainType(id) {
+      id *= 1;
+      if ([137, 80001].includes(id)) return "Polygon";
+      if ([56, 97].includes(id)) return "BSC";
+      if ([42161].includes(id)) return "Arbitrum";
+      if ([280, 324].includes(id)) return "zkSync";
+      if ([9999999].includes(id)) return "everPay";
+      if ([1, 11155111].includes(id)) return "Ethereum";
+      if ([10].includes(id)) return "Optimism";
+      if ([99999991].includes(id)) return "Redeem Historical Remaining Resources";
+      return "";
     },
     change(val) {
       this.getList(val);

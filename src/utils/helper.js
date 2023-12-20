@@ -149,3 +149,23 @@ export function uid2euid(input) {
   padding[31] = b ? bytes.length + 32 : bytes.length;
   return "0x" + bytesToHex(padding);
 }
+
+let inDev = process.env.NODE_ENV != "production";
+
+export const getTxLink = (hash, chainId) => {
+  switch (chainId) {
+    case "":
+      break;
+    default:
+      break;
+  }
+  let pre = inDev ? "https://sepolia.etherscan.io/tx/" : "https://etherscan.io/tx/";
+  if (chainId == "BSC") {
+    pre = inDev ? "https://testnet.bscscan.com/tx/" : "https://bscscan.com/tx/";
+  } else if (chainId == "Polygon") {
+    pre = inDev ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/";
+  } else if (chainId == "zkSync") {
+    pre = inDev ? "https://goerli.explorer.zksync.io/tx/" : "https://explorer.zksync.io/tx/";
+  }
+  return pre + hash;
+};
