@@ -80,6 +80,7 @@ export default {
   watch: {},
   computed: {
     ...mapState({
+      userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
     buyKvList() {
@@ -105,6 +106,10 @@ export default {
       if (!this.uid) {
         localStorage.loginTo = location.pathname + location.search;
         this.$router.push("/login");
+        return;
+      }
+      if (!this.userInfo.twitterId) {
+        window.open("/login");
         return;
       }
       this.isBuy = isBuy;
