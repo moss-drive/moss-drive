@@ -295,7 +295,12 @@ export default {
         const addr = await mossHub.getWalletAddr();
         this.form.address = addr;
         if (addr != this.uid) {
-          throw new Error("Same wallet account required");
+          throw new Error(
+            `Please use the wallet address associated with the current account for signing. The current account is ${addr.cutStr(
+              4,
+              6
+            )}`
+          );
         }
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);

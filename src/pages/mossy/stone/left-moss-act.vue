@@ -8,50 +8,63 @@
     </div>
   </div>
 
-  <q-dialog v-model="showPop" position="top" :persistent="buying">
+  <q-dialog v-model="showPop" position="top" :persistent="buying || isDone">
     <q-card class="full-width pa-2" style="max-width: 600px">
       <q-card-section>
         <div class="text-h6">{{ isBuy ? "Buy" : "Sell" }} Stone Key</div>
       </q-card-section>
-      <q-card-section>
-        <div class="d-flex mt-3">
-          <div class="flex-1">
-            <q-input
-              v-model="form.amount"
-              @keyup="checkAmount"
-              label="Quantity"
-              autofocus
-              stack-label
-              filled
-            />
+      <q-card-section v-if="isDone">
+        <div class="pa-9 ta-c">
+          <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
+          <div class="mt-1 fz-14">
+            You successfully {{ isBuy ? "buy" : "sell" }} {{ form.amount }}
           </div>
-          <div class="flex-2 ml-5">
-            <div class="mb-1 mt-1 al-c">
-              <span class="fz-13 op-6">Slippage:</span>
-              <span class="ml-2">{{ form.slippage }}%</span>
-            </div>
-            <q-slider v-model="form.slippage" :min="0" :max="100" />
-          </div>
-        </div>
-        <div class="row mt-8">
-          <div class="col-4" v-for="(it, j) in buyKvList" :key="j">
-            <div class="pa-3">
-              <p class="fz-15 op-8">{{ it.key }}</p>
-              <q-skeleton class="mt-2" square height="25px" v-if="calcLoading" />
-              <p v-else class="color-2 fw-b">
-                <span class="fz-22">{{ it.val || "-" }}</span>
-                <span class="ml-1">ETH</span>
-              </p>
-            </div>
+          <div class="mt-8">
+            <q-btn @click="onDone" color="primary" size="large" style="width: 160px">Done</q-btn>
           </div>
         </div>
       </q-card-section>
-      <q-card-actions align="right" class="text-primary">
-        <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
-        <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy">{{
-          isBuy ? "Buy" : "Sell"
-        }}</q-btn>
-      </q-card-actions>
+      <template v-else>
+        <q-card-section>
+          <div class="d-flex mt-3">
+            <div class="flex-1">
+              <q-input
+                v-model="form.amount"
+                @keyup="checkAmount"
+                label="Quantity"
+                autofocus
+                stack-label
+                filled
+              />
+            </div>
+            <div class="flex-2 ml-5">
+              <div class="mb-1 mt-1 al-c">
+                <span class="fz-13 op-6">Slippage:</span>
+                <span class="ml-2">{{ form.slippage }}%</span>
+              </div>
+              <q-slider v-model="form.slippage" :min="0" :max="100" />
+            </div>
+          </div>
+          <div class="row mt-8">
+            <div class="col-4" v-for="(it, j) in buyKvList" :key="j">
+              <div class="pa-3">
+                <p class="fz-15 op-8">{{ it.key }}</p>
+                <q-skeleton class="mt-2" square height="25px" v-if="calcLoading" />
+                <p v-else class="color-2 fw-b">
+                  <span class="fz-22">{{ it.val || "-" }}</span>
+                  <span class="ml-1">ETH</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
+          <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy">{{
+            isBuy ? "Buy" : "Sell"
+          }}</q-btn>
+        </q-card-actions>
+      </template>
     </q-card>
   </q-dialog>
 </template>
@@ -81,6 +94,7 @@ export default {
       },
       calcLoading: false,
       calcData: null,
+      isDone: false,
     };
   },
   watch: {},
@@ -108,6 +122,9 @@ export default {
     },
   },
   methods: {
+    onDone() {
+      location.reload();
+    },
     onPop(isBuy) {
       if (!this.uid) {
         localStorage.loginTo = location.pathname + location.search;
@@ -209,13 +226,14 @@ export default {
         }
         this.buying = true;
         const tx = await mossHub[fn](args);
+        this.$loading("Pending...");
         await tx.wait(2);
-        await this.$alert("Done");
-        location.reload();
+        this.isDone = true;
       } catch (error) {
         this.$alert(error.message);
       }
       this.buying = false;
+      this.$loadingClose();
     },
     async onSell() {},
   },

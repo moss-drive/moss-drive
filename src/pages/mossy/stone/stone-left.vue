@@ -14,12 +14,14 @@ import LeftMossAct from "./left-moss-act.vue";
     <div class="bg-header-s1 pa-4 bdb-1">
       <div class="d-flex mt-5">
         <q-skeleton size="110px" square v-if="!loaded" />
-        <div class="stone-cover" v-else>
-          <q-img
-            :src="info.stoneAvatar || '/img/stone/stone-cover.png'"
-            :ratio="1"
-            width="110px"
-          ></q-img>
+        <div v-else>
+          <div class="stone-cover">
+            <q-img
+              :src="info.stoneAvatar || '/img/stone/stone-cover.png'"
+              :ratio="1"
+              width="110px"
+            ></q-img>
+          </div>
         </div>
         <div class="ml-8 flex-1" style="max-width: 600px">
           <div v-if="!loaded">

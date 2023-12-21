@@ -130,7 +130,7 @@ export default {
       checked: [],
       curPath: "/drive",
       searchKey: "",
-      stoneList: [],
+      stoneList: null,
     };
   },
   computed: {
@@ -138,8 +138,9 @@ export default {
       uid: (s) => s.loginData.uuid,
     }),
     objRows() {
+      const stoneList = this.stoneList || [];
       return this.objList.map((obj) => {
-        const stone = this.stoneList.find((it) => {
+        const stone = stoneList.find((it) => {
           return it.folderPath.replace("/", "") == obj.name;
         });
         let { type } = obj;
@@ -211,7 +212,6 @@ export default {
   },
   created() {
     this.getList();
-    this.getStoneList();
     this.$bus.on("drive-refresh", () => {
       this.getList();
     });
@@ -261,6 +261,9 @@ export default {
     },
     async getList(isMore) {
       try {
+        if (!this.stoneList) {
+          await this.getStoneList();
+        }
         const params = {
           Bucket: this.bucketName,
           folder: this.bucketPrefix,
