@@ -69,6 +69,9 @@ export default {
     curFolder() {
       this.getList();
     },
+    balance() {
+      this.getList();
+    },
   },
   created() {
     this.getList();

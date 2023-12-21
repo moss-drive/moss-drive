@@ -69,7 +69,7 @@ export default {
           secretAccessKey: secretKey,
           sessionToken,
         });
-        this.bucketName = `moss-bucket${this.$inDev ? "-dev" : ""}-` + this.uid.slice(-10);
+        this.bucketName = `moss-bucket${this.$inDev ? "-dev" : "-prod"}-` + this.uid.slice(-10);
         this.$bucket.defBucket = this.bucketName;
         if (localStorage.moss_bucket != this.bucketName) {
           await this.checkBucket();
