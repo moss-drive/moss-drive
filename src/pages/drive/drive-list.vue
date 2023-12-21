@@ -32,7 +32,7 @@ import FilePreview from "./preview/preview-index.vue";
         indeterminate-value="not-empty"
       />
 
-      <slot name="act" :checked="checked" :obj-list="objList"></slot>
+      <slot name="act" :checked="checked" :obj-list="objRows"></slot>
 
       <div class="pos-r ml-auto mr-2 bd-1">
         <icon-search class="y-center ev-n" style="left: 10px" />
@@ -69,6 +69,7 @@ import FilePreview from "./preview/preview-index.vue";
       </q-breadcrumbs>
       <q-spinner-ios v-show="objLoading === true" class="ml-3" color="yellow" size="15px" />
     </div>
+
     <div class="q-mt-md">
       <div class="mt-9 ta-c" v-if="loadErr">
         <p class="op-8 mb-3">{{ loadErr }}</p>
@@ -83,7 +84,7 @@ import FilePreview from "./preview/preview-index.vue";
           :is="showMode + '-list'"
           :isPage="isPage"
           :selection="isPage ? 'multiple' : null"
-          :rows="objList"
+          :rows="objRows"
           :loading="objLoading"
           :checked="checked"
           @row-click="onRowClick"
@@ -103,6 +104,7 @@ import FilePreview from "./preview/preview-index.vue";
 </template>
 
 <script>
+import { mapState } from "vuex";
 import TableList from "./table-list.vue";
 
 export default {
@@ -128,9 +130,26 @@ export default {
       checked: [],
       curPath: "/drive",
       searchKey: "",
+      stoneList: [],
     };
   },
   computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
+    objRows() {
+      return this.objList.map((obj) => {
+        const stone = this.stoneList.find((it) => {
+          return it.folderPath.replace("/", "") == obj.name;
+        });
+        let { type } = obj;
+        if (stone) type = "stone";
+        return {
+          ...obj,
+          type,
+        };
+      });
+    },
     modeIcon() {
       return this.showMode == "grid" ? "table" : "grid";
     },
@@ -192,8 +211,12 @@ export default {
   },
   created() {
     this.getList();
+    this.getStoneList();
     this.$bus.on("drive-refresh", () => {
       this.getList();
+    });
+    this.$bus.on("stone-created", () => {
+      this.getStoneList();
     });
   },
   methods: {
@@ -226,7 +249,11 @@ export default {
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
       this.showPreview = true;
     },
-
+    async getStoneList() {
+      if (!this.uid) return;
+      const { data } = await this.$http.get("/stone");
+      this.stoneList = data;
+    },
     async onLoad(index, done) {
       console.log(index);
       await this.getList(true);
