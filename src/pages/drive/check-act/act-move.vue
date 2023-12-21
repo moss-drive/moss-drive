@@ -155,7 +155,9 @@ export default {
     async doMove() {
       this.moving = true;
       if (this.moveFunc) {
-        await this.moveFunc();
+        await this.moveFunc({
+          prefix: this.moveToPrefix,
+        });
       } else {
         for (const i in this.checkList) {
           if (!this.moving) break;
