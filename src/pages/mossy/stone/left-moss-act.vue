@@ -30,6 +30,7 @@
             <div class="flex-1">
               <q-input
                 v-model="form.amount"
+                :placeholder="amtHint"
                 @keyup="checkAmount"
                 label="Quantity"
                 autofocus
@@ -103,6 +104,10 @@ export default {
       userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
+    amtHint() {
+      if (!this.isBuy) return `${this.balance} at most`;
+      return "";
+    },
     buyKvList() {
       const data = this.calcData || {};
       return [
