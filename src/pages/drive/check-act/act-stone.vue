@@ -162,6 +162,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { MossHub } from "../../../utils/moss-hub";
 const { VITE_MEDIA_PRE } = import.meta.env;
 
@@ -180,6 +181,11 @@ const initMossForm = {
 export default {
   props: {
     checkItem: Object,
+  },
+  computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
   },
   data() {
     return {
@@ -210,7 +216,7 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.form.validate().then((suc) => {
-        if (suc) this.onNext();
+        if (suc) this.onCreate();
         // else this.$toast("Please check the form");
       });
     },
@@ -246,21 +252,10 @@ export default {
         this.$router.push("/stone");
       }, 300);
     },
-    async onNext() {
-      try {
-        if (!this.mossHub) {
-          this.mossHub = new MossHub();
-        }
-        await this.mossHub.checkNet();
-      } catch (error) {
-        this.$alert(error.message);
-        return;
-      }
-
+    async onNext(tx) {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
-      form.address = await this.mossHub.getWalletAddr();
       let msg = "";
       if (!form.stoneName) msg = "Stone name required";
       else if (!form.urlPath) msg = "URL Path required";
@@ -271,20 +266,48 @@ export default {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
         this.rowId = data.id;
-        this.onCreate();
+        this.$loading("Pending...");
+        await tx.wait(1);
+        this.isDone = true;
+        this.$bus.emit("stone-created");
       } catch (error) {
         console.log(error);
         this.saving = false;
       }
+      this.$loadingClose();
+    },
+    async initMoss() {
+      if (!this.mossHub) {
+        try {
+          const mossHub = new MossHub();
+          await mossHub.checkNet();
+          this.mossHub = mossHub;
+        } catch (error) {
+          this.$alert(error.message);
+        }
+      }
+      return this.mossHub;
     },
     async onCreate() {
+      const mossHub = await this.initMoss();
+      if (!mossHub) return;
       try {
+        const addr = await mossHub.getWalletAddr();
+        this.form.address = addr;
+        if (addr != this.uid) {
+          throw new Error(
+            `Please use the wallet address associated with the current account for signing. The current account is ${addr.cutStr(
+              4,
+              6
+            )}`
+          );
+        }
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
         // await this.setTimeoutAt(timeoutAt);
-        const price = this.mossHub.parseEther(form.floorPrice);
-        const tx = await this.mossHub.create([
+        const price = mossHub.parseEther(form.floorPrice);
+        const tx = await mossHub.create([
           price,
           form.intNum,
           form.tokenNum,
@@ -294,11 +317,11 @@ export default {
             value: price.add(price.mul(25).div(1e3)),
           },
         ]);
-        this.$loading("Creating...");
-
-        await tx.wait(2);
-        this.isDone = true;
+        // await tx.wait(2);
+        //
+        this.onNext(tx);
       } catch (error) {
+        this.saving = false;
         console.log(error);
         let msg = error.message;
         if (/user reject/.test(msg)) {
@@ -307,8 +330,7 @@ export default {
           this.$alert(msg);
         }
       }
-      this.$loadingClose();
-      this.saving = false;
+      //
     },
     setTimeoutAt(timeoutAt) {
       this.$http.put(

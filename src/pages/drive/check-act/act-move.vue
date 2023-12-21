@@ -67,7 +67,7 @@
           color="primary"
           :loading="moving"
           @click="onMove"
-          :disable="curPrefix == moveToPrefix"
+          :disable="!moveFunc && curPrefix == moveToPrefix"
           >Move here</q-btn
         >
       </q-card-actions>
@@ -84,6 +84,7 @@ export default {
   },
   props: {
     checkList: Array,
+    moveFunc: Function,
   },
   data() {
     return {
@@ -153,15 +154,21 @@ export default {
     },
     async doMove() {
       this.moving = true;
-      for (const i in this.checkList) {
-        if (!this.moving) break;
-        this.curMoveIdx = i;
-        const row = this.checkList[i];
-        try {
-          await this.$bucket.moveObject(this.curPrefix + row.name, this.moveToPrefix + row.name);
-          this.movedArr.push(row.name);
-        } catch (error) {
-          console.log(error);
+      if (this.moveFunc) {
+        await this.moveFunc({
+          prefix: this.moveToPrefix,
+        });
+      } else {
+        for (const i in this.checkList) {
+          if (!this.moving) break;
+          this.curMoveIdx = i;
+          const row = this.checkList[i];
+          try {
+            await this.$bucket.moveObject(this.curPrefix + row.name, this.moveToPrefix + row.name);
+            this.movedArr.push(row.name);
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
       this.moving = false;

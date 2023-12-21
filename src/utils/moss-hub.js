@@ -20,8 +20,9 @@ export class MossHub {
   get chainId() {
     return Number(window.ethereum.chainId);
   }
-  getWalletAddr() {
-    return this.signer.getAddress();
+  async getWalletAddr() {
+    const addr = await this.signer.getAddress();
+    return (addr || "").toLowerCase();
   }
 
   async checkNet() {

@@ -70,7 +70,7 @@ export default {
         {
           name: "publish",
           icon: "stone",
-          disabled: !(len == 1 && isRootDir),
+          disabled: !(len == 1 && isRootDir && this.checkItem.type == "folder"),
         },
         {
           name: "share",
@@ -86,6 +86,7 @@ export default {
         {
           name: "delete",
           icon: "trash",
+          disabled: len == 1 && this.checkItem.type == "stone",
         },
       ];
     },
