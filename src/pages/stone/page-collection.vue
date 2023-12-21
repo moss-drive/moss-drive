@@ -44,19 +44,22 @@
           <q-td key="action" :props="props"> > </q-td>
         </q-tr>
       </template>
-      <template v-slot:no-data="{ icon, message, filter }">
-        <div class="full-width row flex-center text-accent q-gutter-sm">
-          <q-icon size="2em" name="sentiment_dissatisfied" />
-          <span> Well this is sad... {{ message }} </span>
-          <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
-        </div>
+      <template v-slot:no-data>
+        <empty-component
+          style="padding-top: 120px"
+          width="280"
+          :emptyImg="emptyImg"
+          :message="emptyMessage"
+        />
       </template>
     </q-table>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { fetchCollections } from "@/api/collection.js";
+import emptyImg from "/img/stone/default-empty.png";
+import { BigNumber } from "ethers";
 
 const columns = [
   { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
@@ -90,14 +93,68 @@ const rows = [
 ];
 
 export default {
-  setup() {
+  data() {
     return {
       loading: false,
-      filter: ref(""),
-      selected: ref([]),
       columns,
-      rows,
+      rows: [],
+      emptyImg,
+      emptyMessage: "As empty as a cloudless sky",
+      page: 1,
+      size: 10,
     };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      const params = {
+        address: "",
+        page: this.page,
+        size: this.size,
+      };
+      const { data } = await fetchCollections(params);
+      data.forEach((row, index) => {
+        let amounts = BigNumber.from(row.value);
+        row.index = index + 1;
+        row.amounts = amounts / 1e18;
+        row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
+        row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
+      });
+      this.rows = data;
+    },
+    onScroll() {
+      return;
+      const data = this.rows;
+      data.push({
+        stoneName: "1213",
+        createdAt: 1702279706539,
+        action: "SOLD",
+        value: 44,
+        txHash: "Ox222...222",
+      });
+      data.forEach((row, index) => {
+        row.index = index + 1;
+      });
+      this.rows = data;
+      console.log("loading");
+    },
+    // onScroll({ to, ref }) {
+    //   const lastIndex = rows.value.length - 1;
+
+    //   if (loading.value !== true && nextPage.value < lastPage && to === lastIndex) {
+    //     loading.value = true;
+
+    //     setTimeout(() => {
+    //       nextPage.value++;
+    //       nextTick(() => {
+    //         ref.refresh();
+    //         loading.value = false;
+    //       });
+    //     }, 500);
+    //   }
+    // },
   },
 };
 </script>
