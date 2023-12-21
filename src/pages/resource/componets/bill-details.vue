@@ -22,7 +22,7 @@
         <q-tr :props="props">
           <q-td key="txHash" :props="props">
             <a target="__blank" :href="getTxLink(props.row.txHash, props.row.network)">
-              {{ props.row.txHash }}
+              {{ props.row.txHash == "" ? "--" : props.row.txHash }}
             </a>
           </q-td>
           <q-td key="land" :props="props">
@@ -39,6 +39,7 @@
     </q-table>
     <div class="pagination q-pa-lg flex flex-center">
       <q-pagination
+        v-show="totalPage > 1"
         @update:model-value="change"
         v-model="curPage"
         color="teal"
@@ -142,7 +143,6 @@ export default {
             coinType = "USDC.e";
           }
           it.coinType = coinType;
-
           if (it.amountType == "0x4200000000000000000000000000000000000006") {
             if (!it.originalValue) {
               it.amount = 0;

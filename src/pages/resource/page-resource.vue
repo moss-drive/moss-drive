@@ -342,7 +342,8 @@ export default {
   .conversion-btn {
     padding: 12px 16px;
     border-radius: 4px;
-    border: 1px solid #1eefa4;
+    border: 1px solid rgba(30, 239, 164, 0.25);
+
     color: #1eefa4;
   }
 

@@ -145,7 +145,7 @@ export default {
 }
 
 .select-content.active {
-  border: 1px solid #1eefa4;
+  border: 1px solid rgba(30, 239, 164, 0.25);
 }
 .tag {
   // width: 80px;
@@ -159,7 +159,7 @@ export default {
   margin-left: 8px;
 }
 .tag.active {
-  border: 1px solid #1eefa4;
+  border: 1px solid rgba(30, 239, 164, 0.25);
   color: #1eefa4;
   font-weight: bold;
 }
