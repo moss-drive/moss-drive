@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --mode dev",
+    "d2": "vite --mode prod",
     "build": "vite build --mode dev",
     "build-prod": "vite build --mode prod",
     "p": "npm run build && 4ever-hosting deploy",

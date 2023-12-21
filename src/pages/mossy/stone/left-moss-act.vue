@@ -2,7 +2,9 @@
   <div>
     <div class="mt-3 ta-r">
       <q-btn class="flex-1" color="primary" rounded @click="onPop(true)">BUY STONE</q-btn>
-      <q-btn class="flex-1 ml-4" outline color="primary" rounded @click="onPop()">SELL STONE</q-btn>
+      <q-btn v-if="balance > 0" class="flex-1 ml-4" outline color="primary" rounded @click="onPop()"
+        >SELL STONE</q-btn
+      >
     </div>
   </div>
 
@@ -59,9 +61,14 @@ import { debounce } from "@/utils/helper";
 import { MossHub } from "../../../utils/moss-hub";
 import { mapState } from "vuex";
 
+const initForm = {
+  amount: "",
+  slippage: 20,
+};
 export default {
   props: {
     stoneId: null,
+    balance: null,
   },
   data() {
     return {
@@ -70,8 +77,7 @@ export default {
       isBuy: false,
       buying: false,
       form: {
-        amount: "",
-        slippage: 20,
+        ...initForm,
       },
       calcLoading: false,
       calcData: null,
@@ -112,6 +118,8 @@ export default {
         window.open("/login");
         return;
       }
+      this.form = { ...initForm };
+      this.calcData = null;
       this.isBuy = isBuy;
       this.showPop = true;
     },
@@ -140,6 +148,9 @@ export default {
         val = parseInt(val);
         if (isNaN(val) || val < 1) val = "";
         else if (val % 1 > 0) val = Math.floor(val);
+        if (!this.isBuy) {
+          if (val > this.balance) val = this.balance;
+        }
         if (val != amount) {
           this.form.amount = val;
           amount = val;

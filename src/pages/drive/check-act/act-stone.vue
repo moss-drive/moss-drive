@@ -196,8 +196,14 @@ export default {
     };
   },
   watch: {
-    showPop(val) {
-      if (val) this.form.stoneName = this.checkItem.name;
+    checkItem(val) {
+      if (!val) return;
+      this.rowId = null;
+      this.tempImg = null;
+      this.form = {
+        ...initForm,
+        stoneName: val.name,
+      };
     },
   },
   created() {},
