@@ -17,7 +17,7 @@
               size="64"
             ></m-avatar>
             <div v-else class="no-header">{{ userInfo.firstLetter }}</div>
-            <div class="user-name">{{ userInfo.twitterName || userInfo.address }}</div>
+            <div class="user-name">{{ userInfo.twitterName || setAddr(userInfo.address) }}</div>
             <div class="user-account" v-if="userInfo.twitterUsername">
               @{{ userInfo.twitterUsername }}
             </div>
@@ -172,7 +172,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <act-move ref="move" :check-list="checked" />
+    <act-move ref="move" :check-list="checked" :moveFunc="onSave" />
   </div>
 </template>
 <script setup>
@@ -400,6 +400,8 @@ export default {
       } else {
         this.$refs.move.showPop = true;
       }
+    },
+    async onSave(path) {
       let paths = [];
       let result = this.rows.filter((item) => {
         return this.checked.some((curVal) => curVal === item.key);
@@ -410,7 +412,7 @@ export default {
       const bucketName = localStorage.moss_bucket;
       const params = {
         toBucketName: bucketName,
-        toFolderPath: "",
+        toFolderPath: path,
         type: "SHARE",
         paths: paths,
         shareId: this.$route.params.id,
@@ -419,6 +421,9 @@ export default {
     },
     afterLogin() {
       this.showLogin = false;
+    },
+    setAddr(addr = "") {
+      return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
     },
   },
 };
