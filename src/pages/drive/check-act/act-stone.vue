@@ -269,6 +269,7 @@ export default {
         this.$loading("Pending...");
         await tx.wait(1);
         this.isDone = true;
+        this.$bus.emit("stone-created");
       } catch (error) {
         console.log(error);
         this.saving = false;

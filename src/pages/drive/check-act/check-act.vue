@@ -70,7 +70,7 @@ export default {
         {
           name: "publish",
           icon: "stone",
-          disabled: !(len == 1 && isRootDir),
+          disabled: !(len == 1 && isRootDir && this.checkItem.type == "folder"),
         },
         {
           name: "share",
