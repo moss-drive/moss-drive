@@ -120,23 +120,25 @@
               </q-btn>
             </div>
             <q-breadcrumbs gutter="sm">
-              <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="getList('')" />
+              <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="goPath('')" />
               <q-breadcrumbs-el
                 v-for="it in breadLinks"
                 :key="it.folder"
                 :label="it.label"
                 :to="basePath"
-                @click.prevent="getList(it.folder)"
+                @click.prevent="goPath(it.folder)"
               />
             </q-breadcrumbs>
-            <div class="list-scroll" ref="scrollTargetRef">
+            <div id="fileList" class="list-scroll">
               <q-infinite-scroll
+                ref="scrollBox"
                 @load="onLoad"
                 :offset="250"
-                :scroll-target="scrollTargetRef"
-                :disable="true"
+                scroll-target="#fileList"
+                :disable="scrollDisable"
               >
                 <grid-list
+                  v-if="showGrid"
                   :rows="rows"
                   :loading="loading"
                   :checked="checked"
@@ -145,7 +147,10 @@
                   @row-click="onRowClick"
                 ></grid-list>
                 <template v-slot:loading>
-                  <div class="row justify-center q-my-md">
+                  <div
+                    class="row justify-center q-my-md"
+                    v-if="curFolder != '' && rows.length >= pageSize"
+                  >
                     <q-spinner-ios color="yellow" size="30px" />
                   </div>
                 </template>
@@ -219,15 +224,19 @@ export default {
     return {
       loading: false,
       rows: [],
+      tempRows: [],
       checkAll: false,
       checked: [],
       userInfo: {},
       code: "",
       showFileList: false,
+      showGrid: false,
       curFolder: "",
       shareName: "",
       stoneInfo: null,
       showLogin: false,
+      scrollDisable: false,
+      pageSize: 100,
     };
   },
   created() {
@@ -252,12 +261,31 @@ export default {
         const code = this.$route.query.code;
         if (code) {
           this.code = code;
-          this.getVaild();
+          this.showFileList = true;
         }
         return;
       } else {
-        this.getVaild();
+        this.showFileList = true;
       }
+    },
+    async onLoad(index, done) {
+      if (this.loading === false) {
+        this.loading = true;
+      }
+      if (this.curFolder == "") {
+        await this.getVaild();
+      } else {
+        await this.getMore();
+      }
+      done();
+    },
+    async goPath(path) {
+      this.curFolder = path;
+      this.$refs.scrollBox.reset();
+      this.$refs.scrollBox.trigger();
+      this.scrollDisable = false;
+      this.tempRows = [];
+      this.checked = [];
     },
     async getVaild() {
       const code = this.code;
@@ -266,10 +294,13 @@ export default {
         delimiter: "/",
         code: code,
         startAfter: "",
-        size: 100,
+        size: this.pageSize,
       };
       const { data } = await fetchShareVaild(params);
       const list = data.dataList;
+      if (list.length < this.pageSize) {
+        this.scrollDisable = true;
+      }
       const createdTime = new Date(data.createdAt * 1000).toUTCString();
       const stoneList = data.stoneList;
       if (stoneList.length > 0) {
@@ -286,33 +317,33 @@ export default {
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
-    async onLoad(index, done) {
-      // console.log(index);
-      // await this.getList();
-      setTimeout(() => {
-        console.log(this.rows);
-        // this.rows.push();
-      }, 2000);
-      done();
-    },
-    async getList(path) {
-      this.curFolder = path;
+    async getMore() {
+      let path = this.curFolder;
+      let startAfter = "";
+      if (this.tempRows.length > 0) {
+        startAfter = this.tempRows.slice(-1)[0].path;
+      }
       const params = {
         shareId: this.$route.params.id,
         relativePath: path,
         delimiter: "/",
-        startAfter: "",
-        size: 100,
+        startAfter: startAfter,
+        size: this.pageSize,
       };
       if (this.loading === false) {
         this.loading = true;
       }
       const { data } = await fetchShareList(params);
+      if (data.length < this.pageSize) {
+        this.scrollDisable = true;
+      } else {
+        this.scrollDisable = false;
+      }
       this.checked = [];
       this.setList(data);
     },
     setList(list) {
-      this.rows = list.map((it, index) => {
+      const addList = list.map((it, index) => {
         const prefix = it.type == "Folder";
         let name = it.path.replace(this.curFolder, "");
         let type = this.$bucket.getType(name);
@@ -329,8 +360,12 @@ export default {
           key: index,
         };
       });
+      this.tempRows.push(...addList);
+      this.rows = this.tempRows;
       this.loading = false;
+      this.showGrid = true;
     },
+
     goStone(id) {
       this.$router.push({ path: "/mossy/stone", query: { id: id } });
     },
@@ -339,7 +374,7 @@ export default {
         return;
       }
       this.loading = index;
-      this.getList(row.path);
+      this.goPath(row.path);
     },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
@@ -372,7 +407,7 @@ export default {
       result.forEach((item) => {
         paths.push(item.path);
       });
-      const bucketName = `moss-bucket${this.$inDev ? "-dev" : ""}-` + this.uid.slice(-10);
+      const bucketName = localStorage.moss_bucket;
       const params = {
         toBucketName: bucketName,
         toFolderPath: "",
@@ -585,12 +620,12 @@ export default {
         }
         .list-bottom {
           padding: 24px;
-          // overflow: hidden;
+          overflow: hidden;
           flex: 1;
           .list-scroll {
             max-height: 100%;
-            // max-height: 900px;
             overflow: auto;
+            padding-bottom: 50px;
           }
         }
       }
