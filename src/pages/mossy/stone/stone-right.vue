@@ -3,32 +3,38 @@
     <div class="bg-card-2 mb-5" v-if="!chatBlowUp">
       <div class="fw-b fz-18">Author</div>
       <div class="ta-c mt-5">
-        <q-avatar size="60px" v-if="info.avatarUrl">
-          <img :src="info.avatarUrl" />
+        <q-avatar size="60px" v-if="twitterInfo.avatarUrl">
+          <img :src="twitterInfo.avatarUrl" />
         </q-avatar>
         <div v-else class="d-center">
-          <m-avatar v-if="info.twitterId" :hash="info.twitterId" :size="60"></m-avatar>
+          <m-avatar
+            v-if="twitterInfo.twitterId"
+            :hash="twitterInfo.twitterId"
+            :size="60"
+          ></m-avatar>
           <q-skeleton v-else type="circle" size="60px" />
         </div>
         <div class="pa-2"></div>
-        <div v-if="!info.name">
+        <div v-if="!twitterInfo.name">
           <q-skeleton type="title" width="150px" class="m-auto" />
           <q-skeleton type="text-subtitle1" width="120px" class="mt-2 m-auto" />
         </div>
         <template v-else>
-          <div class="fz-20 fw-b">{{ info.name || "-" }}</div>
-          <div class="op-5 fz-14">@{{ info.username || "-" }}</div>
+          <div class="fz-20 fw-b" style="overflow: hidden; text-overflow: ellipsis">
+            {{ twitterInfo.name || "-" }}
+          </div>
+          <div class="op-5 fz-14">@{{ twitterInfo.username || "-" }}</div>
         </template>
       </div>
       <div class="pa-2"></div>
-      <div v-if="!info.name">
+      <div v-if="!twitterInfo.name">
         <q-skeleton height="100px" square />
       </div>
       <template v-else>
-        <div class="line-2 fz-14 op-9">{{ info.followers }} followers</div>
+        <div class="line-2 fz-14 op-9">{{ twitterInfo.followers }} followers</div>
         <div class="mt-5">
           <q-btn
-            :href="`https://twitter.com/${info.username}`"
+            :href="`https://twitter.com/${twitterInfo.username}`"
             target="_blank"
             flat
             rounded
@@ -41,7 +47,7 @@
       </template>
     </div>
 
-    <div class="right-chat bg-card-2 flex-1">
+    <div class="right-chat bg-card-2 flex-1 ov-h">
       <!-- <div class="fw-b fz-18">Chat</div> -->
       <right-chat :info="info" @blowUp="handleBlowUp"></right-chat>
     </div>
@@ -60,7 +66,11 @@ export default {
       chatBlowUp: false,
     };
   },
-  computed: {},
+  computed: {
+    twitterInfo() {
+      return this.info.twitterInfo || {};
+    },
+  },
 
   methods: {
     handleBlowUp() {
