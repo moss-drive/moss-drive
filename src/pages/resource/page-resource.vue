@@ -31,7 +31,7 @@
         <div class="usage-container">
           <div class="al-c">
             <span class="fz-20 fw-b">Usage & Free Resource</span>
-            <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" />
+            <!-- <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" /> -->
           </div>
 
           <template v-for="item in transformUsage" :key="item.name">
@@ -342,7 +342,8 @@ export default {
   .conversion-btn {
     padding: 12px 16px;
     border-radius: 4px;
-    border: 1px solid #1eefa4;
+    border: 1px solid rgba(30, 239, 164, 0.25);
+
     color: #1eefa4;
   }
 

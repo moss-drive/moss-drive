@@ -108,7 +108,7 @@ export default {
   }
 }
 .coin-label.active {
-  border: 1px solid #1eefa4;
+  border: 1px solid rgba(30, 239, 164, 0.25);
   background: #102230;
   .name {
     font-weight: bold;

@@ -22,8 +22,8 @@ import UsageInfo from "./usage-info.vue";
     <a href="/" class="">
       <img src="/img/logo.svg" height="80" />
     </a>
-    <div class="q-pa-md q-mb-lg ta-c">
-      <q-btn href="/mossy" target="_blank" rounded class="btn-mossy">
+    <div class="q-pa-md ta-c px-6">
+      <q-btn href="/mossy" target="_blank" rounded class="btn-mossy" style="width: 100%">
         <img src="/img/mossy.png" width="40" />
         <span class="fz-18 ml-2">Mossyland</span>
       </q-btn>
@@ -39,14 +39,18 @@ import UsageInfo from "./usage-info.vue";
         :to="it.to"
         :active="isActive(it)"
       >
-        <q-item-section v-if="it.icon" avatar>
-          <!-- <q-icon :name="it.icon" /> -->
+        <!-- <q-item-section v-if="it.icon" avatar>
           <icon-drawer :name="it.icon" :active="isActive(it)" />
         </q-item-section>
 
         <q-item-section>
           <q-item-label>{{ it.title }}</q-item-label>
-        </q-item-section>
+        </q-item-section> -->
+
+        <div class="al-c px-2">
+          <icon-drawer v-if="it.icon" :name="it.icon" :active="isActive(it)" />
+          <q-item-label class="ml-2 fz-14">{{ it.title }}</q-item-label>
+        </div>
       </q-item>
     </q-list>
 

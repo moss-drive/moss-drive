@@ -1,5 +1,5 @@
 <template>
-  <div class="pos-r search-page">
+  <div class="pos-r search-page px-6">
     <div class="pos-r mt-5 al-c search-container bdrs-100">
       <img src="/img/mossy/ic-search-white.svg" width="24" class="y-center" style="left: 8px" />
       <input
@@ -7,20 +7,18 @@
         type="text"
         id="searchIpt"
         v-model="searchKey"
-        @input="handleInput"
+        @keyup.enter="handleEnter"
         placeholder="Enter stone keywords"
       />
       <img
         class="ml-auto cursor-p"
-        @click="searchKey = ''"
+        @click="handleBack"
         width="24"
         src="/img/mossy/ic-close.svg"
         alt=""
       />
     </div>
-    <div class="search-info fw-b fz-14 mt-6" v-show="searchKey">
-      Search results for “{{ searchKey }}”
-    </div>
+    <div class="search-info fw-b fz-14 mt-6">Search results for "{{ searchKey }}"</div>
 
     <q-infinite-scroll @load="onLoad" :offset="250" :disable="curRows.length < size">
       <q-table
@@ -43,11 +41,11 @@
         <template v-slot:body="props">
           <q-tr :props="props" @click="onRow(props.row, props.rowIndex)">
             <q-td key="stoneId" :props="props">
-              <span class="fz-14"> {{ props.row.stoneId }}</span>
+              <span class="fz-14" style="color: #1eefa4"> #{{ props.row.stoneId }}</span>
             </q-td>
             <q-td key="stoneName" :props="props">
               <div class="al-c">
-                <div class="stone-cover">
+                <div class="stone-cover my-4">
                   <q-img :src="props.row.stoneAvatar" width="64px" :ratio="1" />
                 </div>
                 <span class="ml-4 fz-14 fw-b">
@@ -60,6 +58,9 @@
               <span class="fz-14">
                 {{ props.row.twitterName }}
               </span>
+            </q-td>
+            <q-td key="arrow" :props="props">
+              <img width="24" src="/img/mossy/icon/arrows.svg" alt="" />
             </q-td>
           </q-tr>
         </template>
@@ -87,7 +88,7 @@ export default {
       columns: [
         {
           name: "stoneId",
-          label: "Stone Id",
+          label: "Stone ID",
           align: "left",
           field: "stoneId",
         },
@@ -103,6 +104,12 @@ export default {
           label: "Author",
           field: "twitterName",
         },
+        {
+          name: "arrow",
+          align: "left",
+          label: "",
+          field: "arrow",
+        },
       ],
       rows: [],
       curRows: [],
@@ -113,13 +120,18 @@ export default {
       emptyImg: emptyImg,
     };
   },
+  created() {
+    this.searchKey = this.$route.query.w;
+    this.handleEnter();
+  },
   methods: {
     async onLoad(index, done) {
       await this.handleSearch();
       done();
     },
-    handleInput() {
-      if (!this.searchKey) return;
+    handleEnter() {
+      if (!this.searchKey) return this.handleBack();
+      this.$router.replace(`/mossy/search?w=${this.searchKey}`);
       this.page = 1;
       this.curRows = this.rows = [];
       debounce(() => {
@@ -147,7 +159,11 @@ export default {
       this.tableLoading = false;
     },
     onRow(it) {
-      window.open(location.pathname + `/stone?id=${it.id}`);
+      window.open(location.origin + `/mossy/stone?id=${it.id}`);
+    },
+    handleBack() {
+      this.searchKey = "";
+      this.$router.push("/mossy");
     },
   },
 };

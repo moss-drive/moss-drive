@@ -15,7 +15,7 @@ export function fetchUsage() {
 }
 
 export function fetchBillList(page, size = 20) {
-  return request.get("$pay//assets/record/list", {
+  return request.get("$pay/assets/record/list", {
     params: {
       page,
       size,

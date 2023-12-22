@@ -80,7 +80,7 @@ $corner: 36px;
             <p class="fz-18 fw-b">{{ item.stoneName }}</p>
             <div class="mt-1 fz-14 op-8">{{ item.twitterName }}</div>
             <q-btn color="primary" rounded class="full-width mt-4" @click="onRow(item)"
-              >{{ formatEther(item.price) }} ETH</q-btn
+              >{{ formatEther(item.worth) }} ETH</q-btn
             >
           </div>
         </div>
@@ -118,7 +118,14 @@ $corner: 36px;
             </td>
             <td class="text-left fw-b">{{ formatEther(item.worth) }} ETH</td>
             <td class="text-left fw-b">{{ formatEther(item.price) }} ETH</td>
-            <td class="text-left fw-b">{{ item.totalSupply }}</td>
+            <td class="text-left fw-b">
+              <div class="al-c space-btw">
+                <span class="fw-b">
+                  {{ item.totalSupply }}
+                </span>
+                <img width="24" src="/img/mossy/icon/arrows.svg" alt="" />
+              </div>
+            </td>
           </tr>
           <tr class="empty-tr">
             <td></td>
