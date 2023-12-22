@@ -102,7 +102,6 @@ export default {
   },
   watch: {
     rows() {
-      console.log(this.rows);
       this.hoverIdx = -1;
     },
   },
