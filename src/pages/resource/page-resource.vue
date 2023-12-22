@@ -31,7 +31,7 @@
         <div class="usage-container">
           <div class="al-c">
             <span class="fz-20 fw-b">Usage & Free Resource</span>
-            <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" />
+            <!-- <img class="ml-1 cursor-p" width="24" src="/img/resource/help.svg" alt="" /> -->
           </div>
 
           <template v-for="item in transformUsage" :key="item.name">

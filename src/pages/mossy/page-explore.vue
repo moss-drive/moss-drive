@@ -16,40 +16,38 @@ import ExploreList from "./explore/explore-list.vue";
 </script>
 
 <template>
-  <div v-show="!searchfocus">
-    <div class="ta-c bg-top pt-9 pb-9">
-      <div class="d-ib pos-r">
-        <div class="fz-25 fw-b">Welcome to Mossyland</div>
-        <div class="pos-r mt-5 d-ib">
-          <img src="/img/mossy/ic-search.svg" width="32" class="y-center" style="left: 8px" />
-          <input
-            class="bdrs-100 m-search"
-            type="text"
-            @focus="searchfocus = true"
-            placeholder="Enter stone keywords"
-          />
-        </div>
+  <div class="ta-c bg-top pt-9 pb-9">
+    <div class="d-ib pos-r">
+      <div class="fz-25 fw-b">Welcome to Mossyland</div>
+      <div class="pos-r mt-5 d-ib">
+        <img src="/img/mossy/ic-search.svg" width="32" class="y-center" style="left: 8px" />
+        <input
+          class="bdrs-100 m-search"
+          type="text"
+          v-model="searchKey"
+          @keyup.enter="handleSearch"
+          placeholder="Enter stone keywords"
+        />
       </div>
     </div>
-    <div class="main-wrap">
-      <ExploreList></ExploreList>
-    </div>
   </div>
-
-  <search-page ref="searchPage" v-show="searchfocus"></search-page>
+  <div class="main-wrap">
+    <ExploreList></ExploreList>
+  </div>
+  <!-- <search-page ref="searchPage" v-show="searchfocus"></search-page> -->
 </template>
 
 <script>
 import { useQuasar } from "quasar";
 
-import SearchPage from "./explore/search-page.vue";
+// import SearchPage from "./explore/search-page.vue";
 
 export default {
   data() {
     const { screen } = useQuasar();
     return {
       screen,
-      searchfocus: false,
+      searchKey: "",
     };
   },
   computed: {
@@ -57,16 +55,15 @@ export default {
       return this.screen.width < 690;
     },
   },
-  components: {
-    SearchPage,
-  },
-  watch: {
-    searchfocus(val) {
-      if (val) {
-        this.$nextTick(() => {
-          document.getElementById("searchIpt").focus();
-        });
-      }
+  methods: {
+    handleSearch() {
+      if (!this.searchKey) return;
+      this.$router.push({
+        path: "/mossy/search",
+        query: {
+          w: this.searchKey,
+        },
+      });
     },
   },
 };

@@ -118,7 +118,14 @@ $corner: 36px;
             </td>
             <td class="text-left fw-b">{{ formatEther(item.worth) }} ETH</td>
             <td class="text-left fw-b">{{ formatEther(item.price) }} ETH</td>
-            <td class="text-left fw-b">{{ item.totalSupply }}</td>
+            <td class="text-left fw-b">
+              <div class="al-c space-btw">
+                <span class="fw-b">
+                  {{ item.totalSupply }}
+                </span>
+                <img width="24" src="/img/mossy/icon/arrows.svg" alt="" />
+              </div>
+            </td>
           </tr>
           <tr class="empty-tr">
             <td></td>
