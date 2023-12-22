@@ -68,7 +68,7 @@
               </svg>
               Sell
             </div>
-            <div v-else-if="props.row.action == 'Bonus'" class="act-box sell">
+            <div v-else-if="props.row.action == 'REWARD'" class="act-box sell">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -95,7 +95,7 @@
             </div>
           </q-td>
           <q-td key="value" :props="props">
-            {{ (props.row.action == "Bought" ? "+ " : "- ") + props.row.amounts + " ETH" }}
+            {{ (props.row.action == "Bought" ? "+" : "-") + props.row.amounts + " ETH" }}
           </q-td>
           <q-td key="txHash" :props="props">
             <a :href="props.row.href" target="_blank" class="tx-hash">
