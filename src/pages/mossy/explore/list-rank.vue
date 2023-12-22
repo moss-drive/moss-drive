@@ -102,7 +102,7 @@ $corner: 36px;
         <template v-for="(item, index) in otherList" :key="item.id">
           <tr class="bg-dark2 q-touch pos-r" @click="onRow(item)">
             <td class="text-left">
-              <b class="fz-18">{{ index + 1 }}</b>
+              <b class="fz-18">{{ index + 3 }}</b>
             </td>
             <td class="text-left">
               <div class="al-c">
