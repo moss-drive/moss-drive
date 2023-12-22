@@ -166,6 +166,8 @@ export const getTxLink = (hash, chainId) => {
     pre = inDev ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/";
   } else if (chainId == "zkSync") {
     pre = inDev ? "https://goerli.explorer.zksync.io/tx/" : "https://explorer.zksync.io/tx/";
+  } else if (chainId == "Optimism") {
+    pre = "https://optimistic.etherscan.io/tx/";
   }
   return pre + hash;
 };
