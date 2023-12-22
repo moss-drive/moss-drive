@@ -183,9 +183,6 @@ export default {
       this.loading = false;
     },
     onScroll({ index, to, direction, ref }) {
-      console.log(index);
-      console.log(to);
-      console.log(direction);
       const lastIndex = this.rows.length - 1;
       if (!this.loading && this.hasNewPage && index === lastIndex) {
         this.page += 1;
