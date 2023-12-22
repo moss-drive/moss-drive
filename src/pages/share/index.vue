@@ -120,16 +120,20 @@
                 <div>Save to My Moss</div>
               </q-btn>
             </div>
-            <q-breadcrumbs gutter="sm">
-              <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="goPath('')" />
-              <q-breadcrumbs-el
-                v-for="it in breadLinks"
-                :key="it.folder"
-                :label="it.label"
-                :to="basePath"
-                @click.prevent="goPath(it.folder)"
-              />
-            </q-breadcrumbs>
+            <div class="al-c">
+              <q-breadcrumbs gutter="sm">
+                <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="goPath('')" />
+                <q-breadcrumbs-el
+                  v-for="it in breadLinks"
+                  :key="it.folder"
+                  :label="it.label"
+                  :to="basePath"
+                  @click.prevent="goPath(it.folder)"
+                />
+              </q-breadcrumbs>
+              <q-spinner-ios v-show="loading" class="ml-3" color="yellow" size="15px" />
+            </div>
+
             <div id="fileList" class="list-scroll">
               <q-infinite-scroll
                 ref="scrollBox"
@@ -194,7 +198,7 @@ export default {
       uid: (s) => s.loginData.uuid,
     }),
     basePath() {
-      return "/mossy/stone?id=" + this.id;
+      return "/";
     },
     breadLinks() {
       let arr = this.curFolder.split("/");
@@ -289,7 +293,7 @@ export default {
       setTimeout(() => {
         this.$refs.scrollBox.reset();
         this.$refs.scrollBox.trigger();
-      }, 100);
+      }, 500);
     },
     async getVaild() {
       const code = this.code;
