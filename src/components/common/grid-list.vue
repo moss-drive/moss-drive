@@ -113,10 +113,7 @@ export default {
       this.$emit("row-check", row);
     },
     getIcon(row) {
-      if (row.type == "image" && row.url) {
-        return row.url;
-      }
-      return `/img/driver/icon_${row.type}.png`;
+      return row.icon || `/img/driver/icon_${row.type}.png`;
     },
     onRow(row, index) {
       if (this.checked && this.hasTouch && !this.isCheck(row) && this.hoverIdx != index) {

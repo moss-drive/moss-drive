@@ -145,9 +145,14 @@ export default {
         });
         let { type } = obj;
         if (stone) type = "stone";
+        let icon = `/img/driver/icon_${type}.png`;
+        if (obj.url && obj.size < 1024 * 500) {
+          icon = obj.url;
+        }
         return {
           ...obj,
           type,
+          icon,
         };
       });
     },

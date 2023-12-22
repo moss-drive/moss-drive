@@ -86,7 +86,7 @@ export default {
         {
           name: "delete",
           icon: "trash",
-          disabled: len == 1 && this.checkItem.type == "stone",
+          disabled: this.checkList.find((it) => it.type == "stone"),
         },
       ];
     },

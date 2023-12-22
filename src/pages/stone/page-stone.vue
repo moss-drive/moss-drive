@@ -32,7 +32,16 @@
           </div>
           <div class="mt-4">
             <p class="fw-b fz-20">{{ it.stoneName }}</p>
-            <p class="mt-2 op-8 line-1">{{ it.bio || "-" }}</p>
+            <div class="mt-2 op-8 line-1">
+              <p v-if="it.stoneId">
+                Stone ID <span class="color-1">#{{ it.stoneId }}</span>
+              </p>
+              <div class="al-c" v-else>
+                <span>Transaction in progress</span>
+                <img class="ml-4 mr-1 d-b" src="/img/common/ic-clock.svg" width="14" />
+                <span>{{ getMin(it.createdAt) }}</span>
+              </div>
+            </div>
           </div>
           <div class="mt-3 al-c">
             <q-btn
@@ -69,6 +78,13 @@ export default {
     this.getList();
   },
   methods: {
+    getMin(time) {
+      let min = Math.round((Date.now() / 1e3 - time) / 60);
+      if (min > 60) {
+        return Math.floor(min / 60) + "h " + (min % 60) + "mins";
+      }
+      return min + "mins";
+    },
     async getList() {
       try {
         const { data } = await this.$http.get("/stone");
