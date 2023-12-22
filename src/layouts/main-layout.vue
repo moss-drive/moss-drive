@@ -39,7 +39,7 @@ import MainDrawer from "./main/main-drawer.vue";
       </q-toolbar>
     </q-header>
 
-    <q-drawer :width="280" class="bg-primary" v-model="leftDrawerOpen" show-if-above>
+    <q-drawer :width="240" class="bg-primary" v-model="leftDrawerOpen" show-if-above>
       <main-drawer />
     </q-drawer>
 
