@@ -70,6 +70,10 @@ const routes = [
         path: "collected",
         component: () => import("./mossy/page-collected.vue"),
       },
+      {
+        path: "search",
+        component: () => import("./mossy/explore/search-page.vue"),
+      },
     ],
   },
   {
