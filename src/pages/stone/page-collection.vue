@@ -1,6 +1,15 @@
 <template>
   <div class="q-pa-md">
+    <empty-component
+      v-if="rows.length == 0"
+      style="padding-top: 120px"
+      width="280"
+      :emptyImg="emptyImg"
+      :message="emptyMessage"
+    />
     <q-table
+      v-else
+      class="my-sticky-header-table"
       :loading="loading"
       :rows="rows"
       :columns="columns"
@@ -9,6 +18,10 @@
       flat
       hide-pagination
       :rows-per-page-options="[0]"
+      virtual-scroll
+      :virtual-scroll-slice-size="10"
+      :virtual-scroll-sticky-size-start="48"
+      @virtual-scroll="onScroll"
     >
       <!-- <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -65,14 +78,6 @@
           </q-td>
         </q-tr>
       </template>
-      <template v-slot:no-data>
-        <empty-component
-          style="padding-top: 120px"
-          width="280"
-          :emptyImg="emptyImg"
-          :message="emptyMessage"
-        />
-      </template>
     </q-table>
   </div>
 </template>
@@ -117,42 +122,28 @@ export default {
         size: this.size,
       };
       const { data } = await fetchCollections(params);
+      if (data.length < this.size) {
+        this.hasNewPage = false;
+      } else {
+        this.hasNewPage = true;
+      }
       data.forEach((row, index) => {
         row.index = index + 1;
       });
-      this.rows = data;
+      this.rows.push(...data);
     },
-    onScroll() {
-      return;
-      const data = this.rows;
-      data.push({
-        stoneName: "1213",
-        createdAt: 1702279706539,
-        action: "SOLD",
-        value: 44,
-        txHash: "Ox222...222",
-      });
-      data.forEach((row, index) => {
-        row.index = index + 1;
-      });
-      this.rows = data;
-      console.log("loading");
+    onScroll({ index, to, direction, ref }) {
+      console.log(index);
+      console.log(to);
+      console.log(direction);
+      const lastIndex = this.rows.length - 1;
+      if (!this.loading && this.hasNewPage && index === lastIndex) {
+        this.page += 1;
+        this.$nextTick(() => {
+          this.getList();
+        });
+      }
     },
-    // onScroll({ to, ref }) {
-    //   const lastIndex = rows.value.length - 1;
-
-    //   if (loading.value !== true && nextPage.value < lastPage && to === lastIndex) {
-    //     loading.value = true;
-
-    //     setTimeout(() => {
-    //       nextPage.value++;
-    //       nextTick(() => {
-    //         ref.refresh();
-    //         loading.value = false;
-    //       });
-    //     }, 500);
-    //   }
-    // },
     goStone(row, index) {
       // this.$router.push({ path: "/mossy/stone", query: { id: row.id } });
 
@@ -183,4 +174,25 @@ export default {
     line-height: 18px; /* 128.571% */
   }
 }
+</style>
+<style lang="sass">
+.my-sticky-header-table
+  /* height or max-height is important */
+  max-height:90vh
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #000
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
 </style>

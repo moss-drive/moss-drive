@@ -174,6 +174,7 @@
       </q-card>
     </q-dialog>
     <act-move ref="move" :check-list="checked" :moveFunc="onSave" />
+    <iframe class="d-n" @load="toDrive" ref="iframe" src="/drive" frameborder="0"></iframe>
   </div>
 </template>
 <script setup>
@@ -407,6 +408,7 @@ export default {
       }
     },
     async onSave(path) {
+      console.log(path.prefix);
       let paths = [];
       let result = this.rows.filter((item) => {
         return this.checked.some((curVal) => curVal === item.key);
@@ -417,18 +419,27 @@ export default {
       const bucketName = localStorage.moss_bucket;
       const params = {
         toBucketName: bucketName,
-        toFolderPath: path,
+        toFolderPath: path.prefix,
         type: "SHARE",
         paths: paths,
         shareId: this.$route.params.id,
       };
-      const { data } = await fetchStoneSave(params);
+      try {
+        const { data } = await fetchStoneSave(params);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        // this.$refs.move.showPop = false;
+      }
     },
     afterLogin() {
       this.showLogin = false;
     },
     setAddr(addr = "") {
       return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
+    },
+    toDrive() {
+      console.log(1111);
     },
   },
 };
