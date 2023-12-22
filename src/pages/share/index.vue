@@ -279,15 +279,17 @@ export default {
       } else {
         await this.getMore();
       }
-      done();
+      done(true);
     },
     async goPath(path) {
       this.curFolder = path;
-      this.$refs.scrollBox.reset();
-      this.$refs.scrollBox.trigger();
       this.scrollDisable = false;
       this.tempRows = [];
       this.checked = [];
+      setTimeout(() => {
+        this.$refs.scrollBox.reset();
+        this.$refs.scrollBox.trigger();
+      }, 100);
     },
     async getVaild() {
       const code = this.code;
@@ -316,7 +318,7 @@ export default {
       if (stoneList.length > 0) {
         this.stoneInfo = stoneList[0];
       }
-      if (list.length > 1) {
+      if (list.length > 1 || shareName.length > 12) {
         shareName += "...";
       }
       this.shareName = shareName;
