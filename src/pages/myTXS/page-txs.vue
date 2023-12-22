@@ -1,16 +1,25 @@
 <template>
   <div class="q-pa-md">
+    <empty-component
+      v-if="rows.length == 0"
+      style="padding-top: 120px"
+      width="280"
+      :emptyImg="emptyImg"
+      :message="emptyMessage"
+    />
     <q-table
+      v-else
+      class="my-sticky-header-table"
       :loading="loading"
       :rows="rows"
       :columns="columns"
-      row-key="name"
+      row-key="id"
       flat
       hide-pagination
       :rows-per-page-options="[0]"
       virtual-scroll
-      :virtual-scroll-item-size="50"
-      :virtual-scroll-sticky-size-start="100"
+      :virtual-scroll-slice-size="10"
+      :virtual-scroll-sticky-size-start="48"
       @virtual-scroll="onScroll"
     >
       <template v-slot:body="props">
@@ -68,7 +77,7 @@
               </svg>
               Sell
             </div>
-            <div v-else-if="props.row.action == 'Bonus'" class="act-box sell">
+            <div v-else-if="props.row.action == 'REWARD'" class="act-box sell">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -95,7 +104,7 @@
             </div>
           </q-td>
           <q-td key="value" :props="props">
-            {{ (props.row.action == "Bought" ? "+ " : "- ") + props.row.amounts + " ETH" }}
+            {{ (props.row.action == "Bought" ? "-" : "+") + props.row.amounts + " ETH" }}
           </q-td>
           <q-td key="txHash" :props="props">
             <a :href="props.row.href" target="_blank" class="tx-hash">
@@ -103,14 +112,6 @@
             </a>
           </q-td>
         </q-tr>
-      </template>
-      <template v-slot:no-data>
-        <empty-component
-          style="padding-top: 120px"
-          width="280"
-          :emptyImg="emptyImg"
-          :message="emptyMessage"
-        />
       </template>
     </q-table>
   </div>
@@ -151,7 +152,8 @@ export default {
       emptyImg,
       emptyMessage: "As empty as a cloudless sky",
       page: 1,
-      size: 10,
+      size: 100,
+      hasNewPage: false,
     };
   },
   created() {
@@ -163,47 +165,35 @@ export default {
         page: this.page,
         size: this.size,
       };
+      this.loading = true;
       const { data } = await fetchTransaction(params);
-      data.forEach((row, index) => {
+      if (data.length < this.size) {
+        this.hasNewPage = false;
+      } else {
+        this.hasNewPage = true;
+      }
+      this.rows.push(...data);
+      this.rows.forEach((row, index) => {
         let amounts = BigNumber.from(row.value);
         row.index = index + 1;
         row.amounts = amounts / 1e18;
         row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
         row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
       });
-      this.rows = data;
+      this.loading = false;
     },
-    onScroll() {
-      return;
-      const data = this.rows;
-      data.push({
-        stoneName: "1213",
-        createdAt: 1702279706539,
-        action: "SOLD",
-        value: 44,
-        txHash: "Ox222...222",
-      });
-      data.forEach((row, index) => {
-        row.index = index + 1;
-      });
-      this.rows = data;
-      console.log("loading");
+    onScroll({ index, to, direction, ref }) {
+      console.log(index);
+      console.log(to);
+      console.log(direction);
+      const lastIndex = this.rows.length - 1;
+      if (!this.loading && this.hasNewPage && index === lastIndex) {
+        this.page += 1;
+        this.$nextTick(() => {
+          this.getList();
+        });
+      }
     },
-    // onScroll({ to, ref }) {
-    //   const lastIndex = rows.value.length - 1;
-
-    //   if (loading.value !== true && nextPage.value < lastPage && to === lastIndex) {
-    //     loading.value = true;
-
-    //     setTimeout(() => {
-    //       nextPage.value++;
-    //       nextTick(() => {
-    //         ref.refresh();
-    //         loading.value = false;
-    //       });
-    //     }, 500);
-    //   }
-    // },
   },
 };
 </script>
@@ -239,4 +229,25 @@ export default {
     }
   }
 }
+</style>
+<style lang="sass">
+.my-sticky-header-table
+  /* height or max-height is important */
+  max-height:90vh
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #000
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
 </style>

@@ -17,7 +17,7 @@
               size="64"
             ></m-avatar>
             <div v-else class="no-header">{{ userInfo.firstLetter }}</div>
-            <div class="user-name">{{ userInfo.twitterName || userInfo.address }}</div>
+            <div class="user-name">{{ userInfo.twitterName || setAddr(userInfo.address) }}</div>
             <div class="user-account" v-if="userInfo.twitterUsername">
               @{{ userInfo.twitterUsername }}
             </div>
@@ -27,7 +27,6 @@
             <q-form>
               <input
                 class="valid-code"
-                type="password"
                 placeholder="Please enter the retrieval code"
                 v-model="code"
               />
@@ -41,19 +40,21 @@
               </div>
             </q-form>
           </div>
-          <div class="stone-info" v-if="stoneInfo">
-            <div class="stone-cover">
-              <q-img :src="stoneInfo.avatar" width="120px" :ratio="1" />
-            </div>
-            <div class="stone-name">
-              <div class="ta-l stone-text">
-                {{ stoneInfo.stoneName }}
+          <div class="stone-info-box" v-if="stoneInfo">
+            <div class="stone-info">
+              <div class="stone-cover">
+                <q-img :src="stoneInfo.avatar" width="120px" :ratio="1" />
               </div>
-              <q-btn round class="mt-2">
-                <q-avatar size="40px" @click="goStone(stoneInfo.id)">
-                  <img src="@/assets/imgs/share/btn-right.png" />
-                </q-avatar>
-              </q-btn>
+              <div class="stone-name">
+                <div class="ta-l stone-text">
+                  {{ stoneInfo.stoneName }}
+                </div>
+                <q-btn round class="mt-2">
+                  <q-avatar size="40px" @click="goStone(stoneInfo.id)">
+                    <img src="@/assets/imgs/share/btn-right.png" />
+                  </q-avatar>
+                </q-btn>
+              </div>
             </div>
           </div>
         </div>
@@ -172,7 +173,8 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <act-move ref="move" :check-list="checked" />
+    <act-move ref="move" :check-list="checked" :moveFunc="onSave" />
+    <iframe class="d-n" @load="toDrive" ref="iframe" src="/drive" frameborder="0"></iframe>
   </div>
 </template>
 <script setup>
@@ -303,9 +305,7 @@ export default {
       }
       const createdTime = new Date(data.createdAt * 1000).toUTCString();
       const stoneList = data.stoneList;
-      if (stoneList.length > 0) {
-        this.stoneInfo = stoneList[0];
-      }
+
       this.createdTime = createdTime;
       this.setList(list);
       this.handlerDateDurationCurrent(data.expireAt);
@@ -313,7 +313,13 @@ export default {
       if (shareName.length > 12) {
         shareName = shareName.substring(0, 12);
       }
-      this.shareName = shareName + "...";
+      if (stoneList.length > 0) {
+        this.stoneInfo = stoneList[0];
+      }
+      if (list.length > 1) {
+        shareName += "...";
+      }
+      this.shareName = shareName;
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
@@ -400,6 +406,9 @@ export default {
       } else {
         this.$refs.move.showPop = true;
       }
+    },
+    async onSave(path) {
+      console.log(path.prefix);
       let paths = [];
       let result = this.rows.filter((item) => {
         return this.checked.some((curVal) => curVal === item.key);
@@ -410,15 +419,27 @@ export default {
       const bucketName = localStorage.moss_bucket;
       const params = {
         toBucketName: bucketName,
-        toFolderPath: "",
+        toFolderPath: path.prefix,
         type: "SHARE",
         paths: paths,
         shareId: this.$route.params.id,
       };
-      const { data } = await fetchStoneSave(params);
+      try {
+        const { data } = await fetchStoneSave(params);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        // this.$refs.move.showPop = false;
+      }
     },
     afterLogin() {
       this.showLogin = false;
+    },
+    setAddr(addr = "") {
+      return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
+    },
+    toDrive() {
+      console.log(1111);
     },
   },
 };
@@ -459,10 +480,11 @@ export default {
         text-align: center;
         padding: 0 24px;
         z-index: 99;
+        max-width: 282px;
+        word-break: break-all;
         .user-info {
           padding-bottom: 24px;
-          border-bottom: 1px solid #334155;
-          margin-bottom: 24px;
+
           .user-header {
             width: 64px;
             height: 64px;
@@ -524,6 +546,7 @@ export default {
             align-items: center;
             border-radius: 25px;
             background: #fff;
+            text-align: center;
             &::placeholder {
               color: #94a3b8;
               font-family: SF Pro Text;
@@ -543,32 +566,38 @@ export default {
             margin-top: 16px;
           }
         }
-        .stone-info {
-          display: flex;
-          padding: 16px;
-          gap: 16px;
-          border-radius: 12px;
-          border: 1px solid #334155;
-          max-width: 282px;
-          .stone-name {
+        .stone-info-box {
+          border-top: 1px solid #334155;
+          .stone-info {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-end;
-            word-break: break-all;
-            color: #fff;
-            font-family: SF Pro Text;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 18px; /* 112.5% */
-            text-align: right;
-            .stone-text {
-              display: -webkit-box;
-              overflow: hidden;
-              -webkit-line-clamp: 4;
-              -webkit-box-orient: vertical;
-              text-overflow: ellipsis;
+            padding: 16px;
+            gap: 16px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            max-width: 282px;
+            margin-top: 24px;
+            background-color: #0f172a;
+
+            .stone-name {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: flex-end;
+              word-break: break-all;
+              color: #fff;
+              font-family: SF Pro Text;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 18px; /* 112.5% */
+              text-align: right;
+              .stone-text {
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+              }
             }
           }
         }
