@@ -26,6 +26,11 @@ export class MossHub {
   }
 
   async checkNet() {
+    try {
+      await this.getWalletAddr();
+    } catch (error) {
+      throw new Error("Please connect your wallet");
+    }
     const id = VITE_MOSS_CHAINID;
     if (this.chainId != id) {
       return this.switchNet(id);
