@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-flex" style="height: 100%">
     <div class="bg-card-2">
       <div class="fw-b fz-18">Author</div>
       <div class="ta-c mt-5">
@@ -41,19 +41,25 @@
       </template>
     </div>
 
-    <!-- <div class="bg-card-2 mt-5">
-      <div class="fw-b fz-18">Chat</div>
-    </div> -->
+    <div class="bg-card-2 mt-5 flex-1">
+      <!-- <div class="fw-b fz-18">Chat</div> -->
+
+      <right-chat></right-chat>
+    </div>
   </div>
 </template>
 
 <script>
+import RightChat from "./right-chat.vue";
 // import { mapState } from "vuex";
-
 export default {
   props: {
     info: Object,
   },
   computed: {},
+
+  components: {
+    RightChat,
+  },
 };
 </script>
