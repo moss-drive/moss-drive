@@ -1,6 +1,6 @@
 <template>
   <div class="h-flex" style="height: 100%">
-    <div class="bg-card-2">
+    <div class="bg-card-2 mb-5" v-if="!chatBlowUp">
       <div class="fw-b fz-18">Author</div>
       <div class="ta-c mt-5">
         <q-avatar size="60px" v-if="info.avatarUrl">
@@ -41,10 +41,9 @@
       </template>
     </div>
 
-    <div class="bg-card-2 mt-5 flex-1">
+    <div class="right-chat bg-card-2 flex-1">
       <!-- <div class="fw-b fz-18">Chat</div> -->
-
-      <right-chat></right-chat>
+      <right-chat :info="info" @blowUp="handleBlowUp"></right-chat>
     </div>
   </div>
 </template>
@@ -56,10 +55,26 @@ export default {
   props: {
     info: Object,
   },
+  data() {
+    return {
+      chatBlowUp: false,
+    };
+  },
   computed: {},
 
+  methods: {
+    handleBlowUp() {
+      this.chatBlowUp = !this.chatBlowUp;
+    },
+  },
   components: {
     RightChat,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.right-chat {
+  transition: all 1s ease;
+}
+</style>
