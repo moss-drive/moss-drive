@@ -42,7 +42,7 @@
             <q-item-section>Bind X</q-item-section>
           </q-item>
           <q-item clickable @click="onLogout">
-            <q-item-section>Logout</q-item-section>
+            <q-item-section>Sign out</q-item-section>
           </q-item>
         </q-list>
       </q-menu>
