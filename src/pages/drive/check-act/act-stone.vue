@@ -84,7 +84,7 @@
               </div>
             </div>
             <div class="pt-1"></div>
-            <q-input
+            <!-- <q-input
               class="mb-2"
               filled
               dense
@@ -96,7 +96,7 @@
                 (val) => /^[\w-]+$/.test(val) || 'Invalid path',
                 (val) => val.length <= 30 || 'No more than 30 characters',
               ]"
-            />
+            /> -->
             <div class="row q-col-gutter-md mt-">
               <div class="col-6">
                 <q-input
@@ -256,12 +256,6 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
-      let msg = "";
-      if (!form.stoneName) msg = "Stone name required";
-      else if (!form.urlPath) msg = "URL Path required";
-      if (msg) {
-        return this.$toast(msg);
-      }
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);

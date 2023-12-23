@@ -37,7 +37,7 @@
           <div class="al-c">
             <div class="pos-r">
               <q-img
-                :src="getIcon(scope.row)"
+                :src="scope.row.icon"
                 spinner-size="20px"
                 width="32px"
                 class="cover ev-n trans-100"
@@ -109,13 +109,6 @@ export default {
     },
   },
   methods: {
-    getIcon(row) {
-      if (row.type == "img") {
-        return row.url;
-      } else {
-        return `/img/driver/icon_${row.type}.png`;
-      }
-    },
     onRow(row, index) {
       // this.activeIdx = this.activeIdx == idx ? -1 : idx
       this.$emit("row-click", {

@@ -107,7 +107,7 @@ import { chainAddrList } from "./utils/chainAddrs";
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
 import ResourceCount from "./componets/resource-count.vue";
-
+import { optimismRecharge } from "./utils/chainAddrs";
 import PayNetwork from "./componets/pay-network.vue";
 import PayCoin from "./componets/pay-coin.vue";
 import BillDetails from "./componets/bill-details.vue";
@@ -171,8 +171,7 @@ export default {
       return provider.getSigner();
     },
     opEthLandRecharge() {
-      const addr = "0x3cA298d7A98262C0598dd91Ce926f23e51c4b293";
-      return UNILand__factory.connect(addr, this.signer);
+      return UNILand__factory.connect(optimismRecharge, this.signer);
     },
     curChainInfo() {
       return chainAddrList.find((it) => it.chainId == this.chainId);
