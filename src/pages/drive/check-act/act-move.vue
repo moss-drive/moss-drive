@@ -72,7 +72,7 @@
           color="primary"
           :loading="moving"
           @click="onMove"
-          :disable="!moveFunc && curPrefix == moveToPrefix"
+          :disable="(!moveFunc && curPrefix == moveToPrefix) || (moveFunc && !moveToPrefix)"
           >Move here</q-btn
         >
       </q-card-actions>

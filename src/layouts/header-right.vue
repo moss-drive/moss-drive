@@ -35,6 +35,9 @@
           <q-item clickable v-if="asMobile">
             <q-item-section>{{ uname }}</q-item-section>
           </q-item>
+          <q-item clickable v-if="userInfo.name">
+            <q-item-section>{{ myAddr }}</q-item-section>
+          </q-item>
           <q-item clickable @click="onLogout">
             <q-item-section>Logout</q-item-section>
           </q-item>
@@ -74,6 +77,9 @@ export default {
     uname() {
       const { name } = this.userInfo;
       if (name) return name.cutStr(6, 6);
+      return this.myAddr;
+    },
+    myAddr() {
       return this.uid.cutStr(6, 4);
     },
     asMobile() {
