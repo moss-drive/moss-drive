@@ -20,7 +20,7 @@ const routes = [
         path: "drive/:catchAll(.*)*",
         component: () => import("./drive/page-drive.vue"),
         meta: {
-          title: "My Drive",
+          title: "My Files",
         },
       },
       {
@@ -34,7 +34,7 @@ const routes = [
         path: "/collection",
         component: () => import("./stone/page-collection.vue"),
         meta: {
-          title: "My Collections",
+          title: "Collected Stones",
         },
       },
       {
@@ -48,7 +48,7 @@ const routes = [
         path: "/txs",
         component: () => import("./myTXS/page-txs.vue"),
         meta: {
-          title: "My TXS",
+          title: "Stone TXs",
         },
       },
     ],

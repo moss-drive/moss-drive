@@ -73,7 +73,8 @@ export default {
     },
     uname() {
       const { name } = this.userInfo;
-      return name || this.uid.cutStr(6, 4);
+      if (name) return name.cutStr(6, 6);
+      return this.uid.cutStr(6, 4);
     },
     asMobile() {
       return this.screen.width < 690;
