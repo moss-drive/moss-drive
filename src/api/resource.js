@@ -22,3 +22,6 @@ export function fetchBillList(page, size = 20) {
     },
   });
 }
+export function fetchOnChain() {
+  return request.get("$auth/self-handled-register-apply");
+}

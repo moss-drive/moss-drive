@@ -8,6 +8,7 @@
       :unit="item.unit"
       :items="item.items"
       :name="item.name"
+      :type="item.type"
       @countPrice="countPrice"
     ></resource-count-row>
   </div>
@@ -23,7 +24,8 @@ export default {
     return {
       resourceTagsConfig: [
         {
-          name: "IPFS Storage",
+          name: "Storage",
+          type: "IPFS Storage",
           tags: [
             {
               text: "30 GB",
@@ -52,7 +54,8 @@ export default {
           ],
         },
         {
-          name: "IPFS Storage Days",
+          name: "Storage Days",
+          type: "IPFS Storage Days",
           tags: [
             {
               text: "180 Days",
@@ -72,6 +75,7 @@ export default {
         },
         {
           name: "BindWidth",
+          type: "BindWidth",
           tags: [
             {
               text: "500 MB",

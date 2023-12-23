@@ -21,9 +21,21 @@
           </div>
 
           <div class="descrition">
-            <span class="cursor-p">What's LAND?</span>
+            <span class="cursor-p">
+              <a
+                href="https://docs.4everland.org/get-started/billing-and-pricing/what-is-land"
+                target="__blank"
+                >What's LAND?</a
+              >
+            </span>
             <span class="px-2">|</span>
-            <span class="cursor-p">Pricing</span>
+            <span class="cursor-p">
+              <a
+                href="https://docs.4everland.org/get-started/billing-and-pricing/pricing-model"
+                target="__blank"
+                >Pricing</a
+              >
+            </span>
           </div>
         </div>
       </div>
@@ -117,6 +129,7 @@ import { optimismRecharge } from "./utils/chainAddrs";
 import PayNetwork from "./componets/pay-network.vue";
 import PayCoin from "./componets/pay-coin.vue";
 import BillDetails from "./componets/bill-details.vue";
+import { fetchOnChain } from "../../api/resource";
 export default {
   data() {
     return {
@@ -134,6 +147,7 @@ export default {
     this.$store.dispatch("resourceStore/getLand");
     this.$store.dispatch("resourceStore/getUsage");
     this.$store.dispatch("resourceStore/getPrice");
+    this.checkOnChain();
   },
   computed: {
     ...mapGetters("resourceStore", ["formatLand", "land2Resource"]),
@@ -203,6 +217,7 @@ export default {
   methods: {
     handleNetwork(chain) {
       this.chainId = chain;
+      this.usdc2eth();
     },
     onSelectCoin(coin) {
       this.coinType = coin.label;
@@ -226,7 +241,10 @@ export default {
       }
       this.$loadingClose();
     },
-
+    async checkOnChain() {
+      const { data } = await fetchOnChain();
+      console.log(data);
+    },
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -358,8 +376,10 @@ export default {
   }
 
   .descrition {
-    color: #cbd5e1;
-    font-size: 12px;
+    a {
+      color: #cbd5e1;
+      font-size: 12px;
+    }
   }
 }
 
