@@ -17,7 +17,9 @@
           <tbody>
             <tr v-for="(it, i) in checkList" :key="it.name">
               <td>
-                <span class="fz-15">{{ it.name }}<span v-if="it.prefix">/</span></span>
+                <span class="fz-15"
+                  >{{ it.name.cutStr(10, 6) }}<span v-if="it.prefix">/</span></span
+                >
               </td>
               <td>
                 <span v-if="it.prefix" class="op-8">{{ getDirNum(i) }}</span>

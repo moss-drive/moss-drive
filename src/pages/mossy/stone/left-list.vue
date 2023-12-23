@@ -46,15 +46,16 @@ import ActMove from "../../drive/check-act/act-move.vue";
       <div v-if="notBuy">
         <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
       </div>
-      <grid-list
-        v-else
-        :rows="rows"
-        :checked="checked"
-        selection="multiple"
-        :loading="loading"
-        @row-click="onRow"
-        @row-check="onCheck"
-      ></grid-list>
+      <q-infinite-scroll v-else @load="onLoad" :disable="loading !== false || noMore">
+        <grid-list
+          :rows="rows"
+          :checked="checked"
+          selection="multiple"
+          :loading="loading"
+          @row-click="onRow"
+          @row-check="onCheck"
+        ></grid-list>
+      </q-infinite-scroll>
     </div>
   </div>
 </template>
@@ -99,6 +100,8 @@ export default {
       loading: false,
       checked: [],
       checkAll: false,
+      noMore: false,
+      page: 1,
     };
   },
   watch: {
@@ -123,6 +126,11 @@ export default {
     this.getList();
   },
   methods: {
+    async onLoad(index, done) {
+      console.log(index);
+      await this.getList(true);
+      done();
+    },
     onCheck(row) {
       const idx = this.checked.indexOf(row.key);
       if (idx == -1) this.checked.push(row.key);
@@ -148,20 +156,27 @@ export default {
       this.curFolder = row.path;
     },
 
-    async getList() {
+    async getList(isMore) {
       if (!this.balance) return;
       try {
-        if (this.loading === false) {
-          this.loading = true;
+        const params = {
+          stoneId: this.stoneId,
+          relativePath: this.curFolder,
+          delimiter: "/",
+        };
+        if (isMore) {
+          params.startAfter = this.rows[this.rows.length - 1].path;
+        } else {
+          this.noMore = false;
+          this.checked = [];
+          if (this.loading === false) {
+            this.loading = true;
+          }
         }
         const { data } = await this.$http.get("/stone/page/list", {
-          params: {
-            stoneId: this.stoneId,
-            relativePath: this.curFolder,
-            delimiter: "/",
-          },
+          params,
         });
-        this.rows = data.map((it) => {
+        const rows = data.map((it) => {
           const prefix = it.type == "Folder";
           let name = it.path.replace(this.curFolder, "");
           let type = this.$bucket.getType(name);
@@ -178,6 +193,12 @@ export default {
             type,
           };
         });
+        if (!rows.length) this.noMore = true;
+        if (isMore) {
+          this.rows = this.rows.concat(rows);
+        } else {
+          this.rows = rows;
+        }
       } catch (error) {
         console.log(error);
       }
