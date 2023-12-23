@@ -61,7 +61,7 @@
           <div class="mt-3" style="width: 150px">
             <q-banner dense rounded class="bg-6"> {{ resData.code }} </q-banner>
           </div>
-          <div class="mt-7 color-1">
+          <div class="mt-7 color-1" v-if="!isLong">
             <p>Link will be expired at {{ new Date(resData.expireAt * 1000).format() }}</p>
           </div>
           <div class="mt-7">
@@ -120,6 +120,9 @@ export default {
   computed: {
     shareLink() {
       return this.$getShareLink(this.resData.link);
+    },
+    isLong() {
+      return this.resData.expireAt - Date.now() / 1e3 > 10 * 86400;
     },
   },
   watch: {

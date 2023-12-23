@@ -21,94 +21,110 @@ import FilePreview from "./preview/preview-index.vue";
 </script>
 
 <template>
-  <div class="pa-3 pb-0 pos-s z-100" style="top: 72px" v-if="isPage">
-    <div class="al-c">
-      <q-checkbox
-        :disable="objLoading !== false"
-        class="mr-4"
-        size="40px"
-        :label="checked.length + ` selected`"
-        v-model="checkAll"
-        indeterminate-value="not-empty"
-      />
-
-      <slot name="act" :checked="checked" :obj-list="objRows"></slot>
-
-      <div class="pos-r ml-auto mr-2 bd-1">
-        <icon-search class="y-center ev-n" style="left: 10px" />
-        <input
-          v-model="searchKey"
-          type="text"
-          placeholder="Search"
-          class="bdrs-100 w100p top-search"
-          :class="searchKey ? 'bg-info' : 'bg-info'"
-        />
-      </div>
-      <div class="">
-        <q-btn round flat @click="showMode = modeIcon">
-          <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
-        </q-btn>
-      </div>
-    </div>
+  <div class="mt-9 ta-c" v-if="loadErr">
+    <p class="op-8 mb-3">{{ loadErr }}</p>
+    <q-btn color="info" @click="initBucket()" :loading="objLoading">Retry</q-btn>
   </div>
-  <div :class="isPage ? 'q-pa-md' : 'in-move-act'">
-    <div class="al-c" :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 q-dark '" style="top: 50px">
-      <q-breadcrumbs gutter="sm">
-        <q-breadcrumbs-el
-          :label="isPage ? 'All files' : 'My Drive'"
-          to="/drive"
-          @click.prevent="goPath('/drive')"
-        />
-        <q-breadcrumbs-el
-          v-for="it in breadLinks"
-          :key="it.to"
-          :label="it.label"
-          :to="it.to"
-          @click.prevent="goPath(it.to)"
-        />
-      </q-breadcrumbs>
-      <q-spinner-ios v-show="objLoading === true" class="ml-3" color="yellow" size="15px" />
+  <div class="q-pa-md" v-else-if="!isCreated">
+    <div class="pa-2" style="width: 200px">
+      <q-skeleton type="text" class="text-subtitle1" />
+      <q-skeleton type="text" width="50%" class="text-subtitle1 mt-6 mb-6" />
     </div>
-
-    <div class="q-mt-md">
-      <div class="mt-9 ta-c" v-if="loadErr">
-        <p class="op-8 mb-3">{{ loadErr }}</p>
-        <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
-      </div>
-      <empty-stone
-        v-else-if="objLoading === false && objList.length == 0"
-        :desc="searchKey ? `No results for &quot;${searchKey}&quot;` : ''"
-      />
-      <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
-        <component
-          :is="showMode + '-list'"
-          :isPage="isPage"
-          :selection="isPage ? 'multiple' : null"
-          :rows="objRows"
-          :loading="objLoading"
-          :checked="checked"
-          @row-click="onRowClick"
-          @row-check="onRowCheck"
-        />
-        <template v-slot:loading>
-          <div class="row justify-center q-my-md">
-            <q-spinner-ios color="yellow" size="30px" />
-          </div>
-        </template>
-      </q-infinite-scroll>
-
-      <div class="pa-8"></div>
-    </div>
+    <grid-loading v-if="isPage" />
   </div>
-  <file-preview v-model="showPreview" :list="fileList" :current="fileIdx" />
+
+  <template v-else>
+    <div class="pa-3 pb-0 pos-s z-100" style="top: 72px" v-if="isPage">
+      <div class="al-c">
+        <q-checkbox
+          :disable="objLoading !== false"
+          class="mr-4"
+          size="40px"
+          :label="checked.length + ` selected`"
+          v-model="checkAll"
+          indeterminate-value="not-empty"
+        />
+
+        <slot name="act" :checked="checked" :obj-list="objRows"></slot>
+
+        <div class="pos-r ml-auto mr-2 bd-1">
+          <icon-search class="y-center ev-n" style="left: 10px" />
+          <input
+            v-model="searchKey"
+            type="text"
+            placeholder="Search"
+            class="bdrs-100 w100p top-search"
+            :class="searchKey ? 'bg-info' : 'bg-info'"
+          />
+        </div>
+        <div class="">
+          <q-btn round flat @click="showMode = modeIcon">
+            <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
+          </q-btn>
+        </div>
+      </div>
+    </div>
+    <div :class="isPage ? 'q-pa-md' : 'in-move-act'">
+      <div
+        class="al-c"
+        :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 q-dark '"
+        style="top: 50px"
+      >
+        <q-breadcrumbs gutter="sm">
+          <q-breadcrumbs-el
+            :label="isPage ? 'All files' : 'My Drive'"
+            to="/drive"
+            @click.prevent="goPath('/drive')"
+          />
+          <q-breadcrumbs-el
+            v-for="it in breadLinks"
+            :key="it.to"
+            :label="it.label"
+            :to="it.to"
+            @click.prevent="goPath(it.to)"
+          />
+        </q-breadcrumbs>
+        <q-spinner-ios v-show="objLoading === true" class="ml-3" color="yellow" size="15px" />
+      </div>
+
+      <div class="q-mt-md">
+        <empty-stone
+          v-if="objLoading === false && objList.length == 0"
+          :desc="searchKey ? `No results for &quot;${searchKey}&quot;` : ''"
+        />
+        <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
+          <component
+            :is="showMode + '-list'"
+            :isPage="isPage"
+            :selection="isPage ? 'multiple' : null"
+            :rows="objRows"
+            :loading="objLoading"
+            :checked="checked"
+            @row-click="onRowClick"
+            @row-check="onRowCheck"
+          />
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-ios color="yellow" size="30px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
+
+        <div class="pa-8"></div>
+      </div>
+    </div>
+    <file-preview v-model="showPreview" :list="fileList" :current="fileIdx" />
+  </template>
 </template>
 
 <script>
+import mixin from "./drive-list.js";
 import { mapState } from "vuex";
 import TableList from "./table-list.vue";
 
 export default {
   emits: ["update:prefix", "refresh", "error"],
+  mixins: [mixin],
   props: {
     isPage: Boolean,
     prefix: String,
@@ -216,7 +232,7 @@ export default {
     },
   },
   created() {
-    this.getList();
+    this.initBucket();
     this.$bus.on("drive-refresh", () => {
       this.getList();
     });

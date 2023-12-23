@@ -177,8 +177,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <act-move ref="move" :check-list="checked" :moveFunc="onSave" />
-    <iframe class="d-n" @load="toDrive" ref="iframe" src="/drive" frameborder="0"></iframe>
+    <act-move ref="move" :check-list="[]" :moveFunc="onSave" />
   </div>
 </template>
 <script setup>
@@ -430,13 +429,8 @@ export default {
         paths: paths,
         shareId: this.$route.params.id,
       };
-      try {
-        const { data } = await fetchStoneSave(params);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        // this.$refs.move.showPop = false;
-      }
+      const { data } = await fetchStoneSave(params);
+      return data.count;
     },
     afterLogin() {
       this.showLogin = false;
