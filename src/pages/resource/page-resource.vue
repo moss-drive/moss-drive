@@ -87,7 +87,13 @@
             <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
           </div>
         </div>
-        <div class="recharge-btn fz-16 cursor-p" @click="handleEthRecharge">Confirm</div>
+        <div
+          class="recharge-btn fz-16 cursor-p"
+          :class="{ disabled: disabled }"
+          @click="handleEthRecharge"
+        >
+          Confirm
+        </div>
 
         <!-- <q-btn color="#13C68A" outline label="Confirm" /> -->
       </div>
@@ -190,6 +196,9 @@ export default {
         return this.usdcAmount.toString();
       }
     },
+    disabled() {
+      return !this.amount || this.chainId != 10;
+    },
   },
   methods: {
     handleNetwork(chain) {
@@ -203,6 +212,7 @@ export default {
       this.amount = val;
     },
     async handleEthRecharge() {
+      if (this.disabled) return;
       try {
         this.$loading("Loading...");
         const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
@@ -220,6 +230,7 @@ export default {
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
+      if (this.disabled) return;
       try {
         this.countEthLoading = true;
         const quoter = IQuoter__factory.connect(
