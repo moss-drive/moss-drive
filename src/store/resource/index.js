@@ -122,7 +122,7 @@ const resourceStore = {
             let total = it.size * 1;
             let used = Number(combo.consumeItems[i].size) + Number(realTimeItems[i].size);
             if (it.resourceType == "IPFS_STORAGE") {
-              used = Number(combo.consumeItems[i].size) + Number(totalIpfsStorage);
+              used = Number(realTimeItems[i].size) + Number(totalIpfsStorage);
             }
             return {
               type: it.resourceType,

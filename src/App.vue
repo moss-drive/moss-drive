@@ -7,11 +7,13 @@
     style="z-index: 10000"
   />
   <RouterView />
+  <task-control></task-control>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
 import { mapState } from "vuex";
+import TaskControl from "./pages/drive/task-control.vue";
 
 export default {
   name: "App",
@@ -126,6 +128,9 @@ export default {
     async onInit() {
       this.getUserInfo();
     },
+  },
+  components: {
+    TaskControl,
   },
 };
 </script>

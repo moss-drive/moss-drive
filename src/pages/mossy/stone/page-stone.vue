@@ -10,7 +10,7 @@ import StoneRight from "./stone-right.vue";
         <stone-left :id="id" :info="info" :balance="balance" />
       </div>
       <div class="col-12 col-md-4 col-lg-3">
-        <stone-right :id="id" :info="info.twitterInfo || {}" />
+        <stone-right :id="id" :info="info" :balance="balance" />
       </div>
     </div>
   </div>

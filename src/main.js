@@ -10,7 +10,6 @@ import store, { setState, setStore } from "./store";
 import utils from "./utils";
 import "./css/style.scss";
 import Components from "./components";
-
 const app = createApp(App);
 const global = app.config.globalProperties;
 
