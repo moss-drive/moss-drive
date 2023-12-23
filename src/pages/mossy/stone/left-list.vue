@@ -141,6 +141,7 @@ export default {
     },
     onRow({ row, index }) {
       if (!row.prefix) {
+        this.onCheck(row);
         return;
       }
       this.loading = index;
