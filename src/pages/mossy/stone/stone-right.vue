@@ -49,7 +49,13 @@
 
     <div class="right-chat bg-card-2">
       <!-- <div class="fw-b fz-18">Chat</div> -->
-      <right-chat :info="info" @blowUp="handleBlowUp" :balance="balance"></right-chat>
+      <img v-show="balance <= 0" src="/img/stone/chat-locked.png" alt="" />
+      <right-chat
+        v-show="balance > 0"
+        :info="info"
+        @blowUp="handleBlowUp"
+        :balance="balance"
+      ></right-chat>
     </div>
   </div>
 </template>
@@ -87,5 +93,8 @@ export default {
 <style lang="scss" scoped>
 .right-chat {
   height: 450px;
+  img {
+    width: 100%;
+  }
 }
 </style>

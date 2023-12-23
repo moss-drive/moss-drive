@@ -89,8 +89,6 @@ export default {
   },
   methods: {
     initSeleted() {
-      console.log(window.ethereum.chainId);
-      console.log(parseInt(window.ethereum.chainId));
       this.selected = parseInt(window.ethereum.chainId);
       this.$emit("onNetwork", this.selected);
     },

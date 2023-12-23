@@ -10,12 +10,19 @@
         alt=""
       /> -->
     </div>
-    <div class="chat-body mt-2 ov-a">
-      <div class="chat-item al-c" v-for="item in list" :key="item.name">
+
+    <div class="chat-body mt-2 h-flex ov-a" style="flex-direction: column-reverse">
+      <div class="chat-item al-c" v-for="item in list" :key="item.id">
         <img class="mr-2" width="32" style="border-radius: 100%" :src="item.avatar" alt="" />
         <div class="flex-1">
           <div class="user-name fz-12">{{ item.name }}</div>
           <div class="message-box pa-2 fz-14">{{ item.message }}</div>
+        </div>
+      </div>
+      <div class="ta-c cursor-p" @click="getMessageList(false)" v-show="curList.length >= size">
+        <div v-if="!loading">Load More</div>
+        <div v-else class="row justify-center q-my-md">
+          <q-spinner-dots color="primary" size="40px" />
         </div>
       </div>
     </div>
@@ -50,6 +57,11 @@ export default {
     return {
       message: "",
       list: [],
+      curList: [],
+      page: 1,
+      size: 20,
+      loading: false,
+      timer: null,
     };
   },
 
@@ -71,27 +83,49 @@ export default {
           message,
           stoneId: this.stoneId,
         });
-        this.getMessageList();
+        this.curList = [];
+        this.page = 1;
+        this.getMessageList(true);
       } catch (error) {
         console.log(error);
       }
     },
-    async getMessageList() {
+
+    async getMessageList(reset = false) {
       try {
+        this.loading = true;
         const { data } = await this.$http.get("/message/board", {
           params: {
             stoneId: this.stoneId,
+            page: this.page,
+            size: this.size,
           },
         });
-        this.list = data;
+        if (!data) return (this.curList = []);
+        this.curList = data;
+        if (reset) {
+          this.list = data;
+          this.page = 1;
+        } else {
+          this.list = this.list.concat(this.curList);
+          this.page++;
+        }
       } catch (error) {
         console.log(error);
       }
+      this.loading = false;
     },
   },
   watch: {
     balance(val) {
-      if (val) this.getMessageList();
+      if (val) {
+        this.getMessageList();
+        if (this.timer) return;
+        this.timer = setInterval(() => {
+          this.page = 1;
+          this.getMessageList(true);
+        }, 15000);
+      }
     },
   },
 };
@@ -101,7 +135,7 @@ export default {
 .chat-container {
   height: 100%;
   .chat-body {
-    height: 80%;
+    height: 300px;
     .chat-item {
       margin-top: 16px;
     }
