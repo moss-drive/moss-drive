@@ -152,21 +152,15 @@ export function uid2euid(input) {
 
 let inDev = process.env.NODE_ENV != "production";
 
-export const getTxLink = (hash, chainId) => {
-  switch (chainId) {
-    case "":
-      break;
-    default:
-      break;
-  }
+export const getTxLink = (hash, net = "Polygon") => {
   let pre = inDev ? "https://sepolia.etherscan.io/tx/" : "https://etherscan.io/tx/";
-  if (chainId == "BSC") {
+  if (net == "BSC") {
     pre = inDev ? "https://testnet.bscscan.com/tx/" : "https://bscscan.com/tx/";
-  } else if (chainId == "Polygon") {
+  } else if (net == "Polygon") {
     pre = inDev ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/";
-  } else if (chainId == "zkSync") {
+  } else if (net == "zkSync") {
     pre = inDev ? "https://goerli.explorer.zksync.io/tx/" : "https://explorer.zksync.io/tx/";
-  } else if (chainId == "Optimism") {
+  } else if (net == "Optimism") {
     pre = "https://optimistic.etherscan.io/tx/";
   }
   return pre + hash;

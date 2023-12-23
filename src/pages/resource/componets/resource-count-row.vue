@@ -24,7 +24,7 @@
           <select
             @change="handleChangeUnit"
             class="cursor-p"
-            :id="'select_' + name"
+            :id="'select_' + type"
             v-model="selected"
           >
             <option class="fz-14" :value="it.value" v-for="it in items" :key="it.value">
@@ -41,6 +41,7 @@
 <script>
 export default {
   props: {
+    type: String,
     name: String,
     tags: {
       type: Array,
@@ -95,19 +96,19 @@ export default {
     handleTag(i) {
       if (this.curIndex == i) {
         this.curIndex = null;
-        this.$emit("countPrice", { value: 0, type: this.name });
+        this.$emit("countPrice", { value: 0, type: this.type });
       } else {
         this.curIndex = i;
         this.$emit("countPrice", {
           value: this.tags[this.curIndex].value,
-          type: this.name,
+          type: this.type,
         });
       }
     },
     handleInput() {
       this.$emit("countPrice", {
         value: this.value * this.selected,
-        type: this.name,
+        type: this.type,
       });
     },
     handleChangeUnit(e) {
