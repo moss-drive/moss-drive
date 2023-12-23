@@ -167,7 +167,7 @@ const { VITE_MEDIA_PRE } = import.meta.env;
 
 const initForm = {
   stoneName: "",
-  avatar: "/img/stone/stone-cover.png",
+  avatar: "/img/stone/def-cover.png",
   bio: "",
   urlPath: "",
 };
