@@ -64,7 +64,7 @@ export default {
         const row = this.checkList[0];
         isFile = !!row.url;
         if (!isFile) isRootDir = row.key.split("/").length == 2;
-        console.log(row);
+        // console.log(row);
       }
       return [
         {

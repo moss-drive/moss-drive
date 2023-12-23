@@ -38,6 +38,9 @@
           <q-item clickable v-if="userInfo.name">
             <q-item-section>{{ myAddr }}</q-item-section>
           </q-item>
+          <q-item href="/login" target="_blank" clickable v-else>
+            <q-item-section>Bind X</q-item-section>
+          </q-item>
           <q-item clickable @click="onLogout">
             <q-item-section>Logout</q-item-section>
           </q-item>
