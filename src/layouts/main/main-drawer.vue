@@ -69,7 +69,7 @@ export default {
     return {
       links: [
         {
-          title: "My Drive",
+          title: "My Files",
           icon: "driver",
           to: "/drive",
         },
@@ -79,13 +79,13 @@ export default {
           to: "/stone",
         },
         {
-          title: "My Collections",
+          title: "Collected Stones",
           icon: "star",
           // link: "https://quasar.dev/vue-components/table",
           to: "/collection",
         },
         {
-          title: "My TXS",
+          title: "Stone TXs",
           icon: "txs",
           to: "/txs",
         },

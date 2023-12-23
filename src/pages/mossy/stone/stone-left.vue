@@ -23,7 +23,7 @@ import LeftMossAct from "./left-moss-act.vue";
             ></q-img>
           </div>
         </div>
-        <div class="ml-8 flex-1" style="max-width: 600px">
+        <div class="ml-8 flex-1">
           <div v-if="!loaded">
             <q-skeleton type="title" />
             <q-skeleton class="mt-2" height="100px" />
@@ -41,7 +41,7 @@ import LeftMossAct from "./left-moss-act.vue";
         <div v-else class="al-c mt-7 fw-b f-wrap">
           <div class="mr-9" v-for="(row, j) in kvList" :key="j">
             <span>{{ row.key }}</span>
-            <span class="fz-25 color-2 ml-2">
+            <span class="fz-22 color-2 ml-2">
               {{ row.val || "-" }}
             </span>
           </div>
@@ -68,9 +68,10 @@ export default {
       const format = (val) => {
         return this.$ethUtils.formatEther(val) + "ETH";
       };
-      let { totalSupply: supply, price, floor, floorSupply, hold } = this.info;
+      let { totalSupply: supply, price, floor, floorSupply, worth } = this.info;
       if (price) price = format(price);
       if (floor) floor = format(floor);
+      if (worth) worth = format(worth);
       return [
         {
           key: "Current Supply",
@@ -91,6 +92,10 @@ export default {
         {
           key: "Floor Up Supply",
           val: floorSupply,
+        },
+        {
+          key: "Pool Value",
+          val: worth,
         },
         {
           key: "Hold",

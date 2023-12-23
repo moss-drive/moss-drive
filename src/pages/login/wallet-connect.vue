@@ -102,7 +102,11 @@ export default {
         this.$emit("login", data);
       } catch (error) {
         console.log(error);
-        this.$alert(error.message);
+        let msg = error.message;
+        if (/user rejected signing/.test(msg)) {
+          msg = "";
+        }
+        if (msg) this.$alert(msg);
       }
       // this.$loadingClose();
       this.loading = false;
