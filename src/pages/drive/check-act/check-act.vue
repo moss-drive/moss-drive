@@ -25,7 +25,7 @@ import ActShare from "./act-share.vue";
       >
         <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
         <q-tooltip anchor="top middle" :offset="[0, 28]" class="bg-black" v-if="!it.disabled">
-          {{ it.name.capitalize() }}
+          {{ it.tip || it.name.capitalize() }}
         </q-tooltip>
       </q-btn>
     </q-btn-group>
@@ -71,6 +71,7 @@ export default {
           name: "publish",
           icon: "stone",
           disabled: !(len == 1 && isRootDir && this.checkItem.type == "folder"),
+          tip: "Claim Stone",
         },
         {
           name: "share",
