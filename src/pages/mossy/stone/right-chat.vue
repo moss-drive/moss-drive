@@ -2,16 +2,15 @@
   <div class="chat-container pos-r h-flex" id="chatContainer">
     <div class="al-c space-btw">
       <span class="fw-b fz-16">Chat</span>
-      {{ stoneId }}
-      <img
+      <!-- <img
         @click="handleBlowUp"
         src="/img/stone/chat-blow-up.svg"
         class="cursor-p"
         width="24"
         alt=""
-      />
+      /> -->
     </div>
-    <div class="chat-body ov-a">
+    <div class="chat-body mt-2 ov-a">
       <div class="chat-item al-c" v-for="item in list" :key="item.name">
         <img class="mr-2" width="32" style="border-radius: 100%" :src="item.avatar" alt="" />
         <div class="flex-1">
@@ -45,18 +44,15 @@ export default {
   emits: ["blowUp"],
   props: {
     info: Object,
+    balance: Number,
   },
   data() {
     return {
       message: "",
       list: [],
-      height: 400,
     };
   },
-  created() {},
-  mounted() {
-    this.getMessageList();
-  },
+
   computed: {
     stoneId() {
       return this.info.stoneId;
@@ -69,23 +65,22 @@ export default {
     async handleSendMessage() {
       try {
         if (!this.stoneId || !this.message) return;
+        const message = this.message;
         this.message = "";
         await this.$http.put("/message/board", {
-          message: this.message,
+          message,
           stoneId: this.stoneId,
         });
         this.getMessageList();
       } catch (error) {
         console.log(error);
       }
-      this.getMessageList();
     },
-
     async getMessageList() {
       try {
         const { data } = await this.$http.get("/message/board", {
           params: {
-            stoneId: 19,
+            stoneId: this.stoneId,
           },
         });
         this.list = data;
@@ -94,15 +89,19 @@ export default {
       }
     },
   },
+  watch: {
+    balance(val) {
+      if (val) this.getMessageList();
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .chat-container {
   height: 100%;
-
   .chat-body {
-    height: 400px;
+    height: 80%;
     .chat-item {
       margin-top: 16px;
     }

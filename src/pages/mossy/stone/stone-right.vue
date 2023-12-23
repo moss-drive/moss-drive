@@ -47,9 +47,9 @@
       </template>
     </div>
 
-    <div class="right-chat bg-card-2 flex-1 ov-h">
+    <div class="right-chat bg-card-2">
       <!-- <div class="fw-b fz-18">Chat</div> -->
-      <right-chat :info="info" @blowUp="handleBlowUp"></right-chat>
+      <right-chat :info="info" @blowUp="handleBlowUp" :balance="balance"></right-chat>
     </div>
   </div>
 </template>
@@ -60,6 +60,7 @@ import RightChat from "./right-chat.vue";
 export default {
   props: {
     info: Object,
+    balance: Number,
   },
   data() {
     return {
@@ -85,6 +86,7 @@ export default {
 
 <style lang="scss" scoped>
 .right-chat {
+  height: 600px;
   transition: all 1s ease;
 }
 </style>

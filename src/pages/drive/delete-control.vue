@@ -1,15 +1,10 @@
 <template>
-  <div class="task-control" v-show="showRoute && showControl">
+  <div class="task-control">
     <q-expansion-item expand-separator v-model="expanded">
       <template v-slot:header>
-        <div class="task-header al-c space-btw">
-          <div>
-            <span class="fw-b fz-16">Uploading</span>
-            <span class="fz-14 ml-1 file-count"
-              >({{ successTasks.length }}/{{ tasks.length }})</span
-            >
-          </div>
-          <img @click.stop="showControl = false" width="24" src="/img/driver/close.svg" alt="" />
+        <div class="task-header">
+          <span class="fw-b fz-16">Uploading</span>
+          <span class="fz-14 ml-1 file-count">({{ successTasks.length }}/{{ tasks.length }})</span>
         </div>
       </template>
       <q-virtual-scroll style="max-height: 300px" :items="tasks" separator v-slot="{ item }">
@@ -40,7 +35,7 @@
 
 <script>
 import { S3 } from "@aws-sdk/client-s3";
-import { UploadTask, TaskWrapper } from "../../utils/taskWrap";
+import { DeleteTask, TaskWrapper } from "../../utils/taskWrap";
 const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
 import { mapState } from "vuex";
 export default {
@@ -49,7 +44,6 @@ export default {
       tasks: [],
       taskWrap: new TaskWrapper(10),
       expanded: false,
-      showControl: false,
     };
   },
 
@@ -81,19 +75,6 @@ export default {
     successTasks() {
       return this.tasks.filter((it) => it.status == 3);
     },
-    compelete() {
-      const tasks = this.tasks.filter((it) => it.status == 1 || it.status == 0);
-      return tasks.length == 0;
-    },
-    showRoute() {
-      const path = this.$route.path;
-      return (
-        path.indexOf("/drive") != -1 ||
-        path.indexOf("/stone") != -1 ||
-        path.indexOf("/collection") != -1 ||
-        path.indexOf("/txs") != -1
-      );
-    },
   },
   methods: {
     handleUpload(files) {
@@ -109,7 +90,7 @@ export default {
       });
       const prifix = this.getPrefix();
       const tasks = files.map((it) => {
-        return new UploadTask(s3, {
+        return new DeleteTask(s3, {
           Bucket: this.$bucket.defBucket,
           Key: prifix + "/" + it.name,
           Body: it.file,
@@ -120,26 +101,18 @@ export default {
         this.taskWrap.pushTasks(it);
       });
       this.tasks = this.tasks.concat(tasks);
-      this.showControl = true;
       this.expanded = true;
       this.taskWrap.progressTask();
     },
 
     getPrefix() {
+      console.log(this.$route.path);
       const pathArr = this.$route.path.split("/");
+      console.log(pathArr);
       pathArr.splice(1, 1);
+      console.log(pathArr);
       const Prefix = pathArr.join("/");
       return Prefix;
-    },
-    handleClick() {
-      console.log(22);
-    },
-  },
-  watch: {
-    compelete(val) {
-      if (val) {
-        this.$bus.emit("drive-refresh");
-      }
     },
   },
 };

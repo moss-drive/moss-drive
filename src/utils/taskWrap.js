@@ -63,17 +63,16 @@ export class UploadTask {
     this.status = 0;
   }
 }
-class DeleteTaskWrapper {
+export class DeleteTask {
   static id = 0;
-  constructor(that, param, s3m) {
-    this.that = that;
-    this.s3m = s3m;
+  constructor(s3, param) {
+    this.s3 = s3;
     this.param = param;
-    this.id = DeleteTaskWrapper.id++;
+    this.id = DeleteTask.id++;
     this.status = 0; // pre delete
     this.deleteCount = 0;
   }
-  async startTasks() {
+  async start() {
     try {
       if (this.status !== 0 && this.status !== 1) return;
       this.status = 1; // deleting
@@ -111,8 +110,6 @@ class DeleteTaskWrapper {
         await this.startTasks();
       } else if (!this.curFiles.length) {
         this.status = 3; // success
-        this.that.selected = [];
-        this.that.getList();
       } else {
         console.log("here");
       }
@@ -122,7 +119,7 @@ class DeleteTaskWrapper {
       throw new Error(error.code);
     }
   }
-  stopTasks() {
+  cancel() {
     this.status = 2; //stop
   }
   updateS3mInstance(s3m) {
@@ -162,5 +159,3 @@ export class TaskWrapper {
     this.progressTask();
   }
 }
-
-// export { UploadTaskWrapper, DeleteTaskWrapper, TaskWrapper };

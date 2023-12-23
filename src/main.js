@@ -10,8 +10,6 @@ import store, { setState, setStore } from "./store";
 import utils from "./utils";
 import "./css/style.scss";
 import Components from "./components";
-import mitt from "mitt";
-const bus = mitt();
 const app = createApp(App);
 const global = app.config.globalProperties;
 
@@ -29,8 +27,6 @@ app.use(router);
 app.use(store);
 global.$setState = setState;
 global.$setStore = setStore;
-
-app.config.globalProperties.$bus = bus;
 
 router.beforeEach((to, _, next) => {
   setState({
