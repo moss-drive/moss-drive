@@ -77,8 +77,11 @@ $corner: 36px;
                 </div>
               </div>
             </div>
-            <p class="fz-18 fw-b">{{ item.stoneName }}</p>
-            <div class="mt-1 fz-14 op-8">{{ item.twitterName }}</div>
+            <p class="fz-18 fw-b line-1">{{ item.stoneName }}</p>
+            <div class="mt-1 fz-14 al-c">
+              <img src="/img/stone/x-round.svg" width="18" />
+              <span class="op-8 ml-1">{{ item.twitterName }}</span>
+            </div>
             <q-btn color="primary" rounded class="full-width mt-4" @click="onRow(item)"
               >{{ formatEther(item.worth) }} ETH</q-btn
             >
