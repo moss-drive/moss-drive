@@ -32,8 +32,8 @@ export default {
         if (localStorage.moss_bucket != this.bucketName) {
           await this.checkBucket();
         }
+        await this.getList();
         this.isCreated = true;
-        this.getList();
       } catch (error) {
         console.log(error);
         this.onError(error);
@@ -45,6 +45,10 @@ export default {
         await this.$bucket.createBucket(this.bucketName);
       }
       localStorage.moss_bucket = this.bucketName;
+    },
+    onError(error) {
+      // localStorage.moss_bucket = "";
+      this.loadErr = error.message;
     },
   },
 };

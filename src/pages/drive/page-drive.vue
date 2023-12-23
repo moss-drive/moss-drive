@@ -4,7 +4,7 @@ import DriveList from "./drive-list.vue";
 </script>
 
 <template>
-  <drive-list is-page @error="onError" @refresh="onRefresh">
+  <drive-list is-page @refresh="onRefresh">
     <template v-slot:act="props">
       <check-act v-bind="props" />
     </template>
@@ -16,29 +16,13 @@ import DriveList from "./drive-list.vue";
 <script>
 export default {
   data() {
-    return {
-      isCreated: false,
-      loadErr: "",
-      listLoaded: false,
-    };
+    return {};
   },
 
   created() {},
   methods: {
     onRefresh() {
       this.listLoaded = true;
-    },
-    onRetry() {
-      this.$setStore({
-        stsData: {},
-      });
-      this.loadErr = "";
-      location.reload();
-    },
-    onError(error) {
-      // localStorage.moss_bucket = "";
-      this.loadErr = error.message;
-      this.listLoaded = false;
     },
   },
 };
