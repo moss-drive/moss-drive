@@ -8,7 +8,7 @@ import WalletConnect from "./wallet-connect.vue";
       <div class="bg-primary bdrs-10 px-5 py-6" style="width: 360px">
         <q-btn
           v-if="isLogin"
-          @click="onBindX"
+          @click="goX"
           :loading="xLoading"
           flat
           rounded
@@ -46,6 +46,8 @@ export default {
     const { code, loginTo } = this.$route.query;
     if (code) {
       this.onCode(code);
+    } else if (this.isLogin) {
+      this.goX();
     } else {
       if (loginTo) localStorage.loginTo = loginTo;
     }
@@ -78,7 +80,7 @@ export default {
       }
       this.xLoading = false;
     },
-    async onBindX() {
+    async goX() {
       try {
         this.xLoading = true;
         const { data } = await this.$http.get("/login/twitter");
