@@ -288,7 +288,7 @@ export default {
         this.form.address = addr;
         if (addr != this.uid) {
           throw new Error(
-            `Please use the wallet address associated with the current account for signing. The current account is ${addr.cutStr(
+            `Please use the wallet address associated with the current account for signing. The current account is ${this.uid.cutStr(
               4,
               6
             )}`
