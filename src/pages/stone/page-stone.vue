@@ -7,7 +7,7 @@ import StoneEdit from "./stone-edit.vue";
 
   <div class="q-pa-md">
     <div class="row" v-if="!rows">
-      <div v-for="i in 4" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
+      <div v-for="i in 1" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
         <q-card flat>
           <!-- <q-skeleton type="text" width="160px" class="text-subtitle1" /> -->
           <q-skeleton height="260px" square />

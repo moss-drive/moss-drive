@@ -1,6 +1,15 @@
-<style>
+<style lang="scss">
 .q-checkbox--dense .q-checkbox__label {
   padding-left: 3px;
+}
+.mossy-opts {
+  .q-btn-item {
+    width: 100px;
+    margin-right: 10px;
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
 }
 </style>
 
@@ -11,7 +20,7 @@ import ListRank from "./list-rank.vue";
 
 <template>
   <div class="mt-5 mb-8 d-center">
-    <div class="bg-dark2 pa-2 bdrs-100">
+    <div class="bg-dark2 pa-2 bdrs-100 mossy-opts">
       <q-btn-toggle
         class="rounded"
         v-model="type"
@@ -82,6 +91,7 @@ export default {
         const { data } = await this.$http.get("/stone/square", {
           params: {
             type: this.type,
+            size: 60,
           },
         });
         this.rows = data;

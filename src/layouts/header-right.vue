@@ -15,7 +15,7 @@
     </q-btn> -->
 
     <q-btn
-      class="ml-3"
+      class="ml-3-"
       :class="{
         'q-px-sm': !asMobile,
       }"

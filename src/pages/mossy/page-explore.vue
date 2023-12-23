@@ -1,12 +1,13 @@
 <style scoped lang="scss">
 .bg-top {
-  background: url(/img/mossy/bg-planet.png) 66% 50% no-repeat;
-  background-size: 230px;
+  background: url(/img/mossy/bg-planet.png) 80% 50% no-repeat;
+  background-size: 260px;
 }
 .m-search {
-  width: 500px;
+  width: 700px;
   padding: 12px 12px;
   padding-left: 50px;
+  text-align: center;
   font-size: 15px;
 }
 </style>
@@ -26,7 +27,7 @@ import ExploreList from "./explore/explore-list.vue";
           type="text"
           v-model="searchKey"
           @keyup.enter="handleSearch"
-          placeholder="Enter stone keywords"
+          placeholder="Enter x id or stone keywords"
         />
       </div>
     </div>
