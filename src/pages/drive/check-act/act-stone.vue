@@ -30,7 +30,7 @@
           </q-banner>
 
           <q-form ref="form" class="q-gutter-s mt-5">
-            <div class="row mb-6">
+            <div class="row mb-4">
               <div class="col-3">
                 <div class="stone-cover">
                   <q-img :src="tempImg || form.avatar" width="110px" :ratio="1" />
@@ -82,7 +82,6 @@
                 />
               </div>
             </div>
-            <div class="pt-1"></div>
             <!-- <q-input
               class="mb-2"
               filled
