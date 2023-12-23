@@ -39,9 +39,9 @@ import LeftMossAct from "./left-moss-act.vue";
       <div class="mt-7">
         <q-skeleton type="title" v-if="!loaded" style="max-width: 735px" />
         <div v-else class="al-c mt-7 fw-b f-wrap">
-          <div class="mr-9" v-for="(row, j) in kvList" :key="j">
+          <div class="mr-4" v-for="(row, j) in kvList" :key="j">
             <span>{{ row.key }}</span>
-            <span class="fz-22 color-2 ml-2">
+            <span class="fz-20 color-2 ml-1">
               {{ row.val || "-" }}
             </span>
           </div>
