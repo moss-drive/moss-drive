@@ -1,8 +1,34 @@
+<script setup>
+import ActMove from "../../drive/check-act/act-move.vue";
+</script>
+
 <template>
+  <act-move ref="move" :check-list="[]" :move-func="onSave"></act-move>
+
   <div>
-    <div class="m-5 al-c">
+    <div class="m-3">
       <!-- <q-skeleton type="title" v-if="notBuy" width="150px" /> -->
-      <div>
+      <div class="al-c" v-if="balance">
+        <q-checkbox
+          :disable="loading"
+          class="mr-4"
+          size="40px"
+          :label="checked.length + ` selected`"
+          v-model="checkAll"
+          indeterminate-value="not-empty"
+        />
+        <q-btn
+          v-show="checked.length"
+          color="primary"
+          rounded
+          class="ml-3"
+          @click="$refs.move.showPop = true"
+        >
+          <img src="/img/stone/stone-save.svg" width="18" class="mr-2" />
+          <span>Save to My Moss</span>
+        </q-btn>
+      </div>
+      <div class="al-c ml-3 mt-3">
         <q-breadcrumbs gutter="sm">
           <q-breadcrumbs-el :label="`Files`" :to="basePath" @click.prevent="curFolder = ''" />
           <q-breadcrumbs-el
@@ -20,7 +46,15 @@
       <div v-if="notBuy">
         <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
       </div>
-      <grid-list v-else :rows="rows" :loading="loading" @row-click="onRow"></grid-list>
+      <grid-list
+        v-else
+        :rows="rows"
+        :checked="checked"
+        selection="multiple"
+        :loading="loading"
+        @row-click="onRow"
+        @row-check="onCheck"
+      ></grid-list>
     </div>
   </div>
 </template>
@@ -63,9 +97,21 @@ export default {
       curFolder: "",
       rows: null,
       loading: false,
+      checked: [],
+      checkAll: false,
     };
   },
   watch: {
+    checkAll(val) {
+      if (val == "not-empty") return;
+      if (val) this.checked = this.rows.map((it) => it.key);
+      else this.checked = [];
+    },
+    "checked.length"(len) {
+      let isAll = len == this.rows.length;
+      if (!isAll && len > 0) isAll = "not-empty";
+      this.checkAll = isAll;
+    },
     curFolder() {
       this.getList();
     },
@@ -77,6 +123,22 @@ export default {
     this.getList();
   },
   methods: {
+    onCheck(row) {
+      const idx = this.checked.indexOf(row.key);
+      if (idx == -1) this.checked.push(row.key);
+      else this.checked.splice(idx, 1);
+      console.log(this.checked);
+    },
+    async onSave({ prefix }) {
+      const { data } = await this.$http.post("/stone/save", {
+        toBucketName: this.$bucket.defBucket,
+        toFolderPath: prefix,
+        type: "STONE",
+        stoneId: this.stoneId,
+        paths: this.checked,
+      });
+      return data.count;
+    },
     onRow({ row, index }) {
       if (!row.prefix) {
         return;
@@ -110,6 +172,7 @@ export default {
             ...it,
             prefix,
             sizeUnit: this.$bucket.getFileSize(it.size),
+            key: it.path,
             name,
             type,
           };

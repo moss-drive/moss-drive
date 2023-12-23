@@ -73,7 +73,14 @@ import FilePreview from "./preview/preview-index.vue";
     <div class="q-mt-md">
       <div class="mt-9 ta-c" v-if="loadErr">
         <p class="op-8 mb-3">{{ loadErr }}</p>
-        <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
+        <q-btn color="info" @click="initBucket()" :loading="objLoading">Retry</q-btn>
+      </div>
+      <div class="q-pa-md" v-else-if="!isCreated">
+        <div class="pa-2" style="width: 200px">
+          <q-skeleton type="text" class="text-subtitle1" />
+          <q-skeleton type="text" width="50%" class="text-subtitle1 mt-6 mb-6" />
+        </div>
+        <grid-loading />
       </div>
       <empty-stone
         v-else-if="objLoading === false && objList.length == 0"
@@ -104,11 +111,13 @@ import FilePreview from "./preview/preview-index.vue";
 </template>
 
 <script>
+import mixin from "./drive-list.js";
 import { mapState } from "vuex";
 import TableList from "./table-list.vue";
 
 export default {
   emits: ["update:prefix", "refresh", "error"],
+  mixins: [mixin],
   props: {
     isPage: Boolean,
     prefix: String,
@@ -216,7 +225,7 @@ export default {
     },
   },
   created() {
-    this.getList();
+    this.initBucket();
     this.$bus.on("drive-refresh", () => {
       this.getList();
     });

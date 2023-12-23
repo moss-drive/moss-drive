@@ -4,7 +4,9 @@
       <q-card-section class="pos-s top-0 q-dark z-10">
         <div class="al-c">
           <div class="text-h6">
-            <span v-if="isDone">{{ "file".getCountName(movedArr.length) }} moved to</span>
+            <span v-if="isDone"
+              >{{ "file".getCountName(movedNum || movedArr.length) }} moved to</span
+            >
             <span v-else>Move to</span>
             <span v-if="isNext" class="ml-2">{{ moveToPrefix || "/" }}</span>
           </div>
@@ -60,6 +62,9 @@
         <template v-if="!isDone">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
+        <template v-else-if="movedNum">
+          <q-btn flat color="white" label="Open Folder" :to="toFolderPath" />
+        </template>
         <q-btn v-if="isDone" color="primary" @click="showPop = false"> Done </q-btn>
         <q-btn
           v-else
@@ -97,11 +102,17 @@ export default {
       curMoveIdx: -1,
       newFolder: "",
       creating: false,
+      movedNum: 0,
     };
   },
   computed: {
     curPrefix() {
       return this.$bucket.getPrefixByPath(this.$route.path);
+    },
+    toFolderPath() {
+      let path = this.moveToPrefix;
+      if (path) path = "/" + path.replace(/\/$/, "");
+      return "/drive" + path;
     },
   },
   watch: {
@@ -117,6 +128,7 @@ export default {
         this.moveToPrefix = "";
         this.movedArr = [];
         this.curMoveIdx = -1;
+        this.movedNum = 0;
       }
     },
     newFolder(val) {
@@ -155,7 +167,7 @@ export default {
     async doMove() {
       this.moving = true;
       if (this.moveFunc) {
-        await this.moveFunc({
+        this.movedNum = await this.moveFunc({
           prefix: this.moveToPrefix,
         });
       } else {
