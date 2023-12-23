@@ -71,7 +71,6 @@ export default {
           },
         });
         localStorage.bindX = 1;
-        await this.$alert("Twitter Binded");
         window.close();
       } catch (error) {
         console.log(error);
