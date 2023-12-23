@@ -57,6 +57,7 @@
                 rows="3"
                 label="Description"
                 placeholder="Optional"
+                :rules="[(val) => val.length > 300 || 'No more than 300 characters']"
               />
             </div>
           </div>
