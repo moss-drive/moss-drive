@@ -1,4 +1,3 @@
-
 <script setup>
 import NewFolder from "./new-folder.vue";
 </script>
@@ -126,8 +125,10 @@ export default {
       this.onFiles(list);
     },
     onFiles(list) {
-      // console.log(list);
-      this.$emit("files", list);
+      console.log(list);
+
+      this.$bus.emit("uploadEvent", list);
+      // this.$emit("files", list);
     },
   },
 };
