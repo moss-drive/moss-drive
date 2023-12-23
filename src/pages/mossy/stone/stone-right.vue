@@ -86,7 +86,6 @@ export default {
 
 <style lang="scss" scoped>
 .right-chat {
-  height: 600px;
-  transition: all 1s ease;
+  height: 450px;
 }
 </style>

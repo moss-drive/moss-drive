@@ -22,7 +22,7 @@
         <q-tr :props="props">
           <q-td key="txHash" :props="props">
             <a target="__blank" :href="getTxLink(props.row.txHash, props.row.network)">
-              {{ props.row.txHash == "" ? "--" : props.row.txHash }}
+              {{ props.row.txHash == "" ? "--" : props.row.txHash.cutStr(10, 10) }}
             </a>
           </q-td>
           <q-td key="land" :props="props">
@@ -30,6 +30,9 @@
           </q-td>
           <q-td key="amount" :props="props">
             {{ props.row.amount }}
+          </q-td>
+          <q-td key="createdAt" :props="props">
+            {{ new Date(props.row.createdAt * 1000).format() }}
           </q-td>
           <q-td key="status" :props="props">
             {{ props.row.status }}
@@ -90,7 +93,6 @@ export default {
           label: "Tx Hash",
           align: "left",
           field: "txHash",
-          format: (val) => `${val}`,
           style: "font-weight: bold; font-size: 14px;width: 300px",
         },
         {
@@ -101,6 +103,13 @@ export default {
           style: " font-size: 14px",
         },
         { name: "amount", align: "left", label: "Cost", field: "amount", style: "font-size: 14px" },
+        {
+          name: "createdAt",
+          align: "left",
+          label: "CreatedAt",
+          field: "createdAt",
+          style: "font-size: 14px",
+        },
         {
           name: "status",
           align: "left",
