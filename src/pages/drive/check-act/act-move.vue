@@ -5,9 +5,10 @@
         <div class="al-c">
           <div class="text-h6">
             <span v-if="isDone"
-              >{{ "file".getCountName(movedNum || movedArr.length) }} moved to</span
+              >{{ "file".getCountName(movedNum || movedArr.length) }}
+              {{ moveFunc ? "saved" : "moved" }} to</span
             >
-            <span v-else>Move to</span>
+            <span v-else>{{ moveFunc ? "Save" : "Move" }} to</span>
             <span v-if="isNext" class="ml-2">{{ moveToPrefix || "/" }}</span>
           </div>
         </div>
@@ -73,7 +74,7 @@
           :loading="moving"
           @click="onMove"
           :disable="(!moveFunc && curPrefix == moveToPrefix) || (moveFunc && !moveToPrefix)"
-          >Move here</q-btn
+          >{{ moveFunc ? "Save" : "Move" }} here</q-btn
         >
       </q-card-actions>
     </q-card>
@@ -142,7 +143,7 @@ export default {
         this.creating = true;
         const newPrefix = this.moveToPrefix + val + "/";
         await this.$bucket.putObject({
-          Bucket: this.$bucket.listParams.Bucket,
+          Bucket: this.$bucket.defBucket,
           Key: newPrefix,
         });
         this.newFolder = "";

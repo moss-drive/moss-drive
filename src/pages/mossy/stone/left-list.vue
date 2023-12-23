@@ -43,8 +43,13 @@ import ActMove from "../../drive/check-act/act-move.vue";
       </div>
     </div>
     <div class="pa-3">
-      <div v-if="notBuy">
-        <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
+      <div v-if="notBuy" class="pos-r">
+        <div class="pa-9 pb-0">
+          <img src="/img/stone/bg-unbuy.png" class="w100p op-2" />
+        </div>
+        <div class="pos-r" style="top: -60px">
+          <empty-stone img="stone-lock" desc="Buy Stone Key to view files" />
+        </div>
       </div>
       <q-infinite-scroll v-else @load="onLoad" :disable="loading !== false || noMore">
         <grid-list

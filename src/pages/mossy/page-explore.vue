@@ -4,7 +4,7 @@
   background-size: 230px;
 }
 .m-search {
-  width: 350px;
+  width: 500px;
   padding: 12px 12px;
   padding-left: 50px;
   font-size: 15px;
