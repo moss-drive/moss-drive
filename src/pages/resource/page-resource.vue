@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <resource-notice></resource-notice>
+    <resource-notice v-if="!onChain"></resource-notice>
     <div class="resource-plate row q-col-gutter-md">
       <div class="col-12 col-md-6">
         <div class="land-container">
@@ -141,6 +141,7 @@ export default {
       ethAmount: BigNumber.from("0"),
       chainId: "",
       countEthLoading: false,
+      onChain: true,
     };
   },
   created() {
@@ -242,8 +243,12 @@ export default {
       this.$loadingClose();
     },
     async checkOnChain() {
-      const { data } = await fetchOnChain();
-      console.log(data);
+      try {
+        const { data } = await fetchOnChain();
+        this.onChain = data.handled;
+      } catch (error) {
+        console.log(error);
+      }
     },
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
