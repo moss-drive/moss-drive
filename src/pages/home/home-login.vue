@@ -17,7 +17,7 @@ import WalletConnect from "../login/wallet-connect.vue";
         class="full-width text-white"
       >
         <img src="/img/moss.svg" width="38" class="scale-9" />
-        <span class="fz-18 ml-2">Moss Drive</span>
+        <span class="fz-18 ml-2">My Moss</span>
       </q-btn>
       <wallet-connect v-else />
     </div>
