@@ -1,6 +1,3 @@
-
-
-
 <template>
   <div>
     <div class="mt-3 ta-r">
@@ -215,9 +212,10 @@ export default {
       } catch (error) {
         console.log(error);
         this.calcData = null;
-        this.$alert(error.message, {
-          // title: "Please check your wallet",
-        });
+
+        this.$bus.emit("wallet-error", error);
+
+        // this.$alert(error.message);
       }
       this.calcLoading = false;
       return data;

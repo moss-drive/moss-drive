@@ -8,6 +8,7 @@
   />
   <RouterView />
   <task-control></task-control>
+  <wallet-error></wallet-error>
 </template>
 
 <script>
