@@ -1,7 +1,7 @@
 <template>
   <div class="bg-black-1 pa-5">
     <div class="al-c">
-      <span>IPFS Used</span>
+      <span>Storage</span>
     </div>
     <div class="mt-3 progress-content">
       <div
@@ -45,12 +45,10 @@ export default {
     ...mapGetters("resourceStore", ["land2Resource"]),
     transformUsage() {
       const usage = this.usage.find((it) => it.type == "IPFS_STORAGE");
-      let name = "IPFS used";
       let total = usage.total;
-      total = usage.total + this.land2Resource[usage.type].size;
+      total = usage.total + this.land2Resource[usage.type].size.toNumber();
       return {
         type: usage.type,
-        name,
         used: getFileSize(usage.used, true),
         total: getFileSize(usage.total),
         percent: (usage.used / total).toFixed(2) * 1,
