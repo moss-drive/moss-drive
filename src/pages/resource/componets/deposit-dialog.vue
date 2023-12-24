@@ -121,6 +121,7 @@ export default {
         const receipt = await tx.wait();
         console.log(receipt);
         this.$alert("recharge success!!");
+        this.depositDialog = false;
       } catch (error) {
         this.onErr(error);
       }
