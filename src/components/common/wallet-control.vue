@@ -92,16 +92,16 @@ export default {
     async addOpChain() {
       try {
         let param = {
-          chainId: 80001,
-          chainName: "polygon mumbai",
-          rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+          chainId: 11155420,
+          chainName: "OP Sepolia Testnet",
+          rpcUrls: ["https://optimism-sepolia.blockpi.network/v1/rpc/public"],
           nativeCurrency: {
-            name: "matic Coin",
-            symbol: "MATIC",
+            name: "ETH",
+            symbol: "ETH",
             decimals: 18,
           },
         };
-        if (VITE_MOSS_CHAINID != 80001) {
+        if (VITE_MOSS_CHAINID != 11155420) {
           param = {
             chainId: "0xa",
             chainName: "Optimism LlamaNodes",
