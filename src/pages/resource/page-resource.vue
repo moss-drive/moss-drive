@@ -67,6 +67,7 @@
 
     <bill-details class="mt-4"></bill-details>
     <deposit-dialog ref="depositRef"></deposit-dialog>
+    <wallet-error></wallet-error>
   </div>
 </template>
 
