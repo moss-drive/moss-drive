@@ -249,7 +249,8 @@ export default {
         await tx.wait(2);
         this.isDone = true;
       } catch (error) {
-        this.$alert(error.message);
+        // this.$alert(error.message);
+        this.$bus.emit("wallet-error", error);
       }
       this.buying = false;
       this.$loadingClose();

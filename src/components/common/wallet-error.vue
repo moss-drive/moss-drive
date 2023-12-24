@@ -57,8 +57,10 @@ export default {
   },
   methods: {
     handleFn(error) {
-      console.log(error);
       this.error = error;
+      if (/user rejected/i.test(this.detailMsg)) {
+        return;
+      }
       this.showPop = true;
     },
   },
