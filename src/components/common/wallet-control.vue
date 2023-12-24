@@ -76,12 +76,17 @@ export default {
         this.$alert(msg);
       }
     },
+    onChange() {
+      this.$emit("change");
+    },
     initWallet() {
       window.ethereum.on("accountsChanged", (accounts) => {
         this.accounts = accounts;
+        this.onChange();
       });
       window.ethereum.on("chainChanged", (chainId) => {
         this.chainId = chainId;
+        this.onChange();
       });
     },
     async addOpChain() {

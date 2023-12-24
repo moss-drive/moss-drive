@@ -66,9 +66,16 @@
         </q-card-section>
         <q-card-actions align="right" class="text-primary">
           <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
-          <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy">{{
-            isBuy ? "Buy" : "Sell"
-          }}</q-btn>
+          <wallet-control @change="onWalletChange">
+            <q-btn
+              rounded
+              color="primary"
+              :disabled="calcLoading"
+              :loading="buying"
+              @click="onBuy"
+              >{{ isBuy ? "Buy" : "Sell" }}</q-btn
+            >
+          </wallet-control>
         </q-card-actions>
       </template>
     </q-card>
@@ -149,6 +156,10 @@ export default {
       this.calcData = null;
       this.isBuy = isBuy;
       this.showPop = true;
+    },
+    onWalletChange() {
+      this.mossHub = null;
+      this.initMoss();
     },
     async initMoss() {
       if (!this.mossHub) {

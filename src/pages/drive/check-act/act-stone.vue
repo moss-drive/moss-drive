@@ -151,7 +151,7 @@
             }}</q-btn>
           </div>
           <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-          <wallet-control>
+          <wallet-control @change="onWalletChange">
             <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
           </wallet-control>
         </q-card-actions>
@@ -268,6 +268,10 @@ export default {
         this.saving = false;
       }
       this.$loadingClose();
+    },
+    onWalletChange() {
+      this.mossHub = null;
+      this.initMoss();
     },
     async initMoss() {
       if (!this.mossHub) {
