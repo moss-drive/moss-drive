@@ -6,7 +6,7 @@
     <div class="mt-3 progress-content">
       <div
         class="progress"
-        :style="{ width: transformUsage.percent }"
+        :style="{ width: transformUsage.percent + '%' }"
         :class="{ overflow: transformUsage.percent > 100 }"
       ></div>
     </div>

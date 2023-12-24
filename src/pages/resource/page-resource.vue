@@ -67,7 +67,6 @@
 
     <bill-details class="mt-4"></bill-details>
     <deposit-dialog ref="depositRef"></deposit-dialog>
-    <wallet-error></wallet-error>
   </div>
 </template>
 
@@ -140,7 +139,6 @@ export default {
         console.log(error);
       }
     },
-
     handleDeposit() {
       this.$refs.depositRef.depositDialog = true;
     },
