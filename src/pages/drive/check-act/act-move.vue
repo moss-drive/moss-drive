@@ -168,9 +168,15 @@ export default {
     async doMove() {
       this.moving = true;
       if (this.moveFunc) {
-        this.movedNum = await this.moveFunc({
-          prefix: this.moveToPrefix,
-        });
+        try {
+          this.movedNum = await this.moveFunc({
+            prefix: this.moveToPrefix,
+          });
+          this.isDone = true;
+        } catch (error) {
+          console.log(error);
+        }
+        this.moving = false;
       } else {
         for (const i in this.checkList) {
           if (!this.moving) break;
@@ -183,9 +189,9 @@ export default {
             console.log(error);
           }
         }
+        this.moving = false;
+        this.isDone = true;
       }
-      this.moving = false;
-      this.isDone = true;
     },
   },
 };

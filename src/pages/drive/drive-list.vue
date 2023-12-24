@@ -157,7 +157,7 @@ export default {
       const stoneList = this.stoneList || [];
       return this.objList.map((obj) => {
         const stone = stoneList.find((it) => {
-          return it.folderPath.replace("/", "") == obj.name;
+          return it.folderPath == obj.key;
         });
         let { type } = obj;
         if (stone) type = "stone";
