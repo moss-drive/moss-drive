@@ -21,18 +21,14 @@
 
 <script>
 export default {
-  props: {
-    error: {
-      type: Object,
-      default: () => {
-        return { message: "Someting went wrong!" };
-      },
-    },
-  },
+  props: {},
   data() {
     return {
       showPop: true,
       expanded: false,
+      error: {
+        message: "Someting went wrong!",
+      },
     };
   },
   computed: {
@@ -42,7 +38,6 @@ export default {
       if (data) {
         msg = data.message || msg;
       }
-
       if (/insufficient funds/i.test(msg)) {
         msg = "Insufficient balance in your wallet.";
       } else {
@@ -56,6 +51,7 @@ export default {
   },
   methods: {
     handleFn(error) {
+      this.error = error;
       this.showPop = true;
     },
   },
