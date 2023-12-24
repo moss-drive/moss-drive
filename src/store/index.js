@@ -21,7 +21,6 @@ const store = createStore({
   state: {
     ...storState,
     nowDate: new Date(),
-    isTouch: "ontouchstart" in window,
     isFocus: true,
     showProgress: false,
   },
@@ -73,10 +72,8 @@ window.onblur = () => {
   });
 };
 window.onfocus = () => {
-  const isTouch = "ontouchstart" in window;
   setState({
     isFocus: true,
-    isTouch,
   });
 };
 

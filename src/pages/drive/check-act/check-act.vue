@@ -103,8 +103,11 @@ export default {
       // console.log(name, rows);
       const item = this.checkItem;
       if (name == "publish") {
+        if (localStorage.bindX) {
+          localStorage.bindX = "";
+          return location.reload();
+        }
         if (!this.userInfo.twitterId) {
-          // await this.$confirm("Bind X at first");
           window.open("/login");
           return;
         }
