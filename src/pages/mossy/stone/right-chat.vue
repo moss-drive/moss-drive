@@ -65,7 +65,6 @@ export default {
       timer: null,
     };
   },
-
   computed: {
     stoneId() {
       return this.info.stoneId;
@@ -101,6 +100,7 @@ export default {
             page: this.page,
             size: this.size,
           },
+          noTip: 1,
         });
         if (!data) return (this.curList = []);
         this.curList = data;
