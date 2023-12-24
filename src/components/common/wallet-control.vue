@@ -6,6 +6,7 @@
 </template>
 
 <script>
+const { VITE_MOSS_CHAINID } = import.meta.env;
 import { mapState } from "vuex";
 export default {
   props: {
@@ -30,7 +31,7 @@ export default {
     },
     showText() {
       if (!this.addrMatch) return "Connect Wallet";
-      if (!this.isOpChain) return "Switch to Op Main Chain";
+      if (!this.isOpChain) return "Switch Network";
       return "";
     },
     isConnect() {
@@ -38,7 +39,7 @@ export default {
       return this.accounts.length > 0;
     },
     isOpChain() {
-      return this.chainId == "0xa";
+      return this.chainId == this.genChainId(VITE_MOSS_CHAINID);
     },
   },
   created() {
@@ -60,9 +61,7 @@ export default {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        console.log(accounts);
         this.accounts = accounts;
-
         if (this.sameAddr && !this.addrMatch) {
           throw new Error(
             `Please use the wallet address associated with the current account for signing. The current account is ${this.uid.cutStr(
@@ -83,25 +82,35 @@ export default {
       });
       window.ethereum.on("chainChanged", (chainId) => {
         this.chainId = chainId;
-        console.log(this.chainId);
       });
     },
     async addOpChain() {
       try {
+        let param = {
+          chainId: 80001,
+          chainName: "polygon mumbai",
+          rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+          nativeCurrency: {
+            name: "matic Coin",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+        };
+        if (VITE_MOSS_CHAINID != 80001) {
+          param = {
+            chainId: "0xa",
+            chainName: "Optimism LlamaNodes",
+            rpcUrls: ["https://optimism.llamarpc.com"],
+            nativeCurrency: {
+              name: "ETH",
+              symbol: "ETH",
+              decimals: 18,
+            },
+          };
+        }
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
-          params: [
-            {
-              chainId: "0xa",
-              chainName: "Optimism LlamaNodes",
-              rpcUrls: ["https://optimism.llamarpc.com"],
-              nativeCurrency: {
-                name: "ETH",
-                symbol: "ETH",
-                decimals: 18,
-              },
-            },
-          ],
+          params: [param],
         });
       } catch (addError) {
         console.log("res", addError);
@@ -110,9 +119,10 @@ export default {
     async switchOpChain() {
       this.addOpChain();
       try {
+        const chainId = this.genChainId(VITE_MOSS_CHAINID);
         const res = await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0xa" }],
+          params: [{ chainId }],
         });
         console.log("res", res);
         if (res && res.error) {
@@ -125,6 +135,9 @@ export default {
           throw new Error(error.message);
         }
       }
+    },
+    genChainId(id) {
+      return "0x" + Number(id).toString(16);
     },
   },
 };
