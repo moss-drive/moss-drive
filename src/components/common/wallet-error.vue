@@ -8,7 +8,9 @@
         <q-expansion-item v-model="expanded" label="Detail Message">
           <q-card>
             <q-card-section>
-              {{ detailMsg }}
+              <div class="wb-all">
+                {{ detailMsg }}
+              </div>
             </q-card-section>
           </q-card>
         </q-expansion-item>
@@ -57,6 +59,7 @@ export default {
   },
   methods: {
     handleFn(error) {
+      console.log(232232323);
       this.error = error;
       if (/user rejected/i.test(this.detailMsg)) {
         return;
