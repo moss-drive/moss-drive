@@ -39,8 +39,8 @@ export default {
           url: "http://docs.mymoss.io/",
         },
         {
-          label: "GitCoin",
-          url: "http://docs.mymoss.io/",
+          label: "Email",
+          url: "mailto:hello@mymoss.io",
         },
       ],
     };
