@@ -117,8 +117,8 @@ export default {
       }
     },
     async switchOpChain() {
-      this.addOpChain();
       try {
+        this.addOpChain();
         const chainId = this.genChainId(VITE_MOSS_CHAINID);
         const res = await window.ethereum.request({
           method: "wallet_switchEthereumChain",

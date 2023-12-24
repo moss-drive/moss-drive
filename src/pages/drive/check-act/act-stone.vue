@@ -122,7 +122,7 @@
                   filled
                   dense
                   label="How many tokens need to be sold to increase the price once?"
-                  hint="Minimum value is 2"
+                  hint="Minimum value is 10"
                   :rules="[(val) => val >= 10 || 'Minimum value is 10']"
                   v-model="mossForm.tokenNum"
                 />
