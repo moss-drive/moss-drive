@@ -21,7 +21,8 @@
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
           <div class="mt-1 fz-14">
             You successfully {{ isBuy ? "purchased" : "sold" }}
-            {{ "Stone Key".getCountName(form.amount) }}.
+            <span class="ml-1">{{ "Stone Key".getCountName(form.amount) }}</span
+            >.
           </div>
           <div class="mt-8">
             <q-btn @click="onDone" color="primary" size="large" style="width: 160px">Done</q-btn>
