@@ -124,7 +124,7 @@ export default {
         tasks.forEach((it) => {
           this.taskWrap.pushTasks(it);
         });
-        this.tasks = this.tasks.concat(tasks);
+        this.tasks = tasks.concat(this.tasks);
         this.showControl = true;
         this.expanded = true;
         this.taskWrap.progressTask();
