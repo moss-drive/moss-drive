@@ -313,13 +313,15 @@ export default {
         this.onNext(tx);
       } catch (error) {
         this.saving = false;
-        console.log(error);
-        let msg = error.message;
-        if (/user reject/.test(msg)) {
-          this.$toast("Rejected");
-        } else {
-          this.$alert(msg);
-        }
+        console.log(error, 111);
+        this.$bus.emit("wallet-error", error);
+
+        // let msg = error.message;
+        // if (/user reject/.test(msg)) {
+        //   this.$toast("Rejected");
+        // } else {
+        //   this.$alert(msg);
+        // }
       }
       //
     },

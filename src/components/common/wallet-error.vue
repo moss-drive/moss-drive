@@ -2,18 +2,20 @@
   <div>
     <q-dialog v-model="showPop">
       <div class="recharge-container">
-        <div class="error-title mb-2 px-4">
+        <div class="error-title fz-18 mb-5 px-2">
           {{ errorMsg }}
         </div>
-        <q-expansion-item v-model="expanded" label="Detail">
+        <q-expansion-item v-model="expanded" label="Detail Message">
           <q-card>
             <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit
-              eos corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores
-              architecto suscipit iste eveniet doloribus ullam aliquid.
+              {{ detailMsg }}
             </q-card-section>
           </q-card>
         </q-expansion-item>
+
+        <div class="ta-r mt-5">
+          <q-btn rounded @click="showPop = false">OK</q-btn>
+        </div>
       </div>
     </q-dialog>
   </div>
@@ -24,7 +26,7 @@ export default {
   props: {},
   data() {
     return {
-      showPop: true,
+      showPop: false,
       expanded: false,
       error: {
         message: "Someting went wrong!",
@@ -32,12 +34,16 @@ export default {
     };
   },
   computed: {
-    errorMsg() {
+    detailMsg() {
       const { data } = this.error;
       let msg = this.error.message;
       if (data) {
         msg = data.message || msg;
       }
+      return msg;
+    },
+    errorMsg() {
+      let msg = this.detailMsg;
       if (/insufficient funds/i.test(msg)) {
         msg = "Insufficient balance in your wallet.";
       } else {
@@ -47,10 +53,11 @@ export default {
     },
   },
   created() {
-    this.$bus.on("walletError", this.handleFn);
+    this.$bus.on("wallet-error", this.handleFn);
   },
   methods: {
     handleFn(error) {
+      console.log(error);
       this.error = error;
       this.showPop = true;
     },
