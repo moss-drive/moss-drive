@@ -76,27 +76,32 @@ export default {
         this.$alert(msg);
       }
     },
+    onChange() {
+      this.$emit("change");
+    },
     initWallet() {
       window.ethereum.on("accountsChanged", (accounts) => {
         this.accounts = accounts;
+        this.onChange();
       });
       window.ethereum.on("chainChanged", (chainId) => {
         this.chainId = chainId;
+        this.onChange();
       });
     },
     async addOpChain() {
       try {
         let param = {
-          chainId: 80001,
-          chainName: "polygon mumbai",
-          rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+          chainId: "0xaa37dc",
+          chainName: "OP Sepolia Testnet",
+          rpcUrls: ["https://optimism-sepolia.blockpi.network/v1/rpc/public"],
           nativeCurrency: {
-            name: "matic Coin",
-            symbol: "MATIC",
+            name: "ETH",
+            symbol: "ETH",
             decimals: 18,
           },
         };
-        if (VITE_MOSS_CHAINID != 80001) {
+        if (VITE_MOSS_CHAINID != 11155420) {
           param = {
             chainId: "0xa",
             chainName: "Optimism LlamaNodes",
@@ -117,8 +122,8 @@ export default {
       }
     },
     async switchOpChain() {
-      this.addOpChain();
       try {
+        this.addOpChain();
         const chainId = this.genChainId(VITE_MOSS_CHAINID);
         const res = await window.ethereum.request({
           method: "wallet_switchEthereumChain",

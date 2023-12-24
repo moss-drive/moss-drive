@@ -20,8 +20,9 @@
         <div class="pa-9 ta-c">
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
           <div class="mt-1 fz-14">
-            You successfully {{ isBuy ? "buy" : "sell" }} {{ form.amount }} Stone
-            {{ "Key".getCountName(form.amount) }}.
+            You successfully {{ isBuy ? "purchased" : "sold" }}
+            <span class="ml-1">{{ "Stone Key".getCountName(form.amount) }}</span
+            >.
           </div>
           <div class="mt-8">
             <q-btn @click="onDone" color="primary" size="large" style="width: 160px">Done</q-btn>
@@ -65,9 +66,16 @@
         </q-card-section>
         <q-card-actions align="right" class="text-primary">
           <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
-          <q-btn rounded color="primary" :disabled="calcLoading" :loading="buying" @click="onBuy">{{
-            isBuy ? "Buy" : "Sell"
-          }}</q-btn>
+          <wallet-control @change="onWalletChange">
+            <q-btn
+              rounded
+              color="primary"
+              :disabled="calcLoading"
+              :loading="buying"
+              @click="onBuy"
+              >{{ isBuy ? "Buy" : "Sell" }}</q-btn
+            >
+          </wallet-control>
         </q-card-actions>
       </template>
     </q-card>
@@ -148,6 +156,10 @@ export default {
       this.calcData = null;
       this.isBuy = isBuy;
       this.showPop = true;
+    },
+    onWalletChange() {
+      this.mossHub = null;
+      this.initMoss();
     },
     async initMoss() {
       if (!this.mossHub) {

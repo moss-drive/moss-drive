@@ -87,10 +87,10 @@ export class MossHub {
   }
 
   parseEther(val) {
-    return (utils.formatEther(val) * 1).toFixed(5);
+    return utils.parseEther(val);
   }
-  formatEther(num) {
-    return utils.formatEther(num);
+  formatEther(val) {
+    return (utils.formatEther(val) * 1).toFixed(5);
   }
 
   create(arr) {

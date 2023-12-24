@@ -66,7 +66,7 @@
 
       <q-card-actions align="right" class="text-primary">
         <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-        <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
+        <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Save</q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
