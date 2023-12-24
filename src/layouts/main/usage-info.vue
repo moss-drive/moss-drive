@@ -51,7 +51,7 @@ export default {
         type: usage.type,
         used: getFileSize(usage.used, true),
         total: getFileSize(usage.total),
-        percent: (usage.used / total).toFixed(2) * 1,
+        percent: ((usage.used / total) * 100).toFixed(2) * 1,
       };
     },
   },
