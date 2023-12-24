@@ -100,8 +100,11 @@ export default {
       try {
         const totalSize = files.reduce((pre, it) => pre + it.file.size, 0);
         const ipfsStorageByte = await this.getStorage();
-        if (totalSize > ipfsStorageByte * 1)
+        console.log(ipfsStorageByte);
+        console.log(totalSize > ipfsStorageByte * 1);
+        if (totalSize > ipfsStorageByte * 1) {
           throw Error("Insufficient storage space is available to upload the file.");
+        }
         const { accessKey, secretKey, sessionToken } = this.stsData;
         const s3 = new S3({
           endpoint: VITE_BUCKET_ENDPOINT,

@@ -6,7 +6,7 @@
     <div class="mt-3 progress-content">
       <div
         class="progress"
-        :style="{ width: transformUsage.percent + '%' }"
+        :style="{ width: transformUsage.percent > 100 ? '100&' : transformUsage.percent + '%' }"
         :class="{ overflow: transformUsage.percent > 100 }"
       ></div>
     </div>
@@ -51,7 +51,7 @@ export default {
         type: usage.type,
         used: getFileSize(usage.used, true),
         total: getFileSize(usage.total),
-        percent: (usage.used / total).toFixed(2) * 1,
+        percent: ((usage.used / total) * 100).toFixed(2) * 1,
       };
     },
   },
