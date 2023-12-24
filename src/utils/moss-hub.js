@@ -2,7 +2,6 @@ import { MossHub__factory, Helpers__factory } from "moss-v5";
 import { providers, utils } from "ethers";
 const { VITE_MOSS_HUB_CONTRACT, VITE_MOSS_HELPER_CONTRACT, VITE_MOSS_CHAINID } = import.meta.env;
 
-console.log(VITE_MOSS_HUB_CONTRACT);
 export class MossHub {
   constructor() {
     this.client = MossHub__factory.connect(VITE_MOSS_HUB_CONTRACT, this.signer);
@@ -87,8 +86,8 @@ export class MossHub {
     );
   }
 
-  parseEther(num) {
-    return utils.parseEther(num);
+  parseEther(val) {
+    return (utils.formatEther(val) * 1).toFixed(5);
   }
   formatEther(num) {
     return utils.formatEther(num);

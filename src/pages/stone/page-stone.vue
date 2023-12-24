@@ -19,9 +19,9 @@ import StoneEdit from "./stone-edit.vue";
     </div>
     <div class="row" v-else>
       <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">
-        <!-- <img src="/img/stone/stone-head.png" height="40" class="d-b" /> -->
-        <!-- style="top: -13px" -->
-        <div class="bg-card-1 stone-card pa-4 pos-r">
+        <img src="/img/stone/stone-head.png" height="40" class="d-b" />
+        <!--  -->
+        <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
           <div class="pos-a right-0 top-0 m-3 pa-1 hover-1" @click="$refs.edit.onEdit(it)">
             <img src="/img/stone/stone-edit.svg" width="20" />
           </div>
@@ -96,7 +96,7 @@ export default {
         this.rows = null;
         const { data } = await this.$http.get("/stone");
         const format = (val) => {
-          return this.$ethUtils.formatEther(val) + "ETH";
+          return this.$formatEther(val) + "ETH";
         };
         for (const it of data) {
           let { price, floor } = it;

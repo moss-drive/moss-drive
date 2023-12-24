@@ -83,7 +83,7 @@ $corner: 36px;
               <span class="op-8 ml-1">{{ item.twitterName }}</span>
             </div>
             <q-btn color="primary" rounded class="full-width mt-4" @click="onRow(item)"
-              >{{ formatEther(item.worth) }} ETH</q-btn
+              >{{ $formatEther(item.worth) }} ETH</q-btn
             >
           </div>
         </div>
@@ -119,8 +119,8 @@ $corner: 36px;
               <img class="avatar mr-1" width="24" :src="item.twitterAvatar" alt="" />
               <span> {{ item.twitterName }}</span>
             </td>
-            <td class="text-left fw-b">{{ formatEther(item.worth) }} ETH</td>
-            <td class="text-left fw-b">{{ formatEther(item.price) }} ETH</td>
+            <td class="text-left fw-b">{{ $formatEther(item.worth) }} ETH</td>
+            <td class="text-left fw-b">{{ $formatEther(item.price) }} ETH</td>
             <td class="text-left fw-b">
               <div class="al-c space-btw">
                 <span class="fw-b">
@@ -139,7 +139,6 @@ $corner: 36px;
   </div>
 </template>
 <script>
-import { formatEther } from "ethers/lib/utils";
 export default {
   props: {
     list: {
@@ -162,7 +161,6 @@ export default {
     },
   },
   methods: {
-    formatEther: formatEther,
     onRow(item) {
       this.$router.push(`/mossy/stone?id=${item.id}`);
     },

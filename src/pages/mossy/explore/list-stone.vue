@@ -14,7 +14,7 @@
             <span class="ml-1 fz-14 op-8">{{ it.twitterName }}</span>
           </div>
           <div class="fz-13 fw-b mt-auto al-c">
-            <span>{{ it.price ? formatEther(it.price) : "-" }}ETH</span>
+            <span>{{ it.price ? $formatEther(it.price) : "-" }}ETH</span>
             <!-- <img class="ml-1" src="/img/mossy/icon/trend-up.svg" width="12" /> -->
           </div>
         </div>
@@ -29,16 +29,10 @@
 </template>
 
 <script>
-import { utils } from "ethers";
-
 export default {
   props: {
     list: Array,
   },
-  methods: {
-    formatEther(val) {
-      return utils.formatEther(val);
-    },
-  },
+  methods: {},
 };
 </script>

@@ -66,7 +66,7 @@ export default {
     },
     kvList() {
       const format = (val) => {
-        return this.$ethUtils.formatEther(val) + "ETH";
+        return this.$formatEther(val) + "ETH";
       };
       let { totalSupply: supply, price, floor, floorSupply, worth } = this.info;
       if (price) price = format(price);

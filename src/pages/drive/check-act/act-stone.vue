@@ -123,7 +123,7 @@
                   dense
                   label="How many tokens need to be sold to increase the price once?"
                   hint="Minimum value is 2"
-                  :rules="[(val) => val >= 2 || 'Minimum value is 2']"
+                  :rules="[(val) => val >= 10 || 'Minimum value is 10']"
                   v-model="mossForm.tokenNum"
                 />
               </div>
@@ -132,11 +132,10 @@
                   filled
                   dense
                   label="After each price increase, by how much does the floor price quantity increase?"
-                  hint="Must be less than the previous quantity"
                   :rules="[
                     (val) =>
-                      (val >= 0 && val * 1 < mossForm.tokenNum * 1) ||
-                      'Must be less than the previous quantity',
+                      (val >= 0 && val * 1 < mossForm.tokenNum / 10) ||
+                      'Must be less than 1/10 of the previous quantity',
                   ]"
                   v-model="mossForm.stepNum"
                 />

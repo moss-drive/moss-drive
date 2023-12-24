@@ -10,7 +10,9 @@ export default {
     const global = app.config.globalProperties;
     global.$bucket = bucket;
     global.$http = http;
-    global.$ethUtils = utils;
+    global.$formatEther = (val) => {
+      return (utils.formatEther(val) * 1).toFixed(5);
+    };
     global.$genNonce = (len = 4) => {
       return Math.random().toString(36).slice(-len);
     };
