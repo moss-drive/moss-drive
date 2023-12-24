@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <q-btn @click="handleClick" v-if="!isConnect || !isOpChain"> {{ showText }} </q-btn>
-    <div class="slot" v-else>
-      <slot></slot>
-    </div>
-  </div>
+  <q-btn rounded color="primary" @click="handleClick" v-if="!isConnect || !isOpChain">
+    {{ showText }}
+  </q-btn>
+  <slot v-else></slot>
 </template>
 
 <script>
@@ -66,10 +64,17 @@ export default {
         this.accounts = accounts;
 
         if (this.sameAddr && !this.addrMatch) {
-          throw new Error("wallet addr must eq login addr");
+          throw new Error(
+            `Please use the wallet address associated with the current account for signing. The current account is ${this.uid.cutStr(
+              4,
+              6
+            )}`
+          );
         }
       } catch (error) {
         console.log(error);
+        let msg = error.message;
+        this.$alert(msg);
       }
     },
     initWallet() {

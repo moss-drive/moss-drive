@@ -134,7 +134,7 @@
                   label="After each price increase, by how much does the floor price quantity increase?"
                   :rules="[
                     (val) =>
-                      (val >= 0 && val * 1 < mossForm.tokenNum / 10) ||
+                      (val >= 0 && val * 1 <= mossForm.tokenNum / 10) ||
                       'Must be less than 1/10 of the previous quantity',
                   ]"
                   v-model="mossForm.stepNum"
@@ -151,7 +151,9 @@
             }}</q-btn>
           </div>
           <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-          <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
+          <wallet-control>
+            <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
+          </wallet-control>
         </q-card-actions>
       </template>
     </q-card>
@@ -285,20 +287,12 @@ export default {
       try {
         const addr = await mossHub.getWalletAddr();
         this.form.address = addr;
-        if (addr != this.uid) {
-          throw new Error(
-            `Please use the wallet address associated with the current account for signing. The current account is ${this.uid.cutStr(
-              4,
-              6
-            )}`
-          );
-        }
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
         // await this.setTimeoutAt(timeoutAt);
         const price = mossHub.parseEther(form.floorPrice);
-        const tx = await mossHub.create([
+        const args = [
           price,
           form.intNum,
           form.tokenNum,
@@ -307,7 +301,9 @@ export default {
           {
             value: price.add(price.mul(25).div(1e3)),
           },
-        ]);
+        ];
+        console.log(args);
+        const tx = await mossHub.create(args);
         // await tx.wait(2);
         //
         this.onNext(tx);
