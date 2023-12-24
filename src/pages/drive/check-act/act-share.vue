@@ -157,7 +157,7 @@ export default {
       let path = this.$route.path.replace(/^\/drive/, "").replace(/\//, "");
       if (path) path += "/";
       form.folderPath = path;
-      form.paths = this.checkList.map((it) => it.key).join(",");
+      form.paths = this.checkList.map((it) => it.key);
       console.log(form);
       try {
         this.saving = true;

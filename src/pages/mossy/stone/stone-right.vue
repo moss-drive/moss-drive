@@ -31,7 +31,7 @@
         <q-skeleton height="100px" square />
       </div>
       <template v-else>
-        <div class="line-2 fz-14 op-9">{{ info.description }}</div>
+        <div class="line-2 fz-14 op-9">{{ twitterInfo.description }}</div>
         <div class="mt-5">
           <q-btn
             :href="`https://twitter.com/${twitterInfo.username}`"

@@ -61,7 +61,7 @@ body.touch .grid-item.hover {
             <q-spinner-ios color="yellow" size="30px" />
           </div>
         </div>
-        <p class="line-1">{{ row.name }}</p>
+        <p class="line-1 px-2">{{ row.name }}</p>
         <p
           class="fz-12 op-5"
           :class="{

@@ -167,7 +167,7 @@ const { VITE_MEDIA_PRE } = import.meta.env;
 
 const initForm = {
   stoneName: "",
-  avatar: "/img/stone/def-cover.png",
+  avatar: "",
   bio: "",
   urlPath: "",
 };
@@ -255,6 +255,9 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
+      if (!form.avatar) {
+        form.avatar = "/img/stone/def-cover.png";
+      }
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
