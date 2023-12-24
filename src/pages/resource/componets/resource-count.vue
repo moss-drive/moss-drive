@@ -1,7 +1,8 @@
 <template>
-  <div class="al-c space-btw flex-wrap" style="gap: 16px">
+  <div>
+    <div class="fw-b fz-16 mb-4">Calculator</div>
     <resource-count-row
-      class="flex-1 resource-count-row"
+      class="resource-count-row"
       v-for="item in resourceTagsConfig"
       :key="item.name"
       :tags="item.tags"

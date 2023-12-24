@@ -1,8 +1,8 @@
 <template>
-  <div class="network-radio-container">
-    <div class="title fz-20 fw-b mb-2">Network</div>
-    <div class="row q-col-gutter-sm">
-      <div class="col-xs-12 col-sm-6" v-for="(it, i) in chainList" :key="`md-${i}`">
+  <div class="network-radio-container al-c">
+    <div class="title fz-16 fw-b mr-1">Network</div>
+    <div class="row q-col-gutter-sm flex-1">
+      <div class="col-12" v-for="(it, i) in chainList" :key="`md-${i}`">
         <div
           class="radio-item al-c cursor-p"
           @click="onSelect(it.chainId)"
@@ -10,22 +10,8 @@
             active: selected == it.chainId,
           }"
         >
-          <img
-            :src="
-              selected == it.chainId
-                ? '/img/resource/circle-active.svg'
-                : '/img/resource/circle.svg'
-            "
-            alt=""
-          />
-          <img class="ml-2" :src="it.img" width="22" />
-          <span
-            class="fz-14 ml-1"
-            :class="{
-              'color-1': selected == it.chainId,
-            }"
-            >{{ it.name }}</span
-          >
+          <img :src="it.img" width="22" />
+          <span class="fz-14 ml-1">{{ it.name }}</span>
         </div>
       </div>
     </div>
