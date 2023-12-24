@@ -87,7 +87,7 @@ export default {
     async addOpChain() {
       try {
         let param = {
-          chainId: 11155420,
+          chainId: "0xaa37dc",
           chainName: "OP Sepolia Testnet",
           rpcUrls: ["https://optimism-sepolia.blockpi.network/v1/rpc/public"],
           nativeCurrency: {
