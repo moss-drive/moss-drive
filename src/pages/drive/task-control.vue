@@ -16,7 +16,7 @@
         <div class="task-body">
           <div :key="item">
             <div class="al-c space-btw">
-              <div class="py-4 px-2 al-c">
+              <div class="py-4 px-2 al-c task-info">
                 <!-- <img src="" class="mr-2" width="40" height="40" alt="" /> -->
                 <div>
                   <div class="task-name fz-14">{{ item.param.Key }}</div>
@@ -169,7 +169,12 @@ export default {
   }
   .task-body {
     background: #0f172a;
+    .task-info {
+      width: 70%;
+    }
     .task-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .task-load {
       color: #94a3b8;

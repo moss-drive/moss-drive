@@ -32,6 +32,7 @@
         class="chat-input flex-1 fz-16"
         @keyup.enter="handleSendMessage"
         type="text"
+        maxlength="200"
         placeholder="Enter something..."
         v-model="message"
       />

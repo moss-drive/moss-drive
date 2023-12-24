@@ -16,10 +16,10 @@
               <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
             </div>
             <div class="al-c">
-              <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
+              <div class="conversion-btn ta-c cursor-p" @click="showConversion = !showConversion">
                 Conversion
               </div>
-              <div class="deposit-btn fw-b cursor-p ml-4" @click="handleDeposit">Deposit</div>
+              <div class="deposit-btn ta-c fw-b cursor-p ml-4" @click="handleDeposit">Deposit</div>
             </div>
           </div>
 
@@ -66,7 +66,6 @@
     </div>
 
     <bill-details class="mt-4"></bill-details>
-
     <deposit-dialog ref="depositRef"></deposit-dialog>
   </div>
 </template>
@@ -176,15 +175,19 @@ export default {
     }
   }
   .conversion-btn {
+    width: 115px;
     padding: 12px 16px;
+    box-sizing: border-box;
     border-radius: 4px;
-    border: 1px solid rgba(30, 239, 164, 0.25);
+    border: 1px solid #1eefa4;
     color: #1eefa4;
   }
 
   .deposit-btn {
+    width: 117px;
     padding: 12px 16px;
     border-radius: 4px;
+    box-sizing: border-box;
     color: #0f172a;
     border: 1px solid #1eefa4;
     background: #1eefa4;

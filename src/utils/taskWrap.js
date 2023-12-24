@@ -1,4 +1,4 @@
-import { Upload } from "@aws-sdk/lib-storage";
+import { Upload } from "@4everland/s3-lib-storage";
 const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
 import { getFileSize } from "../utils/helper";
 
