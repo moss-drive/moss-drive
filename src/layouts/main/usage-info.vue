@@ -44,7 +44,6 @@ export default {
     ...mapState("resourceStore", ["land", "usage"]),
     ...mapGetters("resourceStore", ["land2Resource"]),
     transformUsage() {
-      console.log(this.usage);
       const usage = this.usage.find((it) => it.type == "IPFS_STORAGE");
       let name = "IPFS used";
       let total = usage.total;

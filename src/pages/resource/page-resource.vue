@@ -15,8 +15,11 @@
 
               <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
             </div>
-            <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
-              Conversion
+            <div class="al-c">
+              <div class="conversion-btn cursor-p" @click="showConversion = !showConversion">
+                Conversion
+              </div>
+              <div class="deposit-btn fw-b cursor-p ml-4" @click="handleDeposit">Deposit</div>
             </div>
           </div>
 
@@ -62,85 +65,25 @@
       </div>
     </div>
 
-    <div class="recharge-container my-6">
-      <div class="deposit-container">
-        <div class="fz-20 fw-b mb-4">Deposit</div>
-        <div class="deposite-section mb-4">
-          <div class="al-c recharge-input" style="width: 50%">
-            <input maxlength="8" class="r-ipt flex-1" v-model="amount" type="text" />
-            <span class="num">,000,000</span>
-            <span class="land-text fz-14">LAND</span>
-          </div>
-          <div class="mt-1 fz-12 land-to-usd">1,000,000LAND=1USD</div>
-        </div>
+    <bill-details class="mt-4"></bill-details>
 
-        <resource-count @estimateInput="estimateInput"></resource-count>
-      </div>
-
-      <div class="recharge-act d-flex">
-        <div class="row q-col-gutter-md" style="width: 100%">
-          <div class="col-12 col-md-6">
-            <pay-network @onNetwork="handleNetwork"></pay-network>
-          </div>
-          <div class="col-12 col-md-6">
-            <pay-coin @onSelectCoin="onSelectCoin"></pay-coin>
-          </div>
-        </div>
-      </div>
-
-      <div class="recharge-bar al-c space-btw">
-        <div class="amount-info">
-          <div class="fz-16 fw-b">Total</div>
-          <div style="height: 42px" class="al-c" v-show="countEthLoading">
-            <q-circular-progress indeterminate rounded size="20px" color="#000" />
-          </div>
-          <div v-show="!countEthLoading">
-            <span class="amount fw-b">{{ transformAmount }}</span>
-            <span class="coin-type fz-12 ml-1">{{ coinType }}</span>
-          </div>
-        </div>
-        <div
-          class="recharge-btn fz-16 cursor-p"
-          :class="{ disabled: disabled }"
-          @click="handleEthRecharge"
-        >
-          Confirm
-        </div>
-
-        <!-- <q-btn color="#13C68A" outline label="Confirm" /> -->
-      </div>
-    </div>
-
-    <bill-details></bill-details>
+    <deposit-dialog ref="depositRef"></deposit-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
-import { getFileSize, debounce, uid2euid } from "@/utils/helper";
-import { formatEther, solidityPack, parseUnits } from "ethers/lib/utils";
-import { BigNumber, providers } from "ethers";
-import { IQuoter__factory, UNILand__factory } from "@4everland/land-v5";
-import { chainAddrList } from "./utils/chainAddrs";
+import { getFileSize } from "@/utils/helper";
+import { formatEther } from "ethers/lib/utils";
 import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
-import ResourceCount from "./componets/resource-count.vue";
-import { optimismRecharge } from "./utils/chainAddrs";
-import PayNetwork from "./componets/pay-network.vue";
-import PayCoin from "./componets/pay-coin.vue";
+import DepositDialog from "./componets/deposit-dialog.vue";
 import BillDetails from "./componets/bill-details.vue";
 import { fetchOnChain } from "../../api/resource";
 export default {
   data() {
     return {
-      amount: "",
-      coinType: "ETH",
       showConversion: false,
-      stablecoin: true,
-      usdcAmount: BigNumber.from("0"),
-      ethAmount: BigNumber.from("0"),
-      chainId: "",
-      countEthLoading: false,
       onChain: true,
     };
   },
@@ -153,7 +96,7 @@ export default {
   computed: {
     ...mapGetters("resourceStore", ["formatLand", "land2Resource"]),
     ...mapState({
-      usage: (s) => s.usageInfo,
+      // usage: (s) => s.usageInfo,
       userInfo: (s) => s.userInfo,
     }),
     ...mapState("resourceStore", ["land", "usage"]),
@@ -187,61 +130,8 @@ export default {
         };
       });
     },
-    signer() {
-      let provider = new providers.Web3Provider(window.ethereum);
-      return provider.getSigner();
-    },
-    opEthLandRecharge() {
-      return UNILand__factory.connect(optimismRecharge, this.signer);
-    },
-    curChainInfo() {
-      return chainAddrList.find((it) => it.chainId == this.chainId);
-    },
-    coinAddr() {
-      const coinType = this.coinType.toLowerCase();
-      return this.curChainInfo?.coin[coinType];
-    },
-    euid() {
-      return uid2euid(this.userInfo.uid);
-    },
-    transformAmount() {
-      if (this.stablecoin) {
-        return (formatEther(this.ethAmount) * 1).toFixed(5);
-      } else {
-        return this.usdcAmount.toString();
-      }
-    },
-    disabled() {
-      return !this.amount || this.chainId != 10;
-    },
   },
   methods: {
-    handleNetwork(chain) {
-      this.chainId = chain;
-      this.usdc2eth();
-    },
-    onSelectCoin(coin) {
-      this.coinType = coin.label;
-      this.stablecoin = coin.stablecoin;
-    },
-    estimateInput(val) {
-      this.amount = val;
-    },
-    async handleEthRecharge() {
-      if (this.disabled) return;
-      try {
-        this.$loading("Loading...");
-        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
-          value: this.ethAmount,
-        });
-        const receipt = await tx.wait();
-        console.log(receipt);
-        this.$alert("recharge success!!");
-      } catch (error) {
-        this.onErr(error);
-      }
-      this.$loadingClose();
-    },
     async checkOnChain() {
       try {
         const { data } = await fetchOnChain();
@@ -250,104 +140,17 @@ export default {
         console.log(error);
       }
     },
-    async usdc2eth() {
-      let provider = new providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      if (this.disabled) return;
-      try {
-        this.countEthLoading = true;
-        const quoter = IQuoter__factory.connect(
-          "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-          signer
-        );
-        const path = solidityPack(
-          ["address", "uint24", "address"],
-          [
-            "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85", // usdc addr
-            500, //
-            this.coinAddr,
-          ]
-        );
-        if (this.usdcAmount.eq(BigNumber.from("0"))) {
-          this.ethAmount = BigNumber.from("0");
-          this.countEthLoading = false;
-          return BigNumber.from("0");
-        }
 
-        const res = await quoter.callStatic.quoteExactOutput(
-          path,
-          parseUnits(this.usdcAmount.toString(), 6)
-        );
-        console.log(formatEther(res));
-        this.ethAmount = res;
-        this.countEthLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
-      this.countEthLoading = false;
-    },
-    onErr(err) {
-      if (!err) return console.log("---- err null");
-      if (/unknown account/.test(err.message)) {
-        return this.getAccount();
-      }
-      const { data } = err;
-      let msg = err.message;
-      if (data) {
-        msg = data.message || msg;
-      }
-      if (/repriced/i.test(msg) && /replaced/i.test(msg)) {
-        return this.$toast("Transaction was replaced.");
-      }
-      if (/missing revert data/i.test(msg)) {
-        msg = "Network Error";
-      } else if (/user rejected/i.test(msg)) {
-        msg = "Your transaction has been canceled.";
-      } else if (/transaction failed/i.test(msg)) {
-        msg = "Transaction Failed";
-      } else if (/ipfs/.test(msg) && /invalid params/.test(msg)) {
-        msg = "IPFS Storage Expired, extending service duration is required.";
-      } else if (
-        /exceeds balance/i.test(msg) ||
-        msg == "overflow" ||
-        /insufficient funds/i.test(msg)
-      ) {
-        msg = "Insufficient balance in your wallet.";
-      } else if (msg.length > 100) {
-        const mat = /^(.+)\[/.exec(msg);
-        if (mat) msg = mat[1];
-      }
-      if (/already pending for origin/gi.test(msg)) {
-        msg = "Wrong network, please switch your wallet network and try again.";
-      }
-
-      console.log(msg);
-      return this.$alert(msg);
+    handleDeposit() {
+      this.$refs.depositRef.depositDialog = true;
     },
   },
 
   components: {
     ResourceNotice,
     ResourceProgress,
-    ResourceCount,
-    PayNetwork,
-    PayCoin,
     BillDetails,
-  },
-  watch: {
-    amount() {
-      this.amount = this.amount.replace(/[^\d]/g, "");
-      if (this.amount) {
-        this.usdcAmount = BigNumber.from(this.amount);
-      } else {
-        this.usdcAmount = BigNumber.from("0");
-      }
-      if (this.stablecoin) {
-        debounce(() => {
-          this.usdc2eth();
-        });
-      }
-    },
+    DepositDialog,
   },
 };
 </script>
@@ -376,8 +179,15 @@ export default {
     padding: 12px 16px;
     border-radius: 4px;
     border: 1px solid rgba(30, 239, 164, 0.25);
-
     color: #1eefa4;
+  }
+
+  .deposit-btn {
+    padding: 12px 16px;
+    border-radius: 4px;
+    color: #0f172a;
+    border: 1px solid #1eefa4;
+    background: #1eefa4;
   }
 
   .descrition {

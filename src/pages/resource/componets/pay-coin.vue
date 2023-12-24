@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="fz-20 fw-b mb-2">Choose Token</div>
-    <div class="al-c flex-wrap" style="gap: 8px">
+  <div class="al-c">
+    <div class="fz-16 fw-b mr-1">Token</div>
+    <div class="al-c flex-wrap flex-1">
       <div
         @click="onSelect(it)"
         class="coin-label py-2 pl-4 cursor-p d-flex space-btw"
@@ -12,19 +12,12 @@
         :key="i"
       >
         <div class="al-c flex-1">
-          <img
-            width="16"
-            :src="
-              selected == it.label ? '/img/resource/circle-active.svg' : '/img/resource/circle.svg'
-            "
-            alt=""
-          />
-          <img class="ml-2" :src="it.img" width="32" />
+          <img :src="it.img" width="32" />
           <div class="fz-12 ml-2">
-            <div class="fz-14 name">
+            <span class="fz-14 name fw-b">
               {{ it.name }}
-            </div>
-            <div class="name-label">{{ it.showLabel }}</div>
+            </span>
+            <span class="name-label ml-1">({{ it.showLabel }})</span>
           </div>
         </div>
       </div>
@@ -68,7 +61,7 @@ export default {
         {
           label: "ETH",
           showLabel: "ETH",
-          name: "ETH",
+          name: "USDC Coin",
           img: "/img/resource/symbal-icons/usdc.svg",
           stablecoin: false,
         },
@@ -94,8 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 .coin-label {
-  height: 48px;
-  width: calc(50% - 4px);
+  width: 100%;
   border-radius: 4px;
   background: #1e293b;
   box-sizing: border-box;
@@ -110,10 +102,6 @@ export default {
 .coin-label.active {
   border: 1px solid rgba(30, 239, 164, 0.25);
   background: #102230;
-  .name {
-    font-weight: bold;
-    color: #1eefa4;
-  }
 }
 .v-tooltip__content {
   background: rgba(0, 0, 0, 0.9);

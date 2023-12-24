@@ -1,9 +1,9 @@
 <template>
   <div class="resource-row-cpm mb-1">
-    <div>
+    <div class="row-title">
       {{ name }}
     </div>
-    <div class="al-c mt-2">
+    <div class="al-c">
       <div
         v-for="(item, index) in tags"
         :key="index"
@@ -128,10 +128,11 @@ export default {
 
 <style lang="scss" scoped>
 .resource-row-cpm {
-  width: 48%;
+  width: 100%;
   min-width: 300px;
   font-size: 16px;
-  > h3 {
+  .row-title {
+    margin-bottom: 2px;
     color: #cbd5e1;
   }
 }
