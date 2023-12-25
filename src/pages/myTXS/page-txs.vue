@@ -168,9 +168,12 @@ export default {
       }
       this.rows.push(...data);
       this.rows.forEach((row, index) => {
-        let amounts = BigNumber.from(row.value);
+        let amounts = BigNumber.from(row.value) / 1e18;
+        if (this.isOver6Decimals(amounts)) {
+          amounts = amounts.toFixed(6);
+        }
         row.index = index + 1;
-        row.amounts = amounts / 1e18;
+        row.amounts = amounts;
         // row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
         row.href = `https://sepolia-optimism.etherscan.io/tx/${row.txHash}`;
         row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
@@ -192,6 +195,9 @@ export default {
       let chinaDateArray = chinaDate.split(" ");
       let displayDate = `${chinaDateArray[1]} ${chinaDateArray[2]}, ${chinaDateArray[3]}`;
       return displayDate;
+    },
+    isOver6Decimals(num) {
+      return (num.toString().split(".")[1] || []).length > 6;
     },
   },
 };

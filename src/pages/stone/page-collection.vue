@@ -52,7 +52,7 @@
             </div>
           </q-td>
           <q-td key="currentPrice" :props="props">
-            {{ props.row.price / 1e18 + " ETH" }}
+            {{ props.row.amounts + " ETH" }}
           </q-td>
           <q-td key="holdings" :props="props">
             {{ props.row.holding }}
@@ -85,6 +85,7 @@
 <script>
 import { fetchCollections } from "@/api/collection.js";
 import emptyImg from "/img/stone/default-empty.png";
+import { BigNumber } from "ethers";
 
 const columns = [
   { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
@@ -128,7 +129,12 @@ export default {
         this.hasNewPage = true;
       }
       data.forEach((row, index) => {
+        let amounts = BigNumber.from(row.price) / 1e18;
+        if (this.isOver6Decimals(amounts)) {
+          amounts = amounts.toFixed(6);
+        }
         row.index = index + 1;
+        row.amounts = amounts;
       });
       this.rows.push(...data);
     },
@@ -145,6 +151,9 @@ export default {
       // this.$router.push({ path: "/mossy/stone", query: { id: row.id } });
 
       window.open(`${window.location.origin}/${row.stoneId}`);
+    },
+    isOver6Decimals(num) {
+      return (num.toString().split(".")[1] || []).length > 6;
     },
   },
 };
