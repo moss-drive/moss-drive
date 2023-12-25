@@ -40,7 +40,7 @@
         width="32"
         class="cursor-p"
         @click="handleSendMessage"
-        src="/img/stone/chat-send-btn.svg"
+        :src="!message ? '/img/stone/chat-send-btn.svg' : '/img/stone/chat-send-btn-active.svg'"
         alt=""
       />
     </div>
