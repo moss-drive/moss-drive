@@ -12,11 +12,11 @@
     </div>
 
     <div class="chat-body mt-2 h-flex ov-a" style="flex-direction: column-reverse">
-      <div class="chat-item al-c" v-for="item in list" :key="item.id">
+      <div class="chat-item d-flex al-start" v-for="item in list" :key="item.id">
         <img class="mr-2" width="32" style="border-radius: 100%" :src="item.avatar" alt="" />
         <div class="flex-1">
           <div class="user-name fz-12">{{ item.name }}</div>
-          <div class="message-box pa-2 fz-14">{{ item.message }}</div>
+          <div class="message-box d-ib pa-2 fz-14">{{ item.message }}</div>
         </div>
       </div>
       <div class="ta-c cursor-p" @click="getMessageList(false)" v-show="curList.length >= size">
