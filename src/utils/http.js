@@ -85,7 +85,7 @@ async function handleError(status, config, data) {
     });
   }
   // console.log(data);
-  if (status == 401 || data.code == 401 || data.code == "INVALID_TEAM_TOKEN") {
+  if (status == 401 || [401, "INVALID_TEAM_TOKEN"].includes(data.code)) {
     refreshing = true;
     const isOk = await refreshToken();
     if (isOk) {

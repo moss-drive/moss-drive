@@ -154,8 +154,9 @@ export default {
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
     async showInvite() {
+      const code = await this.$prompt("Invitation Code");
+      if (!code) return;
       try {
-        const code = await this.$prompt("Invitation Code");
         this.$loading("Check...");
         await this.$http.post(
           `/invitation/${code}/verification`,

@@ -99,6 +99,7 @@
               <div class="col-6">
                 <q-input
                   filled
+                  disable
                   dense
                   label="Floor Price"
                   v-model="mossForm.floorPrice"
@@ -109,6 +110,7 @@
               <div class="col-6">
                 <q-input
                   filled
+                  disable
                   dense
                   label="Initial issuance quantity"
                   v-model="mossForm.intNum"
@@ -120,9 +122,9 @@
               <div class="mt-2">
                 <q-input
                   filled
+                  disable
                   dense
-                  label="How many tokens need to be sold to increase the price once?"
-                  hint="Minimum value is 10"
+                  label="The number of keys sold required for the initial floor price increase."
                   :rules="[(val) => val >= 10 || 'Minimum value is 10']"
                   v-model="mossForm.tokenNum"
                 />
@@ -130,12 +132,13 @@
               <div class="mt-4">
                 <q-input
                   filled
+                  disable
                   dense
-                  label="After each price increase, by how much does the floor price quantity increase?"
+                  label="After each price increase, by how much does the floor price quantity increase"
                   :rules="[
                     (val) =>
                       (val >= 0 && val * 1 <= mossForm.tokenNum / 10) ||
-                      'Must be less than 1/10 of the previous quantity',
+                      'Must be less than 2/10 of the previous quantity',
                   ]"
                   v-model="mossForm.stepNum"
                 />
@@ -172,10 +175,10 @@ const initForm = {
   urlPath: "",
 };
 const initMossForm = {
-  floorPrice: "0.0002",
-  intNum: "50",
-  tokenNum: "50",
-  stepNum: "5",
+  floorPrice: "0.0001",
+  intNum: "1",
+  tokenNum: "10",
+  stepNum: "2",
 };
 export default {
   props: {
@@ -298,12 +301,12 @@ export default {
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
         // await this.setTimeoutAt(timeoutAt);
-        const price = mossHub.parseEther(form.floorPrice);
+        // const price = mossHub.parseEther(form.floorPrice);
         const args = [
-          price,
-          form.intNum,
-          form.tokenNum,
-          form.stepNum,
+          // price,
+          // form.intNum,
+          // form.tokenNum,
+          // form.stepNum,
           timeoutAt,
           {
             value: price.add(price.mul(25).div(1e3)),
