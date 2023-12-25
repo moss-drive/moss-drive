@@ -33,6 +33,9 @@ export default {
       balance: 0,
     };
   },
+  uid() {
+    this.getAccount();
+  },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
     this.getInfo();
