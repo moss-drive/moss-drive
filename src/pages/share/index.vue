@@ -281,7 +281,7 @@ export default {
       } else {
         await this.getMore();
       }
-      done(true);
+      done();
     },
     async goPath(path) {
       this.curFolder = path;
@@ -442,7 +442,6 @@ export default {
       let date = new Date(timestamp);
       let chinaDate = date.toUTCString();
       let chinaDateArray = chinaDate.split(" ");
-      console.log(chinaDateArray);
       let displayDate = `${chinaDateArray[1]} ${chinaDateArray[2]}, ${chinaDateArray[3]}, ${chinaDateArray[4]}`;
       return displayDate;
     },
