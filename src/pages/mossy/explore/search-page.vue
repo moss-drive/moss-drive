@@ -159,7 +159,7 @@ export default {
       this.tableLoading = false;
     },
     onRow(it) {
-      window.open(location.origin + `/mossy/stone?id=${it.id}`);
+      window.open(location.origin + `/${it.stoneId}`);
     },
     handleBack() {
       this.searchKey = "";

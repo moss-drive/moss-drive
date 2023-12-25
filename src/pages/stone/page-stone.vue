@@ -51,7 +51,16 @@ import StoneEdit from "./stone-edit.vue";
           </div>
           <div class="mt-3 al-c">
             <q-btn
-              :href="`/mossy/stone?id=${it.id}`"
+              v-if="it.stoneId === null"
+              @click="onResend(it)"
+              color="primary"
+              class="flex-1"
+              rounded
+              >Resend</q-btn
+            >
+            <q-btn
+              v-else
+              :href="`/${it.stoneId}`"
               target="_blank"
               color="primary"
               class="flex-1"
@@ -84,6 +93,9 @@ export default {
     this.getList();
   },
   methods: {
+    onResend() {
+      this.$toast("todo");
+    },
     getMin(time) {
       let min = Math.round((Date.now() / 1e3 - time) / 60);
       if (min > 60) {

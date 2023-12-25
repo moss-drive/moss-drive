@@ -49,14 +49,13 @@ import LeftMossAct from "./left-moss-act.vue";
       </div>
       <left-moss-act v-if="info.stoneId" :stoneId="info.stoneId" :balance="balance" />
     </div>
-    <left-list :stoneId="info.stoneId" :id="id" :balance="balance" />
+    <left-list :stoneId="info.stoneId" :id="info.id" :balance="balance" />
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    id: null,
     info: Object,
     balance: null,
   },

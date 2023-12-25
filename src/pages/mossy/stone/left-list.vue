@@ -70,7 +70,6 @@ import { mapState } from "vuex";
 
 export default {
   props: {
-    id: null,
     stoneId: null,
     balance: null,
   },
@@ -79,7 +78,7 @@ export default {
       uid: (s) => s.loginData.uuid,
     }),
     basePath() {
-      return "/mossy/stone?id=" + this.id;
+      return "/mossy/stone";
     },
     breadLinks() {
       let arr = this.curFolder.split("/");

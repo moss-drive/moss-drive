@@ -144,7 +144,7 @@ export default {
     goStone(row, index) {
       // this.$router.push({ path: "/mossy/stone", query: { id: row.id } });
 
-      window.open(`${window.location.origin}/mossy/stone?id=${row.id}`);
+      window.open(`${window.location.origin}/${row.stoneId}`);
     },
   },
 };
@@ -175,7 +175,7 @@ export default {
 <style lang="sass">
 .my-sticky-header-table
   /* height or max-height is important */
-  max-height:90vh
+  max-height: 90vh
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th

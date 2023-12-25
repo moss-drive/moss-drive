@@ -127,7 +127,9 @@ export default {
   },
   watch: {
     showPop(val) {
-      if (val) this.resData = null;
+      if (val) {
+        this.resData = null;
+      }
     },
   },
   methods: {
