@@ -9,6 +9,7 @@
   <RouterView />
   <task-control></task-control>
   <wallet-error></wallet-error>
+  <login-popup></login-popup>
 </template>
 
 <script>

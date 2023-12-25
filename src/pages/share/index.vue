@@ -165,24 +165,12 @@
         </div>
       </div>
     </div>
-    <q-dialog v-model="showLogin">
-      <q-card class="login-dialog">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="fz-16">Sign in</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-        <q-card-section>
-          <wallet-connect @login="afterLogin" />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+
     <act-move ref="move" :check-list="[]" :moveFunc="onSave" />
   </div>
 </template>
 <script setup>
 import ActMove from "@/pages/drive/check-act/act-move.vue";
-import WalletConnect from "@/pages/login/wallet-connect.vue";
 </script>
 
 <script>
@@ -239,7 +227,6 @@ export default {
       curFolder: "",
       shareName: "",
       stoneInfo: null,
-      showLogin: false,
       scrollDisable: false,
       pageSize: 100,
     };
@@ -282,7 +269,7 @@ export default {
       } else {
         await this.getMore();
       }
-      done(true);
+      done();
     },
     async goPath(path) {
       this.curFolder = path;
@@ -308,7 +295,8 @@ export default {
       if (list.length < this.pageSize) {
         this.scrollDisable = true;
       }
-      const createdTime = new Date(data.createdAt * 1000).toUTCString();
+      const createdTime = this.formatTime(data.createdAt * 1000);
+
       const stoneList = data.stoneList;
 
       this.createdTime = createdTime;
@@ -405,8 +393,7 @@ export default {
     },
     async saveToStone() {
       if (!this.uid) {
-        this.showLogin = true;
-        localStorage.loginTo = this.$route.fullPath;
+        this.$bus.emit("show-login");
         return;
       } else {
         this.$refs.move.showPop = true;
@@ -432,14 +419,16 @@ export default {
       const { data } = await fetchStoneSave(params);
       return data.count;
     },
-    afterLogin() {
-      this.showLogin = false;
-    },
+
     setAddr(addr = "") {
       return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
     },
-    toDrive() {
-      console.log(1111);
+    formatTime(timestamp) {
+      let date = new Date(timestamp);
+      let chinaDate = date.toUTCString();
+      let chinaDateArray = chinaDate.split(" ");
+      let displayDate = `${chinaDateArray[1]} ${chinaDateArray[2]}, ${chinaDateArray[3]}, ${chinaDateArray[4]}`;
+      return displayDate;
     },
   },
 };

@@ -1,6 +1,3 @@
-<script setup>
-import WalletConnect from "../login/wallet-connect.vue";
-</script>
 
 <template>
   <div class="bg-primary bdrs-10 px-5 py-6" style="width: 360px">

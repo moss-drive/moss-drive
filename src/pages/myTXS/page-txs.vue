@@ -31,7 +31,7 @@
             {{ props.row.stoneName }}
           </q-td>
           <q-td key="createdAt" :props="props">
-            {{ new Date(props.row.createdAt * 1000).toUTCString() }}
+            {{ formatTime(props.row.createdAt * 1000) }}
           </q-td>
           <q-td key="action" :props="props">
             <div v-if="props.row.action == 'Bought'" class="act-box buy">
@@ -115,6 +115,7 @@ import { ref } from "vue";
 import { BigNumber } from "ethers";
 import { fetchTransaction } from "@/api/txs.js";
 import emptyImg from "/img/stone/default-empty.png";
+import { format } from "quasar";
 const columns = [
   { name: "index", align: "left", label: "#", field: "index", sortable: false },
   { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
@@ -170,7 +171,8 @@ export default {
         let amounts = BigNumber.from(row.value);
         row.index = index + 1;
         row.amounts = amounts / 1e18;
-        row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
+        // row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
+        row.href = `https://sepolia-optimism.etherscan.io/tx/${row.txHash}`;
         row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
       });
       this.loading = false;
@@ -183,6 +185,13 @@ export default {
           this.getList();
         });
       }
+    },
+    formatTime(timestamp) {
+      let date = new Date(timestamp);
+      let chinaDate = date.toUTCString();
+      let chinaDateArray = chinaDate.split(" ");
+      let displayDate = `${chinaDateArray[1]} ${chinaDateArray[2]}, ${chinaDateArray[3]}`;
+      return displayDate;
     },
   },
 };

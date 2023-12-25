@@ -90,7 +90,7 @@ export default {
         //   val: floor,
         // },
         {
-          key: "Floor Up Supply",
+          key: "Floor Supply",
           val: floorSupply,
         },
         {

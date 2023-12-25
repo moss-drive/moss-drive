@@ -2,14 +2,22 @@
   <q-btn
     flat
     rounded
-    size="lg"
-    style="background: #111"
+    :size="size"
+    :style="{
+      background: bg,
+    }"
     class="full-width text-white"
     :loading="loading"
     @click="onConnect(defItem.type)"
   >
-    <img :src="defItem.img" width="30" />
-    <span class="ml-2 fz-18">Connect Wallet</span>
+    <template v-if="size == 'lg'">
+      <img :src="defItem.img" width="30" />
+      <span class="ml-2 fz-18">Connect Wallet</span>
+    </template>
+    <template v-else>
+      <img :src="defItem.img" width="22" />
+      <span class="ml-2 fz-16">Connect</span>
+    </template>
   </q-btn>
 
   <q-dialog v-model="showInstall">
@@ -53,6 +61,17 @@ const walletList = [
 ];
 export default {
   emits: ["login"],
+  props: {
+    size: {
+      type: String,
+      default: "lg",
+    },
+    bg: {
+      type: String,
+      default: "#111",
+    },
+    keep: Boolean,
+  },
   data() {
     return {
       walletList,
@@ -95,11 +114,10 @@ export default {
           account,
           signature,
         });
-        const data = await this.getLoginData(account, {
+        await this.getLoginData(account, {
           signature,
           // inviteCode: "123",
         });
-        this.$emit("login", data);
       } catch (error) {
         console.log(error);
         let msg = error.message;
@@ -128,16 +146,43 @@ export default {
       this.onLoginData(data);
     },
     onRedirect() {
+      this.$toast("Welcome!", 1);
+      this.$emit("login");
+      if (this.keep) return;
       const redirectTo = localStorage.loginTo || "/";
       localStorage.loginTo = "";
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
+    },
+    async showInvite() {
+      try {
+        const code = await this.$prompt("Invitation Code");
+        this.$loading("Check...");
+        await this.$http.post(
+          `/invitation/${code}/verification`,
+          {},
+          {
+            noTip: true,
+          }
+        );
+
+        this.onRedirect();
+      } catch (error) {
+        console.log(error);
+        this.$toast("Invalid Code");
+        this.showInvite();
+      }
+      this.$loadingClose();
     },
     async onLoginData(data) {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
         this.$store.dispatch("login", data);
-        this.onRedirect();
+        if (data.isInvited) {
+          this.onRedirect();
+        } else {
+          this.showInvite();
+        }
       } catch (error) {
         console.log(error);
       }
