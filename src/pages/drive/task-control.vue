@@ -15,8 +15,8 @@
       <q-virtual-scroll style="max-height: 300px" :items="tasks" separator v-slot="{ item }">
         <div class="task-body">
           <div :key="item">
-            <div class="al-c space-btw">
-              <div class="py-4 px-2 al-c task-info">
+            <div class="al-c space-btw py-4 px-2">
+              <div class="al-c task-info">
                 <!-- <img src="" class="mr-2" width="40" height="40" alt="" /> -->
                 <div style="width: 100%">
                   <div class="task-name fz-14">{{ item.param.Key.replace("/", "") }}</div>
@@ -26,10 +26,30 @@
                   </div>
                 </div>
               </div>
-              <div class="operation">
-                <img width="24" src="/img/diver/close.svg" alt="" />
-                <img width="24" src="/img/diver/stop.svg" @click="handleStop(item)" alt="" />
-                <img width="24" src="/img/diver/play.svg" @click="handleStart(item)" alt="" />
+              <div class="operation flex-1">
+                <img
+                  width="24"
+                  class="cursor-p"
+                  src="/img/driver/stop.svg"
+                  v-show="item.status == 1 || item.status == 0"
+                  @click="handleStop(item)"
+                  alt=""
+                />
+                <img
+                  width="24"
+                  class="cursor-p ml-2"
+                  src="/img/driver/play.svg"
+                  v-show="item.status == 2"
+                  @click="handleStart(item)"
+                  alt=""
+                />
+                <img
+                  width="24"
+                  @click="handleDelete(item)"
+                  class="cursor-p ml-2"
+                  src="/img/driver/close.svg"
+                  alt=""
+                />
               </div>
             </div>
             <div class="progress">
@@ -74,7 +94,7 @@ export default {
           case 1:
             return "Uploading";
           case 2:
-            return "Abort";
+            return "Stopped";
           case 3:
             return "Success";
           default:
@@ -154,6 +174,14 @@ export default {
     handleStop(task) {
       task.cancel();
     },
+    handleStart(task) {
+      task.start();
+      this.taskWrap.progressTask();
+    },
+    handleDelete(task) {
+      task.cancel();
+      this.tasks = this.tasks.filter((it) => it.id != task.id);
+    },
   },
   watch: {
     compelete(val) {
@@ -197,11 +225,15 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .task-load {
-      color: #94a3b8;
-    }
+    .task-load,
     .task-status {
       color: #94a3b8;
+    }
+
+    .operation {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
     .progress {
