@@ -39,7 +39,7 @@ import StoneEdit from "./stone-edit.vue";
           <div class="mt-4">
             <p class="fw-b fz-20">{{ it.stoneName }}</p>
             <div class="mt-2 op-8 line-1">
-              <p v-if="it.stoneId > -1">
+              <p v-if="it.stoneId !== null">
                 Stone ID <span class="color-1">#{{ it.stoneId }}</span>
               </p>
               <div class="al-c" v-else>
