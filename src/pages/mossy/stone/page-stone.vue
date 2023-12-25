@@ -46,6 +46,9 @@ export default {
             id: this.id,
           },
         });
+        if (data.stoneId) {
+          data.stoneId += "";
+        }
         this.info = data;
         this.getAccount();
       } catch (error) {
