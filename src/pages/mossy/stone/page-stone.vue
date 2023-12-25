@@ -40,6 +40,7 @@ export default {
   },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
+    document.title = "Mossyland";
     this.getInfo();
   },
   methods: {

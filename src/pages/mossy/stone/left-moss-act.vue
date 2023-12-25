@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="mt-3 ta-r">
-      <q-btn class="flex-1" color="primary" rounded @click="onPop(true)">BUY STONE</q-btn>
+      <q-btn class="flex-1" color="primary" rounded @click="onPop(true)">BUY KEY</q-btn>
       <q-btn v-if="balance > 0" class="flex-1 ml-4" outline color="primary" rounded @click="onPop()"
-        >SELL STONE</q-btn
+        >SELL KEY</q-btn
       >
     </div>
   </div>

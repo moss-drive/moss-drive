@@ -36,7 +36,7 @@ router.beforeEach((to, _, next) => {
 });
 router.afterEach((to) => {
   if (/\/mossy/.test(to.path)) {
-    document.title = "Mossy";
+    document.title = "Mossyland";
   }
   setState({
     showProgress: false,
