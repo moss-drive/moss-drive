@@ -33,8 +33,10 @@ export default {
       balance: 0,
     };
   },
-  uid() {
-    this.getAccount();
+  watch: {
+    uid() {
+      this.getAccount();
+    },
   },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
