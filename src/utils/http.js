@@ -85,10 +85,13 @@ async function handleError(status, config, data) {
     });
   }
   // console.log(data);
-  if (status == 401 || [401, "INVALID_TEAM_TOKEN"].includes(data.code)) {
-    refreshing = true;
-    const isOk = await refreshToken();
-    if (isOk) {
+  if (status == 401 || status == 403 || [401, "INVALID_TEAM_TOKEN"].includes(data.code)) {
+    let isRefresh = false;
+    if (status != 403) {
+      refreshing = true;
+      isRefresh = await getRefreshToken();
+    }
+    if (isRefresh) {
       pendingQueue.forEach(({ config, resolve }) => {
         resolve(http(config));
       });
@@ -111,7 +114,7 @@ async function handleError(status, config, data) {
   }
 }
 
-async function refreshToken() {
+async function getRefreshToken() {
   const refreshToken = getToken(1);
   if (!refreshToken) {
     return false;

@@ -77,8 +77,8 @@ export default {
       walletList,
       showInstall: false,
       curType: "",
-
       loading: false,
+      tempData: null,
     };
   },
   computed: {
@@ -157,31 +157,35 @@ export default {
       const code = await this.$prompt("Invitation Code");
       if (!code) return;
       try {
-        this.$loading("Check...");
+        this.loading = true;
         await this.$http.post(
           `/invitation/${code}/verification`,
           {},
           {
             noTip: true,
+            headers: {
+              Authorization: this.tempData.accessToken,
+            },
           }
         );
-
+        this.$store.dispatch("login", this.tempData);
         this.onRedirect();
       } catch (error) {
         console.log(error);
         this.$toast("Invalid Code");
         this.showInvite();
       }
-      this.$loadingClose();
+      this.loading = false;
     },
     async onLoginData(data) {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
-        this.$store.dispatch("login", data);
         if (data.isInvited) {
+          this.$store.dispatch("login", data);
           this.onRedirect();
         } else {
+          this.tempData = data;
           this.showInvite();
         }
       } catch (error) {
