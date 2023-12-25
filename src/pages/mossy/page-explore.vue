@@ -4,11 +4,15 @@
   background-size: 260px;
 }
 .m-search {
-  width: 700px;
+  width: 90vw;
+  max-width: 700px;
   padding: 12px 12px;
   padding-left: 50px;
   text-align: center;
   font-size: 15px;
+  &:focus {
+    text-align: left;
+  }
 }
 </style>
 

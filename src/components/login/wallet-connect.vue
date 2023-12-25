@@ -2,14 +2,22 @@
   <q-btn
     flat
     rounded
-    size="lg"
-    style="background: #111"
+    :size="size"
+    :style="{
+      background: bg,
+    }"
     class="full-width text-white"
     :loading="loading"
     @click="onConnect(defItem.type)"
   >
-    <img :src="defItem.img" width="30" />
-    <span class="ml-2 fz-18">Connect Wallet</span>
+    <template v-if="size == 'lg'">
+      <img :src="defItem.img" width="30" />
+      <span class="ml-2 fz-18">Connect Wallet</span>
+    </template>
+    <template v-else>
+      <img :src="defItem.img" width="22" />
+      <span class="ml-2 fz-16">Connect</span>
+    </template>
   </q-btn>
 
   <q-dialog v-model="showInstall">
@@ -53,6 +61,17 @@ const walletList = [
 ];
 export default {
   emits: ["login"],
+  props: {
+    size: {
+      type: String,
+      default: "lg",
+    },
+    bg: {
+      type: String,
+      default: "#111",
+    },
+    keep: Boolean,
+  },
   data() {
     return {
       walletList,
@@ -128,6 +147,7 @@ export default {
       this.onLoginData(data);
     },
     onRedirect() {
+      if (this.keep) return;
       const redirectTo = localStorage.loginTo || "/";
       localStorage.loginTo = "";
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);

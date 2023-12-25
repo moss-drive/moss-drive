@@ -182,7 +182,6 @@
 </template>
 <script setup>
 import ActMove from "@/pages/drive/check-act/act-move.vue";
-import WalletConnect from "@/pages/login/wallet-connect.vue";
 </script>
 
 <script>
