@@ -1,5 +1,4 @@
 import { Upload } from "@4everland/s3-lib-storage";
-const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
 import { getFileSize } from "../utils/helper";
 
 export class UploadTask {
@@ -29,9 +28,10 @@ export class UploadTask {
         this.progress = (e.loaded / e.total) * 100;
         this.loaded = getFileSize(e.loaded);
       });
-
       this.progress = 0;
       this.status = 1; // uploading
+
+      console.log(this.task);
       await this.task.done();
       this.status = 3; // success
       //---------------------

@@ -25,12 +25,12 @@
         ></div>
       </div>
       <div class="mt-2 usage-resource al-c">
-        <span class="fz-12"
+        <span class="fz-12 nowrap"
           >{{ transformUsage.used.num }} {{ transformUsage.used.unit }}/{{
             transformUsage.total
           }}</span
         >
-        <span class="fz-12 transform-data">
+        <span class="fz-12 transform-data nowrap">
           + {{ land2Resource["IPFS_STORAGE"].transformSize }} * 1 mo</span
         >
         <div class="ml-1">
