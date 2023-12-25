@@ -134,6 +134,7 @@ export default {
         this.form = {
           ...initForm,
         };
+        this.codeType = "auto";
       }
     },
   },
