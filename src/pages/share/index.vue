@@ -269,7 +269,7 @@ export default {
       } else {
         await this.getMore();
       }
-      done(true);
+      done();
     },
     async goPath(path) {
       this.curFolder = path;
@@ -295,7 +295,8 @@ export default {
       if (list.length < this.pageSize) {
         this.scrollDisable = true;
       }
-      const createdTime = new Date(data.createdAt * 1000).toUTCString();
+      const createdTime = this.formatTime(data.createdAt * 1000);
+
       const stoneList = data.stoneList;
 
       this.createdTime = createdTime;
@@ -422,8 +423,12 @@ export default {
     setAddr(addr = "") {
       return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
     },
-    toDrive() {
-      console.log(1111);
+    formatTime(timestamp) {
+      let date = new Date(timestamp);
+      let chinaDate = date.toUTCString();
+      let chinaDateArray = chinaDate.split(" ");
+      let displayDate = `${chinaDateArray[1]} ${chinaDateArray[2]}, ${chinaDateArray[3]}, ${chinaDateArray[4]}`;
+      return displayDate;
     },
   },
 };
