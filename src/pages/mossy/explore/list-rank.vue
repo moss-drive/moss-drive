@@ -162,7 +162,8 @@ export default {
   },
   methods: {
     onRow(item) {
-      this.$router.push(`/${item.stoneId}`);
+      // this.$router.push(``);
+      window.open(`/${item.stoneId}`);
     },
   },
 };

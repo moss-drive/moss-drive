@@ -2,6 +2,7 @@
   <div class="row q-col-gutter-md">
     <router-link
       :to="`/${it.stoneId}`"
+      target="_blank"
       class="col-12 col-sm-6 col-md-3"
       v-for="(it, i) in list"
       :key="i"
