@@ -78,19 +78,16 @@ import ResourceNotice from "./componets/resource-notice.vue";
 import ResourceProgress from "./componets/resource-progress.vue";
 import DepositDialog from "./componets/deposit-dialog.vue";
 import BillDetails from "./componets/bill-details.vue";
-import { fetchOnChain } from "../../api/resource";
 export default {
   data() {
     return {
       showConversion: false,
-      onChain: true,
     };
   },
   created() {
     this.$store.dispatch("resourceStore/getLand");
     this.$store.dispatch("resourceStore/getUsage");
     this.$store.dispatch("resourceStore/getPrice");
-    this.checkOnChain();
   },
   computed: {
     ...mapGetters("resourceStore", ["formatLand", "land2Resource"]),
@@ -98,7 +95,7 @@ export default {
       // usage: (s) => s.usageInfo,
       userInfo: (s) => s.userInfo,
     }),
-    ...mapState("resourceStore", ["land", "usage"]),
+    ...mapState("resourceStore", ["land", "usage", "onChain"]),
     land2Usd() {
       const land = Number(formatEther(this.land));
       return Math.floor(land / 1e6);
@@ -131,14 +128,6 @@ export default {
     },
   },
   methods: {
-    async checkOnChain() {
-      try {
-        const { data } = await fetchOnChain();
-        this.onChain = data.handled;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     handleDeposit() {
       this.$refs.depositRef.depositDialog = true;
     },

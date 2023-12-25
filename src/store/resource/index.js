@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { fetchLand, fetchUsage, fetchPrice } from "../../api/resource";
+import { fetchLand, fetchUsage, fetchPrice, fetchOnChain } from "../../api/resource";
 import { formatLand, getFileSize } from "../../utils/helper";
 
 const resourceStore = {
@@ -55,6 +55,7 @@ const resourceStore = {
           unitPrice: BigNumber.from("28744524"),
         },
       },
+      onChain: true,
     };
   },
   getters: {
@@ -86,6 +87,9 @@ const resourceStore = {
     },
     SET_UNIT_PRICE(state, price) {
       state.resourcePrice = price;
+    },
+    SET_ON_CHAIN(state, onChain) {
+      state.onChain = onChain;
     },
   },
   actions: {
@@ -134,6 +138,14 @@ const resourceStore = {
         commit("SET_USAGE", curResourceItems);
       } catch (error) {
         window.$alert(error.message);
+      }
+    },
+    async checkOnChain({ commit }) {
+      try {
+        const { data } = await fetchOnChain();
+        commit("SET_ON_CHAIN", data.handled);
+      } catch (error) {
+        console.log(error);
       }
     },
   },
