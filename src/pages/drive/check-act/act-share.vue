@@ -99,7 +99,10 @@ const dayOpts = [
     txt: "Permanent",
   },
 ];
-
+const initForm = {
+  type: "DAY_1",
+  code: "",
+};
 export default {
   props: {
     checkList: Array,
@@ -111,8 +114,7 @@ export default {
       dayOpts,
       codeType: "auto",
       form: {
-        type: "DAY_1",
-        code: "",
+        ...initForm,
       },
       resData: null,
     };
@@ -129,6 +131,9 @@ export default {
     showPop(val) {
       if (val) {
         this.resData = null;
+        this.form = {
+          ...initForm,
+        };
       }
     },
   },
