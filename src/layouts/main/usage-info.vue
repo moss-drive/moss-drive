@@ -6,7 +6,7 @@
         v-show="!onChain"
         @click="$router.push('/resource')"
       >
-        <img class="gift-img" src="/img/resource/gift.svg" width="32" alt="" />
+        <img class="gift-img" src="/img/resource/gift.svg" alt="" />
         <div class="ml-1">
           Deposit $1 to upgrade your account and gain access to permanent free resources.
         </div>
@@ -89,6 +89,7 @@ export default {
     rgba(126, 79, 237, 0.75) 61.94%
   );
   .gift-img {
+    width: 32px;
     float: left;
     shape-outside: padding-box;
   }
