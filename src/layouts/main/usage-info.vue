@@ -8,8 +8,7 @@
       >
         <img class="gift-img" src="/img/resource/gift.svg" width="32px" alt="" />
         <div class="ml-1">
-          The trial resources are only available for <span class="day">1</span> days, and can be
-          upgraded to the permanent Standard by deposit up $1.
+          Deposit $1 to upgrade your account and gain access to permanent free resources.
         </div>
       </div>
     </div>
