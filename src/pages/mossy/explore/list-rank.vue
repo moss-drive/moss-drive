@@ -162,7 +162,7 @@ export default {
   },
   methods: {
     onRow(item) {
-      this.$router.push(`/mossy/stone?id=${item.id}`);
+      this.$router.push(`/${item.stoneId}`);
     },
   },
 };

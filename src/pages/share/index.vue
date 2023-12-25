@@ -438,6 +438,10 @@ export default {
 .share-box {
   background-color: #000;
   height: calc(100vh - 64px);
+  background-image: url("@/assets/imgs/share/background.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 -64px;
   .share {
     padding: 24px;
     display: flex;
@@ -467,9 +471,10 @@ export default {
       }
       .left-content {
         text-align: center;
-        padding: 0 24px;
+        // padding: 0 24px;
         z-index: 99;
         max-width: 282px;
+        width: 100%;
         word-break: break-all;
         .user-info {
           padding-bottom: 24px;

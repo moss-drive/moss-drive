@@ -93,7 +93,13 @@ const routes = [
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("./ErrorNotFound.vue"),
+    component: () => import("../layouts/mossy-layout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("./mossy/stone/page-stone.vue"),
+      },
+    ],
   },
 ];
 
