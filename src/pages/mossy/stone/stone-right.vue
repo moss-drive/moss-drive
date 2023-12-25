@@ -47,15 +47,14 @@
       </template>
     </div>
 
-    <div class="right-chat bg-card-2">
-      <!-- <div class="fw-b fz-18">Chat</div> -->
-      <img v-show="balance <= 0" src="/img/stone/chat-locked.png" alt="" />
-      <right-chat
-        v-show="balance > 0"
-        :info="info"
-        @blowUp="handleBlowUp"
-        :balance="balance"
-      ></right-chat>
+    <div class="right-chat bg-card-2" v-show="balance > 0">
+      <right-chat :info="info" @blowUp="handleBlowUp" :balance="balance"></right-chat>
+    </div>
+
+    <div class="right-chat-locked pos-r" v-show="balance <= 0">
+      <div class="locked-bg"></div>
+      <img width="80" class="pos-a" src="/img/stone/ic-locked.svg" alt="" />
+      <span class="pos-a text">Buy Stone Keys to view chat</span>
     </div>
   </div>
 </template>
@@ -95,6 +94,28 @@ export default {
   height: 450px;
   img {
     width: 100%;
+  }
+}
+.right-chat-locked {
+  width: 100%;
+  height: 450px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.5) 0%, #0f172a 71.4%);
+  border-radius: 16px;
+  .locked-bg {
+    background: url("/img/stone/chat-locked.png") no-repeat;
+    background-size: 100%;
+    height: 100%;
+  }
+  img {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .text {
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 30%;
+    white-space: nowrap;
   }
 }
 </style>

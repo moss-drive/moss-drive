@@ -19,7 +19,7 @@
               <div class="py-4 px-2 al-c task-info">
                 <!-- <img src="" class="mr-2" width="40" height="40" alt="" /> -->
                 <div style="width: 100%">
-                  <div class="task-name fz-14">{{ item.param.Key }}</div>
+                  <div class="task-name fz-14">{{ item.param.Key.replace("/", "") }}</div>
                   <div class="mt-2 fz-12">
                     <span class="task-load"> {{ item.loaded }}/{{ item.totalSize }}</span>
                     <span class="ml-2 task-status">{{ status(item.status) }}</span>

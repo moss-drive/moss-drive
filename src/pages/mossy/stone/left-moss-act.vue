@@ -145,10 +145,6 @@ export default {
         this.$router.push("/login");
         return;
       }
-      if (!this.userInfo.twitterId) {
-        window.open("/login");
-        return;
-      }
       this.form = { ...initForm };
       this.calcData = null;
       this.isBuy = isBuy;
