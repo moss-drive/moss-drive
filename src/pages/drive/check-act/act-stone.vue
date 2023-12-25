@@ -301,7 +301,7 @@ export default {
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
         // await this.setTimeoutAt(timeoutAt);
-        // const price = mossHub.parseEther(form.floorPrice);
+        const price = mossHub.parseEther(form.floorPrice);
         const args = [
           // price,
           // form.intNum,

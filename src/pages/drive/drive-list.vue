@@ -45,7 +45,12 @@ import FilePreview from "./preview/preview-index.vue";
           indeterminate-value="not-empty"
         />
 
-        <slot name="act" :checked="checked" :obj-list="objRows"></slot>
+        <slot
+          name="act"
+          :checked="checked"
+          :obj-list="objRows"
+          :stone-num="stoneList.length"
+        ></slot>
 
         <div class="pos-r ml-auto mr-2 bd-1">
           <icon-search class="y-center ev-n" style="left: 10px" />
