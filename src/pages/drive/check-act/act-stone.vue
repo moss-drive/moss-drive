@@ -167,6 +167,7 @@
 import { mapState } from "vuex";
 import { MossHub } from "../../../utils/moss-hub";
 const { VITE_MEDIA_PRE } = import.meta.env;
+console.log(VITE_MEDIA_PRE);
 
 const initForm = {
   stoneName: "",
