@@ -41,7 +41,7 @@
 <script>
 import { S3 } from "@aws-sdk/client-s3";
 import { UploadTask, TaskWrapper } from "../../utils/taskWrap";
-const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
+const { VITE_BUCKET_ENDPOINT } = import.meta.env;
 import { mapState } from "vuex";
 export default {
   data() {
