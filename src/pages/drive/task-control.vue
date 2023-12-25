@@ -26,7 +26,11 @@
                   </div>
                 </div>
               </div>
-              <div class="operation"></div>
+              <div class="operation">
+                <img width="24" src="/img/diver/close.svg" alt="" />
+                <img width="24" src="/img/diver/stop.svg" @click="handleStop(item)" alt="" />
+                <img width="24" src="/img/diver/play.svg" @click="handleStart(item)" alt="" />
+              </div>
             </div>
             <div class="progress">
               <div class="upload-progress" :style="{ width: item.progress + '%' }"></div>
@@ -145,6 +149,10 @@ export default {
     async getStorage() {
       const { data } = await this.$http.get("$pay/combo/usage/IPFS_STORAGE");
       return data;
+    },
+
+    handleStop(task) {
+      task.cancel();
     },
   },
   watch: {
