@@ -29,7 +29,7 @@
       <template v-else>
         <q-card-section>
           <div class="d-flex mt-3">
-            <div class="flex-1">
+            <div class="flex-2">
               <q-input
                 v-model="form.amount"
                 :placeholder="amtHint"
@@ -40,7 +40,7 @@
                 filled
               />
             </div>
-            <div class="flex-2 ml-5">
+            <div class="flex-1 ml-5">
               <div class="mb-1 mt-1 al-c">
                 <span class="fz-13 op-6">Slippage:</span>
                 <span class="ml-2">{{ form.slippage }}%</span>
@@ -141,8 +141,7 @@ export default {
     },
     onPop(isBuy) {
       if (!this.uid) {
-        localStorage.loginTo = location.pathname + location.search;
-        this.$router.push("/login");
+        this.$bus.emit("show-login");
         return;
       }
       this.form = { ...initForm };
@@ -174,11 +173,11 @@ export default {
     },
     async onAmount(val) {
       let { amount, slippage } = this.form;
-      console.log(val);
       if (val) {
         val = parseInt(val);
         if (isNaN(val) || val < 1) val = "";
         else if (val % 1 > 0) val = Math.floor(val);
+        if (val > 1e4) val = 1e4;
         if (!this.isBuy) {
           if (val > this.balance) val = this.balance;
         }

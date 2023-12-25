@@ -114,11 +114,10 @@ export default {
           account,
           signature,
         });
-        const data = await this.getLoginData(account, {
+        await this.getLoginData(account, {
           signature,
           // inviteCode: "123",
         });
-        this.$emit("login", data);
       } catch (error) {
         console.log(error);
         let msg = error.message;
@@ -147,17 +146,43 @@ export default {
       this.onLoginData(data);
     },
     onRedirect() {
+      this.$toast("Welcome!", 1);
+      this.$emit("login");
       if (this.keep) return;
       const redirectTo = localStorage.loginTo || "/";
       localStorage.loginTo = "";
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
+    },
+    async showInvite() {
+      try {
+        const code = await this.$prompt("Invitation Code");
+        this.$loading("Check...");
+        await this.$http.post(
+          `/invitation/${code}/verification`,
+          {},
+          {
+            noTip: true,
+          }
+        );
+
+        this.onRedirect();
+      } catch (error) {
+        console.log(error);
+        this.$toast("Invalid Code");
+        this.showInvite();
+      }
+      this.$loadingClose();
     },
     async onLoginData(data) {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
         this.$store.dispatch("login", data);
-        this.onRedirect();
+        if (data.isInvited) {
+          this.onRedirect();
+        } else {
+          this.showInvite();
+        }
       } catch (error) {
         console.log(error);
       }

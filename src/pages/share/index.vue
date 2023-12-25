@@ -165,18 +165,7 @@
         </div>
       </div>
     </div>
-    <q-dialog v-model="showLogin">
-      <q-card class="login-dialog">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="fz-16">Sign in</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-        <q-card-section>
-          <wallet-connect @login="afterLogin" />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+
     <act-move ref="move" :check-list="[]" :moveFunc="onSave" />
   </div>
 </template>
@@ -238,7 +227,6 @@ export default {
       curFolder: "",
       shareName: "",
       stoneInfo: null,
-      showLogin: false,
       scrollDisable: false,
       pageSize: 100,
     };
@@ -404,8 +392,7 @@ export default {
     },
     async saveToStone() {
       if (!this.uid) {
-        this.showLogin = true;
-        localStorage.loginTo = this.$route.fullPath;
+        this.$bus.emit("show-login");
         return;
       } else {
         this.$refs.move.showPop = true;
@@ -431,9 +418,7 @@ export default {
       const { data } = await fetchStoneSave(params);
       return data.count;
     },
-    afterLogin() {
-      this.showLogin = false;
-    },
+
     setAddr(addr = "") {
       return addr.substr(0, 6) + "..." + addr.substr(addr.length - 4, 4);
     },

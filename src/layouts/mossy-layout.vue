@@ -27,7 +27,7 @@ import HeaderRight from "./header-right.vue";
         </a>
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/drive' : '/'" rounded color="primary">
-          <img src="/img/mossy/my-moss.svg" width="20" class="mr-2" />
+          <img src="/img/common/my-moss.svg" width="20" class="mr-2" />
           <span>My Moss</span>
         </q-btn>
         <header-right />
