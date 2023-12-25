@@ -295,7 +295,7 @@ export default {
           folder: this.bucketPrefix,
           Prefix: this.bucketPrefix,
           Delimiter: "/",
-          MaxKeys: 30,
+          MaxKeys: 120,
         };
         if (isMore) {
           params.ContinuationToken = this.objNextToken;
