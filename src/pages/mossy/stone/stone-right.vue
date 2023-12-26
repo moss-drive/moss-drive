@@ -105,6 +105,7 @@ export default {
     background: url("/img/stone/chat-locked.png") no-repeat;
     background-size: 100%;
     height: 100%;
+    border-radius: 16px;
   }
   img {
     left: 50%;
