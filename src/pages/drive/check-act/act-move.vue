@@ -113,7 +113,7 @@ export default {
     toFolderPath() {
       let path = this.moveToPrefix;
       if (path) path = "/" + path.replace(/\/$/, "");
-      return "/drive" + path;
+      return "/file" + path;
     },
   },
   watch: {

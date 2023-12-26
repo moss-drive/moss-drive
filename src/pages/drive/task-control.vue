@@ -19,7 +19,7 @@
               <div class="al-c task-info">
                 <!-- <img src="" class="mr-2" width="40" height="40" alt="" /> -->
                 <div style="width: 100%">
-                  <div class="task-name fz-14">{{ item.param.Key.replace("/", "") }}</div>
+                  <div class="task-name fz-14">{{ item.param.Key }}</div>
                   <div class="mt-2 fz-12">
                     <span class="task-load"> {{ item.loaded }}/{{ item.totalSize }}</span>
                     <span class="ml-2 task-status">{{ status(item.status) }}</span>
@@ -112,7 +112,7 @@ export default {
     showRoute() {
       const path = this.$route.path;
       return (
-        path.indexOf("/drive") != -1 ||
+        path.indexOf("/file") != -1 ||
         path.indexOf("/stone") != -1 ||
         path.indexOf("/collection") != -1 ||
         path.indexOf("/txs") != -1
@@ -143,7 +143,7 @@ export default {
         const tasks = files.map((it) => {
           return new UploadTask(s3, {
             Bucket: this.$bucket.defBucket,
-            Key: prifix + "/" + it.name,
+            Key: prifix + it.name,
             Body: it.file,
             ContentType: it.file.type,
           });
@@ -162,9 +162,12 @@ export default {
 
     getPrefix() {
       const pathArr = this.$route.path.split("/");
-      pathArr.splice(1, 1);
-      const Prefix = pathArr.join("/");
-      return Prefix;
+      const path = pathArr.slice(2);
+      const Prefix = path.join("/");
+      if (Prefix) {
+        return Prefix + "/";
+      }
+      return "";
     },
     async getStorage() {
       const { data } = await this.$http.get("$pay/combo/usage/IPFS_STORAGE");

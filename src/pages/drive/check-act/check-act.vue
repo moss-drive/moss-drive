@@ -72,7 +72,7 @@ export default {
           name: "publish",
           icon: "stone",
           disabled: !(len == 1 && isRootDir && this.checkItem.type == "folder"),
-          tip: "Claim Stone",
+          tip: "Create Stone",
         },
         {
           name: "share",
@@ -105,9 +105,9 @@ export default {
       const item = this.checkItem;
       if (name == "publish") {
         if (this.stoneNum) {
-          // return this.$alert(
-          //   "In order to enable creators to concentrate more on managing their Stones effectively, the current version only permits users to create ONE Stone. We will introduce the option to create multiple Stones in future releases."
-          // );
+          return this.$alert(
+            "In order to enable creators to concentrate more on managing their Stones effectively, the current version only permits users to create ONE Stone. We will introduce the option to create multiple Stones in future releases."
+          );
         }
         if (localStorage.bindX) {
           localStorage.bindX = "";

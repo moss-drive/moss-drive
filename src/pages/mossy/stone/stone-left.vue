@@ -30,8 +30,11 @@ import LeftMossAct from "./left-moss-act.vue";
           </div>
           <template v-else>
             <div class="fw-b fz-20 line-2">{{ info.stoneName || "-" }}</div>
-            <div class="mt-2 line-5 op-6">
-              {{ info.bio || "-" }}
+            <div class="mt-2">
+              <div>
+                Stone ID <b class="color-1">#{{ info.stoneId }}</b>
+              </div>
+              <div class="op-6 line-5">{{ info.bio || "-" }}</div>
             </div>
           </template>
         </div>
@@ -47,7 +50,20 @@ import LeftMossAct from "./left-moss-act.vue";
           </div>
         </div>
       </div>
-      <left-moss-act v-if="info.stoneId" :stoneId="info.stoneId" :balance="balance" />
+      <div class="al-c mt-3">
+        <div class="al-c ml-auto mr-5 fw-b">
+          <span>Hold</span>
+          <span class="fz-18 color-2 ml-1">{{ balance || "0" }}</span>
+        </div>
+        <left-moss-act :stoneId="info.stoneId" :balance="balance" />
+        <a
+          :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"
+          target="_blank"
+          class="ml-4 hover-1"
+        >
+          <img src="/img/stone/stone-web.svg" width="35" class="d-b" />
+        </a>
+      </div>
     </div>
     <left-list :stoneId="info.stoneId" :id="info.id" :balance="balance" />
   </div>
@@ -96,10 +112,10 @@ export default {
           key: "Pool Value",
           val: worth,
         },
-        {
-          key: "Hold",
-          val: this.balance,
-        },
+        // {
+        //   key: "Hold",
+        //   val: this.balance,
+        // },
       ];
     },
   },

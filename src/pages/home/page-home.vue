@@ -8,7 +8,8 @@
 </style>
 
 <script setup>
-import HomeList from "./home-list.vue";
+// import HomeList from "./home-list.vue";
+import HomeImg from "./home-img.vue";
 import HomeLogin from "./home-login.vue";
 import HomeBtm from "./home-btm.vue";
 import HeaderRight from "../../layouts/header-right.vue";
@@ -16,21 +17,25 @@ import HeaderRight from "../../layouts/header-right.vue";
 
 <template>
   <div class="bg-home h-flex">
-    <div class="al-c">
-      <a href="/" class="al-c pa-3 ml-5">
-        <img src="/img/moss.svg" height="40" />
-        <img src="/img/moss-txt.svg" height="26" class="ml-2" />
-      </a>
-      <div class="ml-auto" v-if="loginData.uuid">
-        <header-right :border="false"></header-right>
+    <div class="pos-f top-0 w100p z-100">
+      <div class="al-c">
+        <a href="/" class="al-c pa-3 ml-5">
+          <img src="/img/moss.svg" height="40" />
+          <img src="/img/home/m-txt.svg" height="26" class="ml-2" />
+        </a>
+        <div class="ml-auto" v-if="loginData.uuid">
+          <header-right :border="false"></header-right>
+        </div>
       </div>
     </div>
     <div class="row flex-1" style="">
       <div
         :class="isFix ? 'col-12' : 'col-8'"
-        style="margin: auto 0; transform: perspective(3000px) rotateY(40deg)"
+        style="margin: auto 0"
+        :style1="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
-        <home-list />
+        <home-img class="pos-r" style="left: -90px" />
+        <!-- <home-list :asMobile="asMobile" /> -->
       </div>
       <div class="col-4 h100p pos-r">
         <home-login :class="loginCls" />

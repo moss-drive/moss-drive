@@ -31,7 +31,7 @@ import ExploreList from "./explore/explore-list.vue";
           type="text"
           v-model="searchKey"
           @keyup.enter="handleSearch"
-          placeholder="Enter x id or stone keywords"
+          placeholder="Enter X id or stone keywords"
         />
       </div>
     </div>

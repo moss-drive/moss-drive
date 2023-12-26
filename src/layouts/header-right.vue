@@ -6,7 +6,7 @@
     }"
   >
     <template v-if="!uid">
-      <wallet-connect size="md" bg="#1E293B" keep />
+      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" />
     </template>
     <template v-else>
       <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
@@ -30,7 +30,7 @@
         <q-avatar size="22px" v-if="userInfo.avatarUrl">
           <img :src="userInfo.avatarUrl" />
         </q-avatar>
-        <m-avatar v-else :hash="avatarId"></m-avatar>
+        <m-avatar v-else :hash="uid"></m-avatar>
         <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
         <q-menu style="width: 130px" auto-close>
@@ -53,7 +53,6 @@
     </template>
   </div>
 </template>
-
 
 <script>
 import { mapState } from "vuex";
@@ -78,9 +77,7 @@ export default {
       userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
-    avatarId() {
-      return this.userInfo.twitterId || this.uid;
-    },
+
     uname() {
       const { name } = this.userInfo;
       if (name) return name.cutStr(6, 6);

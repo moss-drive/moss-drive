@@ -50,7 +50,7 @@ import ListRank from "./list-rank.vue";
 <script>
 export default {
   data() {
-    const { type = "FOR_YOU" } = this.$route.query;
+    const { type = "LATEST" } = this.$route.query;
     return {
       checkMap: {},
       type,

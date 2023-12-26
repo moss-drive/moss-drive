@@ -40,6 +40,10 @@ export default {
   },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
+    if (!/^\d+$/.test(this.stoneId)) {
+      this.$router.replace("/");
+      return;
+    }
     document.title = "Mossyland";
     this.getInfo();
   },
@@ -62,12 +66,10 @@ export default {
     },
     async getAccount() {
       if (!this.uid) return;
-      const { stoneId } = this.info;
-      if (!stoneId) return;
       try {
         const { data } = await this.$http.get("/stone/account", {
           params: {
-            stoneId,
+            stoneId: this.stoneId,
           },
         });
         this.balance = data.accountBalance * 1;

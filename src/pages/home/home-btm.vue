@@ -2,9 +2,17 @@
   <div class="pos-btm pos-f w100p pa-6">
     <div class="al-c">
       <div class="al-c">
-        <a class="mr-6 hover-1" target="_blank" :href="it.url" v-for="it in socials" :key="it.icon">
-          <img :src="`/img/home/icon_${it.icon}.svg`" height="22" />
-        </a>
+        <q-btn
+          padding="xs"
+          color="dark"
+          class="mr-6 hover-1"
+          target="_blank"
+          :href="it.url"
+          v-for="it in socials"
+          :key="it.icon"
+        >
+          <img :src="`/img/home/icon_${it.icon}.svg`" height="20" />
+        </q-btn>
       </div>
       <div class="ml-auto">
         <span

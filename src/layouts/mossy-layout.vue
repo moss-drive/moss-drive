@@ -26,9 +26,9 @@ import HeaderRight from "./header-right.vue";
           <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
         </a>
         <div class="mr-auto"></div>
-        <q-btn :href="isLogin ? '/drive' : '/'" rounded color="primary">
-          <img src="/img/common/my-moss.svg" width="20" class="mr-2" />
-          <span>My Moss</span>
+        <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
+          <img src="/img/common/my-moss.svg" width="20" />
+          <span class="ml-2" v-if="!asMobile">My Moss</span>
         </q-btn>
         <header-right />
       </div>

@@ -16,6 +16,11 @@ import StoneEdit from "./stone-edit.vue";
     </div>
     <div v-else-if="!rows.length">
       <empty-stone />
+      <div class="ta-c">
+        <a href="https://docs.mymoss.io/guides/create-a-stone" target="_blank" class="color-1 fz-15"
+          >How to create a stone?
+        </a>
+      </div>
     </div>
     <div class="row" v-else>
       <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">
@@ -68,7 +73,7 @@ import StoneEdit from "./stone-edit.vue";
               >Stone Page</q-btn
             >
             <q-btn
-              :to="`/drive/${it.folderPath.replace(/\/$/, '')}`"
+              :to="`/file/${it.folderPath.replace(/\/$/, '')}`"
               color="primary"
               class="flex-1 ml-4"
               outline

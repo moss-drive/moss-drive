@@ -16,7 +16,7 @@
     </template>
     <template v-else>
       <img :src="defItem.img" width="22" />
-      <span class="ml-2 fz-16">Connect</span>
+      <span class="ml-2 fz-16" v-if="!asMobile">Connect</span>
     </template>
   </q-btn>
 
@@ -71,6 +71,7 @@ export default {
       default: "#111",
     },
     keep: Boolean,
+    asMobile: Boolean,
   },
   data() {
     return {
@@ -154,7 +155,10 @@ export default {
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
     async showInvite() {
-      const code = await this.$prompt("Invitation Code");
+      const code = await this.$prompt("Invitation Code", {
+        html: true,
+        msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
+      });
       if (!code) return;
       try {
         this.loading = true;
