@@ -124,7 +124,7 @@
                   filled
                   disable
                   dense
-                  label="The number of keys sold required for the initial floor price increase."
+                  label="The number of keys sold required for the initial floor price increase"
                   :rules="[(val) => val >= 10 || 'Minimum value is 10']"
                   v-model="mossForm.tokenNum"
                 />
