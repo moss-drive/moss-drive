@@ -64,7 +64,7 @@ export default {
       amount: "",
       countEthLoading: false,
       chainId: "",
-      stablecoin: true,
+      stablecoin: false,
       usdcAmount: BigNumber.from("0"),
       ethAmount: BigNumber.from("0"),
     };
@@ -82,7 +82,7 @@ export default {
       return UNILand__factory.connect(optimismRecharge, signer);
     },
     transformAmount() {
-      if (this.stablecoin) {
+      if (!this.stablecoin) {
         return (formatEther(this.ethAmount) * 1).toFixed(5);
       } else {
         return this.usdcAmount.toString();
@@ -215,7 +215,7 @@ export default {
       } else {
         this.usdcAmount = BigNumber.from("0");
       }
-      if (this.stablecoin) {
+      if (!this.stablecoin) {
         debounce(() => {
           this.usdc2eth();
         });
