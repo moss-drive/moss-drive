@@ -30,8 +30,11 @@ import LeftMossAct from "./left-moss-act.vue";
           </div>
           <template v-else>
             <div class="fw-b fz-20 line-2">{{ info.stoneName || "-" }}</div>
-            <div class="mt-2 line-5 op-6">
-              {{ info.bio || "-" }}
+            <div class="mt-2">
+              <div>
+                Stone ID <b class="color-1">#{{ info.stoneId }}</b>
+              </div>
+              <div class="op-6 line-5">{{ info.bio || "-" }}</div>
             </div>
           </template>
         </div>
