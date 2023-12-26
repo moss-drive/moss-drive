@@ -53,7 +53,7 @@ import LeftMossAct from "./left-moss-act.vue";
       <div class="al-c mt-3">
         <div class="al-c ml-auto mr-5 fw-b">
           <span>Hold</span>
-          <span class="fz-20 color-2 ml-1">{{ balance || "-" }}</span>
+          <span class="fz-18 color-2 ml-1">{{ balance || "0" }}</span>
         </div>
         <left-moss-act :stoneId="info.stoneId" :balance="balance" />
         <a
