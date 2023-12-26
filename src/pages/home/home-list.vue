@@ -28,12 +28,18 @@
 }
 </style>
 
+<script setup>
+import ListItem from "./list-item.vue";
+</script>
+
 <template>
   <div class="row">
     <div class="col-4 col-lg-3" v-for="i in 12" :key="i">
       <div class="pa-2">
         <div class="c_wrap">
-          <div class="c_mask"></div>
+          <div class="c_mask">
+            <list-item :info="rows[i - 1]"></list-item>
+          </div>
         </div>
       </div>
     </div>
@@ -42,6 +48,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      rows: [],
+    };
+  },
   mounted() {
     var elements = document.getElementsByClassName("c_wrap");
     // 添加鼠标移动事件监听器
@@ -63,6 +74,24 @@ export default {
         element.style.setProperty("--y", distanceY + "px");
       }
     });
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      try {
+        const { data } = await this.$http.get("/stone/square", {
+          params: {
+            type: "FOR_YOU",
+            size: 20,
+          },
+        });
+        this.rows = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
