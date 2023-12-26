@@ -175,7 +175,7 @@ export default {
         row.index = index + 1;
         row.amounts = amounts;
         // row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
-        row.href = `https://sepolia-optimism.etherscan.io/tx/${row.txHash}`;
+        row.href = `https://optimistic.etherscan.io/tx/${row.txHash}`;
         row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
       });
       this.loading = false;
@@ -241,7 +241,7 @@ export default {
 <style lang="sass">
 .my-sticky-header-table
   /* height or max-height is important */
-  max-height:90vh
+  max-height: 90vh
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th
