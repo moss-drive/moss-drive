@@ -6,7 +6,7 @@
     }"
   >
     <template v-if="!uid">
-      <wallet-connect size="md" bg="#1E293B" keep />
+      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" />
     </template>
     <template v-else>
       <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px">

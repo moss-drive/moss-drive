@@ -16,7 +16,7 @@
     </template>
     <template v-else>
       <img :src="defItem.img" width="22" />
-      <span class="ml-2 fz-16">Connect</span>
+      <span class="ml-2 fz-16" v-if="!asMobile">Connect</span>
     </template>
   </q-btn>
 
@@ -71,6 +71,7 @@ export default {
       default: "#111",
     },
     keep: Boolean,
+    asMobile: Boolean,
   },
   data() {
     return {
