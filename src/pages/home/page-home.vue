@@ -28,7 +28,8 @@ import HeaderRight from "../../layouts/header-right.vue";
     <div class="row flex-1" style="">
       <div
         :class="isFix ? 'col-12' : 'col-8'"
-        style="margin: auto 0; transform: perspective(3000px) rotateY(40deg)"
+        style="margin: auto 0"
+        :style="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
         <home-list />
       </div>
