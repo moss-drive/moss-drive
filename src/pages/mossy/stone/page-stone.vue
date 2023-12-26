@@ -40,6 +40,10 @@ export default {
   },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
+    if (!/^\d+$/.test(this.stoneId)) {
+      this.$router.replace("/");
+      return;
+    }
     document.title = "Mossyland";
     this.getInfo();
   },
