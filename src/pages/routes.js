@@ -51,6 +51,13 @@ const routes = [
           title: "Stone TXs",
         },
       },
+      {
+        path: "/sharelist",
+        component: () => import("./share/page-shareList.vue"),
+        meta: {
+          title: "Share Links",
+        },
+      },
     ],
   },
   {
@@ -85,6 +92,13 @@ const routes = [
         component: () => import("@/pages/share/index.vue"),
       },
     ],
+    meta: {
+      noUid: 1,
+    },
+  },
+  {
+    path: "/mint",
+    component: () => import("@/pages/mint/index.vue"),
     meta: {
       noUid: 1,
     },

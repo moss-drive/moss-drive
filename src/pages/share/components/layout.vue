@@ -1,17 +1,3 @@
-<style lang="scss">
-body.body--dark {
-  background-image: url(/img/mossy/bg-top-1.png);
-  background-position: 100% 0;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.bg-active {
-  background: #0000006e;
-  color: #fff;
-}
-</style>
-
 <script setup>
 import HeaderRight from "../../../layouts/header-right.vue";
 </script>

@@ -89,6 +89,11 @@ export default {
           icon: "txs",
           to: "/txs",
         },
+        {
+          title: "Share Links",
+          icon: "txs",
+          to: "/sharelist",
+        },
       ],
     };
   },
