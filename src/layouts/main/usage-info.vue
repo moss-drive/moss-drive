@@ -40,8 +40,8 @@
             max-width="300px"
             class="bg-black-8 fz-12"
           >
-            "used resources" refers to the space occupied by files in "My Drive", while "remaining
-            resources" refers to the remaining IPFS resources in the current account on 4EVERLAND.
+            Moss operates on 4EVERLAND storage, therefore the resources you consume and the
+            remaining resources are aligned with your 4EVERLAND account.
           </q-tooltip>
         </div>
       </div>
