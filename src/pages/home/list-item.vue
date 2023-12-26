@@ -1,6 +1,14 @@
 <template>
-  <a :href="`/${info.stoneId}`" target="_blank" v-if="info" class="pa-3 al-c h100p">
-    <div class="mr-auto h-flex h100p">
+  <a
+    :href="`/${info.stoneId}`"
+    :class="{
+      'd-center': asMobile,
+    }"
+    target="_blank"
+    v-if="info"
+    class="pa-3 al-c h100p"
+  >
+    <div class="mr-auto h-flex h100p" v-if="!asMobile">
       <p class="line-1">{{ info.stoneName }}</p>
       <div class="mt-2 mb-1 al-c">
         <img :src="info.twitterAvatar" width="14" class="bdrs-100" />
@@ -20,6 +28,7 @@
 export default {
   props: {
     info: Object,
+    asMobile: Boolean,
   },
 };
 </script>

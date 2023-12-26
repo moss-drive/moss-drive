@@ -31,7 +31,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         style="margin: auto 0"
         :style="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
-        <home-list />
+        <home-list :asMobile="asMobile" />
       </div>
       <div class="col-4 h100p pos-r">
         <home-login :class="loginCls" />

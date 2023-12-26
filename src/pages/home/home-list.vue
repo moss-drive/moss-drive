@@ -38,7 +38,7 @@ import ListItem from "./list-item.vue";
       <div class="pa-2">
         <div class="c_wrap">
           <div class="c_mask">
-            <list-item :info="rows[i - 1]"></list-item>
+            <list-item :asMobile="asMobile" :info="rows[i - 1]"></list-item>
           </div>
         </div>
       </div>
@@ -48,6 +48,9 @@ import ListItem from "./list-item.vue";
 
 <script>
 export default {
+  props: {
+    asMobile: Boolean,
+  },
   data() {
     return {
       rows: [],
