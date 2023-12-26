@@ -13,7 +13,10 @@
 
     <div class="chat-body mt-2 h-flex ov-a" style="flex-direction: column-reverse">
       <div class="chat-item d-flex al-start" v-for="item in list" :key="item.id">
-        <img class="mr-2" width="32" style="border-radius: 100%" :src="item.avatar" alt="" />
+        <q-avatar size="32px" v-if="item.avatar" class="mr-2">
+          <img :src="item.avatar" />
+        </q-avatar>
+        <m-avatar :size="32" v-else :hash="item.address" class="mr-2"></m-avatar>
         <div class="flex-1">
           <div class="user-name fz-12">{{ item.name }}</div>
           <div class="message-box d-ib pa-2 fz-14">{{ item.message }}</div>
