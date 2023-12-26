@@ -4,14 +4,14 @@
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section>
         <div class="text-h6">
-          <span>Claim Stone</span>
+          <span>Create Stone</span>
         </div>
       </q-card-section>
 
       <q-card-section v-if="isDone">
         <div class="pa-9 ta-c">
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
-          <div class="mt-1 fz-14">You successfully claimed a stone!</div>
+          <div class="mt-1 fz-14">You successfully created a stone!</div>
           <div class="mt-8">
             <q-btn :to="`/stone`" @click="onDone" color="primary" size="large" style="width: 160px"
               >My Stones</q-btn
