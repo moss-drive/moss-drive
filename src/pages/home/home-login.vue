@@ -1,6 +1,6 @@
 
 <template>
-  <div class="bg-primary bdrs-10 px-5 py-6 pos-r" style="width: 360px">
+  <div class="bg-primary bdrs-10 px-5 py-6 z-1000" style="width: 360px">
     <div class="pos-a right-0" style="top: -102px">
       <img :src="`/img/home/${isLogin ? 'heart' : 'hey'}.svg`" :width="isLogin ? 196 : 192" />
     </div>
