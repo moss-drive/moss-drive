@@ -76,7 +76,7 @@ export default {
     },
     async handleSendMessage() {
       try {
-        if (!this.stoneId || !this.message) return;
+        if (!this.message) return;
         const message = this.message;
         this.message = "";
         await this.$http.put("/message/board", {
