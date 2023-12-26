@@ -162,7 +162,7 @@ export default {
       }
       form.code = code;
       form.bucketName = this.$bucket.defBucket;
-      let path = this.$route.path.replace(/^\/drive/, "").replace(/\//, "");
+      let path = this.$route.path.replace(/^\/file/, "").replace(/\//, "");
       if (path) path += "/";
       form.folderPath = path;
       form.paths = this.checkList.map((it) => it.key).join(",");

@@ -49,7 +49,7 @@ export default {
       return this.$route.path;
     },
     inDrive() {
-      return this.path.startsWith("/drive");
+      return this.path.startsWith("/file");
     },
     inStone() {
       return this.path.startsWith("/stone");

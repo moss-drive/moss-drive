@@ -17,7 +17,7 @@ const routes = [
     component: () => import("../layouts/main-layout.vue"),
     children: [
       {
-        path: "drive/:catchAll(.*)*",
+        path: "file/:catchAll(.*)*",
         component: () => import("./drive/page-drive.vue"),
         meta: {
           title: "My Files",

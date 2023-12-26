@@ -71,7 +71,7 @@ export default {
         {
           title: "My Files",
           icon: "driver",
-          to: "/drive",
+          to: "/file",
         },
         {
           title: "My Stones",

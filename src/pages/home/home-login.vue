@@ -10,7 +10,7 @@
     <div class="py-5">
       <q-btn
         v-if="isLogin"
-        href="/drive"
+        href="/file"
         rounded
         size="lg"
         style="background: #111"

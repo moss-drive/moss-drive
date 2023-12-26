@@ -68,7 +68,7 @@ import StoneEdit from "./stone-edit.vue";
               >Stone Page</q-btn
             >
             <q-btn
-              :to="`/drive/${it.folderPath.replace(/\/$/, '')}`"
+              :to="`/file/${it.folderPath.replace(/\/$/, '')}`"
               color="primary"
               class="flex-1 ml-4"
               outline

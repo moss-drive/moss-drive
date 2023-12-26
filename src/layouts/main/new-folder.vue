@@ -53,11 +53,10 @@ export default {
   methods: {
     async onCreate() {
       try {
-        const name = this.inputVal;
+        const name = this.inputVal.trim();
         let msg = "";
-        if (!/^[a-z\d-_]+$/.test(name)) {
-          msg =
-            "Folder names can consist only of lowercase letters, numbers, underscode (_), and hyphens (-).";
+        if (!name) {
+          msg = "Invalid folder name";
         }
         if (msg) {
           return window.$toast(msg);

@@ -78,8 +78,8 @@ import FilePreview from "./preview/preview-index.vue";
         <q-breadcrumbs gutter="sm">
           <q-breadcrumbs-el
             :label="isPage ? 'All files' : 'My Drive'"
-            to="/drive"
-            @click.prevent="goPath('/drive')"
+            to="/file"
+            @click.prevent="goPath('/file')"
           />
           <q-breadcrumbs-el
             v-for="it in breadLinks"
@@ -149,7 +149,7 @@ export default {
       showMode: this.isPage ? "grid" : "table",
       checkAll: false,
       checked: [],
-      curPath: "/drive",
+      curPath: "/file",
       searchKey: "",
       stoneList: null,
     };
@@ -185,7 +185,7 @@ export default {
       return this.curPath;
     },
     inDrive() {
-      return this.path.startsWith("/drive");
+      return this.path.startsWith("/file");
     },
     breadLinks() {
       let arr = this.path.split("/").slice(1);

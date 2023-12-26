@@ -112,7 +112,7 @@ export default {
     showRoute() {
       const path = this.$route.path;
       return (
-        path.indexOf("/drive") != -1 ||
+        path.indexOf("/file") != -1 ||
         path.indexOf("/stone") != -1 ||
         path.indexOf("/collection") != -1 ||
         path.indexOf("/txs") != -1
