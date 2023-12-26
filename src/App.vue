@@ -89,9 +89,9 @@ export default {
           .onCancel(reject);
       });
     };
-    window.$prompt = (msg, opts) => {
-      return window.$confirm(msg, {
-        title: "",
+    window.$prompt = (title, opts = {}) => {
+      return window.$confirm(opts.msg || "", {
+        title,
         prompt: {
           model: "",
           type: "text", // optional
