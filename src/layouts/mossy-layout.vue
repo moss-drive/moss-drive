@@ -27,8 +27,8 @@ import HeaderRight from "./header-right.vue";
         </a>
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
-          <img src="/img/common/my-moss.svg" width="20" class="mr-2" />
-          <span>My Moss</span>
+          <img src="/img/common/my-moss.svg" width="20" />
+          <span class="ml-2" v-if="!asMobile">My Moss</span>
         </q-btn>
         <header-right />
       </div>
