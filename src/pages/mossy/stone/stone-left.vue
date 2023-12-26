@@ -61,7 +61,7 @@ import LeftMossAct from "./left-moss-act.vue";
           target="_blank"
           class="ml-4 hover-1"
         >
-          <img src="/img/stone/stone-web.svg" width="35" />
+          <img src="/img/stone/stone-web.svg" width="35" class="d-b" />
         </a>
       </div>
     </div>
