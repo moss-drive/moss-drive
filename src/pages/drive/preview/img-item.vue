@@ -33,9 +33,9 @@
     </div>
     <div class="ta-c">
       <img ref="img" :src="src" @load="onLoad" @error="onEnd" />
-      <div class="meta-txt" title="width(px) × height(px)">
+      <!-- <div class="meta-txt" title="width(px) × height(px)">
         {{ metaTxt }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
