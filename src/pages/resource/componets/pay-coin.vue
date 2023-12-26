@@ -12,12 +12,11 @@
         :key="i"
       >
         <div class="al-c flex-1">
-          <img :src="it.img" width="32" />
+          <img :src="it.img" width="24" />
           <div class="fz-12 ml-2">
             <span class="fz-14 name fw-b">
               {{ it.name }}
             </span>
-            <span class="name-label ml-1">({{ it.showLabel }})</span>
           </div>
         </div>
       </div>
@@ -61,8 +60,8 @@ export default {
         {
           label: "ETH",
           showLabel: "ETH",
-          name: "USDC Coin",
-          img: "/img/resource/symbal-icons/usdc.svg",
+          name: "ETH",
+          img: "/img/resource/symbal-icons/eth.svg",
           stablecoin: false,
         },
       ];
