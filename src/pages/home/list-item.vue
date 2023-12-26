@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="stone-cover">
-      <q-img :src="info.avatar" width="60px"></q-img>
+      <q-img :src="info.avatar" width="60px" :ratio="1"></q-img>
     </div>
   </a>
 </template>

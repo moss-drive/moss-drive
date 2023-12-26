@@ -1,9 +1,9 @@
 
 <template>
   <div class="bg-primary bdrs-10 px-5 py-6 z-1000" style="width: 360px">
-    <div class="pos-a right-0" style="top: -102px">
+    <!-- <div class="pos-a right-0" style="top: -102px">
       <img :src="`/img/home/${isLogin ? 'heart' : 'hey'}.svg`" :width="isLogin ? 196 : 192" />
-    </div>
+    </div> -->
     <p class="py-2">
       <img :src="`/img/home/txt-${isLogin ? 'welcome' : 'join'}.svg`" height="24" class="d-b" />
     </p>
