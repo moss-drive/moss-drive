@@ -50,7 +50,7 @@ import LeftMossAct from "./left-moss-act.vue";
           </div>
         </div>
       </div>
-      <left-moss-act v-if="info.stoneId" :stoneId="info.stoneId" :balance="balance" />
+      <left-moss-act :stoneId="info.stoneId" :balance="balance" />
     </div>
     <left-list :stoneId="info.stoneId" :id="info.id" :balance="balance" />
   </div>
