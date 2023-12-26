@@ -72,7 +72,7 @@ export default {
           name: "publish",
           icon: "stone",
           disabled: !(len == 1 && isRootDir && this.checkItem.type == "folder"),
-          tip: "Claim Stone",
+          tip: "Create Stone",
         },
         {
           name: "share",
