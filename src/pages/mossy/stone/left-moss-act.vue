@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-3 ta-r">
+    <div class="">
       <q-btn class="flex-1" color="primary" rounded @click="onPop(true)">BUY KEY</q-btn>
       <q-btn v-if="balance > 0" class="flex-1 ml-4" outline color="primary" rounded @click="onPop()"
         >SELL KEY</q-btn

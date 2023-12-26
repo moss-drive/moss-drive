@@ -290,10 +290,11 @@ export default {
         if (!this.stoneList) {
           await this.getStoneList();
         }
+        const Prefix = decodeURIComponent(this.bucketPrefix);
         const params = {
           Bucket: this.bucketName,
-          folder: this.bucketPrefix,
-          Prefix: this.bucketPrefix,
+          folder: Prefix,
+          Prefix,
           Delimiter: "/",
           MaxKeys: 120,
         };

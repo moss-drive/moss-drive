@@ -79,7 +79,11 @@ $corner: 36px;
             </div>
             <p class="fz-18 fw-b line-1">{{ item.stoneName }}</p>
             <div class="mt-1 fz-14 al-c">
-              <img src="/img/stone/x-round.svg" width="18" />
+              <img
+                :src="item.twitterAvatar || '/img/stone/x-round.svg'"
+                width="18"
+                class="bdrs-100"
+              />
               <span class="op-8 ml-1">{{ item.twitterName }}</span>
             </div>
             <q-btn color="primary" rounded class="full-width mt-4" @click="onRow(item)"
