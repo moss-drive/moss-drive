@@ -99,6 +99,9 @@
           <q-td key="value" :props="props">
             {{ (props.row.action == "Bought" ? "-" : "+") + props.row.amounts + " ETH" }}
           </q-td>
+          <q-td key="value" :props="props">
+            {{ props.row.amount }}
+          </q-td>
           <q-td key="txHash" :props="props">
             <a :href="props.row.href" target="_blank" class="tx-hash">
               {{ props.row.sHash }}
@@ -129,12 +132,19 @@ const columns = [
   },
   {
     name: "value",
-    align: "left",
+    align: "center",
     label: "Amounts",
     field: "value",
     sortable: false,
   },
-  { name: "txHash", align: "left", label: "Tx Hash", field: "txHash", sortable: false },
+  {
+    name: "amount",
+    align: "center",
+    label: "Quantity",
+    field: "amount",
+    sortable: false,
+  },
+  { name: "txHash", align: "center", label: "Tx Hash", field: "txHash", sortable: false },
 ];
 
 export default {
@@ -172,7 +182,9 @@ export default {
         if (this.isOver6Decimals(amounts)) {
           amounts = amounts.toFixed(6);
         }
+
         row.index = index + 1;
+        row.amount = row.amount || "-";
         row.amounts = amounts;
         // row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
         row.href = `https://optimistic.etherscan.io/tx/${row.txHash}`;
