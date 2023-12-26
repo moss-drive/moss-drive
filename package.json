@@ -7,7 +7,7 @@
     "d2": "vite --mode prod",
     "build": "vite build --mode dev",
     "build-prod": "vite build --mode prod",
-    "p": "npm run build && 4ever-hosting deploy",
+    "p1": "npm run build && 4ever-hosting deploy",
     "p2": "npm run build-prod && 4ever-hosting deploy",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
