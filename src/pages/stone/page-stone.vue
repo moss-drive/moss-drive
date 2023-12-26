@@ -50,20 +50,20 @@ import StoneEdit from "./stone-edit.vue";
             </div>
           </div>
           <div class="mt-3 al-c">
-            <q-btn
+            <!-- <q-btn
               v-if="it.stoneId === null"
               @click="onResend(it)"
               color="primary"
               class="flex-1"
               rounded
               >Resend</q-btn
-            >
+            > -->
             <q-btn
-              v-else
               :href="`/${it.stoneId}`"
               target="_blank"
               color="primary"
               class="flex-1"
+              :disable="it.stoneId === null"
               rounded
               >Stone Page</q-btn
             >
