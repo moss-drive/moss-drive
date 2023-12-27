@@ -20,7 +20,7 @@
           <q-skeleton type="text-subtitle1" width="120px" class="mt-2 m-auto" />
         </div>
         <template v-else>
-          <div class="fz-20 fw-b" style="overflow: hidden; text-overflow: ellipsis">
+          <div class="fz-20 fw-b line-1">
             {{ twitterInfo.name || "-" }}
           </div>
           <div class="op-5 fz-14">
