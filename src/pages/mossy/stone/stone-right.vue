@@ -23,7 +23,10 @@
           <div class="fz-20 fw-b" style="overflow: hidden; text-overflow: ellipsis">
             {{ twitterInfo.name || "-" }}
           </div>
-          <div class="op-5 fz-14">@{{ twitterInfo.username || "-" }}</div>
+          <div class="op-5 fz-14">
+            <span>@{{ twitterInfo.username || "-" }}</span>
+            <span class="ml-5">{{ "follower".getCountName(twitterInfo.followers) }} </span>
+          </div>
         </template>
       </div>
       <div class="pa-2"></div>
