@@ -1,7 +1,7 @@
 <template>
   <div class="share-box">
     <div class="share">
-      <div class="share-left">
+      <div class="share-left" v-show="!hideLeft">
         <q-img class="top-img" width="100%" src="@/assets/imgs/share/left-top.png" />
         <div class="left-content">
           <div class="user-info" v-if="userInfo">
@@ -175,6 +175,7 @@ import ActMove from "@/pages/drive/check-act/act-move.vue";
 
 <script>
 import { mapState } from "vuex";
+import { useQuasar } from "quasar";
 
 import { fetchShare, fetchShareVaild, fetchShareList, fetchStoneSave } from "@/api/share.js";
 
@@ -200,6 +201,9 @@ export default {
         };
       });
     },
+    asMobile() {
+      return this.screen.width < 960;
+    },
   },
   watch: {
     checkAll(val) {
@@ -214,7 +218,9 @@ export default {
     },
   },
   data() {
+    const { screen } = useQuasar();
     return {
+      screen,
       loading: false,
       rows: [],
       tempRows: [],
@@ -229,6 +235,7 @@ export default {
       stoneInfo: null,
       scrollDisable: false,
       pageSize: 100,
+      hideLeft: false,
     };
   },
   created() {
@@ -300,6 +307,9 @@ export default {
       const stoneList = data.stoneList;
 
       this.createdTime = createdTime;
+      if (this.asMobile) {
+        this.hideLeft = true;
+      }
       this.setList(list);
       this.handlerDateDurationCurrent(data.expireAt);
       let shareName = list[0].name;
@@ -669,6 +679,19 @@ export default {
     font-weight: 700;
     line-height: 18px; /* 112.5% */
     margin-top: 16px;
+  }
+}
+
+@media (max-width: 960px) {
+  .share-box {
+    .share {
+      .share-left {
+        margin: 0 auto;
+      }
+      .share-right {
+        margin-left: 0;
+      }
+    }
   }
 }
 </style>
