@@ -2,7 +2,8 @@
 import { S3 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { getFileSize, limitTask } from "./helper";
-const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN } = import.meta.env;
+import md5 from "md5";
+const { VITE_BUCKET_ENDPOINT, VITE_BUCKET_DOMAIN, VITE_IPFS_HOST } = import.meta.env;
 
 const bucket = {
   client: null,
@@ -74,6 +75,9 @@ const bucket = {
     // }
     return type;
   },
+  getIpfsLink(uid, cid) {
+    return `https://${md5(uid)}.ipfs.4everland.link/ipfs/${cid}`;
+  },
   listObjects(params) {
     if (!params.Bucket) {
       params.Bucket = this.defBucket;
@@ -109,7 +113,7 @@ const bucket = {
                 sizeUnit: getFileSize(it.Size),
                 lastModified: it.LastModified,
                 updatedAt: it.LastModified.format("date"),
-                etag: it.ETag,
+                cid: JSON.parse(it.ETag),
               };
             }),
           ],

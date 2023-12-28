@@ -1,7 +1,7 @@
 import "./extend";
 import bucket from "./bucket";
 import http from "./http";
-import { EventBus } from "quasar";
+import { EventBus, copyToClipboard } from "quasar";
 import { utils } from "ethers";
 const { VITE_BASE_URL } = import.meta.env;
 
@@ -15,6 +15,10 @@ export default {
     };
     global.$genNonce = (len = 4) => {
       return Math.random().toString(36).slice(-len);
+    };
+    global.$copy = async (txt, msg = "Copied") => {
+      await copyToClipboard(txt);
+      if (msg) window.$toast(msg, 1);
     };
     global.$getShareLink = (id) => {
       return `${location.origin}/s/${id}`;

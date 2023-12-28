@@ -36,11 +36,7 @@
       <q-card-actions class="text-primary pos-s btm-0 q-dark">
         <div class="mr-auto">
           <q-btn v-if="!isNext" flat :loading="creating" label="New Folder" class="mr-auto" />
-          <q-popup-edit
-            v-model="newFolder"
-            :validate="(val) => !val || /^[a-z\d-_]+$/.test(val)"
-            v-slot="scope"
-          >
+          <q-popup-edit v-model="newFolder" :validate="(val) => !!val.trim()" v-slot="scope">
             <q-input
               v-model="scope.value"
               placeholder="New folder name"
@@ -48,11 +44,7 @@
               autofocus
               maxlength="30"
               @keyup.enter="scope.set"
-              :rules="[
-                (val) =>
-                  scope.validate(val) ||
-                  'The name can consist only of lowercase letters, numbers, underscode (_), and hyphens (-).',
-              ]"
+              :rules="[(val) => scope.validate(val) || 'Required']"
             >
               <template v-slot:prepend>
                 <q-img src="/img/driver/icon_folder.png" width="26px" />

@@ -107,7 +107,9 @@ String.prototype.encode = function () {
 };
 
 String.prototype.getCountName = function (len, subfix = "s") {
-  return len + " " + this + (len > 1 ? subfix : "");
+  let num = len;
+  if (len > 1e3) num = (num / 1e3).toFixed(1) + "k";
+  return num + " " + this + (len > 1 ? subfix : "");
 };
 
 if (!String.prototype.replaceAll) {

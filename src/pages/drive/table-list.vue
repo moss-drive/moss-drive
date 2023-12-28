@@ -52,6 +52,18 @@
             <span class="fz-15 ml-3">{{ scope.row.name }}</span>
           </div>
         </q-td>
+        <q-td key="cid" v-if="isPage">
+          <div class="al-c" v-if="scope.row.cid && uid" @click.stop>
+            <a class="hover-1" :href="$bucket.getIpfsLink(uid, scope.row.cid)" target="_blank">{{
+              scope.row.cid.cutStr(8, 5)
+            }}</a>
+            <q-icon
+              name="content_copy"
+              class="ml-1 hover-1 pa-2"
+              @click="$copy(scope.row.cid)"
+            ></q-icon>
+          </div>
+        </q-td>
         <q-td key="size" v-if="isPage">
           {{ scope.row.sizeUnit }}
         </q-td>
@@ -64,6 +76,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   emits: ["row-click", "row-check"],
   props: {
@@ -80,6 +93,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      uid: (s) => s.userInfo.uid,
+    }),
     columns() {
       let cols = [
         {
@@ -95,6 +111,7 @@ export default {
       ];
       if (this.isPage) {
         cols = cols.concat([
+          { name: "cid", align: "left", label: "CID", field: "cid" },
           { name: "size", align: "left", label: "Size", field: "size", sortable: true },
           {
             name: "updatedAt",

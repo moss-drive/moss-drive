@@ -30,7 +30,7 @@
           </q-banner>
 
           <q-form ref="form" class="q-gutter-s mt-5">
-            <div class="row mb-4">
+            <div class="row mb-3">
               <div class="col-3">
                 <div class="stone-cover">
                   <q-img :src="tempImg || form.avatar" width="110px" :ratio="1" />
@@ -129,7 +129,7 @@
                   v-model="mossForm.tokenNum"
                 />
               </div>
-              <div class="mt-4">
+              <div class="mt-2">
                 <q-input
                   filled
                   disable
