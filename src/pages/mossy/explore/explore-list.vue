@@ -105,7 +105,7 @@ export default {
           this.rows = null;
           this.noMore = false;
         }
-        const size = this.type == "RANKING_LIST" ? 10 : 30;
+        const size = this.type == "RANKING_LIST" ? 10 : 36;
         const { data } = await this.$http.get("/stone/square", {
           params: {
             type: this.type,
