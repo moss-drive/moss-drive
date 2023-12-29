@@ -31,20 +31,20 @@ import ListRank from "./list-rank.vue";
     </div>
   </div>
 
-  <template v-if="type == 'FOR_YOU' || type == 'LATEST'">
-    <div v-if="!rows" class="row q-col-gutter-md">
-      <div class="col-6 col-sm-4 col-md-3" v-for="i in 6" :key="i">
-        <q-card flat>
-          <q-skeleton height="120px" square />
-        </q-card>
-      </div>
+  <div v-if="!rows" class="row q-col-gutter-md">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="i in 6" :key="i">
+      <q-card flat>
+        <q-skeleton height="120px" square />
+      </q-card>
     </div>
-    <div v-else-if="!rows.length">
-      <empty-stone />
-    </div>
-    <list-stone v-else :list="rows" />
+  </div>
+  <div v-else-if="!rows.length">
+    <empty-stone />
+  </div>
+  <template v-else>
+    <list-stone :list="rows" v-if="type == 'FOR_YOU' || type == 'LATEST'" />
+    <list-rank v-else :list="rows" />
   </template>
-  <list-rank v-else :list="rows" />
 </template>
 
 <script>
@@ -70,6 +70,7 @@ export default {
       ],
     };
   },
+  computed: {},
   watch: {
     type(type) {
       this.$router.replace({
@@ -88,10 +89,11 @@ export default {
     async getList() {
       try {
         this.rows = null;
+        const size = this.type == "RANKING_LIST" ? 10 : 60;
         const { data } = await this.$http.get("/stone/square", {
           params: {
             type: this.type,
-            size: 60,
+            size,
           },
         });
         this.rows = data;
