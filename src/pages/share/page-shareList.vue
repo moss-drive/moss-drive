@@ -27,11 +27,14 @@
           <q-td key="index" :props="props">
             {{ props.row.index }}
           </q-td>
-          <q-td key="stoneName" :props="props">
-            {{ props.row.stoneName }}
+          <q-td key="link" :props="props">
+            {{ props.row.shareLink }}
           </q-td>
           <q-td key="createdAt" :props="props">
             {{ formatTime(props.row.createdAt * 1000) }}
+          </q-td>
+          <q-td key="expireAt" :props="props">
+            {{ (props.row.action == "Bought" ? "-" : "+") + props.row.amounts + " ETH" }}
           </q-td>
           <q-td key="action" :props="props">
             <div v-if="props.row.action == 'Bought'" class="act-box buy">
@@ -96,9 +99,7 @@
               Bonus
             </div>
           </q-td>
-          <q-td key="value" :props="props">
-            {{ (props.row.action == "Bought" ? "-" : "+") + props.row.amounts + " ETH" }}
-          </q-td>
+
           <q-td key="txHash" :props="props">
             <a :href="props.row.href" target="_blank" class="tx-hash">
               {{ props.row.sHash }}
@@ -118,8 +119,15 @@ import emptyImg from "/img/stone/default-empty.png";
 import { format } from "quasar";
 const columns = [
   { name: "index", align: "left", label: "#", field: "index", sortable: false },
-  { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
-  { name: "createdAt", align: "left", label: "Date", field: "createdAt", sortable: false },
+  { name: "link", align: "left", label: "Link", field: "stoneName", sortable: false },
+  { name: "createdAt", align: "left", label: "CreateAt", field: "createdAt", sortable: false },
+  {
+    name: "expireAt",
+    align: "left",
+    label: "Expiration",
+    field: "value",
+    sortable: false,
+  },
   {
     name: "action",
     align: "left",
@@ -127,14 +135,6 @@ const columns = [
     field: "action",
     sortable: false,
   },
-  {
-    name: "value",
-    align: "left",
-    label: "Amounts",
-    field: "value",
-    sortable: false,
-  },
-  { name: "txHash", align: "left", label: "Tx Hash", field: "txHash", sortable: false },
 ];
 
 export default {

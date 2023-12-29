@@ -11,6 +11,63 @@
       </div>
       <div class="container banner">
         <q-img src="@/assets/imgs/mint/h1.png" width="1266px"></q-img>
+        <q-img class="banner-pos-left" src="@/assets/imgs/mint/image_65.png" width="172px"></q-img>
+        <q-img class="banner-pos-right" src="@/assets/imgs/mint/image_68.png" width="190px"></q-img>
+        <div class="start-mint" v-if="!minted">
+          <div class="cutdown-time">
+            <span class="time">72</span>
+            <span>:</span>
+            <span class="time">72</span>
+            <span>:</span>
+            <span class="time">72</span>
+          </div>
+          <q-btn class="mint-btn mint-btn-active" @click="onMint">Free Mint</q-btn>
+          <div class="mint-info">
+            <div class="mint-info-item">
+              <span class="mint-key">Price:</span>
+              <span class="mint-val">Free</span>
+            </div>
+            <div class="mint-info-item">
+              <span class="mint-key">Remaining quantity:</span>
+              <span class="mint-val">899/1000</span>
+            </div>
+            <div class="mint-info-item">
+              <span class="mint-key">Time:</span>
+              <span class="mint-val">12.30 12:00---1.29 12:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="minted" v-else>
+          <div class="minted-text">Hooray, you' ve just planted a "Mystery of Moss Origins"！</div>
+          <div>
+            <q-btn class="mint-btn mint-btn-active" @click="goMoss">Step into Moss</q-btn>
+            <q-btn class="mint-btn mint-btn-active share-btn" @click="onShare"
+              >Share on
+              <q-icon right size="26px">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="27"
+                  height="27"
+                  viewBox="0 0 27 27"
+                  fill="none"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M1.19922 1.11328H8.35623L25.4673 25.5577H18.3103L1.19922 1.11328ZM5.46734 3.3355L19.4673 23.3355H21.1992L7.19922 3.3355H5.46734Z"
+                    fill="white"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M10.6345 14.592L1.23535 25.5577H4.16219L11.9502 16.4717L10.6345 14.592ZM15.8899 11.8754L25.1146 1.11328H22.1877L14.5741 9.9958L15.8899 11.8754Z"
+                    fill="white"
+                  />
+                </svg>
+              </q-icon>
+            </q-btn>
+          </div>
+        </div>
       </div>
       <q-img class="ribbons" src="@/assets/imgs/mint/Ribbons.png"></q-img>
     </div>
@@ -117,13 +174,31 @@ import HomeBtm from "../home/home-btm.vue";
 </script>
 
 <script>
+import { BigNumber, providers } from "ethers";
+import { mapState } from "vuex";
+import { Mossy__factory } from "@moss-hub/mossy";
+
+import { fetchNftNum } from "@/api/mint.js";
+
 import faq_icon_0 from "@/assets/imgs/mint/faq_0.png";
 import faq_icon_1 from "@/assets/imgs/mint/faq_1.png";
 import faq_icon_2 from "@/assets/imgs/mint/faq_2.png";
 
 export default {
   name: "MintIndex",
-
+  computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uuid,
+    }),
+    asMobile() {
+      return this.screen.width < 960;
+    },
+  },
+  watch: {
+    async uid() {
+      await this.checkMint();
+    },
+  },
   data() {
     return {
       list: [
@@ -158,12 +233,58 @@ Open Sharing Community: Moss provides an open sharing community, offering creato
 Tokenization of Spaces: Creators can tokenize their spaces, allowing users to buy and sell shares of the spaces. Users who own shares can join spaces and chatrooms. With these robust features, Moss has created a groundbreaking social sharing platform through the integration of Web3 and encryption technology. Users can freely upload, store, and share meaningful content on Moss, and generate income through these contributions. Additionally, users can forge new friendships and experience a fresh dimension of Web3.`,
         },
       ],
+      minted: false,
     };
   },
-
+  async created() {
+    await this.initContract();
+    await this.checkMint();
+    // await this.getNftNum();
+  },
   mounted() {},
 
-  methods: {},
+  methods: {
+    async getNftNum() {
+      const { data } = await fetchNftNum();
+      console.log(data);
+    },
+    async initContract() {
+      const provider = new providers.Web3Provider(window.ethereum);
+      const add = "0xe88529cDE0c48265771e0dc0EA7A3dDdca5836ba";
+      const signer = provider.getSigner();
+      const factory = Mossy__factory.connect(add, signer);
+      this.Factory = factory;
+    },
+    async checkMint() {
+      const account = this.uid;
+      if (account) {
+        const amount = await this.Factory.balanceOf(account);
+        if (amount > 0) {
+          this.minted = true;
+        }
+      }
+    },
+    async onMint() {
+      const account = this.uid;
+      if (!account) {
+        this.$bus.emit("show-login");
+        return;
+      } else {
+        const tx = await this.Factory.mint();
+        console.log(tx);
+        const receipt = await tx.wait(1);
+        console.log(receipt);
+      }
+    },
+    goMoss() {
+      window.open("/mossy");
+    },
+    onShare() {
+      window.open(
+        `https://twitter.com/intent/tweet?text=Just minted the exclusive 'Mystery of Moss Origins' NFT from @mymoss_io, the innovative Web3-based social document management and sharing platform. Explore this one-of-a-kind digital artwork now and embrace the future of decentralized file management. #NFT #MossOrigins #web3`
+      );
+    },
+  },
 };
 </script>
 
@@ -192,6 +313,102 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     background-image: url("@/assets/imgs/mint/p1_background.png");
     background-size: 287px;
     text-align: center;
+    .banner {
+      position: relative;
+      height: 100%;
+      .banner-pos-left {
+        position: absolute;
+        left: 175px;
+        bottom: 190px;
+      }
+      .banner-pos-right {
+        position: absolute;
+        right: 73px;
+        bottom: 250px;
+      }
+      .start-mint {
+        position: relative;
+        z-index: 999;
+      }
+      .cutdown-time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        span {
+          color: #fff;
+          font-family: DIN Alternate;
+          font-size: 32px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+        }
+        .time {
+          padding: 12px 8px;
+          color: #fff;
+          text-align: center;
+          border-radius: 8px;
+          background: #0f172a;
+        }
+      }
+      .mint-btn {
+        width: 300px;
+        height: 61px;
+        text-align: center;
+        border-radius: 64px;
+        border: 2px solid #0f172a;
+        background: #cbd5e1;
+        box-shadow: 8px 12px 0px 0px #0f172a;
+        color: #64748b;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+        text-transform: uppercase;
+        margin-top: 12px;
+      }
+      .mint-btn-active {
+        background: #1eefa4;
+        color: #0f172a;
+      }
+      .share-btn {
+        background: #7e4fed;
+        color: #fff;
+        margin-left: 40px;
+      }
+      .mint-info {
+        margin-top: 24px;
+        .mint-info-item {
+          color: #fff;
+          text-align: center;
+          font-family: SF Pro Text;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          line-height: 24px;
+          .mint-key {
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 4px;
+          }
+        }
+      }
+      .minted {
+        position: relative;
+        z-index: 999;
+        .minted-text {
+          color: #fff;
+          font-size: 24px;
+          font-style: normal;
+          font-weight: 900;
+          line-height: normal;
+          text-transform: uppercase;
+          margin: 24px 0;
+        }
+      }
+    }
     .ribbons {
       width: 3840px;
       position: absolute;

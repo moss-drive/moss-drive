@@ -410,7 +410,6 @@ export default {
       }
     },
     async onSave(path) {
-      console.log(path.prefix);
       let paths = [];
       let result = this.rows.filter((item) => {
         return this.checked.some((curVal) => curVal === item.key);
