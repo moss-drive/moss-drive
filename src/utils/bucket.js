@@ -61,7 +61,7 @@ const bucket = {
   },
   getType(name) {
     const extMat = /\.(\w+)$/.exec(name) || [];
-    const ext = extMat[1];
+    const ext = (extMat[1] || "").toLowerCase();
     let type = "other";
     if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
       type = "image";
