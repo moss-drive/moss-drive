@@ -155,11 +155,12 @@ export default {
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
     async showInvite() {
-      const code = await this.$prompt("Invitation Code", {
+      let code = await this.$prompt("Invitation Code", {
         html: true,
         msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
       });
       if (!code) return;
+      code = code.replace(/^Moss-/i, "");
       try {
         this.loading = true;
         await this.$http.post(
