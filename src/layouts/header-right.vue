@@ -6,7 +6,7 @@
     }"
   >
     <template v-if="!uid">
-      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" />
+      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
       <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
@@ -63,6 +63,10 @@ export default {
     border: {
       type: Boolean,
       default: true,
+    },
+    noInvited: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

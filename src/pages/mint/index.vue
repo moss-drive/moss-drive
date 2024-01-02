@@ -6,20 +6,20 @@
           <img src="@/assets/imgs/mint/logo.svg" height="56" style="display: block" />
         </a>
         <div class="ml-auto">
-          <header-right :border="false"></header-right>
+          <header-right :border="false" :noInvited="true"></header-right>
         </div>
       </div>
       <div class="container banner">
-        <q-img src="@/assets/imgs/mint/h1.png" width="1266px"></q-img>
+        <q-img src="@/assets/imgs/mint/h1.png" width="100%" style="max-width: 1266px"></q-img>
         <q-img class="banner-pos-left" src="@/assets/imgs/mint/image_65.png" width="172px"></q-img>
         <q-img class="banner-pos-right" src="@/assets/imgs/mint/image_68.png" width="190px"></q-img>
         <div class="start-mint" v-if="!minted">
           <div class="cutdown-time">
-            <span class="time">72</span>
+            <span class="time">{{ freeMinttTime.hour }}</span>
             <span>:</span>
-            <span class="time">72</span>
+            <span class="time">{{ freeMinttTime.minute }}</span>
             <span>:</span>
-            <span class="time">72</span>
+            <span class="time">{{ freeMinttTime.second }}</span>
           </div>
           <q-btn class="mint-btn mint-btn-active" @click="onMint">Free Mint</q-btn>
           <div class="mint-info">
@@ -234,9 +234,18 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
+      freeMintStartAt: 1704038400000,
+      freeMintEndAt: 1704211200000,
+      publicSellStartAt: 1704384000000,
+      freeMinttTime: {
+        hour: "00",
+        minute: "00",
+        second: "00",
+      },
     };
   },
   async created() {
+    this.initTime();
     await this.initContract();
     await this.checkMint();
     // await this.getNftNum();
@@ -244,21 +253,31 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
   mounted() {},
 
   methods: {
+    initTime() {
+      setInterval(() => {
+        const freeMinttTime = this.cutdonw(this.freeMintStartAt);
+        this.freeMinttTime = freeMinttTime;
+      }, 1000);
+    },
     async getNftNum() {
       const { data } = await fetchNftNum();
       console.log(data);
     },
     async initContract() {
       const provider = new providers.Web3Provider(window.ethereum);
-      const add = "0xe88529cDE0c48265771e0dc0EA7A3dDdca5836ba";
+      const add = "0xadc1E93730e31B19Bd205D38BC399296e8A40728";
       const signer = provider.getSigner();
       const factory = Mossy__factory.connect(add, signer);
       this.Factory = factory;
     },
     async checkMint() {
       const account = this.uid;
+      // let account = "0x3B484eF52660626b874B1453457484272f823301";
       if (account) {
+        const phase = await this.Factory.getPhase();
         const amount = await this.Factory.balanceOf(account);
+        console.log(phase);
+        console.log(amount);
         if (amount > 0) {
           this.minted = true;
         }
@@ -270,10 +289,15 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         this.$bus.emit("show-login");
         return;
       } else {
-        const tx = await this.Factory.mint();
-        console.log(tx);
-        const receipt = await tx.wait(1);
-        console.log(receipt);
+        try {
+          const tx = await this.Factory.mint();
+          console.log(tx);
+          const receipt = await tx.wait(1);
+          console.log(receipt);
+          this.$toast("Hoora, Mint has been successful!", 1);
+        } catch (error) {
+          console.log(error);
+        }
       }
     },
     goMoss() {
@@ -283,6 +307,24 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       window.open(
         `https://twitter.com/intent/tweet?text=Just minted the exclusive 'Mystery of Moss Origins' NFT from @mymoss_io, the innovative Web3-based social document management and sharing platform. Explore this one-of-a-kind digital artwork now and embrace the future of decentralized file management. #NFT #MossOrigins #web3`
       );
+    },
+    cutdonw(startTime, endTime) {
+      function num(n) {
+        if (n < 0) {
+          n = 0;
+        }
+        return n < 10 ? "0" + n : n;
+      }
+      let nowTime = new Date().getTime();
+      let countDown = startTime - nowTime;
+      let oHour = Math.floor(countDown / 1000 / 60 / 60);
+      let oMinute = Math.floor((countDown / 1000 / 60) % 60);
+      let oSecond = Math.floor((countDown / 1000) % 60);
+      return {
+        hour: num(oHour),
+        minute: num(oMinute),
+        second: num(oSecond),
+      };
     },
   },
 };
@@ -578,6 +620,88 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     left: 0;
     bottom: 0;
     background-color: #000;
+  }
+}
+
+@media (max-width: 960px) {
+  .mint-page {
+    width: 100%;
+    padding-bottom: 76px;
+    overflow: hidden;
+    .banner-box {
+      .banner {
+        position: relative;
+        height: 100%;
+        .banner-pos-left {
+          position: absolute;
+          left: 15px;
+          bottom: 190px;
+        }
+        .banner-pos-right {
+          position: absolute;
+          right: 20px;
+          bottom: 300px;
+        }
+
+        .share-btn {
+          background: #7e4fed;
+          color: #fff;
+          margin-left: 40px;
+        }
+        .mint-info {
+          margin-top: 24px;
+          .mint-info-item {
+            color: #fff;
+            text-align: center;
+            font-family: SF Pro Text;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            line-height: 24px;
+            .mint-key {
+              color: #fff;
+              font-weight: 700;
+              text-transform: uppercase;
+              margin-right: 4px;
+            }
+          }
+        }
+        .minted {
+          position: relative;
+          z-index: 999;
+          .minted-text {
+            color: #fff;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 900;
+            line-height: normal;
+            text-transform: uppercase;
+            margin: 24px 0;
+          }
+        }
+      }
+      .ribbons {
+        width: 3840px;
+        position: absolute;
+        left: 50%;
+        right: 50%;
+        bottom: -100px;
+        margin-left: -1920px;
+      }
+    }
+    .introduction-box {
+      display: none;
+    }
+
+    .footer {
+      position: fixed;
+      height: 76px;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      background-color: #000;
+    }
   }
 }
 </style>

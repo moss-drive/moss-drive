@@ -24,6 +24,7 @@ export default {
       isFocus: (s) => s.isFocus,
       showProgress: (s) => s.showProgress,
       uid: (s) => s.loginData.uuid,
+      loginData: (s) => s.loginData,
       // token: (s) => s.loginData.accessToken,
     }),
     path() {

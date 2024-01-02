@@ -72,6 +72,7 @@ export default {
     },
     keep: Boolean,
     asMobile: Boolean,
+    noInvited: Boolean,
   },
   data() {
     return {
@@ -185,7 +186,7 @@ export default {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
-        if (data.isInvited) {
+        if (data.isInvited || this.noInvited) {
           this.$store.dispatch("login", data);
           this.onRedirect();
         } else {
@@ -200,4 +201,3 @@ export default {
   },
 };
 </script>
-
