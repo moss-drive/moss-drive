@@ -3,7 +3,7 @@
     <router-link
       :to="`/${it.stoneId}`"
       target="_blank"
-      class="col-12 col-sm-6 col-md-3"
+      class="col-12 col-sm-6 col-md-4 col-lg-3"
       v-for="(it, i) in list"
       :key="i"
     >

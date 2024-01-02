@@ -31,20 +31,30 @@ import ListRank from "./list-rank.vue";
     </div>
   </div>
 
-  <template v-if="type == 'FOR_YOU' || type == 'LATEST'">
-    <div v-if="!rows" class="row q-col-gutter-md">
-      <div class="col-6 col-sm-4 col-md-3" v-for="i in 6" :key="i">
-        <q-card flat>
-          <q-skeleton height="120px" square />
-        </q-card>
+  <div v-if="!rows" class="row q-col-gutter-md">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="i in 6" :key="i">
+      <q-card flat>
+        <q-skeleton height="120px" square />
+      </q-card>
+    </div>
+  </div>
+  <div v-else-if="!rows.length">
+    <empty-stone />
+  </div>
+  <template v-else>
+    <q-infinite-scroll
+      v-if="type == 'FOR_YOU' || type == 'LATEST'"
+      @load="onLoad"
+      :disable="noMore || loadingMore"
+    >
+      <list-stone :list="rows" />
+      <div class="ta-c mt-6" v-show="loadingMore">
+        <q-spinner color="primary" size="3em" />
       </div>
-    </div>
-    <div v-else-if="!rows.length">
-      <empty-stone />
-    </div>
-    <list-stone v-else :list="rows" />
+      <div class="pa-3"></div>
+    </q-infinite-scroll>
+    <list-rank v-else :list="rows" />
   </template>
-  <list-rank v-else :list="rows" />
 </template>
 
 <script>
@@ -60,16 +70,11 @@ export default {
         { label: "Top", value: "RANKING_LIST" },
       ],
       rows: null,
-      list: [
-        {
-          title: "Preact is a fast 3kB alternative to React with the same modern API.",
-          img: "https://qs3.4everland.store/logos/preact.svg",
-          star: false,
-          starNum: 49,
-        },
-      ],
+      page: 1,
+      noMore: false,
     };
   },
+  computed: {},
   watch: {
     type(type) {
       this.$router.replace({
@@ -85,17 +90,41 @@ export default {
     this.getList();
   },
   methods: {
-    async getList() {
+    async onLoad(index, done) {
+      console.log(index);
+      await this.getList(true);
+      done();
+    },
+    async getList(isMore) {
       try {
-        this.rows = null;
+        if (isMore) {
+          this.loadingMore = true;
+          this.page += 1;
+        } else {
+          this.page = 1;
+          this.rows = null;
+          this.noMore = false;
+        }
+        const size = this.type == "RANKING_LIST" ? 10 : 36;
         const { data } = await this.$http.get("/stone/square", {
           params: {
             type: this.type,
-            size: 60,
+            page: this.page,
+            size,
           },
         });
-        this.rows = data;
-      } catch (error) {}
+        if (data.length < size - 5) {
+          this.noMore = true;
+        }
+        if (isMore) {
+          this.rows = [...this.rows, ...data];
+        } else {
+          this.rows = data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.loadingMore = false;
     },
   },
 };
