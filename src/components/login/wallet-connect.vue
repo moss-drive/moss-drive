@@ -150,7 +150,7 @@ export default {
       this.$toast("Welcome!", 1);
       this.$emit("login");
       if (this.keep) return;
-      const redirectTo = localStorage.loginTo || "/";
+      const redirectTo = localStorage.loginTo || "/file";
       localStorage.loginTo = "";
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
