@@ -65,10 +65,7 @@
             <p>Link will be expired at {{ new Date(resData.expireAt * 1000).format() }}</p>
           </div>
           <div class="mt-7">
-            <q-btn
-              color="primary"
-              class="full-width"
-              @click="onCopy(shareLink + ' ' + resData.code)"
+            <q-btn color="primary" class="full-width" @click="onShare"
               >Copy link and extraction code</q-btn
             >
           </div>
@@ -139,6 +136,11 @@ export default {
     },
   },
   methods: {
+    onShare() {
+      this.onCopy(
+        `Hi, I've shared some files with you using Moss. You can view them by opening the link in a browser. Link: ${this.shareLink} Extraction code: ${this.resData.code}.`
+      );
+    },
     async onOpen() {
       await this.onCopy(this.resData.code, "Extraction code is copied!");
       setTimeout(() => {
