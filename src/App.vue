@@ -68,6 +68,7 @@ export default {
       return new Promise((resolve) => {
         $q.dialog({
           title: "Tip",
+          color: "primary",
           message,
           transitionShow: "jump-up",
           transitionHide: "jump-up",
@@ -81,6 +82,7 @@ export default {
       return new Promise((resolve, reject) => {
         $q.dialog({
           title: "Confirm",
+          color: "primary",
           message,
           cancel: true,
           persistent: true,
@@ -93,6 +95,7 @@ export default {
     window.$prompt = (title, opts = {}) => {
       return window.$confirm(opts.msg || "", {
         title,
+        color: "primary",
         prompt: {
           model: "",
           type: "text", // optional
@@ -119,6 +122,9 @@ export default {
   methods: {
     async getUserInfo() {
       if (!this.uid) return;
+      if (["/mint"].includes(location.pathname)) {
+        return;
+      }
       try {
         const { data } = await this.$http.get("/users/twitter/info");
         this.$setStore({
