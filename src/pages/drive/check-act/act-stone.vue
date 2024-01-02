@@ -307,7 +307,7 @@ export default {
               confirmText: "Start by adopting one!",
             }
           );
-          this.$router.push("/mint");
+          window.open("/mint");
         }
       } catch (error) {
         console.log(error);
