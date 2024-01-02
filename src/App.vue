@@ -121,6 +121,9 @@ export default {
   methods: {
     async getUserInfo() {
       if (!this.uid) return;
+      if (["/mint"].includes(location.pathname)) {
+        return;
+      }
       try {
         const { data } = await this.$http.get("/users/twitter/info");
         this.$setStore({
