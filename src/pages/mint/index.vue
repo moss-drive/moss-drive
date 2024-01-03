@@ -14,28 +14,69 @@
         <q-img class="banner-pos-left" src="@/assets/imgs/mint/image_65.png" width="172px"></q-img>
         <q-img class="banner-pos-right" src="@/assets/imgs/mint/image_68.png" width="190px"></q-img>
         <div class="start-mint" v-if="!minted">
-          <div class="cutdown-time">
+          <div class="cutdown-time" v-if="!freeMintStart">
             <span class="time">{{ freeMinttTime.hour }}</span>
             <span>:</span>
             <span class="time">{{ freeMinttTime.minute }}</span>
             <span>:</span>
             <span class="time">{{ freeMinttTime.second }}</span>
           </div>
-          <q-btn class="mint-btn mint-btn-active" @click="onMint">Free Mint</q-btn>
-          <div class="mint-info">
-            <div class="mint-info-item">
-              <span class="mint-key">Price:</span>
-              <span class="mint-val">Free</span>
+          <template v-if="!freeMintEnd && !mintEnd">
+            <div>
+              <q-btn
+                class="mint-btn"
+                :class="{ 'mint-btn-active': freeMintStart || mintEnd }"
+                @click="onMint"
+                :disable="!freeMintStart || freeMintEnd || mintEnd"
+                >Free Mint</q-btn
+              >
+              <div class="mint-info">
+                <div class="mint-info-item">
+                  <span class="mint-key">Price:</span>
+                  <span class="mint-val">Free</span>
+                </div>
+                <div class="mint-info-item">
+                  <span class="mint-key">Remaining quantity:</span>
+                  <span class="mint-val">{{ nftNum.free.mint }}/{{ nftNum.free.total }}</span>
+                </div>
+                <div class="mint-info-item">
+                  <span class="mint-key">Time:</span>
+                  <span class="mint-val">12.30 12:00---1.29 12:00</span>
+                </div>
+              </div>
             </div>
-            <div class="mint-info-item">
-              <span class="mint-key">Remaining quantity:</span>
-              <span class="mint-val">899/1000</span>
+          </template>
+          <template v-else>
+            <div>
+              <q-btn
+                class="mint-btn"
+                :class="{ 'mint-btn-active': publicSellStart || mintEnd }"
+                @click="onMint"
+                :disable="!publicSellStart || publicSellEnd || mintEnd"
+                >Public Sell</q-btn
+              >
+              <div class="mint-info">
+                <div class="mint-info-item">
+                  <span class="mint-key">Price:</span>
+                  <span class="mint-val" v-if="fundingPhase == 1">0.005ETH</span>
+                  <span class="mint-val" v-if="fundingPhase == 2">0.01ETH</span>
+                </div>
+                <div class="mint-info-item">
+                  <span class="mint-key">Remaining quantity:</span>
+                  <span class="mint-val" v-if="fundingPhase == 1"
+                    >{{ nftNum.phaseOne.mint }}/{{ nftNum.phaseOne.total }}</span
+                  >
+                  <span class="mint-val" v-if="fundingPhase == 2"
+                    >{{ nftNum.phaseTwo.mint }}/{{ nftNum.phaseTwo.total }}</span
+                  >
+                </div>
+                <div class="mint-info-item">
+                  <span class="mint-key">Time:</span>
+                  <span class="mint-val">12.30 12:00---1.29 12:00</span>
+                </div>
+              </div>
             </div>
-            <div class="mint-info-item">
-              <span class="mint-key">Time:</span>
-              <span class="mint-val">12.30 12:00---1.29 12:00</span>
-            </div>
-          </div>
+          </template>
         </div>
         <div class="minted" v-else>
           <div class="minted-text">Hooray, you' ve just planted a "Mystery of Moss Origins"！</div>
@@ -162,6 +203,7 @@
         </div>
       </div>
     </div>
+    <wallet-control ref="switchNet" style="visibility: hidden" :noInvited="true" />
     <div class="footer">
       <home-btm />
     </div>
@@ -183,6 +225,8 @@ import { fetchNftNum } from "@/api/mint.js";
 import faq_icon_0 from "@/assets/imgs/mint/faq_0.png";
 import faq_icon_1 from "@/assets/imgs/mint/faq_1.png";
 import faq_icon_2 from "@/assets/imgs/mint/faq_2.png";
+
+const { VITE_MOSS_CHAINID } = import.meta.env;
 
 export default {
   name: "MintIndex",
@@ -234,13 +278,24 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: 1704038400000,
-      freeMintEndAt: 1704211200000,
-      publicSellStartAt: 1704384000000,
+      freeMintStartAt: new Date().getTime() + 30 * 1000,
+      freeMintEndAt: new Date().getTime() + 60 * 1000,
+      publicSellStartAt: new Date().getTime() + 120 * 1000,
+      freeMintStart: false,
+      freeMintEnd: false,
+      publicSellStart: false,
+      publicSellEnd: false,
+      mintEnd: false,
+      fundingPhase: 1,
       freeMinttTime: {
         hour: "00",
         minute: "00",
         second: "00",
+      },
+      nftNum: {
+        free: {},
+        phaseOne: {},
+        phaseTwo: {},
       },
     };
   },
@@ -248,20 +303,33 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     this.initTime();
     await this.initContract();
     await this.checkMint();
-    // await this.getNftNum();
+    await this.getNftNum();
   },
   mounted() {},
 
   methods: {
     initTime() {
-      setInterval(() => {
+      const setTime = () => {
         const freeMinttTime = this.cutdonw(this.freeMintStartAt);
-        this.freeMinttTime = freeMinttTime;
-      }, 1000);
+        const freeMinttEndTime = this.cutdonw(this.freeMintEndAt);
+        if (freeMinttTime) {
+          this.freeMinttTime = freeMinttTime;
+        } else {
+          this.freeMintStart = true;
+        }
+        if (!freeMinttEndTime) {
+          this.freeMintEnd = true;
+          this.publicSellStart = true;
+          clearInterval(freeStartTimer);
+        }
+      };
+      setTime();
+      const freeStartTimer = setInterval(setTime, 1000);
     },
     async getNftNum() {
       const { data } = await fetchNftNum();
       console.log(data);
+      this.nftNum = data;
     },
     async initContract() {
       const provider = new providers.Web3Provider(window.ethereum);
@@ -270,16 +338,32 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       const factory = Mossy__factory.connect(add, signer);
       this.Factory = factory;
     },
+    async checkNet() {
+      const chainId = window.ethereum.chainId;
+      if (chainId != VITE_MOSS_CHAINID) {
+        await this.$refs.switchNet.switchOpChain();
+      }
+    },
     async checkMint() {
+      await this.checkNet();
       const account = this.uid;
-      // let account = "0x3B484eF52660626b874B1453457484272f823301";
       if (account) {
-        const phase = await this.Factory.getPhase();
-        const amount = await this.Factory.balanceOf(account);
-        console.log(phase);
-        console.log(amount);
-        if (amount > 0) {
-          this.minted = true;
+        try {
+          const phase = await this.Factory.getPhase();
+          const fundingPhase = await this.Factory.fundingPhase();
+          const amount = await this.Factory.balanceOf(account);
+          console.log(phase);
+          console.log(fundingPhase);
+          console.log(amount);
+          this.fundingPhase = fundingPhase;
+          if (phase == 4) {
+            this.publicSellEnd = true;
+          }
+          if (amount > 0) {
+            this.minted = true;
+          }
+        } catch (error) {
+          console.log(error);
         }
       }
     },
@@ -290,11 +374,24 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         return;
       } else {
         try {
-          const tx = await this.Factory.mint();
+          let param = {};
+          await this.checkNet();
+          if (this.fundingPhase == 1) {
+            param = {
+              value: 5e15,
+            };
+          }
+          if (this.fundingPhase == 2) {
+            param = {
+              value: 1e16,
+            };
+          }
+          const tx = await this.Factory.mint(param);
           console.log(tx);
           const receipt = await tx.wait(1);
           console.log(receipt);
           this.$toast("Hoora, Mint has been successful!", 1);
+          this.minted = true;
         } catch (error) {
           console.log(error);
         }
@@ -317,14 +414,18 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       }
       let nowTime = new Date().getTime();
       let countDown = startTime - nowTime;
-      let oHour = Math.floor(countDown / 1000 / 60 / 60);
-      let oMinute = Math.floor((countDown / 1000 / 60) % 60);
-      let oSecond = Math.floor((countDown / 1000) % 60);
-      return {
-        hour: num(oHour),
-        minute: num(oMinute),
-        second: num(oSecond),
-      };
+      if (countDown <= 0) {
+        return false;
+      } else {
+        let oHour = Math.floor(countDown / 1000 / 60 / 60);
+        let oMinute = Math.floor((countDown / 1000 / 60) % 60);
+        let oSecond = Math.floor((countDown / 1000) % 60);
+        return {
+          hour: num(oHour),
+          minute: num(oMinute),
+          second: num(oSecond),
+        };
+      }
     },
   },
 };
@@ -400,14 +501,15 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         border-radius: 64px;
         border: 2px solid #0f172a;
         background: #cbd5e1;
-        box-shadow: 8px 12px 0px 0px #0f172a;
         color: #64748b;
+        box-shadow: 8px 12px 0px 0px #0f172a;
         font-size: 24px;
         font-style: normal;
         font-weight: 900;
         line-height: normal;
         text-transform: uppercase;
         margin-top: 12px;
+        opacity: 1 !important;
       }
       .mint-btn-active {
         background: #1eefa4;

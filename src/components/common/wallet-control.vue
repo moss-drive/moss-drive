@@ -14,6 +14,10 @@ export default {
       type: Boolean,
       default: true, // invalid login addr eq wallet addr
     },
+    noInvited: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -72,6 +76,9 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        if (this.noInvited) {
+          return;
+        }
         let msg = error.message;
         this.$alert(msg);
       }
