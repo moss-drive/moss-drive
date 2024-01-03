@@ -258,6 +258,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
+      form.chainId = this.mossHub.chainId + "";
       if (!form.avatar) {
         form.avatar = "/img/stone/def-cover.png";
       }
