@@ -27,27 +27,44 @@
         :round="asMobile"
         :size="btnSize"
       >
-        <q-avatar size="22px" v-if="userInfo.avatarUrl">
-          <img :src="userInfo.avatarUrl" />
-        </q-avatar>
-        <m-avatar v-else :hash="uid"></m-avatar>
+        <user-avatar :src="userInfo.avatarUrl" :uid="uid" />
         <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
-        <q-menu style="width: 130px" auto-close>
-          <q-list>
-            <q-item clickable v-if="asMobile">
-              <q-item-section>{{ uname }}</q-item-section>
-            </q-item>
-            <q-item clickable v-if="userInfo.name">
-              <q-item-section>{{ myAddr }}</q-item-section>
-            </q-item>
-            <q-item href="/login" target="_blank" clickable v-else>
-              <q-item-section>Bind X</q-item-section>
-            </q-item>
-            <q-item clickable @click="onLogout">
-              <q-item-section>Sign out</q-item-section>
-            </q-item>
-          </q-list>
+        <q-menu
+          :style="{
+            width: Math.min(screen.width - 30, 400) + 'px',
+          }"
+          persistent
+        >
+          <q-card class="bg-card-1">
+            <q-card-section>
+              <div class="ta-c">
+                <div class="mt-2">
+                  <user-avatar :src="userInfo.avatarUrl" :uid="uid" :size="60" />
+                  <p class="mt-2">
+                    <a
+                      class="hover-1"
+                      :href="`https://twitter.com/${userInfo.username}`"
+                      target="_blank"
+                      >@{{ userInfo.username }}</a
+                    >
+                  </p>
+                  <p class="mt-1 op-7 d-center hover-1" @click="$copy(uid)">
+                    <span class="mr-1">{{ uid.cutStr(6, 4) }}</span>
+                    <q-icon name="content_copy" />
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <q-tabs class="bdb-1" v-model="tabIdx" dense active-color="primary" no-caps>
+                  <q-tab name="nft" label="Moss NFT" />
+                  <q-tab name="invite" label="Invite" />
+                  <q-tab name="settings" label="Settings" />
+                </q-tabs>
+              </div>
+            </q-card-section>
+          </q-card>
         </q-menu>
       </q-btn>
     </template>
@@ -74,6 +91,7 @@ export default {
     return {
       screen,
       searchKey: "",
+      tabIdx: "nft",
     };
   },
   computed: {

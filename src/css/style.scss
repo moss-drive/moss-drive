@@ -123,8 +123,14 @@ $bd: #334155;
   color: #7E4FED;
 }
 
-.hover-1:hover {
-  opacity: .8;
+.hover-1 {
+  cursor: pointer;
+  &:hover {
+    opacity: .8;
+  }
+  &:active {
+    opacity: .85;
+  }
 }
 
 .p-mb-1 {
