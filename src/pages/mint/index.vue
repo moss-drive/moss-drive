@@ -25,7 +25,7 @@
             <div>
               <q-btn
                 class="mint-btn"
-                :class="{ 'mint-btn-active': freeMintStart || mintEnd }"
+                :class="{ 'mint-btn-disable': !freeMintStart || freeMintEnd || mintEnd }"
                 @click="onMint"
                 :disable="!freeMintStart || freeMintEnd || mintEnd"
                 >Free Mint</q-btn
@@ -50,7 +50,7 @@
             <div>
               <q-btn
                 class="mint-btn"
-                :class="{ 'mint-btn-active': publicSellStart || mintEnd }"
+                :class="{ 'mint-btn-disable': !publicSellStart || publicSellEnd || mintEnd }"
                 @click="onMint"
                 :disable="!publicSellStart || publicSellEnd || mintEnd"
                 >Public Sell</q-btn
@@ -278,9 +278,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: new Date().getTime() + 30 * 1000,
-      freeMintEndAt: new Date().getTime() + 60 * 1000,
-      publicSellStartAt: new Date().getTime() + 120 * 1000,
+      freeMintStartAt: 1704272400000,
+      freeMintEndAt: 1704273600000,
+      publicSellStartAt: 1704273600000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
@@ -300,15 +300,16 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     };
   },
   async created() {
+    this.getNftNum();
     this.initTime();
     await this.initContract();
     await this.checkMint();
-    await this.getNftNum();
   },
   mounted() {},
 
   methods: {
     initTime() {
+      let freeStartTimer;
       const setTime = () => {
         const freeMinttTime = this.cutdonw(this.freeMintStartAt);
         const freeMinttEndTime = this.cutdonw(this.freeMintEndAt);
@@ -320,20 +321,21 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         if (!freeMinttEndTime) {
           this.freeMintEnd = true;
           this.publicSellStart = true;
-          clearInterval(freeStartTimer);
+          if (freeStartTimer) {
+            clearInterval(freeStartTimer);
+          }
         }
       };
       setTime();
-      const freeStartTimer = setInterval(setTime, 1000);
+      freeStartTimer = setInterval(setTime, 1000);
     },
     async getNftNum() {
       const { data } = await fetchNftNum();
-      console.log(data);
       this.nftNum = data;
     },
     async initContract() {
       const provider = new providers.Web3Provider(window.ethereum);
-      const add = "0xadc1E93730e31B19Bd205D38BC399296e8A40728";
+      const add = "0xb2e0F219A69d3A7a839CE67B4dcBCA07E58531ac";
       const signer = provider.getSigner();
       const factory = Mossy__factory.connect(add, signer);
       this.Factory = factory;
@@ -343,6 +345,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       if (chainId != VITE_MOSS_CHAINID) {
         await this.$refs.switchNet.switchOpChain();
       }
+      console.log(111);
     },
     async checkMint() {
       await this.checkNet();
@@ -370,12 +373,13 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     async onMint() {
       const account = this.uid;
       if (!account) {
-        this.$bus.emit("show-login");
+        this.$bus.emit("show-login", true);
         return;
       } else {
         try {
           let param = {};
           await this.checkNet();
+          await this.checkMint();
           if (this.fundingPhase == 1) {
             param = {
               value: 5e15,
@@ -394,6 +398,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           this.minted = true;
         } catch (error) {
           console.log(error);
+          this.onErr(error);
         }
       }
     },
@@ -426,6 +431,43 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           second: num(oSecond),
         };
       }
+    },
+    onErr(err) {
+      if (!err) return console.log("---- err null");
+      const { data } = err;
+      let msg = err.message;
+      if (data) {
+        msg = data.message || msg;
+      }
+      if (/repriced/i.test(msg) && /replaced/i.test(msg)) {
+        return this.$toast("Transaction was replaced.");
+      }
+      if (/missing revert data/i.test(msg)) {
+        msg = "Network Error";
+      } else if (/user rejected/i.test(msg)) {
+        msg = "Your transaction has been canceled.";
+      } else if (/transaction failed/i.test(msg)) {
+        msg = "Transaction Failed";
+      } else if (/ipfs/.test(msg) && /invalid params/.test(msg)) {
+        msg = "IPFS Storage Expired, extending service duration is required.";
+      } else if (
+        /exceeds balance/i.test(msg) ||
+        msg == "overflow" ||
+        /insufficient funds/i.test(msg)
+      ) {
+        msg = "Insufficient balance in your wallet.";
+      } else if (msg.length > 100) {
+        const mat = /^(.+)\[/.exec(msg);
+        if (mat) msg = mat[1];
+      } else if (/Caller is not in white list/i.test(msg)) {
+        msg = "Caller is not in white list.";
+      } else if (/already pending for origin/gi.test(msg)) {
+        msg = "Wrong network, please switch your wallet network and try again.";
+      } else {
+        msg = "Mint failed, please try again later!";
+      }
+      console.log(msg);
+      return this.$alert(msg);
     },
   },
 };
@@ -500,8 +542,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         text-align: center;
         border-radius: 64px;
         border: 2px solid #0f172a;
-        background: #cbd5e1;
-        color: #64748b;
+        background: #1eefa4;
+        color: #0f172a;
         box-shadow: 8px 12px 0px 0px #0f172a;
         font-size: 24px;
         font-style: normal;
@@ -511,9 +553,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         margin-top: 12px;
         opacity: 1 !important;
       }
-      .mint-btn-active {
-        background: #1eefa4;
-        color: #0f172a;
+      .mint-btn-disable {
+        background: #cbd5e1;
+        color: #64748b;
       }
       .share-btn {
         background: #7e4fed;

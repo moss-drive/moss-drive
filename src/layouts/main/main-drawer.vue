@@ -91,7 +91,7 @@ export default {
         },
         {
           title: "Share Links",
-          icon: "txs",
+          icon: "shareLinks",
           to: "/sharelist",
         },
       ],
