@@ -34,7 +34,7 @@
           :style="{
             width: Math.min(screen.width - 30, 400) + 'px',
           }"
-          persistent
+          persistent1
         >
           <q-card class="bg-card-1">
             <q-card-section>
