@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="resource-recharge-tip px-4">
+    <div class="resource-recharge-tip px-4" v-show="!onChain">
       <div
         class="resource-recharge-content fz-12 cursor-p"
         @click="$router.push('/resource')"
