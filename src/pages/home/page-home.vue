@@ -34,7 +34,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         style="margin: auto 0"
         :style1="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
-        <div class="home-bg">
+        <div class="home-bg" v-if="!asMobile">
           <q-img src="@/assets/imgs/home/mint-bg.png" style="width: 100%; max-width: 1138px" />
           <div>
             <div class="cutdown-time">
@@ -52,7 +52,29 @@ import HeaderRight from "../../layouts/header-right.vue";
         <!-- <home-list :asMobile="asMobile" /> -->
       </div>
       <div class="col-4 h100p pos-r">
-        <home-login :class="loginCls" />
+        <div
+          :class="loginCls"
+          style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+          "
+        >
+          <home-login />
+          <div style="margin-top: 16px" v-if="asMobile">
+            <div class="cutdown-time">
+              <span class="time">{{ freeMinttTime.hour }}</span>
+              <span>:</span>
+              <span class="time">{{ freeMinttTime.minute }}</span>
+              <span>:</span>
+              <span class="time">{{ freeMinttTime.second }}</span>
+            </div>
+            <!-- <div class="mint-text">Time Until Free Mint Starts</div> -->
+            <q-img src="@/assets/imgs/home/mint-text.png" width="400px" style="margin-top: 16px" />
+          </div>
+        </div>
       </div>
     </div>
     <home-btm />
