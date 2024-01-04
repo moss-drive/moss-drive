@@ -39,7 +39,7 @@ import UserCard from "./main/user-card.vue";
             width: Math.min(screen.width - 30, 400) + 'px',
           }"
           style="max-height: 600px"
-          persistent
+          persistent1
         >
           <user-card :userInfo="userInfo" :uid="uid" />
         </q-menu>
