@@ -1,0 +1,202 @@
+<template>
+  <q-card class="bg-card-1">
+    <q-card-section>
+      <div class="ta-c">
+        <div class="mt-2">
+          <user-avatar :src="userInfo.avatarUrl" :uid="uid" :size="60" />
+          <p class="mt-2">
+            <a class="hover-1" :href="`https://twitter.com/${userInfo.username}`" target="_blank"
+              >@{{ userInfo.username }}</a
+            >
+          </p>
+          <p class="mt-1 op-7 d-center hover-1" @click="$copy(uid)">
+            <span class="mr-1">{{ uid.cutStr(6, 4) }}</span>
+            <icon-copy color="#fff" />
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <q-tabs class="bdb-1" v-model="tabIdx" dense active-color="primary" no-caps>
+          <q-tab name="nft" label="Moss NFT" />
+          <q-tab name="invite" label="Invite" />
+          <q-tab name="settings" label="Settings" />
+        </q-tabs>
+      </div>
+      <div>
+        <div class="mt-4" v-show="tabIdx == 'nft'">
+          <div class="row" v-if="!nftList">
+            <div class="col-4 d-center" v-for="i in 3" :key="i">
+              <q-skeleton size="100px" square />
+            </div>
+          </div>
+          <div v-else-if="!nftList.length">
+            <empty-stone class="pa-4" />
+            <div class="ta-c">
+              <q-btn color="primary" rounded href="/mint" target="_blank">
+                <img src="/img/common/add-nft.svg" width="20" />
+                <span class="ml-2">To Mint</span>
+              </q-btn>
+            </div>
+          </div>
+          <div class="row" v-else>
+            <div class="col-4" v-for="row in nftList" :key="row.nftId">
+              <div class="pos-r">
+                <q-img
+                  :src="row.img"
+                  :alt="'#' + row.nftId"
+                  class="w100p bg-info bdrs-10"
+                  :ratio="1"
+                />
+                <div class="pos-btm ta-c bg-black-3 pa-1">#{{ row.nftId }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6" v-show="tabIdx == 'invite'">
+          <div v-if="!inviteList">
+            <div class="mb-3" v-for="i in 3" :key="i">
+              <q-skeleton type="QSlider" />
+            </div>
+          </div>
+          <template v-else>
+            <div
+              v-for="row in inviteList"
+              :key="row.code"
+              class="bg-info bdrs-100 py-2 px-3 mb-3 al-c"
+            >
+              <span class="mr-auto fz-16">#Moss{{ row.code }}</span>
+              <q-btn style="background: #334155" rounded flat v-if="row.used">
+                <span class="mr-2">Used by</span>
+                <a
+                  v-if="row.usedByTwitter"
+                  class="color-a"
+                  :href="`https://twitter.com/${row.usedByTwitter}`"
+                  target="_blank"
+                  >@{{ row.usedByTwitter }}</a
+                >
+                <span v-else>{{ row.usedByAddress.cutStr(5, 4) }}</span>
+              </q-btn>
+              <q-btn @click="$copy(`Moss` + row.code)" color="primary" rounded v-else>
+                <icon-copy color="#333" />
+                <span class="ml-2">Copy</span>
+              </q-btn>
+            </div>
+          </template>
+        </div>
+        <div v-show="tabIdx == 'settings'">
+          <q-list>
+            <q-item
+              :class="{
+                'bdb-1': i < setList.length - 1,
+              }"
+              clickable
+              v-for="(row, i) in setList"
+              :key="row.name"
+              :href="row.href"
+              :target="row.href ? '_blank' : null"
+              @click="onSetting(row)"
+            >
+              <div class="al-c py-2">
+                <img :src="row.icon" width="25" />
+                <span class="fz-18 ml-3">{{ row.label }}</span>
+              </div>
+            </q-item>
+          </q-list>
+        </div>
+      </div>
+    </q-card-section>
+  </q-card>
+</template>
+
+<script>
+export default {
+  props: {
+    userInfo: Object,
+    uid: String,
+  },
+  data() {
+    return {
+      tabIdx: "nft",
+      nftList: null,
+      nftErr: null,
+      inviteList: null,
+      inviteErr: null,
+    };
+  },
+  computed: {
+    setList() {
+      let list = [
+        {
+          name: "logout",
+          icon: "/img/common/ic-logout.svg",
+          label: "Sign out",
+        },
+      ];
+      if (!this.userInfo.username) {
+        list.unshift({
+          name: "bind",
+          icon: "/img/common/x.svg",
+          label: "Bind X",
+          href: "/login",
+        });
+      }
+      return list;
+    },
+  },
+  watch: {
+    tabIdx(val) {
+      if (val == "nft") this.getNfts();
+      else if (val == "invite") this.getInvites();
+    },
+  },
+  created() {
+    this.getNfts();
+  },
+  methods: {
+    getIpfs(link) {
+      const cid = link.replace("ipfs://", "");
+      // return `https://${cid}.ipns.dweb.link/`;
+      return this.$bucket.getIpfsLink(this.uid, cid);
+    },
+    async getNfts() {
+      try {
+        this.nftErr = null;
+        const { data } = await this.$http.get("/nfts");
+        this.nftList = data;
+      } catch (error) {
+        this.nftErr = error.message;
+      }
+      if (!this.nftList) return;
+      for (const row of this.nftList) {
+        try {
+          const url = this.getIpfs(row.pic);
+          const { data } = await this.$http.get(url);
+          // row.img =
+          console.log(row.nftId, data);
+        } catch (error) {
+          console.log(row.nftId, error.message);
+          row.alt = error.message;
+        }
+      }
+    },
+    async getInvites() {
+      try {
+        this.inviteErr = null;
+        const { data } = await this.$http.get("/invitation/usages");
+        this.inviteList = data;
+      } catch (error) {
+        this.inviteErr = error.message;
+      }
+    },
+    onSetting(row) {
+      const { href, name } = row;
+      if (href) return;
+      if (name == "logout") {
+        this.$store.dispatch("logout");
+        this.$router.replace("/");
+      }
+    },
+  },
+};
+</script>

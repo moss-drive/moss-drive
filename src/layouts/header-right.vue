@@ -1,3 +1,7 @@
+<script setup>
+import UserCard from "./main/user-card.vue";
+</script>
+
 <template>
   <div
     class="ml-5 h100p pl-5 pr-4 al-c"
@@ -34,37 +38,10 @@
           :style="{
             width: Math.min(screen.width - 30, 400) + 'px',
           }"
-          persistent1
+          style="max-height: 600px"
+          persistent
         >
-          <q-card class="bg-card-1">
-            <q-card-section>
-              <div class="ta-c">
-                <div class="mt-2">
-                  <user-avatar :src="userInfo.avatarUrl" :uid="uid" :size="60" />
-                  <p class="mt-2">
-                    <a
-                      class="hover-1"
-                      :href="`https://twitter.com/${userInfo.username}`"
-                      target="_blank"
-                      >@{{ userInfo.username }}</a
-                    >
-                  </p>
-                  <p class="mt-1 op-7 d-center hover-1" @click="$copy(uid)">
-                    <span class="mr-1">{{ uid.cutStr(6, 4) }}</span>
-                    <q-icon name="content_copy" />
-                  </p>
-                </div>
-              </div>
-
-              <div class="mt-5">
-                <q-tabs class="bdb-1" v-model="tabIdx" dense active-color="primary" no-caps>
-                  <q-tab name="nft" label="Moss NFT" />
-                  <q-tab name="invite" label="Invite" />
-                  <q-tab name="settings" label="Settings" />
-                </q-tabs>
-              </div>
-            </q-card-section>
-          </q-card>
+          <user-card :userInfo="userInfo" :uid="uid" />
         </q-menu>
       </q-btn>
     </template>
@@ -91,7 +68,6 @@ export default {
     return {
       screen,
       searchKey: "",
-      tabIdx: "nft",
     };
   },
   computed: {
@@ -113,12 +89,6 @@ export default {
     },
     btnSize() {
       return this.asMobile ? "12px" : null;
-    },
-  },
-  methods: {
-    onLogout() {
-      this.$store.dispatch("logout");
-      this.$router.replace("/");
     },
   },
 };
