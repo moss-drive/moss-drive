@@ -4,7 +4,7 @@
       <div class="ta-c">
         <div class="mt-2">
           <user-avatar :src="userInfo.avatarUrl" :uid="uid" :size="60" />
-          <p class="mt-2">
+          <p class="mt-2" v-if="userInfo.username">
             <a class="hover-1" :href="`https://twitter.com/${userInfo.username}`" target="_blank"
               >@{{ userInfo.username }}</a
             >
