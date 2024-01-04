@@ -34,6 +34,18 @@ import MainDrawer from "./main/main-drawer.vue";
 
         <q-toolbar-title>
           <b>{{ title }}</b>
+          <div class="ml-1 d-ib" v-if="title == 'My Resources'">
+            <img src="/img/resource/help.svg" width="16" class="cursor-p" />
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              max-width="300px"
+              class="bg-black-8 fz-12"
+            >
+              Moss operates on 4EVERLAND storage, therefore the resources you consume and the
+              remaining resources are aligned with your 4EVERLAND account.
+            </q-tooltip>
+          </div>
         </q-toolbar-title>
         <main-header />
       </q-toolbar>
