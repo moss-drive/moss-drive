@@ -88,10 +88,10 @@
               <span class="mr-2">Used by</span>
               <a
                 v-if="row.usedByTwitter"
-                class="color-a"
+                class="color-a line-1"
                 :href="`https://twitter.com/${row.usedByTwitter}`"
                 target="_blank"
-                >@{{ row.usedByTwitter }}</a
+                >@{{ row.usedByTwitter.cutStr(4, 4) }}</a
               >
               <span v-else>{{ row.usedByAddress.cutStr(5, 4) }}</span>
             </q-btn>
@@ -192,6 +192,7 @@ export default {
         data.forEach((row) => {
           row.code = "Moss_" + row.code;
         });
+        // data[0].used = 1;
         this.inviteList = data;
       } catch (error) {
         this.inviteErr = error.message;
