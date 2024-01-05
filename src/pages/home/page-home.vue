@@ -9,7 +9,8 @@
 
 <script setup>
 // import HomeList from "./home-list.vue";
-import HomeImg from "./home-img.vue";
+// import HomeImg from "./home-img.vue";
+import HomeMint from "./home-mint.vue";
 import HomeLogin from "./home-login.vue";
 import HomeBtm from "./home-btm.vue";
 import HeaderRight from "../../layouts/header-right.vue";
@@ -34,20 +35,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         style="margin: auto 0"
         :style1="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
-        <div class="home-bg" v-if="!asMobile">
-          <q-img src="@/assets/imgs/home/mint-bg.png" style="width: 100%; max-width: 1138px" />
-          <div>
-            <div class="cutdown-time">
-              <span class="time">{{ freeMinttTime.hour }}</span>
-              <span>:</span>
-              <span class="time">{{ freeMinttTime.minute }}</span>
-              <span>:</span>
-              <span class="time">{{ freeMinttTime.second }}</span>
-            </div>
-            <!-- <div class="mint-text">Time Until Free Mint Starts</div> -->
-            <q-img src="@/assets/imgs/home/mint-text.png" width="400px" style="margin-top: 16px" />
-          </div>
-        </div>
+        <home-mint v-if="!asMobile" />
         <!-- <home-img class="pos-r" style="left: -90px" /> -->
         <!-- <home-list :asMobile="asMobile" /> -->
       </div>
@@ -63,17 +51,7 @@ import HeaderRight from "../../layouts/header-right.vue";
           "
         >
           <home-login />
-          <div style="margin-top: 16px" v-if="asMobile">
-            <div class="cutdown-time">
-              <span class="time">{{ freeMinttTime.hour }}</span>
-              <span>:</span>
-              <span class="time">{{ freeMinttTime.minute }}</span>
-              <span>:</span>
-              <span class="time">{{ freeMinttTime.second }}</span>
-            </div>
-            <!-- <div class="mint-text">Time Until Free Mint Starts</div> -->
-            <q-img src="@/assets/imgs/home/mint-text.png" width="400px" style="margin-top: 16px" />
-          </div>
+          <home-mint v-if="asMobile" />
         </div>
       </div>
     </div>
@@ -90,12 +68,6 @@ export default {
     const { screen } = useQuasar();
     return {
       screen,
-      freeMintStartAt: 1704787200000,
-      freeMinttTime: {
-        hour: "00",
-        minute: "00",
-        second: "00",
-      },
     };
   },
   computed: {
@@ -115,83 +87,5 @@ export default {
       return "y-center";
     },
   },
-  created() {
-    this.initTime();
-  },
-  methods: {
-    initTime() {
-      let freeStartTimer;
-      const setTime = () => {
-        const freeMinttTime = this.cutdonw(this.freeMintStartAt);
-        if (freeMinttTime) {
-          this.freeMinttTime = freeMinttTime;
-        } else {
-          this.freeMintStart = true;
-        }
-      };
-      setTime();
-      freeStartTimer = setInterval(setTime, 1000);
-    },
-    cutdonw(startTime, endTime) {
-      function num(n) {
-        if (n < 0) {
-          n = 0;
-        }
-        return n < 10 ? "0" + n : n;
-      }
-      let nowTime = new Date().getTime();
-      let countDown = startTime - nowTime;
-      if (countDown <= 0) {
-        return false;
-      } else {
-        let oHour = Math.floor(countDown / 1000 / 60 / 60);
-        let oMinute = Math.floor((countDown / 1000 / 60) % 60);
-        let oSecond = Math.floor((countDown / 1000) % 60);
-        return {
-          hour: num(oHour),
-          minute: num(oMinute),
-          second: num(oSecond),
-        };
-      }
-    },
-  },
 };
 </script>
-<style lang="scss" scoped>
-.home-bg {
-  text-align: center;
-}
-.cutdown-time {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  span {
-    color: #fff;
-    font-family: DIN Alternate;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    color: #1eefa4;
-  }
-  .time {
-    padding: 12px 8px;
-    color: #1eefa4;
-    text-align: center;
-    background: #0f172a;
-    border-radius: 8px;
-    border: 1px solid #1eefa4;
-  }
-}
-.mint-text {
-  color: #1eefa4;
-  font-family: Montserrat;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: normal;
-  text-transform: uppercase;
-  margin-top: 15px;
-}
-</style>
