@@ -13,7 +13,10 @@
         <q-img src="@/assets/imgs/mint/h1.png" width="100%" style="max-width: 1266px"></q-img>
         <q-img class="banner-pos-left" src="@/assets/imgs/mint/image_65.png" width="172px"></q-img>
         <q-img class="banner-pos-right" src="@/assets/imgs/mint/image_68.png" width="190px"></q-img>
-        <div class="start-mint" v-if="!minted">
+        <div v-if="phase == 3" style="margin-top: 60px">
+          <q-img src="@/assets/imgs/mint/mintend.png" style="width: 100%; max-width: 656px"></q-img>
+        </div>
+        <div class="start-mint" v-else>
           <div class="cutdown-time" v-if="!freeMintStart">
             <span class="time">{{ freeMinttTime.hour }}</span>
             <span>:</span>
@@ -21,13 +24,13 @@
             <span>:</span>
             <span class="time">{{ freeMinttTime.second }}</span>
           </div>
-          <template v-if="!freeMintEnd && !mintEnd">
+          <template v-if="!freeMintEnd">
             <div>
               <q-btn
                 class="mint-btn"
-                :class="{ 'mint-btn-disable': !freeMintStart || freeMintEnd || mintEnd }"
+                :class="{ 'mint-btn-disable': !freeMintStart || freeMintEnd }"
                 @click="onMint"
-                :disable="!freeMintStart || freeMintEnd || mintEnd"
+                :disable="!freeMintStart || freeMintEnd"
                 >Free Mint</q-btn
               >
               <div class="mint-info">
@@ -41,7 +44,7 @@
                 </div>
                 <div class="mint-info-item">
                   <span class="mint-key">Time:</span>
-                  <span class="mint-val">12.30 12:00---1.29 12:00</span>
+                  <span class="mint-val">Jan 9 08:00 - Jan 10 08:00 (UTC)</span>
                 </div>
               </div>
             </div>
@@ -50,10 +53,10 @@
             <div>
               <q-btn
                 class="mint-btn"
-                :class="{ 'mint-btn-disable': !publicSellStart || publicSellEnd || mintEnd }"
+                :class="{ 'mint-btn-disable': !publicSellStart || publicSellEnd }"
                 @click="onMint"
-                :disable="!publicSellStart || publicSellEnd || mintEnd"
-                >Public Sell</q-btn
+                :disable="!publicSellStart || publicSellEnd"
+                >Public Sale</q-btn
               >
               <div class="mint-info">
                 <div class="mint-info-item">
@@ -72,13 +75,13 @@
                 </div>
                 <div class="mint-info-item">
                   <span class="mint-key">Time:</span>
-                  <span class="mint-val">12.30 12:00---1.29 12:00</span>
+                  <span class="mint-val">Jan 10 08:00 (UTC)</span>
                 </div>
               </div>
             </div>
           </template>
         </div>
-        <div class="minted" v-else>
+        <!-- <div class="minted">
           <div class="minted-text">Hooray, you' ve just planted a "Mystery of Moss Origins"！</div>
           <div>
             <q-btn class="mint-btn mint-btn-active" @click="goMoss">Step into Moss</q-btn>
@@ -108,7 +111,7 @@
               </q-icon>
             </q-btn>
           </div>
-        </div>
+        </div> -->
       </div>
       <q-img class="ribbons" src="@/assets/imgs/mint/Ribbons.png"></q-img>
     </div>
@@ -143,7 +146,7 @@
                   </div>
                   <div class="mint-text">
                     <span class="mint-key">Time:</span>
-                    <span class="mint-val">12.30 12:00---1.29 12:00</span>
+                    <span class="mint-val">Jan 9 08:00 - Jan 10 08:00 (UTC)</span>
                   </div>
                 </div>
               </div>
@@ -153,33 +156,47 @@
               <div class="mint-left">
                 <div class="mint-left-top">
                   <q-img src="@/assets/imgs/mint/money.png" width="80px"></q-img>
-                  <div>Public Sell</div>
+                  <div>Public Sale</div>
                 </div>
                 <div class="mint-left-bottom">
                   <div class="mint-tit">All users can join the Mint</div>
-                  <div class="mint-text">
-                    <div style="margin-right: 24px">
-                      <span class="mint-key">Price:</span>
-                      <span class="mint-val">0.005ETH</span>
+                  <div class="d-flex">
+                    <div class="mint-text mr-4">
+                      <div>
+                        <span class="mint-key">PHASE:</span>
+                        <span class="mint-val">First</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Price:</span>
+                        <span class="mint-val">0.005ETH</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Number:</span>
+                        <span class="mint-val">3199</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Time:</span>
+                        <span class="mint-val">Jan 10 08:00 (UTC)</span>
+                      </div>
                     </div>
-                    <div>
-                      <span class="mint-key">Price:</span>
-                      <span class="mint-val">0.01ETH</span>
+                    <div class="mint-text">
+                      <div>
+                        <span class="mint-key">PHASE:</span>
+                        <span class="mint-val">Second</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Price:</span>
+                        <span class="mint-val">0.01ETH</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Number:</span>
+                        <span class="mint-val">6000</span>
+                      </div>
+                      <div>
+                        <span class="mint-key">Time:</span>
+                        <span class="mint-val">After the first phase sold out</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="mint-text">
-                    <div style="margin-right: 24px">
-                      <span class="mint-key">Number:</span>
-                      <span class="mint-val">3000</span>
-                    </div>
-                    <div>
-                      <span class="mint-key">Number:</span>
-                      <span class="mint-val">5999</span>
-                    </div>
-                  </div>
-                  <div class="mint-text">
-                    <span class="mint-key">Time:</span>
-                    <span class="mint-val">12.30 12:00---1.29 12:00</span>
                   </div>
                 </div>
               </div>
@@ -226,7 +243,7 @@ import faq_icon_0 from "@/assets/imgs/mint/faq_0.png";
 import faq_icon_1 from "@/assets/imgs/mint/faq_1.png";
 import faq_icon_2 from "@/assets/imgs/mint/faq_2.png";
 
-const { VITE_MOSS_CHAINID } = import.meta.env;
+const { VITE_MOSS_CHAINID, VITE_MOSS_NFT_MINT_CONTRACT } = import.meta.env;
 
 export default {
   name: "MintIndex",
@@ -251,8 +268,9 @@ export default {
         "Additional Hidden Privileges",
         "Moss Bonus",
         "Exclusive Identity",
-        "Eligibility for Rare Event Participation",
         "Resource Airdrops",
+        "Create STONE",
+        "Eligibility for Rare Event Participation",
       ],
       faqList: [
         {
@@ -278,14 +296,12 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: 1704272400000,
-      freeMintEndAt: 1704273600000,
-      publicSellStartAt: 1704273600000,
+      freeMintStartAt: 1704435778000,
+      freeMintEndAt: 1704435778000 + 24 * 60 * 60 * 1000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
       publicSellEnd: false,
-      mintEnd: false,
       fundingPhase: 1,
       freeMinttTime: {
         hour: "00",
@@ -335,7 +351,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     },
     async initContract() {
       const provider = new providers.Web3Provider(window.ethereum);
-      const add = "0xb2e0F219A69d3A7a839CE67B4dcBCA07E58531ac";
+      const add = VITE_MOSS_NFT_MINT_CONTRACT;
       const signer = provider.getSigner();
       const factory = Mossy__factory.connect(add, signer);
       this.Factory = factory;
@@ -355,16 +371,21 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           const phase = await this.Factory.getPhase();
           const fundingPhase = await this.Factory.fundingPhase();
           const amount = await this.Factory.balanceOf(account);
+          const saleAmount = await this.Factory.sales(account);
           console.log(phase);
           console.log(fundingPhase);
           console.log(amount);
+          console.log(saleAmount);
+          this.phase = phase;
           this.fundingPhase = fundingPhase;
-          if (phase == 4) {
+          this.freeMintNum = amount;
+          this.saleMintNum = saleAmount;
+          if (phase == 3) {
             this.publicSellEnd = true;
           }
-          if (amount > 0) {
-            this.minted = true;
-          }
+          // if (amount > 0) {
+          //   this.minted = true;
+          // }
         } catch (error) {
           console.log(error);
         }
@@ -395,7 +416,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           const receipt = await tx.wait(1);
           console.log(receipt);
           this.$toast("Hoora, Mint has been successful!", 1);
-          this.minted = true;
+          // this.minted = true;
         } catch (error) {
           console.log(error);
           this.onErr(error);
@@ -618,9 +639,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
 
       .introduction-content {
         margin-top: 24px;
-        height: 666px;
+        height: 700px;
         background-image: url("@/assets/imgs/mint/Rectangle.png");
-        background-size: contain;
+        background-size: 100% 100%;
         background-repeat: no-repeat;
         padding: 0 40px;
         padding-top: 64px;
@@ -673,16 +694,17 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         .mint-box {
           display: flex;
           gap: 0 40px;
-          padding: 0 40px;
+          padding: 0 20px;
           margin-top: 40px;
           .mint-item {
             display: flex;
             .mint-left {
-              width: 420px;
-              height: 270px;
-              padding: 24px;
+              width: 480px;
+              height: 230px;
+              padding: 16px 24px;
+              padding-top: 0;
               border-radius: 16px;
-              border-right: 2px solid rgba(255, 255, 255, 0.25);
+              border-right: 2px dashed rgba(255, 255, 255, 0.25);
               background: #7e4fed;
               .mint-left-top {
                 display: flex;
@@ -695,7 +717,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
                 line-height: normal;
               }
               .mint-left-bottom {
-                margin-top: 40px;
+                margin-top: 16px;
                 .mint-tit {
                   color: #fff;
                   font-family: SF Pro Text;
@@ -709,7 +731,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
                   color: #cbd5e1;
                   font-family: SF Pro Text;
                   font-size: 14px;
-                  display: flex;
+                  // display: flex;
                   .mint-key {
                     font-weight: 700;
                     margin-right: 4px;
@@ -722,8 +744,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
               }
             }
             .mint-right {
-              width: 120px;
-              height: 270px;
+              width: 80px;
+              height: 230px;
               border-radius: 16px;
               background: #7e4fed;
             }

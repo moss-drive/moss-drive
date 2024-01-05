@@ -1253,10 +1253,10 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
-"@moss-hub/mossy@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@moss-hub/mossy/-/mossy-0.0.3.tgz#3149fba3879981851a4b9da2e03dcc5f2f723029"
-  integrity sha512-by+xTpWPtGYVduQV7JnV1kMHDF5+E3vHJuUS9Momt2jwEv+QgdPDKE+y4Qa/wKc3qoMyLl+2xQpZcKnXEwBtYA==
+"@moss-hub/mossy@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@moss-hub/mossy/-/mossy-0.0.4.tgz#38430edcd0e57a1a577bf686e833a6ceb6e9e24e"
+  integrity sha512-MXOd0PuzLsWYl0ou282vcICl8UqcdPoiFn4k30ZWpdeqxvEwlmj84XgndoWVeA5c6W+C3id0jGX3B8G7tZ9GLQ==
   dependencies:
     "@layerzerolabs/solidity-examples" "^0.0.13"
     hardhat-ethers "^1.0.1"
