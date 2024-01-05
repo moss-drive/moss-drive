@@ -507,8 +507,12 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       } else {
         msg = "Mint failed, please try again later!";
       }
-      console.log(msg);
-      return this.$alert(msg);
+      if (/Request of type 'wallet_switchEthereumChain'/i.test(msg)) {
+        msg = null;
+      }
+      if (msg) {
+        return this.$alert(msg);
+      }
     },
   },
 };
