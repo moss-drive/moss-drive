@@ -19,7 +19,7 @@ import ListRank from "./list-rank.vue";
 </script>
 
 <template>
-  <div class="mt-5 mb-8 d-center">
+  <div class="mt-5 mb-6 d-center">
     <div class="bg-dark2 pa-2 bdrs-100 mossy-opts">
       <q-btn-toggle
         class="rounded"
@@ -32,7 +32,7 @@ import ListRank from "./list-rank.vue";
   </div>
 
   <div v-if="!rows" class="row q-col-gutter-md">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="i in 6" :key="i">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" v-for="i in 6" :key="i">
       <q-card flat>
         <q-skeleton height="120px" square />
       </q-card>

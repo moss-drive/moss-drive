@@ -33,9 +33,14 @@ import MainDrawer from "./main/main-drawer.vue";
         />
 
         <q-toolbar-title>
-          <b>{{ title }}</b>
+          <b class="fz-16">{{ title }}</b>
           <div class="ml-1 d-ib" v-if="title == 'My Resources'">
-            <img src="/img/resource/help.svg" width="16" class="cursor-p" />
+            <img
+              src="/img/resource/help.svg"
+              style="vertical-align: middle"
+              width="16"
+              class="cursor-p"
+            />
             <q-tooltip
               anchor="top middle"
               self="bottom middle"

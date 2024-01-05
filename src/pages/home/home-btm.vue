@@ -1,6 +1,6 @@
 <template>
-  <div class="pos-btm pos-f w100p pa-6">
-    <div class="al-c">
+  <div class="pos-btm pos-f w100p px-6">
+    <div class="al-c home-btm-content space-btw flex-wrap">
       <div class="al-c">
         <q-btn
           padding="xs"
@@ -14,7 +14,7 @@
           <img :src="`/img/home/icon_${it.icon}.svg`" height="20" />
         </q-btn>
       </div>
-      <div class="ml-auto">
+      <div>
         <span
           >Moss is built on <a href="https://www.4everland.org/" target="_blank">4EVERLAND</a></span
         >
@@ -53,3 +53,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.home-btm-content {
+  height: 48px;
+}
+</style>

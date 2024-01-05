@@ -14,6 +14,9 @@
     }
   }
 }
+.q-checkbox__label.q-anchor--skip {
+  white-space: nowrap;
+}
 </style>
 
 <script setup>

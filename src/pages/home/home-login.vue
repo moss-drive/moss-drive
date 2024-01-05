@@ -1,9 +1,8 @@
-
 <template>
-  <div class="bg-primary bdrs-10 px-5 py-6 z-1000" style="width: 360px">
-    <!-- <div class="pos-a right-0" style="top: -102px">
+  <div class="bg-primary bdrs-10 px-5 py-6 z-1000 pos-r" style="width: 360px">
+    <div class="pos-a" style="top: -102px; right: -8px">
       <img :src="`/img/home/${isLogin ? 'heart' : 'hey'}.svg`" :width="isLogin ? 196 : 192" />
-    </div> -->
+    </div>
     <p class="py-2">
       <img :src="`/img/home/txt-${isLogin ? 'welcome' : 'join'}.svg`" height="24" class="d-b" />
     </p>
@@ -13,13 +12,13 @@
         href="/file"
         rounded
         size="lg"
-        style="background: #111"
+        style="background: #0f172a"
         class="full-width text-white"
       >
         <img src="/img/moss.svg" width="38" class="scale-9" />
         <span class="fz-18 ml-2">My Moss</span>
       </q-btn>
-      <wallet-connect v-else />
+      <wallet-connect bg="#0f172a" v-else />
     </div>
     <div>
       <img src="/img/home/or-split.svg" class="w100p d-b" />
@@ -32,7 +31,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import { mapState } from "vuex";

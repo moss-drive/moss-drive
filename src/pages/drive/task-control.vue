@@ -15,7 +15,7 @@
       <q-virtual-scroll style="max-height: 300px" :items="tasks" separator v-slot="{ item }">
         <div class="task-body">
           <div :key="item">
-            <div class="al-c space-btw py-4 px-2">
+            <div class="al-c space-btw py-4 pl-6 pr-2">
               <div class="al-c task-info">
                 <!-- <img src="" class="mr-2" width="40" height="40" alt="" /> -->
                 <div style="width: 100%">
