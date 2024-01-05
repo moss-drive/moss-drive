@@ -45,7 +45,7 @@
           </div>
         </div>
         <div v-else-if="!nftList.length">
-          <empty-stone class="pa-0" />
+          <empty-stone />
           <div class="ta-c mt-5">
             <q-btn color="primary" rounded href="/mint" target="_blank">
               <img src="/img/common/add-nft.svg" width="20" />
