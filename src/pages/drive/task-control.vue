@@ -197,6 +197,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (max-width: 400px) {
+  .task-control {
+    width: 100% !important;
+  }
+}
 ::v-deep .q-expansion-item__container {
   background: #0f172a;
   border-radius: 16px;
@@ -208,10 +213,11 @@ export default {
   position: fixed;
   width: 400px;
   right: 0;
-  bottom: 40px;
+  bottom: 0;
   .task-header {
     padding: 24px;
     width: 400px;
+    box-sizing: border-box;
     background: #0f172a;
     border-radius: 16px;
     .file-count {

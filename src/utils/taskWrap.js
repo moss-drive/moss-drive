@@ -30,8 +30,6 @@ export class UploadTask {
       });
       this.progress = 0;
       this.status = 1; // uploading
-
-      console.log(this.task);
       await this.task.done();
       this.status = 3; // success
       //---------------------
