@@ -44,7 +44,7 @@ body.body--dark, .bg-header {
   background: transparent;
 }
 .bg-primary {
-  color: $dark-color!important;
+  color: #0F172A!important;
 }
 .bg-info {
   color: #fff;
@@ -176,7 +176,8 @@ body {
   .q-menu--dark {
     background: #1E293B;
     box-shadow: none;
-    border: 1px solid rgb(255 255 255 / 6%);
+    // border: 1px solid rgb(255 255 255 / 6%);
+    border-radius: 12px;
   }
   &.touch .hide-in-touch {
     display: none;
