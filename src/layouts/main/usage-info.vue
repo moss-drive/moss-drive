@@ -1,16 +1,10 @@
 <template>
   <div>
-    <div class="resource-recharge-tip px-4">
+    <div class="resource-recharge-tip px-4" v-show="!onChain">
       <div
-        class="resource-recharge-content pa-2 fz-12 cursor-p"
-        v-show="!onChain"
+        class="resource-recharge-content fz-12 cursor-p"
         @click="$router.push('/resource')"
-      >
-        <img class="gift-img" src="/img/resource/gift.svg" alt="" />
-        <div class="ml-1">
-          Deposit $1 to upgrade your account and gain access to permanent free resources.
-        </div>
-      </div>
+      ></div>
     </div>
     <div class="bg-black-1 pa-5">
       <div class="al-c">
@@ -29,10 +23,10 @@
             transformUsage.total
           }}</span
         >
-        <span class="fz-12 transform-data nowrap">
-          + {{ land2Resource["IPFS_STORAGE"].transformSize }} * 1 mo</span
+        <span class="fz-12 transform-data nowrap" v-show="showIpfsTransformSize">
+          + {{ ipfsTransformSize }}</span
         >
-        <div class="ml-1">
+        <div class="ml-1" v-show="showIpfsTransformSize">
           <img src="/img/common/info-o.svg" width="12" class="d-b" />
           <q-tooltip
             anchor="top middle"
@@ -40,8 +34,8 @@
             max-width="300px"
             class="bg-black-8 fz-12"
           >
-            Moss operates on 4EVERLAND storage, therefore the resources you consume and the
-            remaining resources are aligned with your 4EVERLAND account.
+            The value after the '+' is only an estimate of the storage that LAND balance can consume
+            in one month.
           </q-tooltip>
         </div>
       </div>
@@ -70,6 +64,12 @@ export default {
         percent: ((usage.used / total) * 100).toFixed(2) * 1,
       };
     },
+    showIpfsTransformSize() {
+      return this.land2Resource["IPFS_STORAGE"].size != 0;
+    },
+    ipfsTransformSize() {
+      return this.land2Resource["IPFS_STORAGE"].transformSize;
+    },
   },
   created() {
     this.$store.dispatch("resourceStore/getLand");
@@ -81,26 +81,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .resource-recharge-content {
-  color: #fff;
-  border-radius: 8px;
-  background: linear-gradient(
-    116deg,
-    rgba(126, 79, 237, 0.56) 5.68%,
-    rgba(126, 79, 237, 0.75) 61.94%
-  );
-  .gift-img {
-    width: 32px;
-    float: left;
-    shape-outside: padding-box;
-  }
-  .day {
-    color: #ff2e00;
-    font-family: DIN Alternate;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 16px; /* 100% */
-  }
+  position: relative;
+  height: 160px;
+  background: url("/img/resource/burst.svg") no-repeat;
+  background-size: 100%;
 }
 
 .usage-resource {
