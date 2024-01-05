@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="ov-a mt-6" style="max-width: 1350px">
+    <div class="ov-a mt-6" style="max-width: 1350px; margin: 0 auto">
       <q-markup-table class="no-border" flat square :bordered="false">
         <thead>
           <tr>
