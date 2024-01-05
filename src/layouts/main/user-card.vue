@@ -172,8 +172,8 @@ export default {
   methods: {
     getIpfs(link) {
       const cid = link.replace("ipfs://", "");
-      // return `https://${cid}.ipns.dweb.link/`;
-      return this.$bucket.getIpfsLink(this.uid, cid);
+      return `https://${cid}.ipns.dweb.link/`;
+      // return this.$bucket.getIpfsLink(this.uid, cid);
     },
     async getNfts() {
       try {
