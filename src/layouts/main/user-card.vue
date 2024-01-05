@@ -4,6 +4,7 @@
   svg {
     width: 100%;
     height: auto;
+    display: block;
   }
 }
 </style>
@@ -54,7 +55,7 @@
         </div>
         <div class="row" v-else>
           <div class="col-4" v-for="row in nftList" :key="row.nftId">
-            <div class="pos-r">
+            <div class="pos-r bdrs-10 ov-h">
               <!-- <q-img
                   :src="row.img"
                   :alt="'#' + row.nftId"
@@ -62,7 +63,7 @@
                   :ratio="1"
                 /> -->
               <div class="w100p ntf-wrap bg-info" v-html="row.pic"></div>
-              <div class="pos-btm ta-c bg-black-3 pa-1">#{{ row.nftId }}</div>
+              <div class="pos-btm ta-c bg-black-7 pa-">#{{ row.nftId }}</div>
             </div>
           </div>
         </div>
