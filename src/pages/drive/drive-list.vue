@@ -93,10 +93,13 @@ import FilePreview from "./preview/preview-index.vue";
       </div>
 
       <div class="q-mt-md">
-        <empty-stone
+        <div
+          class="d-center"
+          style="min-height: 60vh"
           v-if="objLoading === false && objList.length == 0"
-          :desc="searchKey ? `No results for &quot;${searchKey}&quot;` : ''"
-        />
+        >
+          <empty-stone :desc="searchKey ? `No results for &quot;${searchKey}&quot;` : ''" />
+        </div>
         <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
           <component
             :is="showMode + '-list'"

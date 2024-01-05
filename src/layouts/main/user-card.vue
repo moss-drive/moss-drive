@@ -44,9 +44,9 @@
             <q-skeleton size="100px" square />
           </div>
         </div>
-        <div v-else-if="!nftList.length">
-          <empty-stone />
-          <div class="ta-c mt-5">
+        <div class="pt-5" v-else-if="!nftList.length">
+          <empty-stone :width="200" class="pa-5" />
+          <div class="ta-c">
             <q-btn color="primary" rounded href="/mint" target="_blank">
               <img src="/img/common/add-nft.svg" width="20" />
               <span class="ml-2">To Mint</span>
