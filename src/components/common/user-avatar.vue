@@ -1,6 +1,10 @@
 <template>
   <q-avatar :size="size + 'px'" v-if="src">
-    <img :src="src" />
+    <q-img :src="src" :placeholder-src="defsrc" width="size" :ratio="1" :spinner-size="size - 8">
+      <template v-slot:error>
+        <div class="pos-mask bg-dark"></div>
+      </template>
+    </q-img>
   </q-avatar>
   <m-avatar :size="size" v-else :hash="uid"></m-avatar>
 </template>
@@ -13,6 +17,10 @@ export default {
     size: {
       type: Number,
       default: 22,
+    },
+    defsrc: {
+      type: String,
+      default: "/img/stone/x-round.svg",
     },
   },
 };

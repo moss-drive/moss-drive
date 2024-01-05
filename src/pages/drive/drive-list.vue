@@ -170,8 +170,10 @@ export default {
         let { type } = obj;
         if (stone) type = "stone";
         let icon = `/img/driver/icon_${type}.png`;
-        // && obj.size < 1024 * 500
         if (type == "image" && obj.url) {
+          // if (/\.svg$/i.test(obj.key)) {
+          //   if (obj.size < 1024 * 500) icon = obj.url;
+          // } else
           icon = obj.url + "?width=200";
         }
         return {
