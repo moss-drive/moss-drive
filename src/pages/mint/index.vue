@@ -209,7 +209,7 @@
     <div class="faq-box">
       <div class="container faq">
         <div class="faq-title">
-          <q-img src="@/assets/imgs/mint/FAQ.png" width="113px"></q-img>
+          <q-img src="@/assets/imgs/mint/faq.png" width="113px"></q-img>
         </div>
         <div class="faq-item" v-for="(item, index) in faqList" :key="index">
           <q-img :src="item.icon" width="80px"></q-img>
@@ -221,6 +221,18 @@
       </div>
     </div>
     <wallet-control ref="switchNet" style="visibility: hidden" :noInvited="true" />
+    <q-dialog v-model="txLoading" persistent>
+      <q-card style="min-width: 360px">
+        <q-card-section>
+          <div class="text-h6">In Process</div>
+        </q-card-section>
+
+        <q-card-section style="text-align: center">
+          <q-img src="@/assets/imgs/mint/txLoading.png" width="220px"></q-img>
+          <div class="mt-4">Waiting for transfer</div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <div class="footer">
       <home-btm />
     </div>
@@ -297,12 +309,15 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       ],
       minted: false,
       freeMintStartAt: 1704435778000,
-      freeMintEndAt: 1704435778000 + 24 * 60 * 60 * 1000,
+      freeMintEndAt: 1704435778000 + 5 * 60 * 1000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
       publicSellEnd: false,
-      fundingPhase: 1,
+      phase: 0,
+      fundingPhase: 0,
+      freeMintNum: 0,
+      saleMintNum: 0,
       freeMinttTime: {
         hour: "00",
         minute: "00",
@@ -313,6 +328,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         phaseOne: {},
         phaseTwo: {},
       },
+      txLoading: false,
     };
   },
   async created() {
@@ -361,7 +377,6 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       if (chainId != VITE_MOSS_CHAINID) {
         await this.$refs.switchNet.switchOpChain();
       }
-      console.log(111);
     },
     async checkMint() {
       await this.checkNet();
@@ -401,6 +416,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           let param = {};
           await this.checkNet();
           await this.checkMint();
+          if (this.freeMintNum >= 1 || this.saleMintNum >= 5) {
+            return this.$alert("The Mint quantity limit has been reached.");
+          }
           if (this.fundingPhase == 1) {
             param = {
               value: 5e15,
@@ -411,15 +429,17 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
               value: 1e16,
             };
           }
+          this.txLoading = true;
           const tx = await this.Factory.mint(param);
           console.log(tx);
           const receipt = await tx.wait(1);
           console.log(receipt);
           this.$toast("Hoora, Mint has been successful!", 1);
-          // this.minted = true;
         } catch (error) {
           console.log(error);
           this.onErr(error);
+        } finally {
+          this.txLoading = false;
         }
       }
     },
