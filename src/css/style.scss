@@ -135,6 +135,12 @@ $bd: #334155;
     opacity: .85;
   }
 }
+.hover-2 {
+  cursor: pointer;
+  &:hover {
+    background: #333746;
+  }
+}
 
 .p-mb-1 {
   p {
