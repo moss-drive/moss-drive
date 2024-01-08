@@ -205,6 +205,7 @@
           </div>
         </div>
       </div>
+      <q-img v-if="asMobile" src="@/assets/imgs/mint/i_mobile.png" width="100%"></q-img>
     </div>
     <div class="faq-box">
       <div class="container faq">
@@ -245,8 +246,11 @@ import HomeBtm from "../home/home-btm.vue";
 </script>
 
 <script>
+import { useQuasar } from "quasar";
+
 import { BigNumber, providers } from "ethers";
 import { mapState } from "vuex";
+
 import { Mossy__factory } from "@moss-hub/mossy";
 
 import { fetchNftNum } from "@/api/mint.js";
@@ -273,7 +277,9 @@ export default {
     },
   },
   data() {
+    const { screen } = useQuasar();
     return {
+      screen,
       list: [
         "Genesis NFT",
         "Moss Beta Invitation Code",
@@ -353,6 +359,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         if (!freeMinttEndTime) {
           this.freeMintEnd = true;
           this.publicSellStart = true;
+          this.checkMint();
           if (freeStartTimer) {
             clearInterval(freeStartTimer);
           }
@@ -495,6 +502,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         msg = "Caller is not in white list.";
       } else if (/all tokens sold out/i.test(msg)) {
         msg = "All tokens sold out.";
+      } else if (/free minting has been sold out/i.test(msg)) {
+        msg = "Free minting has been sold out.";
       } else if (/missing revert data/i.test(msg)) {
         msg = "Network Error";
       } else if (/user rejected/i.test(msg)) {
@@ -532,7 +541,6 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
 <style lang="scss" scoped>
 .mint-page {
   width: 100%;
-  // padding-bottom: 76px;
   overflow: hidden;
   .header {
     width: 100%;
@@ -826,13 +834,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
 
 @media (max-width: 960px) {
   .mint-page {
-    width: 100%;
-    // padding-bottom: 76px;
-    overflow: hidden;
     .banner-box {
       .banner {
-        position: relative;
-        height: 100%;
         .banner-pos-left {
           position: absolute;
           left: 15px;
@@ -843,65 +846,21 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           right: 20px;
           bottom: 300px;
         }
-
-        .share-btn {
-          background: #7e4fed;
-          color: #fff;
-          margin-left: 40px;
-        }
-        .mint-info {
-          margin-top: 24px;
-          .mint-info-item {
-            color: #fff;
-            text-align: center;
-            font-family: SF Pro Text;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: normal;
-            line-height: 24px;
-            .mint-key {
-              color: #fff;
-              font-weight: 700;
-              text-transform: uppercase;
-              margin-right: 4px;
-            }
-          }
-        }
-        .minted {
-          position: relative;
-          z-index: 999;
-          .minted-text {
-            color: #fff;
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 900;
-            line-height: normal;
-            text-transform: uppercase;
-            margin: 24px 0;
-          }
-        }
-      }
-      .ribbons {
-        width: 3840px;
-        position: absolute;
-        left: 50%;
-        right: 50%;
-        bottom: -100px;
-        margin-left: -1920px;
       }
     }
     .introduction-box {
-      display: none;
+      height: auto;
+      .introduction {
+        display: none;
+      }
     }
-
-    .footer {
-      position: fixed;
-      height: 76px;
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      background-color: #000;
+    .faq-box {
+      .faq {
+        padding: 20px 16px;
+        .faq-item {
+          margin-top: 20px;
+        }
+      }
     }
   }
 }
