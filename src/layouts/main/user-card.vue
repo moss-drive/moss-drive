@@ -82,7 +82,12 @@
           >
             <div class="mr-auto fz-16">
               <span class="none-select op-6 mr-1">#</span>
-              <span class="">{{ row.code }}</span>
+              <span
+                :class="{
+                  'txt-del op-7 none-select': row.used,
+                }"
+                >{{ row.code }}</span
+              >
             </div>
             <q-btn style="background: #334155" rounded flat v-if="row.used">
               <span class="mr-2">Used by</span>

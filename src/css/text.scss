@@ -40,6 +40,9 @@ body {
 .user-select { user-select: all; }
 .none-select { user-select: none; }
 .wb-all { word-break: break-all; }
+.txt-del {
+  text-decoration: line-through;
+}
 
 .ta-c { text-align: center; }
 .ta-r { text-align: right; }

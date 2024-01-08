@@ -177,8 +177,7 @@ export default {
         this.$store.dispatch("login", this.tempData);
         this.onRedirect();
       } catch (error) {
-        console.log(error);
-        this.$toast("Invalid Code");
+        this.$toast(error.message);
         this.showInvite();
       }
       this.loading = false;
