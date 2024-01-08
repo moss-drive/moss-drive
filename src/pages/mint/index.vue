@@ -234,7 +234,7 @@
       </q-card>
     </q-dialog>
     <div class="footer">
-      <home-btm />
+      <home-btm :isFixed="false" />
     </div>
   </div>
 </template>
@@ -379,31 +379,28 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       }
     },
     async checkMint() {
-      await this.checkNet();
-      const account = this.uid;
-      if (account) {
-        try {
-          const phase = await this.Factory.getPhase();
-          const fundingPhase = await this.Factory.fundingPhase();
+      try {
+        await this.checkNet();
+        const account = this.uid;
+        const phase = await this.Factory.getPhase();
+        const fundingPhase = await this.Factory.fundingPhase();
+        console.log(phase);
+        console.log(fundingPhase);
+        this.phase = phase;
+        this.fundingPhase = fundingPhase;
+        if (phase == 3) {
+          this.publicSellEnd = true;
+        }
+        if (account) {
           const amount = await this.Factory.balanceOf(account);
           const saleAmount = await this.Factory.sales(account);
-          console.log(phase);
-          console.log(fundingPhase);
           console.log(amount);
           console.log(saleAmount);
-          this.phase = phase;
-          this.fundingPhase = fundingPhase;
           this.freeMintNum = amount;
           this.saleMintNum = saleAmount;
-          if (phase == 3) {
-            this.publicSellEnd = true;
-          }
-          // if (amount > 0) {
-          //   this.minted = true;
-          // }
-        } catch (error) {
-          console.log(error);
         }
+      } catch (error) {
+        console.log(error);
       }
     },
     async onMint() {
@@ -422,7 +419,6 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           let param = {};
           await this.checkNet();
           await this.checkMint();
-
           if (!this.freeMintEnd && this.freeMintNum >= 1) {
             return this.$alert("The Mint quantity limit has been reached.");
           }
@@ -533,7 +529,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
 <style lang="scss" scoped>
 .mint-page {
   width: 100%;
-  padding-bottom: 76px;
+  // padding-bottom: 76px;
   overflow: hidden;
   .header {
     width: 100%;
@@ -816,7 +812,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     }
   }
   .footer {
-    position: fixed;
+    // position: fixed;
     height: 76px;
     width: 100%;
     left: 0;
@@ -828,7 +824,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
 @media (max-width: 960px) {
   .mint-page {
     width: 100%;
-    padding-bottom: 76px;
+    // padding-bottom: 76px;
     overflow: hidden;
     .banner-box {
       .banner {

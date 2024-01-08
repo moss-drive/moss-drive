@@ -31,7 +31,7 @@ export default {
     }),
     addrMatch() {
       if (!this.accounts.length) return false;
-      return this.accounts[0].toLowerCase() == this.uid.toLowerCase();
+      return this.accounts[0]?.toLowerCase() == this.uid?.toLowerCase();
     },
     showText() {
       if (!this.addrMatch) return "Connect Wallet";
@@ -68,7 +68,7 @@ export default {
         this.accounts = accounts;
         if (this.sameAddr && !this.addrMatch) {
           throw new Error(
-            `Please use the wallet address associated with the current account for signing. The current account is ${this.uid.cutStr(
+            `Please use the wallet address associated with the current account for signing. The current account is ${this.uid?.cutStr(
               4,
               6
             )}`
