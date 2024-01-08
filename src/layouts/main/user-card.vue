@@ -55,14 +55,9 @@
         </div>
         <div class="row q-col-gutter-md" v-else>
           <div class="col-4" v-for="row in nftList" :key="row.nftId">
-            <div class="pos-r bdrs-10 ov-h">
-              <!-- <q-img
-                  :src="row.img"
-                  :alt="'#' + row.nftId"
-                  class="w100p bg-info bdrs-10"
-                  :ratio="1"
-                /> -->
-              <div class="w100p ntf-wrap bg-info" v-html="row.pic"></div>
+            <div class="pos-r bg-info bdrs-10 ov-h">
+              <q-img v-if="/^http/.test(row.pic)" :src="row.pic" class="w100p bdrs-10" :ratio="1" />
+              <div v-else class="w100p ntf-wrap" v-html="row.pic"></div>
               <div class="pos-btm ta-c bg-black-7 pa-">#{{ row.nftId }}</div>
             </div>
           </div>
