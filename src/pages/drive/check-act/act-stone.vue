@@ -302,7 +302,7 @@ export default {
         this.$loadingClose();
         valid = data.valid;
         if (!valid) {
-          await this.$alert(
+          await this.$confirm(
             `Hey you! Looking to create a Stone? You'll need the 'Mystery of Moss Origins' NFT first. `,
             {
               confirmText: "Start by adopting one!",
