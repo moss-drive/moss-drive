@@ -431,12 +431,12 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           }
           if (this.fundingPhase == 1) {
             param = {
-              value: 5e15,
+              value: (5e15).toString(),
             };
           }
           if (this.fundingPhase == 2) {
             param = {
-              value: 1e16,
+              value: (1e16).toString(),
             };
           }
           this.txLoading = true;
