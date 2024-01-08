@@ -39,6 +39,7 @@ import ListRank from "./list-rank.vue";
     </div>
   </div>
   <div v-else-if="!rows.length">
+    <div class="pa-6"></div>
     <empty-stone />
   </div>
   <template v-else>
