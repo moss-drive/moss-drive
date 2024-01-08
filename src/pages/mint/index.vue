@@ -346,9 +346,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
   mounted() {},
 
   methods: {
-    initTime() {
+    async initTime() {
       let freeStartTimer;
-      const setTime = () => {
+      const setTime = async () => {
         const freeMinttTime = this.cutdonw(this.freeMintStartAt);
         const freeMinttEndTime = this.cutdonw(this.freeMintEndAt);
         if (freeMinttTime) {
@@ -359,7 +359,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         if (!freeMinttEndTime) {
           this.freeMintEnd = true;
           this.publicSellStart = true;
-          this.checkMint();
+          await this.checkMint();
           if (freeStartTimer) {
             clearInterval(freeStartTimer);
           }
