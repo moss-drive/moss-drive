@@ -441,6 +441,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           const receipt = await tx.wait(1);
           console.log(receipt);
           this.$toast("Hoora, Mint has been successful!", 1);
+          await this.checkMint();
           this.getNftNum();
         } catch (error) {
           console.log(error);
@@ -492,6 +493,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       }
       if (/Caller is not in white list/i.test(msg)) {
         msg = "Caller is not in white list.";
+      } else if (/all tokens sold out/i.test(msg)) {
+        msg = "All tokens sold out.";
       } else if (/missing revert data/i.test(msg)) {
         msg = "Network Error";
       } else if (/user rejected/i.test(msg)) {
