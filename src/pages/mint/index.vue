@@ -308,8 +308,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: 1704441600000,
-      freeMintEndAt: 1704443400000,
+      freeMintStartAt: 1704695400000,
+      freeMintEndAt: 1704697200000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
@@ -435,6 +435,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           const receipt = await tx.wait(1);
           console.log(receipt);
           this.$toast("Hoora, Mint has been successful!", 1);
+          this.getNftNum();
         } catch (error) {
           console.log(error);
           this.onErr(error);
