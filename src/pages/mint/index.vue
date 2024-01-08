@@ -440,9 +440,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           console.log(tx);
           const receipt = await tx.wait(1);
           console.log(receipt);
-          this.$toast("Hoora, Mint has been successful!", 1);
           await this.checkMint();
           this.getNftNum();
+          this.$toast("Hoora, Mint has been successful!", 1);
         } catch (error) {
           console.log(error);
           this.onErr(error);
