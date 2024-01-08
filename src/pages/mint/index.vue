@@ -281,7 +281,7 @@ export default {
         "Moss Bonus",
         "Exclusive Identity",
         "Resource Airdrops",
-        "Create STONE",
+        "Create Stone",
         "Eligibility for Rare Event Participation",
       ],
       faqList: [
@@ -412,11 +412,21 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         this.$bus.emit("show-login", true);
         return;
       } else {
+        const currentAccounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        if (account.toLowerCase() != currentAccounts[0].toLowerCase()) {
+          return this.$alert("Please utilize the logged-in wallet for minting.");
+        }
         try {
           let param = {};
           await this.checkNet();
           await this.checkMint();
-          if (this.freeMintNum >= 1 || this.saleMintNum >= 5) {
+
+          if (!this.freeMintEnd && this.freeMintNum >= 1) {
+            return this.$alert("The Mint quantity limit has been reached.");
+          }
+          if (this.freeMintEnd && this.saleMintNum >= 5) {
             return this.$alert("The Mint quantity limit has been reached.");
           }
           if (this.fundingPhase == 1) {
@@ -484,7 +494,9 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       if (/repriced/i.test(msg) && /replaced/i.test(msg)) {
         return this.$toast("Transaction was replaced.");
       }
-      if (/missing revert data/i.test(msg)) {
+      if (/Caller is not in white list/i.test(msg)) {
+        msg = "Caller is not in white list.";
+      } else if (/missing revert data/i.test(msg)) {
         msg = "Network Error";
       } else if (/user rejected/i.test(msg)) {
         msg = "Your transaction has been canceled.";
@@ -501,13 +513,12 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       } else if (msg.length > 100) {
         const mat = /^(.+)\[/.exec(msg);
         if (mat) msg = mat[1];
-      } else if (/Caller is not in white list/i.test(msg)) {
-        msg = "Caller is not in white list.";
       } else if (/already pending for origin/gi.test(msg)) {
         msg = "Wrong network, please switch your wallet network and try again.";
       } else {
         msg = "Mint failed, please try again later!";
       }
+
       if (/Request of type 'wallet_switchEthereumChain'/i.test(msg)) {
         msg = null;
       }
