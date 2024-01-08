@@ -53,7 +53,7 @@
             </q-btn>
           </div>
         </div>
-        <div class="row" v-else>
+        <div class="row q-col-gutter-md" v-else>
           <div class="col-4" v-for="row in nftList" :key="row.nftId">
             <div class="pos-r bdrs-10 ov-h">
               <!-- <q-img
