@@ -41,11 +41,7 @@
             </div>
             <p class="fz-18 fw-b line-1">{{ item.stoneName }}</p>
             <div class="mt-1 fz-14 al-c">
-              <img
-                :src="item.twitterAvatar || '/img/stone/x-round.svg'"
-                width="18"
-                class="bdrs-100"
-              />
+              <user-avatar :src="item.twitterAvatar" :uid="item.uid" :size="18" />
               <span class="op-8 ml-1">{{ item.twitterName }}</span>
             </div>
             <q-btn
@@ -88,8 +84,8 @@
                 </div>
               </td>
               <td class="">
-                <img class="avatar mr-1" width="24" :src="item.twitterAvatar" alt="" />
-                <span> {{ item.twitterName }}</span>
+                <user-avatar :src="item.twitterAvatar" :uid="item.uid" :size="24" />
+                <span class="ml-1"> {{ item.twitterName }}</span>
               </td>
               <td class="text-left fw-b">{{ $formatEther(item.worth) }} ETH</td>
               <td class="text-left fw-b">{{ $formatEther(item.price) }} ETH</td>
