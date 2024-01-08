@@ -314,8 +314,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: 1704707100000,
-      freeMintEndAt: 1704707700000,
+      freeMintStartAt: 1704708900000,
+      freeMintEndAt: 1704709500000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
@@ -532,6 +532,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       }
       if (msg) {
         return this.$alert(msg);
+      } else {
+        return;
       }
     },
   },
