@@ -228,7 +228,7 @@
         </q-card-section>
 
         <q-card-section style="text-align: center">
-          <q-img src="@/assets/imgs/mint/txLoading.png" width="220px"></q-img>
+          <q-img src="@/assets/imgs/mint/mint_loading.gif" width="220px"></q-img>
           <div class="mt-4">Waiting for transfer</div>
         </q-card-section>
       </q-card>
@@ -308,8 +308,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         },
       ],
       minted: false,
-      freeMintStartAt: 1704695400000,
-      freeMintEndAt: 1704697200000,
+      freeMintStartAt: 1704703200000,
+      freeMintEndAt: 1704705000000,
       freeMintStart: false,
       freeMintEnd: false,
       publicSellStart: false,
