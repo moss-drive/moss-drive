@@ -142,7 +142,7 @@
                   </div>
                   <div class="mint-text">
                     <span class="mint-key">Number:</span>
-                    <span class="mint-val">1000</span>
+                    <span class="mint-val">300</span>
                   </div>
                   <div class="mint-text">
                     <span class="mint-key">Time:</span>
