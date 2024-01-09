@@ -14,12 +14,17 @@ import StoneEdit from "./stone-edit.vue";
         </q-card>
       </div>
     </div>
-    <div v-else-if="!rows.length">
-      <empty-stone />
-      <div class="ta-c">
-        <a href="https://docs.mymoss.io/guides/create-a-stone" target="_blank" class="color-1 fz-15"
-          >How to create a stone?
-        </a>
+    <div class="d-center" style="min-height: 80vh" v-else-if="!rows.length">
+      <div>
+        <empty-stone />
+        <div class="ta-c">
+          <a
+            href="https://docs.mymoss.io/guides/create-a-stone"
+            target="_blank"
+            class="color-1 fz-15"
+            >How to create a stone?
+          </a>
+        </div>
       </div>
     </div>
     <div class="row" v-else>
