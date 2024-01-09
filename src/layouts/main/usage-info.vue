@@ -82,9 +82,9 @@ export default {
 <style lang="scss" scoped>
 .resource-recharge-content {
   position: relative;
-  height: 160px;
+  height: 112px;
   background: url("/img/resource/burst.svg") no-repeat;
-  background-size: 100%;
+  background-size: contain;
 }
 
 .usage-resource {
