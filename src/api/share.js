@@ -21,3 +21,9 @@ export function fetchShareList(params) {
 export function fetchStoneSave(data) {
   return request.post("/stone/save", data);
 }
+
+export function fetchUserShareList(params) {
+  return request.get("/share/list/user", {
+    params,
+  });
+}

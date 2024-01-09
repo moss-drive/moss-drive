@@ -1,3 +1,7 @@
+<script setup>
+import UserCard from "./main/user-card.vue";
+</script>
+
 <template>
   <div
     class="ml-5 h100p pl-5 pr-4 al-c"
@@ -6,7 +10,7 @@
     }"
   >
     <template v-if="!uid">
-      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" />
+      <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
       <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
@@ -27,27 +31,16 @@
         :round="asMobile"
         :size="btnSize"
       >
-        <q-avatar size="22px" v-if="userInfo.avatarUrl">
-          <img :src="userInfo.avatarUrl" />
-        </q-avatar>
-        <m-avatar v-else :hash="uid"></m-avatar>
+        <user-avatar :src="userInfo.avatarUrl" :uid="uid" />
         <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
-        <q-menu style="width: 130px" auto-close>
-          <q-list>
-            <q-item clickable v-if="asMobile">
-              <q-item-section>{{ uname }}</q-item-section>
-            </q-item>
-            <q-item clickable v-if="userInfo.name">
-              <q-item-section>{{ myAddr }}</q-item-section>
-            </q-item>
-            <q-item href="/login" target="_blank" clickable v-else>
-              <q-item-section>Bind X</q-item-section>
-            </q-item>
-            <q-item clickable @click="onLogout">
-              <q-item-section>Sign out</q-item-section>
-            </q-item>
-          </q-list>
+        <q-menu
+          :style="{
+            width: Math.min(screen.width - 30, 400) + 'px',
+          }"
+          style="max-height: 600px"
+        >
+          <user-card :userInfo="userInfo" :uid="uid" />
         </q-menu>
       </q-btn>
     </template>
@@ -63,6 +56,10 @@ export default {
     border: {
       type: Boolean,
       default: true,
+    },
+    noInvited: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -91,12 +88,6 @@ export default {
     },
     btnSize() {
       return this.asMobile ? "12px" : null;
-    },
-  },
-  methods: {
-    onLogout() {
-      this.$store.dispatch("logout");
-      this.$router.replace("/");
     },
   },
 };

@@ -72,6 +72,7 @@ export default {
     },
     keep: Boolean,
     asMobile: Boolean,
+    noInvited: Boolean,
   },
   data() {
     return {
@@ -155,11 +156,12 @@ export default {
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
     async showInvite() {
-      const code = await this.$prompt("Invitation Code", {
+      let code = await this.$prompt("Invitation Code", {
         html: true,
         msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
       });
       if (!code) return;
+      code = code.replace(/^Moss_/i, "");
       try {
         this.loading = true;
         await this.$http.post(
@@ -175,8 +177,7 @@ export default {
         this.$store.dispatch("login", this.tempData);
         this.onRedirect();
       } catch (error) {
-        console.log(error);
-        this.$toast("Invalid Code");
+        this.$toast(error.message);
         this.showInvite();
       }
       this.loading = false;
@@ -185,7 +186,7 @@ export default {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
-        if (data.isInvited) {
+        if (data.isInvited || this.noInvited) {
           this.$store.dispatch("login", data);
           this.onRedirect();
         } else {
@@ -200,4 +201,3 @@ export default {
   },
 };
 </script>
-

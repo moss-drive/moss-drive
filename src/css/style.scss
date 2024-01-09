@@ -52,7 +52,7 @@ body.body--dark,
   background: transparent;
 }
 .bg-primary {
-  color: $dark-color !important;
+  color: #0f172a !important;
 }
 .bg-info {
   color: #fff;
@@ -148,9 +148,30 @@ $bd: #334155;
 .color-2 {
   color: #7e4fed;
 }
+.color-a {
+  color: #3680ff;
+}
 
-.hover-1:hover {
-  opacity: 0.8;
+.hover-1 {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    opacity: 0.85;
+  }
+}
+.hover-2 {
+  cursor: pointer;
+  &:hover {
+    background: #333746;
+  }
+}
+.hover-s1 {
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .p-mb-1 {
@@ -193,7 +214,8 @@ body {
   .q-menu--dark {
     background: #1e293b;
     box-shadow: none;
-    border: 1px solid rgb(255 255 255 / 6%);
+    // border: 1px solid rgb(255 255 255 / 6%);
+    border-radius: 12px;
   }
   &.touch .hide-in-touch {
     display: none;

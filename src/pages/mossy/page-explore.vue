@@ -39,13 +39,16 @@ import ExploreList from "./explore/explore-list.vue";
   <div class="main-wrap">
     <ExploreList></ExploreList>
   </div>
-  <!-- <search-page ref="searchPage" v-show="searchfocus"></search-page> -->
+
+  <div class="pos-f" style="bottom: 80px; right: 40px">
+    <a href="/mint" target="_blank" class="">
+      <img src="/img/mossy/mint.png" height="100" class="d-b hover-s1 trans-200" />
+    </a>
+  </div>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
-
-// import SearchPage from "./explore/search-page.vue";
 
 export default {
   data() {

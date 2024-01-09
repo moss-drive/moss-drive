@@ -258,6 +258,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
+      form.chainId = this.mossHub.chainId + "";
       if (!form.avatar) {
         form.avatar = "/img/stone/def-cover.png";
       }
@@ -291,10 +292,36 @@ export default {
       }
       return this.mossHub;
     },
+    async checkNft() {
+      let valid = false;
+      try {
+        this.$loading("Checking");
+        const { data } = await this.$http.post("/stone/nft/valid", {
+          chainId: this.mossHub.chainId + "",
+        });
+        this.$loadingClose();
+        valid = data.valid;
+        if (!valid) {
+          await this.$confirm(
+            `Hey you! Looking to create a Stone? You'll need the 'Mystery of Moss Origins' NFT first. `,
+            {
+              confirmText: "Start by adopting one!",
+            }
+          );
+          window.open("/mint");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.$loadingClose();
+      return valid;
+    },
     async onCreate() {
       const mossHub = await this.initMoss();
       if (!mossHub) return;
       try {
+        const valid = await this.checkNft();
+        if (!valid) return;
         const addr = await mossHub.getWalletAddr();
         this.form.address = addr;
         const form = this.mossForm;
@@ -319,15 +346,7 @@ export default {
         this.onNext(tx);
       } catch (error) {
         this.saving = false;
-        console.log(error, 111);
-        this.$bus.emit("wallet-error", error);
-
-        // let msg = error.message;
-        // if (/user reject/.test(msg)) {
-        //   this.$toast("Rejected");
-        // } else {
-        //   this.$alert(msg);
-        // }
+        if (error) this.$bus.emit("wallet-error", error);
       }
       //
     },

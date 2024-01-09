@@ -1,5 +1,5 @@
 <template>
-  <div class="pos-btm pos-f w100p px-6">
+  <div class="w100p px-6" :class="isFixed ? 'pos-btm pos-f' : ''">
     <div class="al-c home-btm-content space-btw flex-wrap">
       <div class="al-c">
         <q-btn
@@ -25,6 +25,12 @@
 
 <script>
 export default {
+  props: {
+    isFixed: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       socials: [

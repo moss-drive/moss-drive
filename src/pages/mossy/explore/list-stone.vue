@@ -7,11 +7,12 @@
       v-for="(it, i) in list"
       :key="i"
     >
-      <div class="d-flex bg-dark2 pa-4 bdrs-8 pos-r cursor-p" v-ripple>
+      <div class="d-flex bg-dark2 pa-4 bdrs-8 pos-r hover-2" v-ripple.early>
         <div class="flex-3 shrink-1 mr-2 h-flex">
           <div class="fz-15 fw-b line-3 lh-1 wb-all">{{ it.stoneName }}</div>
           <div class="mt-2 mb-1 al-c">
-            <img :src="it.twitterAvatar || '/img/stone/x-round.svg'" width="18" class="bdrs-100" />
+            <!-- <img :src="it.twitterAvatar || '/img/stone/x-round.svg'" width="18" class="bdrs-100" /> -->
+            <user-avatar :src="it.twitterAvatar" :uid="it.uid" :size="18" />
             <span class="ml-1 fz-14 op-8">{{ it.twitterName }}</span>
           </div>
           <div class="fz-13 fw-b mt-auto al-c">
