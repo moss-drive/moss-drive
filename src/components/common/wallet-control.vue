@@ -111,13 +111,14 @@ export default {
         if (VITE_MOSS_CHAINID != 11155420) {
           param = {
             chainId: "0xa",
-            chainName: "Optimism LlamaNodes",
-            rpcUrls: ["https://optimism.llamarpc.com"],
+            chainName: "OP Mainnet",
+            rpcUrls: ["https://mainnet.optimism.io"],
             nativeCurrency: {
               name: "ETH",
               symbol: "ETH",
               decimals: 18,
             },
+            blockExplorerUrls: ["https://optimistic.etherscan.io"],
           };
         }
         await window.ethereum.request({

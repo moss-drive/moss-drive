@@ -293,15 +293,15 @@ export default {
       faqList: [
         {
           icon: faq_icon_0,
-          title: "What is Moss Origins？",
+          title: "Intro",
           content:
-            "The Mystery of Moss Origins is Moss' s inaugural NFT featuring the iconic Moss logo in various unique combinations. Limited to 9999 pieces, holders will enjoy exclusive privileges including Moss invitation codes and event task point bonuses.",
+            "Moss is a social document management and sharing platform based on Web3. It aims to provide an alternative to centralized file management, allowing users to have better control over their data while being able to share files quickly, easily, and securely.Moss utilizes decentralized storage capabilities such as IPFS/Arweave to enable users to store and manage various types of content securely. Moss also provides the MossLand sharing community, allowing creators to create their own exclusive sharing spaces and interact with their subscribers, sharing paid content in order to generate income.",
         },
         {
           icon: faq_icon_1,
-          title: "What is Moss？",
+          title: "About Moss NFT",
           content:
-            "The Mystery of Moss Origins is Moss' s inaugural NFT featuring the iconic Moss logo in various unique combinations. Limited to 9999 pieces, holders will enjoy exclusive privileges including Moss invitation codes and event task point bonuses.",
+            "The Mystery of Moss Origins is the first NFT released by Moss, presenting the iconic Moss logo in various unique combinations. Limited to 9999 pieces, holders will enjoy exclusive privileges, including the right to create Moss Stone and rewards for event mission points.",
         },
         {
           icon: faq_icon_2,
@@ -340,10 +340,11 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
   async created() {
     this.getNftNum();
     this.initTime();
-    await this.initContract();
+    // await this.initContract();
+  },
+  async mounted() {
     await this.checkMint();
   },
-  mounted() {},
 
   methods: {
     initTime() {
@@ -384,6 +385,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       if (chainId != VITE_MOSS_CHAINID) {
         await this.$refs.switchNet.switchOpChain();
       }
+      await this.initContract();
     },
     async checkMint() {
       try {
