@@ -2,8 +2,8 @@
   <div class="notice-container my-4" v-if="showNotice">
     <img width="24" src="/img/resource/notice.svg" alt="" />
     <span class="ml-2 fz-14">
-      The trial account will expire on 1st January 2023, after which the resources will be cleared.
-      Please complete the initial deposit and upgrade your account to the Standard.
+      The trial account will expire 30 days after registration, after which the resources will be
+      cleared. Please complete the initial deposit and upgrade your account to the Standard.
     </span>
     <img
       width="24"
