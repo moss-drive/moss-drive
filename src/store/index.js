@@ -43,6 +43,7 @@ const store = createStore({
       setStore({
         loginData: {},
         stsData: {},
+        userInfo: {},
       });
     },
   },
