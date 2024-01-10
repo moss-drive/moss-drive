@@ -3,10 +3,10 @@ import StoneEdit from "./stone-edit.vue";
 </script>
 
 <template>
-  <stone-edit ref="edit" @refresh="getList" />
+  <stone-edit ref="edit" @refresh="onRefresh" />
 
   <div class="q-pa-md">
-    <div class="row" v-if="!rows">
+    <div class="row" v-if="!stoneList">
       <div v-for="i in 1" :key="i" class="col-12 col-sm-6 col-lg-4 pa-2">
         <q-card flat>
           <!-- <q-skeleton type="text" width="160px" class="text-subtitle1" /> -->
@@ -14,7 +14,7 @@ import StoneEdit from "./stone-edit.vue";
         </q-card>
       </div>
     </div>
-    <div class="d-center" style="min-height: 80vh" v-else-if="!rows.length">
+    <div class="d-center" style="min-height: 80vh" v-else-if="!stoneList.length">
       <div>
         <empty-stone />
         <div class="ta-c">
@@ -28,7 +28,7 @@ import StoneEdit from "./stone-edit.vue";
       </div>
     </div>
     <div class="row" v-else>
-      <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in rows" :key="it.id">
+      <div class="col-12 col-sm-6 col-lg-4 pa-2" v-for="it in stoneList" :key="it.id">
         <img src="/img/stone/stone-head.png" height="40" class="d-b" />
         <!--  -->
         <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
@@ -93,11 +93,16 @@ import StoneEdit from "./stone-edit.vue";
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
+  computed: {
+    ...mapState({
+      stoneList: (s) => s.stoneList,
+    }),
+  },
   data() {
-    return {
-      rows: null,
-    };
+    return {};
   },
   created() {
     this.getList();
@@ -113,13 +118,15 @@ export default {
       }
       return min + "mins";
     },
+    onRefresh() {
+      this.$setStore({
+        stoneList: null,
+      });
+      this.getList();
+    },
     async getList() {
       try {
-        this.rows = null;
         const { data } = await this.$http.get("/stone");
-        this.$setStore({
-          stoneList: data,
-        });
         const format = (val) => {
           return this.$formatEther(val) + "ETH";
         };
@@ -142,7 +149,9 @@ export default {
             },
           ];
         }
-        this.rows = data;
+        this.$setStore({
+          stoneList: data,
+        });
       } catch (error) {
         console.log(error);
       }
