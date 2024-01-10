@@ -196,9 +196,6 @@ export default {
             name,
             type,
           };
-          if (type == "image" && it.cid) {
-            item.icon = `https://moss-img.4everland.co/cdn-cgi/image/width=200/ipfs/${it.cid}`;
-          }
           return item;
         });
         if (!rows.length) this.noMore = true;
