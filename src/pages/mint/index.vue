@@ -39,7 +39,7 @@
                   <span class="mint-val">Free</span>
                 </div>
                 <div class="mint-info-item">
-                  <span class="mint-key">Remaining quantity:</span>
+                  <span class="mint-key">Minting Progress:</span>
                   <span class="mint-val">{{ nftNum.free.mint }}/{{ nftNum.free.total }}</span>
                 </div>
                 <div class="mint-info-item">
@@ -65,7 +65,7 @@
                   <span class="mint-val" v-if="fundingPhase == 2">0.01ETH</span>
                 </div>
                 <div class="mint-info-item">
-                  <span class="mint-key">Remaining quantity:</span>
+                  <span class="mint-key">Minting Progress:</span>
                   <span class="mint-val" v-if="fundingPhase == 1"
                     >{{ nftNum.phaseOne.mint }}/{{ nftNum.phaseOne.total }}</span
                   >
