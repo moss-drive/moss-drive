@@ -191,6 +191,7 @@ export default {
       if ([9999999].includes(id)) return "everPay";
       if ([1, 11155111].includes(id)) return "Ethereum";
       if ([10].includes(id)) return "Optimism";
+      if ([534352].includes(id)) return "Scroll";
       if ([99999991].includes(id)) return "Redeem Historical Remaining Resources";
       return "";
     },
