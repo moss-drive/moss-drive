@@ -3,16 +3,9 @@
     <div class="bg-card-2 mb-5" v-if="!chatBlowUp">
       <div class="fw-b fz-18">Author</div>
       <div class="ta-c mt-5">
-        <q-avatar size="60px" v-if="twitterInfo.avatarUrl">
-          <img :src="twitterInfo.avatarUrl" />
-        </q-avatar>
-        <div v-else class="d-center">
-          <m-avatar
-            v-if="twitterInfo.twitterId"
-            :hash="twitterInfo.twitterId"
-            :size="60"
-          ></m-avatar>
-          <q-skeleton v-else type="circle" size="60px" />
+        <div class="d-center">
+          <q-skeleton v-if="!twitterInfo.uid" type="circle" size="60px" />
+          <user-avatar v-else :size="60" :src="twitterInfo.avatarUrl" :uid="twitterInfo.uid" />
         </div>
         <div class="pa-2"></div>
         <div v-if="!twitterInfo.name">

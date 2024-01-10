@@ -44,6 +44,7 @@ const store = createStore({
       });
     },
     logout() {
+      localStorage.clear();
       setStore({
         ...storInit,
       });
