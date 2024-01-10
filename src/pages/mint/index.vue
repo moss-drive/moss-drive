@@ -221,7 +221,7 @@
         </div>
       </div>
     </div>
-    <wallet-control ref="switchNet" style="visibility: hidden" :noInvited="true" />
+    <!-- <wallet-control ref="switchNet" style="visibility: hidden" :noInvited="true" /> -->
     <q-dialog v-model="txLoading" persistent>
       <q-card style="min-width: 360px">
         <q-card-section>
@@ -252,6 +252,7 @@ import { BigNumber, providers } from "ethers";
 import { mapState } from "vuex";
 
 import { Mossy__factory } from "@moss-hub/mossy";
+import { switchNet } from "@/utils/wallet.js";
 
 import { fetchNftNum } from "@/api/mint.js";
 
@@ -383,7 +384,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     async checkNet() {
       const chainId = window.ethereum.chainId;
       if (chainId != VITE_MOSS_CHAINID) {
-        await this.$refs.switchNet.switchOpChain();
+        await switchNet(VITE_MOSS_CHAINID);
       }
       await this.initContract();
     },
