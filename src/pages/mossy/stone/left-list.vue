@@ -167,6 +167,7 @@ export default {
           stoneId: this.stoneId,
           relativePath: this.curFolder,
           delimiter: "/",
+          size: 30,
         };
         if (isMore) {
           params.startAfter = this.rows[this.rows.length - 1].path;
@@ -198,9 +199,11 @@ export default {
           };
           return item;
         });
-        if (!rows.length) this.noMore = true;
+        if (rows.length < params.size - 5) {
+          this.noMore = true;
+        }
         if (isMore) {
-          this.rows = this.rows.concat(rows);
+          this.rows = [...this.rows, ...rows];
         } else {
           this.rows = rows;
         }
