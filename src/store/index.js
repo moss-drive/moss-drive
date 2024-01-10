@@ -2,11 +2,15 @@ import { createStore } from "vuex";
 import resourceStore from "./resource";
 const SET_DATA = "setData";
 
-const storState = {
+const storInit = {
   loginData: {},
   stsData: {},
   userInfo: {},
   usageInfo: {},
+  stoneList: null,
+};
+const storState = {
+  ...storInit,
 };
 for (const key in storState) {
   let val = localStorage[key];
@@ -41,9 +45,7 @@ const store = createStore({
     },
     logout() {
       setStore({
-        loginData: {},
-        stsData: {},
-        userInfo: {},
+        ...storInit,
       });
     },
   },

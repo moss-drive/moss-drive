@@ -117,6 +117,9 @@ export default {
       try {
         this.rows = null;
         const { data } = await this.$http.get("/stone");
+        this.$setStore({
+          stoneList: data,
+        });
         const format = (val) => {
           return this.$formatEther(val) + "ETH";
         };

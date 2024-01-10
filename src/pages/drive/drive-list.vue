@@ -157,12 +157,12 @@ export default {
       checked: [],
       curPath: "/file",
       searchKey: "",
-      stoneList: null,
     };
   },
   computed: {
     ...mapState({
       uid: (s) => s.loginData.uuid,
+      stoneList: (s) => s.stoneList,
     }),
     objRows() {
       const stoneList = this.stoneList || [];
@@ -287,7 +287,9 @@ export default {
     async getStoneList() {
       if (!this.uid) return;
       const { data } = await this.$http.get("/stone");
-      this.stoneList = data;
+      this.$setStore({
+        stoneList: data,
+      });
     },
     async onLoad(index, done) {
       console.log(index);
