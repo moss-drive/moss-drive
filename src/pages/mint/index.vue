@@ -56,9 +56,13 @@
                 :class="{ 'mint-btn-disable': !publicSellStart || publicSellEnd }"
                 @click="onMint"
                 :disable="!publicSellStart || publicSellEnd"
-                >Public Sale</q-btn
+                >MINT NOW</q-btn
               >
               <div class="mint-info">
+                <div class="mint-info-item">
+                  <span class="mint-key">YOUR MINT LIMIT:</span>
+                  <span class="mint-val">{{ saleMintNum }}/5</span>
+                </div>
                 <div class="mint-info-item">
                   <span class="mint-key">Price:</span>
                   <span class="mint-val" v-if="fundingPhase == 1">0.005ETH</span>
