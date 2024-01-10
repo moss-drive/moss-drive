@@ -162,6 +162,8 @@ export const getTxLink = (hash, net = "Polygon") => {
     pre = inDev ? "https://goerli.explorer.zksync.io/tx/" : "https://explorer.zksync.io/tx/";
   } else if (net == "Optimism") {
     pre = "https://optimistic.etherscan.io/tx/";
+  } else if (net == "Scroll") {
+    pre = "https://scrollscan.com/tx/";
   }
   return pre + hash;
 };
