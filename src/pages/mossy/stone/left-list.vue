@@ -188,7 +188,7 @@ export default {
             type = "folder";
             name = it.name;
           }
-          return {
+          const item = {
             ...it,
             prefix,
             sizeUnit: this.$bucket.getFileSize(it.size),
@@ -196,6 +196,10 @@ export default {
             name,
             type,
           };
+          if (type == "image") {
+            item.icon = `https://moss-img.4everland.co/cdn-cgi/image/width=200/ipfs/${it.cid}`;
+          }
+          return item;
         });
         if (!rows.length) this.noMore = true;
         if (isMore) {
