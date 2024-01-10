@@ -63,7 +63,7 @@
 </template>
 
 <script>
-const { VITE_AR_PRE } = import.meta.env;
+const { VITE_AR_HOST } = import.meta.env;
 
 export default {
   props: {
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     getArLink(hash) {
-      return `${VITE_AR_PRE}/${hash}`;
+      return `https://${hash}.${VITE_AR_HOST}`;
     },
   },
 };
