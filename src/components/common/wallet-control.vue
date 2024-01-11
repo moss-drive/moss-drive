@@ -8,6 +8,7 @@
 <script>
 const { VITE_MOSS_CHAINID } = import.meta.env;
 import { mapState } from "vuex";
+import { switchNet } from "@/utils/wallet";
 export default {
   props: {
     sameAddr: {
@@ -96,58 +97,8 @@ export default {
         this.onChange();
       });
     },
-    async addOpChain() {
-      try {
-        let param = {
-          chainId: "0xaa37dc",
-          chainName: "OP Sepolia Testnet",
-          rpcUrls: ["https://optimism-sepolia.blockpi.network/v1/rpc/public"],
-          nativeCurrency: {
-            name: "ETH",
-            symbol: "ETH",
-            decimals: 18,
-          },
-        };
-        if (VITE_MOSS_CHAINID != 11155420) {
-          param = {
-            chainId: "0xa",
-            chainName: "OP Mainnet",
-            rpcUrls: ["https://mainnet.optimism.io"],
-            nativeCurrency: {
-              name: "ETH",
-              symbol: "ETH",
-              decimals: 18,
-            },
-            blockExplorerUrls: ["https://optimistic.etherscan.io"],
-          };
-        }
-        await window.ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [param],
-        });
-      } catch (addError) {
-        console.log("res", addError);
-      }
-    },
     async switchOpChain() {
-      try {
-        this.addOpChain();
-        const chainId = this.genChainId(VITE_MOSS_CHAINID);
-        const res = await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId }],
-        });
-        console.log("res", res);
-        if (res && res.error) {
-          this.addOpChain();
-        }
-      } catch (error) {
-        if (error.code == 4902 || error.data?.originalError.code == 4902) {
-          this.addOpChain();
-        } else {
-          throw new Error(error.message);
-        }
-      }
+      await switchNet(VITE_MOSS_CHAINID);
     },
     genChainId(id) {
       return "0x" + Number(id).toString(16);
