@@ -174,10 +174,11 @@ export default {
         if (stone) type = "stone";
         let icon = `/img/driver/icon_${type}.png`;
         if (type == "image" && obj.url) {
-          // if (/\.svg$/i.test(obj.key)) {
-          //   if (obj.size < 1024 * 500) icon = obj.url;
-          // } else
           icon = obj.url + "?width=200";
+          // if (!this.$inDev) {
+          // } else if (/\.svg$/i.test(obj.key) || obj.size < 1024 * 500) {
+          //   icon = obj.url;
+          // }
         }
         return {
           ...obj,

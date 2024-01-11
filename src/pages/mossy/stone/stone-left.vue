@@ -5,6 +5,7 @@
 </style>
 
 <script setup>
+import LeftHash from "./left-hash.vue";
 import LeftList from "./left-list.vue";
 import LeftMossAct from "./left-moss-act.vue";
 </script>
@@ -13,28 +14,26 @@ import LeftMossAct from "./left-moss-act.vue";
   <div class="bdrs-10 bg-dark2 ov-h">
     <div class="bg-header-s1 pa-4 bdb-1">
       <div class="d-flex mt-5">
-        <q-skeleton size="110px" square v-if="!loaded" />
+        <q-skeleton size="120px" square v-if="!loaded" />
         <div v-else>
           <div class="stone-cover">
             <q-img
               :src="info.stoneAvatar || '/img/stone/stone-cover.png'"
               :ratio="1"
-              width="110px"
+              width="120px"
             ></q-img>
           </div>
         </div>
         <div class="ml-8 flex-1">
           <div v-if="!loaded">
             <q-skeleton type="title" />
-            <q-skeleton class="mt-2" height="100px" />
+            <q-skeleton class="mt-2" height="110px" />
           </div>
           <template v-else>
-            <div class="fw-b fz-20 line-2">{{ info.stoneName || "-" }}</div>
+            <div class="fw-b fz-30 line-2 lh-1">{{ info.stoneName || "-" }}</div>
             <div class="mt-2">
-              <div>
-                Stone ID <b class="color-1">#{{ info.stoneId }}</b>
-              </div>
-              <div class="op-6 line-5">{{ info.bio || "-" }}</div>
+              <left-hash :info="info" />
+              <div class="mt-3 op-6 line-5">{{ info.bio || "-" }}</div>
             </div>
           </template>
         </div>
@@ -56,13 +55,6 @@ import LeftMossAct from "./left-moss-act.vue";
           <span class="fz-18 color-2 ml-1">{{ balance || "0" }}</span>
         </div>
         <left-moss-act :stoneId="info.stoneId" :balance="balance" />
-        <a
-          :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"
-          target="_blank"
-          class="ml-4 hover-1"
-        >
-          <img src="/img/stone/stone-web.svg" width="35" class="d-b" />
-        </a>
       </div>
     </div>
     <left-list :stoneId="info.stoneId" :id="info.id" :balance="balance" />

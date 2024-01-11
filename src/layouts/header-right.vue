@@ -1,3 +1,10 @@
+<style>
+.mh-600 {
+  max-height: 500px !important;
+  max-height: calc(100vh - 70px) !important;
+}
+</style>
+
 <script setup>
 import UserCard from "./main/user-card.vue";
 import UserTask from "./main/user-task.vue";
@@ -49,7 +56,7 @@ import UserTask from "./main/user-task.vue";
           :style="{
             width: Math.min(screen.width - 30, 400) + 'px',
           }"
-          style="max-height: 600px"
+          class="mh-600"
         >
           <user-card :userInfo="userInfo" :uid="uid" />
         </q-menu>

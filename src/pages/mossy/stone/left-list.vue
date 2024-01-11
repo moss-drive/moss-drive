@@ -60,6 +60,9 @@ import ActMove from "../../drive/check-act/act-move.vue";
           @row-click="onRow"
           @row-check="onCheck"
         ></grid-list>
+        <div class="ta-c pa-3" v-show="loadingMore">
+          <q-spinner color="primary" size="3em" />
+        </div>
       </q-infinite-scroll>
     </div>
   </div>
@@ -104,6 +107,7 @@ export default {
       loading: false,
       checked: [],
       checkAll: false,
+      loadingMore: false,
       noMore: false,
       page: 1,
     };
@@ -167,8 +171,10 @@ export default {
           stoneId: this.stoneId,
           relativePath: this.curFolder,
           delimiter: "/",
+          size: 30,
         };
         if (isMore) {
+          this.loadingMore = true;
           params.startAfter = this.rows[this.rows.length - 1].path;
         } else {
           this.noMore = false;
@@ -182,13 +188,13 @@ export default {
         });
         const rows = data.map((it) => {
           const prefix = it.type == "Folder";
-          let name = it.path.replace(this.curFolder, "");
+          let name = it.name;
+          //.path.replace(this.curFolder, "");
           let type = this.$bucket.getType(name);
           if (prefix) {
             type = "folder";
-            name = it.name;
           }
-          return {
+          const item = {
             ...it,
             prefix,
             sizeUnit: this.$bucket.getFileSize(it.size),
@@ -196,10 +202,13 @@ export default {
             name,
             type,
           };
+          return item;
         });
-        if (!rows.length) this.noMore = true;
+        if (rows.length < params.size - 5) {
+          this.noMore = true;
+        }
         if (isMore) {
-          this.rows = this.rows.concat(rows);
+          this.rows = [...this.rows, ...rows];
         } else {
           this.rows = rows;
         }
@@ -207,6 +216,7 @@ export default {
         console.log(error);
       }
       this.loading = false;
+      this.loadingMore = false;
     },
   },
 };

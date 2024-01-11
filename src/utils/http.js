@@ -110,7 +110,9 @@ async function handleError(status, config, data) {
     }
   }
   if (!config.noTip) {
-    window.$alert(data.msg);
+    let msg = data.msg || "Unknown error";
+    if (msg.length < 50) window.$toast(msg);
+    else window.$alert(msg);
   }
 }
 

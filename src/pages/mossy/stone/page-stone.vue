@@ -58,6 +58,7 @@ export default {
         if (data.stoneId) {
           data.stoneId += "";
         }
+        document.title = data.stoneName + " - Mossyland";
         this.info = data;
         this.getAccount();
       } catch (error) {
