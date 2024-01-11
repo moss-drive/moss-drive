@@ -29,7 +29,7 @@ export class MossHub {
     try {
       await this.getWalletAddr();
       if (this.chainId != id) {
-        // throw new Error("Wrong Network");
+        throw new Error("Wrong Network");
       }
     } catch (error) {
       throw new Error("Please connect your wallet");
