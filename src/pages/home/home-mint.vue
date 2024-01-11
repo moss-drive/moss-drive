@@ -157,5 +157,20 @@ export default {
   font-size: 24px;
   font-weight: 900;
   text-transform: uppercase;
+  animation: pulse 2s infinite;
+  position: relative;
+  z-index: 999;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
