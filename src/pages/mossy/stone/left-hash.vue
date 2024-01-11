@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     getArLink(hash) {
-      return `https://${hash}.${VITE_AR_HOST}`;
+      return `https://${hash.replace(/^-*/, "")}.${VITE_AR_HOST}`;
     },
   },
 };
