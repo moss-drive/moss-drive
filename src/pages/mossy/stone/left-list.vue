@@ -60,6 +60,9 @@ import ActMove from "../../drive/check-act/act-move.vue";
           @row-click="onRow"
           @row-check="onCheck"
         ></grid-list>
+        <div class="ta-c pa-3" v-show="loadingMore">
+          <q-spinner color="primary" size="3em" />
+        </div>
       </q-infinite-scroll>
     </div>
   </div>
@@ -104,6 +107,7 @@ export default {
       loading: false,
       checked: [],
       checkAll: false,
+      loadingMore: false,
       noMore: false,
       page: 1,
     };
@@ -170,6 +174,7 @@ export default {
           size: 30,
         };
         if (isMore) {
+          this.loadingMore = true;
           params.startAfter = this.rows[this.rows.length - 1].path;
         } else {
           this.noMore = false;
@@ -211,6 +216,7 @@ export default {
         console.log(error);
       }
       this.loading = false;
+      this.loadingMore = false;
     },
   },
 };
