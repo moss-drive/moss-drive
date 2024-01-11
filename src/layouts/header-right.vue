@@ -29,9 +29,9 @@ import UserTask from "./main/user-task.vue";
           anchor="bottom middle"
           self="top middle"
           :style="{
-            width: Math.min(screen.width - 30, 400) + 'px',
+            width: Math.min(screen.width - 30, 480) + 'px',
           }"
-          style="max-height: 600px"
+          style="max-height: 465px"
         >
           <user-task :userInfo="userInfo" :uid="uid" />
         </q-menu>
