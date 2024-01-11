@@ -1,5 +1,6 @@
 <script setup>
 import UserCard from "./main/user-card.vue";
+import UserTask from "./main/user-task.vue";
 </script>
 
 <template>
@@ -13,14 +14,24 @@ import UserCard from "./main/user-card.vue";
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
+      <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
         <img src="/img/mossy/icon/ic-coin.png" width="26" />
-        <span class="text-white ml-1 fz-14">0</span>
-      </q-btn> -->
-      <!-- <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
-        <img src="/img/mossy/icon/ic-bell.svg" width="22" />
-      </q-btn> -->
+        <span class="text-white ml-1 fz-14">110</span>
 
+        <q-menu
+          anchor="bottom middle"
+          self="top middle"
+          :style="{
+            width: Math.min(screen.width - 30, 400) + 'px',
+          }"
+          style="max-height: 600px"
+        >
+          <user-task :userInfo="userInfo" :uid="uid" />
+        </q-menu>
+      </q-btn>
+      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
+        <img src="/img/mossy/icon/ic-bell.svg" width="22" />
+      </q-btn>
       <q-btn
         class="ml-3"
         :class="{
