@@ -234,7 +234,7 @@
 
         <q-card-section style="text-align: center">
           <q-img src="@/assets/imgs/mint/mint_loading.gif" width="220px"></q-img>
-          <div class="mt-4">Waiting for transfer</div>
+          <div class="mt-4">Minting in progress</div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -430,6 +430,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
           return this.$alert("Please utilize the logged-in wallet for minting.");
         }
         try {
+          this.txLoading = true;
           let param = {};
           await this.checkNet();
           await this.checkMint();
@@ -449,7 +450,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
               value: (1e16).toString(),
             };
           }
-          this.txLoading = true;
+          // this.txLoading = true;
           const tx = await this.Factory.mint(param);
           console.log(tx);
           const receipt = await tx.wait(1);

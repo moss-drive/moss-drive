@@ -9,6 +9,7 @@
         target="_blank"
         color="info"
         rounded
+        unelevated
         size="xs"
         dense
       >
@@ -19,7 +20,7 @@
       </q-btn>
     </div>
     <div>
-      <q-btn color="info" rounded size="xs" dense>
+      <q-btn color="info" rounded unelevated size="xs" dense>
         <div class="al-c px-2">
           <img src="/img/mossy/icon/ic-ver.svg" width="16" />
           <span class="color-1 ml-1 fz-12">Version History</span>
@@ -63,15 +64,13 @@
 </template>
 
 <script>
-const { VITE_AR_HOST } = import.meta.env;
-
 export default {
   props: {
     info: Object,
   },
   methods: {
     getArLink(hash) {
-      return `https://${hash}.${VITE_AR_HOST}`;
+      return `https://${hash.replace(/^-*/, "")}.arweave.net`;
     },
   },
 };

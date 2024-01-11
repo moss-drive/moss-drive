@@ -188,11 +188,11 @@ export default {
         });
         const rows = data.map((it) => {
           const prefix = it.type == "Folder";
-          let name = it.path.replace(this.curFolder, "");
+          let name = it.name;
+          //.path.replace(this.curFolder, "");
           let type = this.$bucket.getType(name);
           if (prefix) {
             type = "folder";
-            name = it.name;
           }
           const item = {
             ...it,
