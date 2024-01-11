@@ -32,7 +32,7 @@ export default {
       if (timestamp > createdTimestamp)
         return "Your trial account has expired. Upgrade to the permanent Standard account with a minimum deposit of 1U.";
       let expiredDate = new Date(createdTimestamp).format("date");
-      return `The trial account will expire on ${expiredDate}.after which the resources will be cleared. Pleasecomplete the initial deposit and upgrade youraccount to the Standard.`;
+      return `The trial account will expire on ${expiredDate}.after which the resources will be cleared. Please complete the initial deposit and upgrade your account to the Standard.`;
     },
   },
 };
