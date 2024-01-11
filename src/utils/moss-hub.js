@@ -25,14 +25,17 @@ export class MossHub {
   }
 
   async checkNet() {
+    const id = VITE_MOSS_CHAINID;
     try {
       await this.getWalletAddr();
+      if (this.chainId != id) {
+        throw new Error("Wrong Network");
+      }
     } catch (error) {
       throw new Error("Please connect your wallet");
     }
-    const id = VITE_MOSS_CHAINID;
     if (this.chainId != id) {
-      return this.switchNet(id);
+      // return this.switchNet(id);
     }
   }
 
@@ -69,7 +72,7 @@ export class MossHub {
     };
     const params = config[id];
     if (!params) {
-      throw new Error("No Params");
+      throw window.$toast("No Wallet Connected");
     }
     params.chainId = this.genChainId(id);
     return this.addChain(params);

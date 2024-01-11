@@ -113,7 +113,13 @@ export default {
       this.$emit("row-check", row);
     },
     getIcon(row) {
-      return row.icon || `/img/driver/icon_${row.type}.png`;
+      if (row.icon) {
+        return row.icon;
+      }
+      if (row.cid && row.type == "image" && row.size < 10 * 1024 * 1024) {
+        return `https://moss-img.4everland.co/cdn-cgi/image/width=150/ipfs/${row.cid}`;
+      }
+      return `/img/driver/icon_${row.type}.png`;
     },
     onRow(row, index) {
       if (this.checked && this.hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
