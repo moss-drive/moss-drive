@@ -16,7 +16,7 @@
         </q-expansion-item>
 
         <div class="ta-r mt-5">
-          <q-btn rounded @click="showPop = false">OK</q-btn>
+          <q-btn color="primary" rounded @click="showPop = false">OK</q-btn>
         </div>
       </div>
     </q-dialog>
@@ -73,7 +73,7 @@ export default {
 <style lang="scss" scoped>
 .recharge-container {
   width: 500px;
-  padding: 24px;
+  padding: 15px;
   background: #0f172a;
   border-radius: 16px;
   overflow: hidden;
