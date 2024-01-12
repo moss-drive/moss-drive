@@ -58,7 +58,7 @@ import UserTask from "./main/user-task.vue";
           }"
           class="mh-600"
         >
-          <user-card :userInfo="userInfo" :uid="uid" />
+          <user-card :userInfo="userInfo" :uid="uid" :noInvited="noInvited" />
         </q-menu>
       </q-btn>
     </template>
