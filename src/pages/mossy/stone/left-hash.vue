@@ -70,7 +70,9 @@ export default {
   },
   methods: {
     getArLink(hash) {
-      return `https://${hash.replace(/^-*/, "")}.arweave.net`;
+      return "https://viewblock.io/arweave/tx/" + hash;
+      // hash = hash.replace(/^-*/, "")
+      // return `https://${hash}.arweave.net`;
     },
   },
 };

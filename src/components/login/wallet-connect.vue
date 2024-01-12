@@ -161,7 +161,7 @@ export default {
         msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
       });
       if (!code) return;
-      code = code.replace(/^Moss_/i, "");
+      code = code.trim().replace(/^Moss_/i, "");
       try {
         this.loading = true;
         await this.$http.post(
