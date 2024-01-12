@@ -24,14 +24,12 @@ import UserTask from "./main/user-task.vue";
       <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
         <img src="/img/mossy/icon/ic-coin.png" width="26" />
         <span class="text-white ml-1 fz-14">110</span>
-
         <q-menu
           anchor="bottom middle"
           self="top middle"
           :style="{
             width: Math.min(screen.width - 30, 480) + 'px',
           }"
-          style="max-height: 465px"
         >
           <user-task :userInfo="userInfo" :uid="uid" />
         </q-menu>

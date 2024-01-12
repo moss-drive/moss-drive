@@ -1,14 +1,3 @@
-<style lang="scss">
-.ntf-wrap {
-  min-height: 100px;
-  svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-}
-</style>
-
 <template>
   <q-card class="bg-card-1">
     <q-card-section>
@@ -24,67 +13,69 @@
       </q-tabs>
     </div>
     <div>
-      <div class="pa-4" v-show="tabIdx == 'daily'">
-        <div class="row" v-if="!nftList">
-          <div class="mb-3" v-for="i in 3" :key="i">
-            <q-skeleton type="QSlider" />
-          </div>
-        </div>
-        <div class="pt-5" v-else-if="!nftList.length">
-          <empty-stone :width="200" class="pa-5" />
-          <div class="ta-c">
-            <q-btn color="primary" rounded href="/mint" target="_blank">
-              <img src="/img/common/add-nft.svg" width="20" />
-              <span class="ml-2">To Mint</span>
-            </q-btn>
-          </div>
-        </div>
-        <div class="row q-col-gutter-md" v-else>
-          <div class="col-4" v-for="row in nftList" :key="row.nftId">
-            <div class="pos-r bg-info bdrs-10 ov-h">
-              <q-img v-if="/^http/.test(row.pic)" :src="row.pic" class="w100p bdrs-10" :ratio="1" />
-              <div v-else class="w100p ntf-wrap" v-html="row.pic"></div>
-              <div class="pos-btm ta-c bg-black-7 pa-">#{{ row.nftId }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pa-4" v-show="tabIdx == 'achievement'">
-        <div v-if="!inviteList">
-          <div class="mb-3" v-for="i in 3" :key="i">
-            <q-skeleton type="QSlider" />
+      <div class="task-box" v-show="tabIdx == 'daily'">
+        <div v-if="!nftList">
+          <div class="mb-3" v-for="i in 5" :key="i">
+            <q-skeleton type="QSlider" height="54px" />
           </div>
         </div>
         <template v-else>
-          <div
-            v-for="row in inviteList"
-            :key="row.code"
-            class="bg-info bdrs-100 py-2 px-3 mb-3 al-c"
-          >
-            <div class="mr-auto fz-16">
-              <span class="none-select op-6 mr-1">#</span>
-              <span
-                :class="{
-                  'txt-del op-7 none-select': row.used,
-                }"
-                >{{ row.code }}</span
+          <div class="task-item" v-for="item in 9" :key="item">
+            <div class="task-item-left">
+              <q-knob
+                readonly
+                v-model="value"
+                show-value
+                size="36px"
+                :thickness="0.22"
+                color="primary"
+                track-color="knob"
               >
+                <q-avatar size="32px">
+                  <img src="/img/mossy/icon/ic-coin.png" />
+                </q-avatar>
+              </q-knob>
+              <div>
+                <div class="task-name">Login</div>
+                <div class="task-desc">+2 points Claimed <span class="task-val">0</span></div>
+              </div>
             </div>
-            <q-btn style="background: #334155" rounded flat v-if="row.used">
-              <span class="mr-2">Used by</span>
-              <a
-                v-if="row.usedByTwitter"
-                class="color-a line-1"
-                :href="`https://twitter.com/${row.usedByTwitter}`"
-                target="_blank"
-                >@{{ row.usedByTwitter.cutStr(4, 4) }}</a
+            <div>
+              <q-btn color="primary" rounded> Do Task </q-btn>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="task-box" v-show="tabIdx == 'achievement'">
+        <div v-if="!nftList">
+          <div class="mb-3" v-for="i in 5" :key="i">
+            <q-skeleton type="QSlider" height="54px" />
+          </div>
+        </div>
+        <template v-else>
+          <div class="task-item" v-for="item in 9" :key="item">
+            <div class="task-item-left">
+              <q-knob
+                readonly
+                v-model="value"
+                show-value
+                size="36px"
+                :thickness="0.22"
+                color="primary"
+                track-color="knob"
               >
-              <span v-else>{{ row.usedByAddress.cutStr(5, 4) }}</span>
-            </q-btn>
-            <q-btn @click="$copy(row.code)" color="primary" rounded v-else>
-              <icon-copy color="#333" />
-              <span class="ml-2">Copy</span>
-            </q-btn>
+                <q-avatar size="32px">
+                  <img src="/img/mossy/icon/ic-coin.png" />
+                </q-avatar>
+              </q-knob>
+              <div>
+                <div class="task-name">Login</div>
+                <div class="task-desc">+2 points Claimed <span class="task-val">0</span></div>
+              </div>
+            </div>
+            <div>
+              <q-btn color="primary" rounded> Do Task </q-btn>
+            </div>
           </div>
         </template>
       </div>
@@ -105,6 +96,7 @@ export default {
       nftErr: null,
       inviteList: null,
       inviteErr: null,
+      value: 70,
     };
   },
   computed: {},
@@ -127,7 +119,7 @@ export default {
       try {
         this.nftErr = null;
         const { data } = await this.$http.get("/nfts");
-        this.nftList = data;
+        // this.nftList = data;
       } catch (error) {
         this.nftErr = error.message;
       }
@@ -156,3 +148,48 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.text-knob {
+  color: #0f172a !important;
+}
+.bg-knob {
+  background: #0f172a !important;
+}
+.task-box {
+  padding: 16px;
+  max-height: 360px;
+  overflow: scroll;
+  .task-item {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 100px;
+    border: 1px solid rgba(30, 239, 164, 0.25);
+    background: #1e293b;
+    margin-bottom: 16px;
+    .task-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: SF Pro Text;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      .task-name {
+        color: #fff;
+        font-weight: 700;
+      }
+      .task-desc {
+        color: #cbd5e1;
+      }
+      .task-val {
+        color: #1eefa4;
+      }
+    }
+  }
+}
+</style>
