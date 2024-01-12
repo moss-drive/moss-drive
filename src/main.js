@@ -35,7 +35,7 @@ router.beforeEach((to, _, next) => {
   next();
 });
 router.afterEach((to) => {
-  if (/\/mossy/.test(to.path)) {
+  if (/^\/(mossy|\d+)$/.test(to.path)) {
     document.title = "Mossyland - Moss";
     const $icon = document.querySelector('link[rel="icon"]');
     $icon?.setAttribute("href", "/img/mossy.png");
