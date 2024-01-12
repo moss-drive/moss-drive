@@ -36,7 +36,11 @@ router.beforeEach((to, _, next) => {
 });
 router.afterEach((to) => {
   if (/\/mossy/.test(to.path)) {
-    document.title = "Mossyland";
+    document.title = "Mossyland - Moss";
+    const $icon = document.querySelector('link[rel="icon"]');
+    $icon?.setAttribute("href", "/img/mossy.png");
+  } else if (/\/s\//.test(to.path)) {
+    document.title = "Download - Moss";
   }
   setState({
     showProgress: false,
