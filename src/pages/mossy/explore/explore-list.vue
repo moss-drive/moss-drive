@@ -120,7 +120,7 @@ export default {
         if (isMore) {
           this.rows = [...this.rows, ...data];
         } else {
-          this.rows = data;
+          // this.rows = data;
         }
       } catch (error) {
         console.log(error);
