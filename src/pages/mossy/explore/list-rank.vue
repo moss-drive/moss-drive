@@ -28,8 +28,8 @@
         <div class="bdrs-10 ov-h bg-dark2">
           <img
             :src="`/img/mossy/stone/rank-bg${i + 1}.png`"
-            style="max-height: 120px"
-            class="w100p d-b"
+            style="min-height: 60px; max-height: 120px"
+            class="w100p d-b bg-info"
           />
           <div class="pa-5">
             <div class="pos-r pa-2 mb-4">
@@ -107,6 +107,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -131,7 +132,6 @@ export default {
   },
   methods: {
     onRow(item) {
-      // this.$router.push(``);
       window.open(`/${item.stoneId}`);
     },
   },

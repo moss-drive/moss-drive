@@ -65,7 +65,7 @@
           color="primary"
           :loading="moving"
           @click="onMove"
-          :disable="(!moveFunc && curPrefix == moveToPrefix) || (moveFunc && !moveToPrefix)"
+          :disable="!moveFunc && curPrefix == moveToPrefix"
           >{{ moveFunc ? "Save" : "Move" }} here</q-btn
         >
       </q-card-actions>

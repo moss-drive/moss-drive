@@ -15,7 +15,7 @@
       >
         <div class="al-c px-2">
           <img src="/img/mossy/icon/ic-trans.svg" width="16" />
-          <span class="color-1 ml-1 fz-12">TXs History</span>
+          <span class="color-1 ml-1 fz-12">Key TXs</span>
         </div>
       </q-btn>
     </div>
