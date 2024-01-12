@@ -117,9 +117,7 @@ export default {
         return row.icon;
       }
       if (row.cid && row.type == "image" && row.size < 10 * 1024 * 1024) {
-        if (this.$inDev) {
-          return `https://moss-img.4everland.co/cdn-cgi/image/width=150/ipfs/${row.cid}`;
-        }
+        // return `https://moss-img.4everland.co/cdn-cgi/image/width=150/ipfs/${row.cid}`;
         return `https://moss-img.4everland.link/ipfs/${row.cid}?width=150&optimizer=image`;
       }
       return `/img/driver/icon_${row.type}.png`;
