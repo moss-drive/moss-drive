@@ -26,8 +26,8 @@
     <div>
       <div class="pa-4" v-show="tabIdx == 'daily'">
         <div class="row" v-if="!nftList">
-          <div class="col-4 d-center" v-for="i in 3" :key="i">
-            <q-skeleton size="100px" square />
+          <div class="mb-3" v-for="i in 3" :key="i">
+            <q-skeleton type="QSlider" />
           </div>
         </div>
         <div class="pt-5" v-else-if="!nftList.length">
