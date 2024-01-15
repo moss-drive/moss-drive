@@ -110,7 +110,7 @@ export default {
       emptyImg,
       emptyMessage: "As empty as a cloudless sky",
       page: 1,
-      size: 10,
+      size: 100,
     };
   },
   created() {
