@@ -24,8 +24,11 @@ import UserCard from "./main/user-card.vue";
         <img src="/img/mossy/icon/ic-coin.png" width="26" />
         <span class="text-white ml-1 fz-14">0</span>
       </q-btn> -->
-      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
-        <img src="/img/mossy/icon/ic-bell.svg" width="22" />
+      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px" @click="unRead = false">
+        <img
+          :src="unRead ? '/img/mossy/icon/ic-bell-active.svg' : '/img/mossy/icon/ic-bell.svg'"
+          width="22"
+        />
         <q-menu
           :style="{
             width: Math.min(screen.width - 30, 480) + 'px',
@@ -83,6 +86,7 @@ export default {
     return {
       screen,
       searchKey: "",
+      unRead: false,
     };
   },
   computed: {
@@ -108,6 +112,19 @@ export default {
   },
   components: {
     MessageNotice,
+  },
+  created() {
+    this.checkRead();
+  },
+  methods: {
+    async checkRead() {
+      try {
+        const { data } = await this.$http.get("/broadcast/unread");
+        this.unRead = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
