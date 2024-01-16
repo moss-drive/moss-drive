@@ -1,8 +1,29 @@
 <template>
   <q-card class="bg-card-1">
     <q-card-section>
-      <div>
-        <div>Moss Tasks</div>
+      <div class="task-header">
+        <div class="tast-title">Moss Tasks</div>
+        <div>
+          <q-btn flat round @click="init">
+            <q-icon size="24px">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M2 10C2 10 4.00498 7.26822 5.63384 5.63824C7.26269 4.00827 9.5136 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.89691 21 4.43511 18.2543 3.35177 14.5M2 10V4M2 10H8"
+                  stroke="#CBD5E1"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </q-icon>
+          </q-btn>
+        </div>
       </div>
     </q-card-section>
 
@@ -28,7 +49,7 @@
                 show-value
                 size="36px"
                 :thickness="0.22"
-                color="primary"
+                :color="item.status == 'COMPLETED' ? 'done' : 'primary'"
                 track-color="knob"
               >
                 <q-avatar size="32px">
@@ -75,21 +96,21 @@
         </template>
       </div>
       <div class="task-box" v-show="tabIdx == 'achievement'">
-        <div v-if="!nftList">
+        <div v-if="!achievementsList">
           <div class="mb-3" v-for="i in 5" :key="i">
             <q-skeleton type="QSlider" height="54px" />
           </div>
         </div>
         <template v-else>
-          <div class="task-item" v-for="item in 9" :key="item">
+          <div class="task-item" v-for="item in achievementsList.list" :key="item">
             <div class="task-item-left">
               <q-knob
                 readonly
-                v-model="value"
+                :value="item.taskStatus == 'ON_GOING' ? 0 : 100"
                 show-value
                 size="36px"
                 :thickness="0.22"
-                color="primary"
+                :color="item.taskStatus == 'COMPLETED' ? 'done' : 'primary'"
                 track-color="knob"
               >
                 <q-avatar size="32px">
@@ -97,12 +118,37 @@
                 </q-avatar>
               </q-knob>
               <div>
-                <div class="task-name">Login</div>
-                <div class="task-desc">+2 points Claimed <span class="task-val">0</span></div>
+                <div class="task-name">{{ item.name }}</div>
+                <div class="task-desc">+{{ item.reward }} points</div>
               </div>
             </div>
             <div>
-              <q-btn color="primary" rounded> Do Task </q-btn>
+              <q-btn
+                color="primary"
+                rounded
+                v-if="item.taskStatus == 'ON_GOING'"
+                style="width: 84px"
+                @click="nextStep(item)"
+              >
+                Do Task
+              </q-btn>
+              <q-btn
+                color="primary"
+                rounded
+                v-if="item.taskStatus == 'CLAIM'"
+                style="width: 84px"
+                @click="nextStep(item)"
+              >
+                Claim {{ item.reward }}
+              </q-btn>
+              <q-btn
+                disable
+                rounded
+                v-if="item.taskStatus == 'COMPLETED'"
+                style="background-color: #475569; color: #64748b; width: 84px"
+              >
+                Done
+              </q-btn>
             </div>
           </div>
         </template>
@@ -112,7 +158,7 @@
 </template>
 
 <script>
-import { fetchPoint, fetchDailyList, fetchAchievementsList, fetchNext } from "@/api/task.js";
+import { fetchDailyList, fetchAchievementsList, fetchNext } from "@/api/task.js";
 
 export default {
   props: {
@@ -123,28 +169,38 @@ export default {
     return {
       tabIdx: "daily",
       dailyList: null,
-      inviteList: null,
-      inviteErr: null,
-      value: 70,
+      achievementsList: null,
     };
   },
   computed: {},
   watch: {
     tabIdx(val) {
       if (val == "daily") this.getDaily();
-      else if (val == "achievement") this.getInvites();
+      else if (val == "achievement") this.getAchievements();
     },
   },
   created() {
     this.getDaily();
   },
   methods: {
+    async init() {
+      this.getDaily();
+      this.getAchievements();
+    },
     async getDaily() {
       try {
         const { data } = await fetchDailyList();
         this.dailyList = data;
       } catch (error) {
-        this.nftErr = error.message;
+        console.log(error);
+      }
+    },
+    async getAchievements() {
+      try {
+        const { data } = await fetchAchievementsList();
+        this.achievementsList = data;
+      } catch (error) {
+        console.log(error);
       }
     },
     async nextStep(item) {
@@ -169,9 +225,9 @@ export default {
         case "POPUP_S_C_T":
           this.onPopupMint(item, data);
           break;
-        case "EMAIL_BIND":
-          this.onEmailBind();
-          break;
+        // case "EMAIL_BIND":
+        //   this.onEmailBind();
+        //   break;
         case "NONE":
           this.init();
           break;
@@ -180,14 +236,13 @@ export default {
       }
     },
     async onPopup(item, data) {
-      await this.$alert(`+${item.reward} Points`, data.message, {
-        maxWidth: 300,
-        textCenter: true,
+      await this.$alert(`${data.message}`, {
+        title: `+${item.reward} Points`,
       });
       this.init();
     },
     async onPopupMint(item, data) {
-      await this.$alert(data.tips, data.message);
+      await this.$alert(data.message, { title: data.tips });
       this.init();
     },
   },
@@ -200,6 +255,27 @@ export default {
 }
 .bg-knob {
   background: #0f172a !important;
+}
+.text-done {
+  color: #004d3b !important;
+}
+.bg-done {
+  color: #004d3b !important;
+}
+
+.task-header {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .tast-title {
+    color: #fff;
+    font-family: SF Pro Text;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
 }
 .task-box {
   padding: 16px;

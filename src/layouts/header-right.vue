@@ -21,9 +21,9 @@ import UserTask from "./main/user-task.vue";
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <q-btn size="sm" rounded color="info" style="padding: 5px 8px">
+      <q-btn size="sm" rounded color="info" style="padding: 5px 8px" v-if="!noInvited">
         <img src="/img/mossy/icon/ic-coin.png" width="26" />
-        <span class="text-white ml-1 fz-14">110</span>
+        <span class="text-white ml-1 fz-14">{{ pointInfo.total }}</span>
         <q-menu
           anchor="bottom middle"
           self="top middle"
@@ -88,6 +88,7 @@ export default {
   computed: {
     ...mapState({
       userInfo: (s) => s.userInfo,
+      pointInfo: (s) => s.pointInfo,
       uid: (s) => s.loginData.uuid,
     }),
 

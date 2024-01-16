@@ -7,6 +7,7 @@ const storInit = {
   stsData: {},
   userInfo: {},
   usageInfo: {},
+  pointInfo: {},
   stoneList: null,
 };
 const storState = {

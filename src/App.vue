@@ -127,8 +127,10 @@ export default {
       }
       try {
         const { data } = await this.$http.get("/users/twitter/info");
+        const point = await this.$http.get("/activities/point/overview");
         this.$setStore({
           userInfo: data,
+          pointInfo: point.data,
         });
       } catch (error) {
         console.log(error);
