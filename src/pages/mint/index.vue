@@ -326,7 +326,7 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
       publicSellStart: false,
       publicSellEnd: false,
       phase: 0,
-      fundingPhase: 0,
+      fundingPhase: 2,
       freeMintNum: 0,
       saleMintNum: 0,
       freeMinttTime: {
@@ -397,11 +397,11 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
         await this.checkNet();
         const account = this.uid;
         const phase = await this.Factory.getPhase();
-        const fundingPhase = await this.Factory.fundingPhase();
+        // const fundingPhase = await this.Factory.fundingPhase();
         console.log(phase);
-        console.log(fundingPhase);
+        // console.log(fundingPhase);
         this.phase = phase;
-        this.fundingPhase = fundingPhase;
+        // this.fundingPhase = fundingPhase;
         if (phase == 3) {
           this.publicSellEnd = true;
         }
