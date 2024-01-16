@@ -1,5 +1,7 @@
 import { createStore } from "vuex";
 import resourceStore from "./resource";
+import taskStore from "./task";
+
 const SET_DATA = "setData";
 
 const storInit = {
@@ -7,7 +9,6 @@ const storInit = {
   stsData: {},
   userInfo: {},
   usageInfo: {},
-  pointInfo: {},
   stoneList: null,
 };
 const storState = {
@@ -53,6 +54,7 @@ const store = createStore({
   },
   modules: {
     resourceStore,
+    taskStore,
   },
 });
 

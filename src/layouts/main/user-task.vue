@@ -81,7 +81,7 @@
                 style="width: 84px"
                 @click="nextStep(item)"
               >
-                Claim {{ item.cur * item.step - item.recv }}
+                Claim {{ item.reward }}
               </q-btn>
               <q-btn
                 disable
@@ -186,11 +186,16 @@ export default {
     async init() {
       this.getDaily();
       this.getAchievements();
+      this.$store.dispatch("taskStore/getPoint");
     },
     async getDaily() {
       try {
         const { data } = await fetchDailyList();
+        data.items.forEach((item) => {
+          item.reward = item.cur * item.step - item.recv;
+        });
         this.dailyList = data;
+        console.log(this.dailyList);
       } catch (error) {
         console.log(error);
       }

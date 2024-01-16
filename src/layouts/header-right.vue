@@ -88,10 +88,9 @@ export default {
   computed: {
     ...mapState({
       userInfo: (s) => s.userInfo,
-      pointInfo: (s) => s.pointInfo,
       uid: (s) => s.loginData.uuid,
     }),
-
+    ...mapState("taskStore", ["pointInfo"]),
     uname() {
       const { name } = this.userInfo;
       if (name) return name.cutStr(6, 6);
@@ -106,6 +105,9 @@ export default {
     btnSize() {
       return this.asMobile ? "12px" : null;
     },
+  },
+  mounted() {
+    this.$store.dispatch("taskStore/getPoint");
   },
 };
 </script>
