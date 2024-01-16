@@ -138,9 +138,10 @@
             </div>
             <div>
               <q-btn
+                v-if="item.taskStatus == 'ON_GOING'"
+                :disable="item.type == 'USE_ALL_INVITES'"
                 color="primary"
                 rounded
-                v-if="item.taskStatus == 'ON_GOING'"
                 style="width: 100px"
                 @click="nextStep(item)"
               >
