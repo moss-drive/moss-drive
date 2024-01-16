@@ -14,17 +14,17 @@
     </div>
     <div>
       <div class="task-box" v-show="tabIdx == 'daily'">
-        <div v-if="!nftList">
+        <div v-if="!dailyList">
           <div class="mb-3" v-for="i in 5" :key="i">
             <q-skeleton type="QSlider" height="54px" />
           </div>
         </div>
         <template v-else>
-          <div class="task-item" v-for="item in 9" :key="item">
+          <div class="task-item" v-for="item in dailyList.items" :key="item">
             <div class="task-item-left">
               <q-knob
                 readonly
-                v-model="value"
+                :value="(item.cur / item.upLimit) * 100"
                 show-value
                 size="36px"
                 :thickness="0.22"
@@ -36,12 +36,40 @@
                 </q-avatar>
               </q-knob>
               <div>
-                <div class="task-name">Login</div>
-                <div class="task-desc">+2 points Claimed <span class="task-val">0</span></div>
+                <div class="task-name">{{ item.name }}</div>
+                <div class="task-desc">
+                  +{{ item.step }} points Claimed
+                  <span class="task-val">{{ item.recv }}</span>
+                </div>
               </div>
             </div>
             <div>
-              <q-btn color="primary" rounded> Do Task </q-btn>
+              <q-btn
+                color="primary"
+                rounded
+                v-if="item.status == 'ON_GOING'"
+                style="width: 84px"
+                @click="nextStep(item)"
+              >
+                Do Task
+              </q-btn>
+              <q-btn
+                color="primary"
+                rounded
+                v-if="item.status == 'CLAIM'"
+                style="width: 84px"
+                @click="nextStep(item)"
+              >
+                Claim {{ item.cur * item.step - item.recv }}
+              </q-btn>
+              <q-btn
+                disable
+                rounded
+                v-if="item.status == 'COMPLETED'"
+                style="background-color: #475569; color: #64748b; width: 84px"
+              >
+                Done
+              </q-btn>
             </div>
           </div>
         </template>
@@ -84,6 +112,8 @@
 </template>
 
 <script>
+import { fetchPoint, fetchDailyList, fetchAchievementsList, fetchNext } from "@/api/task.js";
+
 export default {
   props: {
     userInfo: Object,
@@ -92,8 +122,7 @@ export default {
   data() {
     return {
       tabIdx: "daily",
-      nftList: null,
-      nftErr: null,
+      dailyList: null,
       inviteList: null,
       inviteErr: null,
       value: 70,
@@ -102,48 +131,64 @@ export default {
   computed: {},
   watch: {
     tabIdx(val) {
-      if (val == "daily") this.getNfts();
+      if (val == "daily") this.getDaily();
       else if (val == "achievement") this.getInvites();
     },
   },
   created() {
-    this.getNfts();
+    this.getDaily();
   },
   methods: {
-    getIpfs(link) {
-      const cid = link.replace("ipfs://", "");
-      return `https://${cid}.ipns.dweb.link/`;
-      // return this.$bucket.getIpfsLink(this.uid, cid);
-    },
-    async getNfts() {
+    async getDaily() {
       try {
-        this.nftErr = null;
-        const { data } = await this.$http.get("/nfts");
-        // this.nftList = data;
+        const { data } = await fetchDailyList();
+        this.dailyList = data;
       } catch (error) {
         this.nftErr = error.message;
       }
     },
-    async getInvites() {
+    async nextStep(item) {
       try {
-        this.inviteErr = null;
-        const { data } = await this.$http.get("/invitation/usages");
-        data.forEach((row) => {
-          row.code = "Moss_" + row.code;
-        });
-        // data[0].used = 1;
-        this.inviteList = data;
+        const { data } = await fetchNext(item.id);
+        this.onAfterNext(item, data);
       } catch (error) {
-        this.inviteErr = error.message;
+        console.log(error);
       }
     },
-    onSetting(row) {
-      const { href, name } = row;
-      if (href) return;
-      if (name == "logout") {
-        this.$store.dispatch("logout");
-        this.$router.replace("/");
+    async onAfterNext(item, data) {
+      switch (data.next) {
+        case "JUMP":
+          this.$router.push(data.message);
+          break;
+        case "OPEN_NEW_TAB":
+          window.open(data.message);
+          break;
+        case "POPUP":
+          this.onPopup(item, data);
+          break;
+        case "POPUP_S_C_T":
+          this.onPopupMint(item, data);
+          break;
+        case "EMAIL_BIND":
+          this.onEmailBind();
+          break;
+        case "NONE":
+          this.init();
+          break;
+        default:
+          break;
       }
+    },
+    async onPopup(item, data) {
+      await this.$alert(`+${item.reward} Points`, data.message, {
+        maxWidth: 300,
+        textCenter: true,
+      });
+      this.init();
+    },
+    async onPopupMint(item, data) {
+      await this.$alert(data.tips, data.message);
+      this.init();
     },
   },
 };
