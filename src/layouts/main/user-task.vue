@@ -41,11 +41,18 @@
           </div>
         </div>
         <template v-else>
-          <div class="task-item" v-for="item in dailyList.items" :key="item">
+          <div
+            class="task-item"
+            :class="{
+              'task-item-done': item.status == 'COMPLETED',
+            }"
+            v-for="item in dailyList.items"
+            :key="item"
+          >
             <div class="task-item-left">
               <q-knob
                 readonly
-                :value="(item.cur / item.upLimit) * 100"
+                v-model="item.value"
                 show-value
                 size="36px"
                 :thickness="0.22"
@@ -69,7 +76,7 @@
                 color="primary"
                 rounded
                 v-if="item.status == 'ON_GOING'"
-                style="width: 84px"
+                style="width: 100px"
                 @click="nextStep(item)"
               >
                 Do Task
@@ -78,7 +85,7 @@
                 color="primary"
                 rounded
                 v-if="item.status == 'CLAIM'"
-                style="width: 84px"
+                style="width: 100px"
                 @click="nextStep(item)"
               >
                 Claim {{ item.reward }}
@@ -87,7 +94,7 @@
                 disable
                 rounded
                 v-if="item.status == 'COMPLETED'"
-                style="background-color: #475569; color: #64748b; width: 84px"
+                style="background-color: #475569; color: #64748b; width: 100px"
               >
                 Done
               </q-btn>
@@ -102,11 +109,18 @@
           </div>
         </div>
         <template v-else>
-          <div class="task-item" v-for="item in achievementsList.list" :key="item">
+          <div
+            class="task-item"
+            :class="{
+              'task-item-done': item.taskStatus == 'COMPLETED',
+            }"
+            v-for="item in achievementsList.list"
+            :key="item"
+          >
             <div class="task-item-left">
               <q-knob
                 readonly
-                :value="item.taskStatus == 'ON_GOING' ? 0 : 100"
+                v-model="item.value"
                 show-value
                 size="36px"
                 :thickness="0.22"
@@ -127,7 +141,7 @@
                 color="primary"
                 rounded
                 v-if="item.taskStatus == 'ON_GOING'"
-                style="width: 84px"
+                style="width: 100px"
                 @click="nextStep(item)"
               >
                 Do Task
@@ -136,7 +150,7 @@
                 color="primary"
                 rounded
                 v-if="item.taskStatus == 'CLAIM'"
-                style="width: 84px"
+                style="width: 100px"
                 @click="nextStep(item)"
               >
                 Claim {{ item.reward }}
@@ -145,7 +159,7 @@
                 disable
                 rounded
                 v-if="item.taskStatus == 'COMPLETED'"
-                style="background-color: #475569; color: #64748b; width: 84px"
+                style="background-color: #475569; color: #64748b; width: 100px"
               >
                 Done
               </q-btn>
@@ -193,6 +207,7 @@ export default {
         const { data } = await fetchDailyList();
         data.items.forEach((item) => {
           item.reward = item.cur * item.step - item.recv;
+          item.value = (item.cur / item.upLimit) * 100;
         });
         this.dailyList = data;
         console.log(this.dailyList);
@@ -203,6 +218,9 @@ export default {
     async getAchievements() {
       try {
         const { data } = await fetchAchievementsList();
+        data.list.forEach((item) => {
+          item.value = item.taskStatus === "ON_GOING" ? 0 : 100;
+        });
         this.achievementsList = data;
       } catch (error) {
         console.log(error);
@@ -219,7 +237,8 @@ export default {
     async onAfterNext(item, data) {
       switch (data.next) {
         case "JUMP":
-          this.$router.push(data.message);
+          // this.$router.push(data.message);
+          window.location.href = data.message;
           break;
         case "OPEN_NEW_TAB":
           window.open(data.message);
@@ -296,6 +315,7 @@ export default {
     border: 1px solid rgba(30, 239, 164, 0.25);
     background: #1e293b;
     margin-bottom: 16px;
+
     .task-item-left {
       display: flex;
       align-items: center;
@@ -316,6 +336,9 @@ export default {
         color: #1eefa4;
       }
     }
+  }
+  .task-item-done {
+    border: 1px solid #334155;
   }
 }
 </style>
