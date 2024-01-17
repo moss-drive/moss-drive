@@ -35,9 +35,22 @@ import UserTask from "./main/user-task.vue";
           <user-task :userInfo="userInfo" :uid="uid" />
         </q-menu>
       </q-btn>
-      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px">
-        <img src="/img/mossy/icon/ic-bell.svg" width="22" />
+      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px" @click="unRead = false">
+        <img
+          :src="unRead ? '/img/mossy/icon/ic-bell-active.svg' : '/img/mossy/icon/ic-bell.svg'"
+          width="22"
+        />
+        <q-menu
+          :style="{
+            width: Math.min(screen.width - 30, 480) + 'px',
+          }"
+          class="mh-600"
+          :offset="[300, 10]"
+        >
+          <message-notice></message-notice>
+        </q-menu>
       </q-btn>
+
       <q-btn
         class="ml-3"
         :class="{
@@ -68,7 +81,7 @@ import UserTask from "./main/user-task.vue";
 <script>
 import { mapState } from "vuex";
 import { useQuasar } from "quasar";
-
+import MessageNotice from "./components/message-notice.vue";
 export default {
   props: {
     border: {
@@ -85,6 +98,7 @@ export default {
     return {
       screen,
       searchKey: "",
+      unRead: false,
     };
   },
   computed: {
@@ -110,6 +124,22 @@ export default {
   },
   mounted() {
     this.$store.dispatch("taskStore/getPoint");
+  },
+  components: {
+    MessageNotice,
+  },
+  created() {
+    this.checkRead();
+  },
+  methods: {
+    async checkRead() {
+      try {
+        const { data } = await this.$http.get("/broadcast/unread");
+        this.unRead = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
