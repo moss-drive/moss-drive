@@ -40,7 +40,7 @@ router.afterEach((to) => {
     const $icon = document.querySelector('link[rel="icon"]');
     $icon?.setAttribute("href", "/img/mossy.png");
   } else if (/\/s\//.test(to.path)) {
-    document.title = "Download - Moss";
+    document.title = "Save - Moss";
   }
   setState({
     showProgress: false,
