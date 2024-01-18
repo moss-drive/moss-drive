@@ -26,7 +26,7 @@ import UserTask from "./main/user-task.vue";
         <span class="text-white ml-1 fz-14">{{ pointInfo.total }}</span>
         <q-menu
           anchor="bottom middle"
-          :offset="[0, 20]"
+          :offset="[0, 10]"
           self="top middle"
           :style="{
             width: Math.min(screen.width - 30, 480) + 'px',
@@ -73,7 +73,7 @@ import UserTask from "./main/user-task.vue";
         <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
 
         <q-menu
-          :offset="[0, 20]"
+          :offset="[0, 10]"
           :style="{
             width: Math.min(screen.width - 30, 400) + 'px',
           }"

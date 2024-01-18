@@ -1,6 +1,6 @@
 <template>
-  <q-card class="bg-card-1">
-    <q-card-section>
+  <q-card class="bg-card-1" style="border: 1px solid #334155">
+    <q-card-sectio>
       <div class="task-header">
         <div class="tast-title">Moss Tasks</div>
         <div>
@@ -25,7 +25,7 @@
           </q-btn>
         </div>
       </div>
-    </q-card-section>
+    </q-card-sectio>
 
     <div class="mt-1">
       <q-tabs class="bdb-1" v-model="tabIdx" dense active-color="primary" no-caps>
@@ -36,7 +36,7 @@
     <div>
       <div class="task-box" v-show="tabIdx == 'daily'">
         <div v-if="!dailyList">
-          <div class="mb-3" v-for="i in 5" :key="i">
+          <div class="mb-3" v-for="i in 4" :key="i">
             <q-skeleton type="QSlider" height="54px" />
           </div>
         </div>
@@ -66,7 +66,7 @@
               <div>
                 <div class="task-name">{{ item.name }}</div>
                 <div class="task-desc">
-                  +{{ item.step }} points Claimed
+                  +{{ item.step }} Points&nbsp;&nbsp;&nbsp;&nbsp;Claimed
                   <span class="task-val">{{ item.recv }}</span>
                 </div>
               </div>
@@ -104,7 +104,7 @@
       </div>
       <div class="task-box" v-show="tabIdx == 'achievement'">
         <div v-if="!achievementsList">
-          <div class="mb-3" v-for="i in 5" :key="i">
+          <div class="mb-3" v-for="i in 4" :key="i">
             <q-skeleton type="QSlider" height="54px" />
           </div>
         </div>
@@ -136,7 +136,7 @@
               </q-avatar>
               <div>
                 <div class="task-name">{{ item.name }}</div>
-                <div class="task-desc">+{{ item.reward }} points</div>
+                <div class="task-desc">+{{ item.reward }} Points</div>
               </div>
             </div>
             <div>
@@ -292,7 +292,7 @@ export default {
 }
 
 .task-header {
-  padding: 0 8px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -307,7 +307,7 @@ export default {
 }
 .task-box {
   padding: 16px;
-  max-height: 360px;
+  max-height: 290px;
   overflow: scroll;
   .task-item {
     display: flex;
