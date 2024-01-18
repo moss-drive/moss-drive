@@ -35,7 +35,15 @@ import UserTask from "./main/user-task.vue";
           <user-task :userInfo="userInfo" :uid="uid" />
         </q-menu>
       </q-btn>
-      <q-btn size="sm" class="ml-4" round color="info" style="padding: 7px" @click="unRead = false">
+      <q-btn
+        size="sm"
+        class="ml-4"
+        round
+        color="info"
+        style="padding: 7px"
+        @click="unRead = false"
+        v-if="!noInvited"
+      >
         <img
           :src="unRead ? '/img/mossy/icon/ic-bell-active.svg' : '/img/mossy/icon/ic-bell.svg'"
           width="22"

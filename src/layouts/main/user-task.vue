@@ -118,7 +118,7 @@
             :key="item"
           >
             <div class="task-item-left">
-              <q-knob
+              <!-- <q-knob
                 readonly
                 v-model="item.value"
                 show-value
@@ -130,7 +130,10 @@
                 <q-avatar size="32px">
                   <img src="/img/mossy/icon/ic-coin.png" />
                 </q-avatar>
-              </q-knob>
+              </q-knob> -->
+              <q-avatar size="36px">
+                <img src="/img/mossy/icon/ic-coin-nopro.png" />
+              </q-avatar>
               <div>
                 <div class="task-name">{{ item.name }}</div>
                 <div class="task-desc">+{{ item.reward }} points</div>
