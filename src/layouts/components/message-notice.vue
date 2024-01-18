@@ -24,7 +24,7 @@
             <div class="fw-b fz-14 notice-text">{{ item.type }}: {{ item.message }}</div>
             <div class="al-c space-btw">
               <div class="fz-12 date">{{ item.publishAt }}</div>
-              <div class="fz-12 al-c cursor-p">
+              <div class="fz-12 al-c cursor-p" v-if="item.jumpTo != ''">
                 <a :href="item.jumpTo" target="__blank">View All</a>
                 <img src="/img/common/right-arrow.svg" width="16" alt="" />
               </div>
