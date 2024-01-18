@@ -119,18 +119,7 @@ export default {
         for (const i in dirList) {
           this.dirDeleteIdx = i;
           const dirKey = dirList[i].key;
-          const { rows: dirFiles } = await this.$bucket.listObjects({
-            Prefix: dirKey,
-          });
-          await this.delMulti(
-            [
-              {
-                key: dirKey,
-              },
-              ...dirFiles,
-            ],
-            dirFiles.length
-          );
+          await this.delOnDeepMulti(dirKey, i);
           if (!this.deleting) break;
         }
         this.dirDeleteIdx = -1;
@@ -145,9 +134,8 @@ export default {
         });
       }
     },
-    delMulti(files, len) {
+    async delMulti(files) {
       if (!files.length) return;
-      this.dirFileNumArr.push(len || files.length);
       const params = {
         Delete: {
           Objects: files.map((it) => {
@@ -159,6 +147,22 @@ export default {
         },
       };
       return this.$bucket.deleteObjects(params);
+    },
+    async delOnDeepMulti(Prefix, i) {
+      // maxlength  1000
+      let hasMore = true;
+      while (hasMore) {
+        const { rows: dirFiles, nextToken } = await this.$bucket.listObjects({
+          Prefix,
+        });
+        await this.delMulti(dirFiles);
+        if (this.dirFileNumArr[i]) {
+          this.dirFileNumArr[i] += dirFiles.length;
+        } else {
+          this.dirFileNumArr.push(dirFiles.length);
+        }
+        hasMore = nextToken;
+      }
     },
   },
 };
