@@ -21,7 +21,7 @@
             <img :src="item.logo" width="24" alt="" />
           </div>
           <div class="notice-content flex-1">
-            <div class="fw-b fz-14 notice-text">{{ item.type }}: {{ item.message }}</div>
+            <div class="fw-b fz-14 notice-text">{{ item.message }}</div>
             <div class="al-c space-btw">
               <div class="fz-12 date">{{ item.publishAt }}</div>
               <div class="fz-12 al-c cursor-p" v-if="item.jumpTo != ''">
@@ -94,6 +94,7 @@ export default {
 .notice-container {
   border-radius: 16px;
   background: #0f172a;
+  border: 1px solid #334155;
 }
 .icon-bg {
   width: 40px;

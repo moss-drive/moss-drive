@@ -10,7 +10,7 @@
 </style>
 
 <template>
-  <q-card class="bg-card-1">
+  <q-card class="bg-card-1" style="border: 1px solid #334155">
     <q-card-section>
       <div class="ta-c">
         <div class="mt-2">

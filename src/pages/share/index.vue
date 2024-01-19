@@ -24,11 +24,12 @@
             <div class="user-desc">{{ userInfo.twitterDesc }}</div>
           </div>
           <div class="uncode" v-if="userInfo.valid && !showFileList">
-            <q-form>
+            <q-form @submit.stop>
               <input
                 class="valid-code"
                 placeholder="Please enter the retrieval code"
                 v-model="code"
+                @keydown.enter="getVaild"
               />
               <div>
                 <q-btn

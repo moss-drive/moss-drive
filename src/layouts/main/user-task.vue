@@ -307,8 +307,8 @@ export default {
 }
 .task-box {
   padding: 16px;
-  max-height: 290px;
-  overflow: scroll;
+  // max-height: 290px;
+  // overflow: scroll;
   .task-item {
     display: flex;
     width: 100%;
@@ -339,6 +339,9 @@ export default {
       .task-val {
         color: #1eefa4;
       }
+    }
+    &:last-child {
+      margin-bottom: 0;
     }
   }
   .task-item-done {
