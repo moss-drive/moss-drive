@@ -8,19 +8,23 @@
 </style>
 
 <template>
-  <q-dialog v-model="showPop" v-bind="dialogOpt">
-    <component :is="compName" :list="compList" :current="compCurrent" />
+  <q-dialog
+    v-model="showPop"
+    :maximized="true"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    class="bg-none"
+  >
+    <common-preview :list="list" :current="compCurrent" />
   </q-dialog>
 </template>
 
 <script>
 import CommonPreview from "./common-preview.vue";
-import AudioCard from "./audio-card.vue";
 
 export default {
   components: {
     CommonPreview,
-    AudioCard,
   },
   emits: ["update:modelValue"],
   props: {
@@ -40,29 +44,13 @@ export default {
     isAudio() {
       return this.curItem.type == "audio";
     },
-    compName() {
-      let name = "common-preview";
-      if (this.isAudio) {
-        name = AudioCard.name;
-      }
-      return name;
-    },
-    compList() {
-      if (this.isAudio) {
-        return this.list.filter((it) => it.type == "audio");
-      }
-      return this.list; //.filter((it) => it.type != "audio");
-    },
     compCurrent() {
-      return this.compList.findIndex((it) => it == this.curItem);
+      return this.list.findIndex((it) => it == this.curItem);
     },
     dialogOpt() {
-      let position = undefined;
-      if (this.isAudio || window.$q.platform.is.mobile) {
-        position = "bottom";
-      }
       return {
-        position,
+        position: "bottom",
+        maximized: true,
       };
     },
   },

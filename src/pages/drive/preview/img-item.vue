@@ -2,7 +2,7 @@
 .img-item img {
   min-width: 150px;
   max-width: 90%;
-  max-height: 70vh;
+  max-height: 80vh;
   background: #fff url(/img/common/bg-trans.svg);
   background-size: 30px;
   transition: all ease 200ms;
@@ -11,7 +11,7 @@
   box-shadow: 0 0 3px #666;
   max-height: auto;
   min-width: 200px;
-  max-width: 100%;
+  max-height: 90vh;
 }
 .meta-txt {
   margin-top: 3px;
@@ -26,13 +26,12 @@
     :class="{
       big: isBig,
     }"
-    @click="isBig = !isBig"
   >
     <div class="pos-center" v-if="loading">
       <q-spinner-ios color="yellow" size="30px" />
     </div>
     <div class="ta-c">
-      <img ref="img" :src="src" @load="onLoad" @error="onEnd" />
+      <img ref="img" :src="src" @click="isBig = !isBig" @load="onLoad" @error="onEnd" />
       <!-- <div class="meta-txt" title="width(px) × height(px)">
         {{ metaTxt }}
       </div> -->
