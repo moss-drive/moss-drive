@@ -29,6 +29,7 @@ import ImgItem from "./img-item.vue";
     </q-card-section>
 
     <q-carousel
+      ref="slider"
       class="qs-preview"
       swipeable
       animated
@@ -55,7 +56,7 @@ import ImgItem from "./img-item.vue";
             </div>
           </template>
         </div>
-        <div class="d-center">
+        <div class="d-center" @click.stop>
           <div>
             <span>CID</span>
             <a :href="getCidLink(it.cid)" target="_blank" class="color-a ml-1">
@@ -69,15 +70,19 @@ import ImgItem from "./img-item.vue";
               <u>{{ it.name }}</u>
             </a>
           </div>
+          <div class="ml-5">
+            <span>Update Time</span>
+            <span class="op-7 ml-2">{{ it.lastModified.format() }}</span>
+          </div>
         </div>
       </q-carousel-slide>
 
       <template v-slot:control>
         <q-carousel-control position="top-left" :offset="[20, 20]">
-          <div class="al-c white">
-            <img :src="`/img/driver/icon_${curItem.type}.png`" width="30" class="d-b ml-2" />
-            <span v-if="curItem" class="ml-2">{{ curItem.name }}</span>
-            <!-- <span class="op-6" v-if="list.length > 1">({{ curIdx + 1 }}/{{ list.length }})</span> -->
+          <div class="al-c white bg-black-5 pa-1">
+            <img :src="`/img/driver/icon_${curItem.type}.png`" width="30" class="d-b" />
+            <span class="op-7 ml-2" v-if="list.length > 1">{{ curIdx + 1 }}/{{ list.length }}</span>
+            <span v-if="curItem" class="ml-1">{{ curItem.name }}</span>
           </div>
         </q-carousel-control>
       </template>
@@ -89,6 +94,7 @@ import ImgItem from "./img-item.vue";
 import { mapState } from "vuex";
 
 export default {
+  emits: ["close"],
   props: {
     list: Array,
     current: Number,
@@ -113,13 +119,26 @@ export default {
       this.curIdx = val;
     },
     curItem() {
-      console.log(this.curItem);
       this.loading = true;
     },
   },
+  mounted() {
+    window.onkeyup = (e) => {
+      const slider = this.$refs.slider;
+      if (!slider) return;
+      const len = this.list.length;
+      if (len <= 1) return;
+      const { code } = e;
+      if (code == "ArrowRight") slider.next();
+      else if (code == "ArrowLeft") slider.previous();
+    };
+  },
   methods: {
     onBgClick(e) {
-      console.log(e.target);
+      const cls = [...e.target.classList];
+      if (!cls.includes("e-stop")) {
+        this.$emit("close");
+      }
     },
     getCidLink(cid) {
       return this.$bucket.getIpfsLink(this.uid, cid);

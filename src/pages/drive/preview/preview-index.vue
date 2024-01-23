@@ -15,7 +15,7 @@
     transition-hide="slide-down"
     class="bg-none"
   >
-    <common-preview :list="list" :current="compCurrent" />
+    <common-preview :list="list" :current="compCurrent" @close="showPop = false" />
   </q-dialog>
 </template>
 
