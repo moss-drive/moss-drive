@@ -133,6 +133,9 @@ export default {
       else if (code == "ArrowLeft") slider.previous();
     };
   },
+  unmounted() {
+    window.onkeyup = null;
+  },
   methods: {
     onBgClick(e) {
       const cls = [...e.target.classList];
