@@ -49,6 +49,16 @@
               <template v-slot:prepend>
                 <q-img src="/img/driver/icon_folder.png" width="26px" />
               </template>
+              <template v-slot:after>
+                <q-btn
+                  flat
+                  dense
+                  color="primary"
+                  @click.stop.prevent="scope.set"
+                  :disable="scope.validate(scope.value) === false"
+                  >OK</q-btn
+                >
+              </template>
             </q-input>
           </q-popup-edit>
         </div>
