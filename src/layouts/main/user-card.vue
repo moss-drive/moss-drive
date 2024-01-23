@@ -46,12 +46,12 @@
         </div>
         <div class="pt-5" v-else-if="!nftList.length">
           <empty-stone :width="200" class="pa-5" />
-          <div class="ta-c">
+          <!-- <div class="ta-c">
             <q-btn color="primary" rounded href="/mint" target="_blank">
               <img src="/img/common/add-nft.svg" width="20" />
               <span class="ml-2">To Mint</span>
             </q-btn>
-          </div>
+          </div> -->
         </div>
         <div class="row q-col-gutter-md" v-else>
           <div class="col-4" v-for="row in nftList" :key="row.nftId">

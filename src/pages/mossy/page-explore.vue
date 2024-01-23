@@ -40,11 +40,11 @@ import ExploreList from "./explore/explore-list.vue";
     <ExploreList></ExploreList>
   </div>
 
-  <div class="pos-f" style="bottom: 80px; right: 40px">
+  <!-- <div class="pos-f" style="bottom: 80px; right: 40px">
     <a href="/mint" target="_blank" class="">
       <img src="/img/mossy/mint.png" height="100" class="d-b hover-s1 trans-200" />
     </a>
-  </div>
+  </div> -->
 </template>
 
 <script>
