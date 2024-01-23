@@ -324,6 +324,7 @@ export default {
         shareName += "...";
       }
       this.shareName = shareName;
+      document.title = shareName + " - Moss";
       this.showFileList = true;
       this.$router.push({ query: { ...this.$route.query, code: code } });
     },
