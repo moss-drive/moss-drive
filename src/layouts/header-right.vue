@@ -130,15 +130,24 @@ export default {
       return this.asMobile ? "12px" : null;
     },
   },
+  watch: {
+    uid(val) {
+      if (val) {
+        this.$store.dispatch("taskStore/getPoint");
+        this.checkRead();
+      }
+    },
+  },
   mounted() {
-    this.$store.dispatch("taskStore/getPoint");
+    if (this.uid) {
+      this.$store.dispatch("taskStore/getPoint");
+      this.checkRead();
+    }
   },
   components: {
     MessageNotice,
   },
-  created() {
-    this.checkRead();
-  },
+  created() {},
   methods: {
     async checkRead() {
       try {
