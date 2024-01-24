@@ -9,7 +9,7 @@
 
 <script setup>
 // import HomeList from "./home-list.vue";
-// import HomeImg from "./home-img.vue";
+import HomeImg from "./home-img.vue";
 // import HomeMint from "./home-mint.vue";
 import HomeLogin from "./home-login.vue";
 import HomeBtm from "./home-btm.vue";
@@ -36,7 +36,7 @@ import HeaderRight from "../../layouts/header-right.vue";
         :style1="!asMobile ? 'transform: perspective(3000px) rotateY(40deg)' : 'padding: 30px'"
       >
         <!-- <home-mint v-if="!asMobile" /> -->
-        <!-- <home-img class="pos-r" style="left: -90px" /> -->
+        <home-img class="pos-r" style="left: -90px" />
         <!-- <home-list :asMobile="asMobile" /> -->
       </div>
       <div class="col-4 h100p pos-r">

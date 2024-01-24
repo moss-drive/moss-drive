@@ -54,6 +54,10 @@ export default {
           icon: "doc",
           url: "http://docs.mymoss.io/",
         },
+        {
+          icon: "opensea",
+          url: "https://opensea.io/collection/mymoss",
+        },
       ],
     };
   },
