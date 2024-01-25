@@ -138,7 +138,9 @@ export default {
   methods: {
     onShare() {
       this.onCopy(
-        `Hi, I've shared some files with you using Moss. You can view them by opening the link in a browser. Link: ${this.shareLink} Extraction code: ${this.resData.code}`
+        `Hi, I've shared some files with you using #Moss (@mymoss_io on X). You can view them by opening the link in a browser.
+Link: ${this.shareLink}
+Extraction code: ${this.resData.code}`
       );
     },
     async onOpen() {
