@@ -1,6 +1,5 @@
 <style lang="scss">
 @media (max-width: 599.98px) {
-  // .q-slider__track,
   .q-dialog__inner--bottom > div {
     border-radius: 0;
   }
@@ -15,17 +14,12 @@
     transition-hide="slide-down"
     class="bg-none"
   >
-    <common-preview :list="list" :current="compCurrent" @close="showPop = false" />
+    <preview-con :list="list" :current="current" @close="showPop = false" />
   </q-dialog>
 </template>
 
 <script>
-import CommonPreview from "./common-preview.vue";
-
 export default {
-  components: {
-    CommonPreview,
-  },
   emits: ["update:modelValue"],
   props: {
     modelValue: Boolean,
@@ -40,12 +34,6 @@ export default {
   computed: {
     curItem() {
       return this.list[this.current] || {};
-    },
-    isAudio() {
-      return this.curItem.type == "audio";
-    },
-    compCurrent() {
-      return this.list.findIndex((it) => it == this.curItem);
     },
     dialogOpt() {
       return {

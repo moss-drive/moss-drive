@@ -18,10 +18,6 @@
 }
 </style>
 
-<script setup>
-import ImgItem from "./img-item.vue";
-</script>
-
 <template>
   <q-card class="full-width bg-none">
     <q-card-section class="pos-a right-0 top-0 z-100">
@@ -41,7 +37,7 @@ import ImgItem from "./img-item.vue";
       infinite
       height="100vh"
     >
-      <q-carousel-slide v-for="(it, i) in list" :key="it.Key" :name="i" @click="onBgClick">
+      <q-carousel-slide v-for="(it, i) in viewList" :key="it.Key" :name="i" @click="onBgClick">
         <div class="m-auto" style="max-width: 800px; height: 95vh">
           <img-item v-if="it.type == 'image'" :src="it.url" />
           <template v-else>
@@ -57,23 +53,25 @@ import ImgItem from "./img-item.vue";
           </template>
         </div>
         <div class="d-center" @click.stop>
-          <div>
+          <div v-if="it.cid">
             <span>CID</span>
             <a :href="getCidLink(it.cid)" target="_blank" class="color-a ml-1">
               <u>{{ it.cid.cutStr(6, 4) }}</u>
             </a>
             <q-icon name="content_copy" class="ml-1 hover-1 pa-1" @click="$copy(it.cid)"></q-icon>
           </div>
-          <div class="ml-5">
-            <span>URL</span>
-            <a :href="it.url" target="_blank" class="color-a ml-1">
-              <u>{{ it.name }}</u>
-            </a>
-          </div>
-          <div class="ml-5">
-            <span>Update Time</span>
-            <span class="op-7 ml-2">{{ it.lastModified.format() }}</span>
-          </div>
+          <template v-if="!it.cidOnly">
+            <div class="ml-5">
+              <span>URL</span>
+              <a :href="it.url" target="_blank" class="color-a ml-1">
+                <u>{{ it.name }}</u>
+              </a>
+            </div>
+            <div class="ml-5">
+              <span>Update Time</span>
+              <span class="op-7 ml-2">{{ it.lastModified.format() }}</span>
+            </div>
+          </template>
         </div>
       </q-carousel-slide>
 
@@ -110,8 +108,23 @@ export default {
     ...mapState({
       uid: (s) => s.userInfo.uid,
     }),
+    viewList() {
+      return this.list.map((it) => {
+        let { url } = it;
+        let cidOnly = false;
+        if (!url) {
+          cidOnly = true;
+          url = this.getCidLink(it.cid);
+        }
+        return {
+          ...it,
+          url,
+          cidOnly,
+        };
+      });
+    },
     curItem() {
-      return this.list[this.curIdx];
+      return this.viewList[this.curIdx];
     },
   },
   watch: {

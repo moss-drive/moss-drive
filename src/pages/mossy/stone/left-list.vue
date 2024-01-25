@@ -65,6 +65,8 @@ import ActMove from "../../drive/check-act/act-move.vue";
         </div>
       </q-infinite-scroll>
     </div>
+
+    <preview-index v-if="rows" :list="rows" :current="viewIdx" v-model="showPreview" />
   </div>
 </template>
 
@@ -110,6 +112,8 @@ export default {
       loadingMore: false,
       noMore: false,
       page: 1,
+      viewIdx: -1,
+      showPreview: false,
     };
   },
   watch: {
@@ -157,7 +161,9 @@ export default {
     },
     onRow({ row, index }) {
       if (!row.prefix) {
-        this.onCheck(row);
+        // this.onCheck(row);
+        this.viewIdx = index;
+        this.showPreview = true;
         return;
       }
       this.loading = index;

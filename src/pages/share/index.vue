@@ -162,6 +162,8 @@
                 </template>
               </q-infinite-scroll>
             </div>
+
+            <preview-index :list="rows" :current="viewIdx" v-model="showPreview" />
           </div>
         </div>
       </div>
@@ -237,6 +239,8 @@ export default {
       scrollDisable: false,
       pageSize: 100,
       hideLeft: false,
+      viewIdx: -1,
+      showPreview: false,
     };
   },
   created() {
@@ -382,6 +386,8 @@ export default {
     },
     onRowClick({ row, index }) {
       if (!row.prefix) {
+        this.viewIdx = index;
+        this.showPreview = true;
         return;
       }
       this.loading = index;

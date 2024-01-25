@@ -19,10 +19,6 @@
 }
 </style>
 
-<script setup>
-import FilePreview from "./preview/preview-index.vue";
-</script>
-
 <template>
   <div class="mt-9 ta-c" v-if="loadErr">
     <p class="op-8 mb-3">{{ loadErr }}</p>
@@ -124,7 +120,7 @@ import FilePreview from "./preview/preview-index.vue";
         <div class="pa-8"></div>
       </div>
     </div>
-    <file-preview v-model="showPreview" :list="fileList" :current="fileIdx" />
+    <preview-index v-model="showPreview" :list="fileList" :current="fileIdx" />
   </template>
 </template>
 
