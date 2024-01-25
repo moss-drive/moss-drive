@@ -149,7 +149,9 @@ export default {
     },
     copyLink(row) {
       this.onCopy(
-        `Hi, I've shared some files with you using Moss. You can view them by opening the link in a browser. Link: ${row.linkNoCode} Extraction code: ${row.code}.`
+        `Hi, I've shared some files with you using #Moss (@mymoss_io on X). You can view them by opening the link in a browser.
+Link: ${row.linkNoCode}
+Extraction code: ${row.code}`
       );
     },
     async onCopy(txt, msg = "Copied") {

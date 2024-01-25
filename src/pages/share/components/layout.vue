@@ -11,7 +11,11 @@ import HeaderRight from "../../../layouts/header-right.vue";
           <img src="/img/moss-txt.svg" height="26" class="ml-2" />
         </a>
         <div class="mr-auto"></div>
-        <header-right />
+        <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
+          <img src="/img/common/my-moss.svg" width="20" />
+          <span class="ml-2" v-if="!asMobile">My Moss</span>
+        </q-btn>
+        <header-right :noInvited="true" />
       </div>
     </q-header>
 

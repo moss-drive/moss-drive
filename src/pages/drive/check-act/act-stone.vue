@@ -308,7 +308,7 @@ export default {
               confirmText: "Start by adopting one!",
             }
           );
-          window.open("/mint");
+          window.open("https://opensea.io/collection/mymoss");
         }
       } catch (error) {
         console.log(error);

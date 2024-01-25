@@ -13,10 +13,10 @@ import HeaderRight from "../header-right.vue";
 </script>
 
 <template>
-  <a href="/mint" target="_blank" class="pos-r mr-3 hover-1">
+  <!-- <a href="/mint" target="_blank" class="pos-r mr-3 hover-1">
     <img v-if="asMobile" src="/img/mossy/mint.png" height="40" class="d-b" />
     <img v-else src="/img/common/mint.png" height="56" class="d-b" />
-  </a>
+  </a> -->
   <q-btn
     v-if="inDrive"
     class="ml-3"
