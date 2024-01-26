@@ -59,9 +59,12 @@ const bucket = {
       Bucket,
     });
   },
-  getType(name) {
+  getExt(name) {
     const extMat = /\.(\w+)$/.exec(name) || [];
-    const ext = (extMat[1] || "").toLowerCase();
+    return (extMat[1] || "").toLowerCase();
+  },
+  getType(name) {
+    const ext = this.getExt(name);
     let type = "other";
     if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
       type = "image";
