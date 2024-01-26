@@ -76,7 +76,7 @@ const bucket = {
     return type;
   },
   getIpfsLink(uid, cid) {
-    return `https://${md5(uid)}.ipfs.4everland.link/ipfs/${cid}`;
+    return `https://${md5(uid)}.${VITE_IPFS_HOST}/ipfs/${cid}`;
   },
   listObjects(params) {
     if (!params.Bucket) {
