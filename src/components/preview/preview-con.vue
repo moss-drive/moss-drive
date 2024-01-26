@@ -38,40 +38,50 @@
       height="100vh"
     >
       <q-carousel-slide v-for="(it, i) in viewList" :key="it.Key" :name="i" @click="onBgClick">
-        <div class="m-auto" style="max-width: 800px; height: 95vh">
-          <img-item v-if="it.type == 'image'" :src="it.url" />
-          <template v-else>
-            <iframe
-              class="wh100p"
-              :src="getUrl(it)"
-              frameborder="0"
-              @load="loading = false"
-            ></iframe>
-            <div class="pos-center" v-show="loading">
-              <q-spinner-ios color="yellow" size="30px" />
+        <div class="vh100 h-flex">
+          <div class="flex-1 ta-c">
+            <div class="m-auto h100p d-center">
+              <img-item v-if="it.type == 'image'" :src="it.url" />
+              <video
+                v-else-if="it.type == 'video'"
+                :src="it.url"
+                class="e-stop"
+                style="max-height: 90vh; margin-top: 5vh"
+                controls
+              ></video>
+              <audio v-else-if="it.type == 'audio'" :src="it.url" controls></audio>
+              <div class="wh100p" style="max-width: 900px" v-else>
+                <iframe
+                  class="wh100p"
+                  :src="getUrl(it)"
+                  frameborder="0"
+                  @load="loading = false"
+                ></iframe>
+                <div class="pos-center" v-show="loading">
+                  <q-spinner-ios color="yellow" size="30px" />
+                </div>
+              </div>
             </div>
-          </template>
-        </div>
-        <div class="d-center" @click.stop>
-          <div v-if="it.cid">
-            <span>CID</span>
-            <a :href="getCidLink(it.cid)" target="_blank" class="color-a ml-1">
-              <u>{{ it.cid.cutStr(6, 4) }}</u>
-            </a>
-            <q-icon name="content_copy" class="ml-1 hover-1 pa-1" @click="$copy(it.cid)"></q-icon>
           </div>
-          <template v-if="!it.cidOnly">
+          <div class="d-center" @click.stop v-if="!it.cidOnly">
+            <div v-if="it.cid">
+              <span>CID</span>
+              <a :href="getCidLink(it.cid)" target="_blank" class="color-a ml-1">
+                <u>{{ it.cid.cutStr(6, 4) }}</u>
+              </a>
+              <q-icon name="content_copy" class="ml-1 hover-1 pa-1" @click="$copy(it.cid)"></q-icon>
+            </div>
             <div class="ml-5">
               <span>URL</span>
               <a :href="it.url" target="_blank" class="color-a ml-1">
-                <u>{{ it.name }}</u>
+                <u>{{ it.url.cutStr(20, 6) }}</u>
               </a>
             </div>
             <div class="ml-5">
               <span>Update Time</span>
               <span class="op-7 ml-2">{{ it.lastModified.format() }}</span>
             </div>
-          </template>
+          </div>
         </div>
       </q-carousel-slide>
 
@@ -162,13 +172,17 @@ export default {
     getUrl(it) {
       let pre = "http://127.0.0.1:5174/";
       pre = "https://preview.4everland.org/";
-      let url = pre + "?src=" + it.url;
+      let url = pre + `?src=${encodeURIComponent(it.url)}`;
+      if (it.cidOnly) {
+        url += `&name=${it.name}`;
+      }
+      let type = this.$bucket.getExt(it.name);
       if (it.size > 1024 * 100) {
         if (/\.(js|json|txt|html)$/.test(it.name)) {
-          url += "&type=download";
-          // url = 'http://127.0.0.1:5173/test.html?src=' + it.url
+          type = "download";
         }
       }
+      url += `&type=${type}`;
       return url;
     },
   },
