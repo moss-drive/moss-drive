@@ -153,6 +153,7 @@ export default {
         this.needRefreshDrive = true;
       } catch (error) {
         console.log(error);
+        this.$toast(error.message);
       }
       this.creating = false;
     },
@@ -189,6 +190,7 @@ export default {
             this.movedArr.push(row.name);
           } catch (error) {
             console.log(error);
+            this.$toast(error.message);
           }
         }
         this.moving = false;
