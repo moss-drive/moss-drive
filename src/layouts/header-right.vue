@@ -21,7 +21,7 @@ import UserTask from "./main/user-task.vue";
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <q-btn size="sm" rounded color="info" style="padding: 5px 8px" v-if="!noInvited">
+      <!-- <q-btn size="sm" rounded color="info" style="padding: 5px 8px" v-if="!noInvited">
         <img src="/img/mossy/icon/ic-coin.png" width="26" />
         <span class="text-white ml-1 fz-14">{{ pointInfo.total }}</span>
         <q-menu
@@ -57,7 +57,7 @@ import UserTask from "./main/user-task.vue";
         >
           <message-notice></message-notice>
         </q-menu>
-      </q-btn>
+      </q-btn> -->
 
       <q-btn
         class="ml-3"
@@ -139,10 +139,10 @@ export default {
     },
   },
   mounted() {
-    if (this.uid) {
-      this.$store.dispatch("taskStore/getPoint");
-      this.checkRead();
-    }
+    // if (this.uid) {
+    //   this.$store.dispatch("taskStore/getPoint");
+    //   this.checkRead();
+    // }
   },
   components: {
     MessageNotice,
