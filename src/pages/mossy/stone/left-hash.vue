@@ -19,7 +19,7 @@
         </div>
       </q-btn>
     </div>
-    <div>
+    <!-- <div>
       <q-btn color="info" rounded unelevated size="xs" dense>
         <div class="al-c px-2">
           <img src="/img/mossy/icon/ic-ver.svg" width="16" />
@@ -59,7 +59,7 @@
           </q-card>
         </q-menu>
       </q-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 

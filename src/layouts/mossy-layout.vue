@@ -23,7 +23,7 @@ import HeaderRight from "./header-right.vue";
       <div class="al-c pl-4 pr-4" style="height: 64px">
         <a href="/mossy" class="al-c">
           <img src="/img/mossy.png" :width="asMobile ? 30 : 40" />
-          <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
+          <img class="ml-2" src="/img/mossy/mossyland.png" :height="asMobile ? 26 : 38" />
         </a>
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">

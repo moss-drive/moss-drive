@@ -33,7 +33,7 @@
     <div class="mt-1">
       <q-tabs class="bdb-1" v-model="tabIdx" dense active-color="primary" no-caps>
         <q-tab name="nft" label="Moss NFT" />
-        <q-tab name="invite" label="Invite" v-if="!this.noInvited" />
+        <!-- <q-tab name="invite" label="Invite" v-if="!this.noInvited" /> -->
         <q-tab name="settings" label="Settings" />
       </q-tabs>
     </div>

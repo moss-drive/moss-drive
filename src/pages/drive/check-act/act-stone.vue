@@ -320,8 +320,8 @@ export default {
       const mossHub = await this.initMoss();
       if (!mossHub) return;
       try {
-        const valid = await this.checkNft();
-        if (!valid) return;
+        // const valid = await this.checkNft();
+        // if (!valid) return;
         const addr = await mossHub.getWalletAddr();
         this.form.address = addr;
         const form = this.mossForm;

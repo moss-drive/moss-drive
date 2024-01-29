@@ -19,8 +19,8 @@ import UsageInfo from "./usage-info.vue";
 
 <template>
   <div class="main-drawer h100p h-flex">
-    <a href="/" class="">
-      <img src="/img/logo.svg" height="80" />
+    <a href="/" class="m-6 mb-2 mt-3">
+      <img src="/img/moss-logo.png" height="40" />
     </a>
     <div class="q-pa-md ta-c px-6">
       <q-btn href="/mossy" target="_blank" rounded class="btn-mossy" style="width: 100%">

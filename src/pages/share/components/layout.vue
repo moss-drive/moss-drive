@@ -8,7 +8,7 @@ import HeaderRight from "../../../layouts/header-right.vue";
       <div class="al-c pl-4 pr-4" style="height: 64px">
         <a href="/" class="al-c pa-3 ml-5">
           <img src="/img/moss.svg" height="40" />
-          <img src="/img/moss-txt.svg" height="26" class="ml-2" />
+          <img src="/img/moss-s-txt.png" height="36" class="ml-2" />
         </a>
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
