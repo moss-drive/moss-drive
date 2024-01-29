@@ -186,13 +186,14 @@ export default {
       try {
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
-        if (data.isInvited || this.noInvited) {
-          this.$store.dispatch("login", data);
-          this.onRedirect();
-        } else {
-          this.tempData = data;
-          this.showInvite();
-        }
+        // || this.noInvited
+        this.$store.dispatch("login", data);
+        this.onRedirect();
+        // if (data.isInvited) {
+        // } else {
+        //   this.tempData = data;
+        //   this.showInvite();
+        // }
       } catch (error) {
         console.log(error);
       }
