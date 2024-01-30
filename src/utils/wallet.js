@@ -20,6 +20,16 @@ const ChainCfg = {
       decimals: 18,
     },
   },
+  168587773: {
+    chainId: "0xa0c71fd",
+    chainName: "Blast Sepolia Testnet",
+    rpcUrls: ["https://sepolia.blast.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
 };
 
 async function addChain(id) {
