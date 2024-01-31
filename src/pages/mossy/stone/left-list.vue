@@ -218,6 +218,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        this.noMore = true;
       }
       this.loading = false;
       this.loadingMore = false;
