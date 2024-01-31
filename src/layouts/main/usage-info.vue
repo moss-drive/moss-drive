@@ -39,9 +39,9 @@
           </q-tooltip>
         </div>
       </div>
-      <div class="mt-5">
+      <!-- <div class="mt-5">
         <q-btn outline class="full-width" to="/resource">Get More</q-btn>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
