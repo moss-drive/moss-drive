@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="resource-recharge-tip px-4" v-show="!onChain">
+    <!-- <div class="resource-recharge-tip px-4" v-show="!onChain">
       <div
         class="resource-recharge-content fz-12 cursor-p"
         @click="$router.push('/resource')"
       ></div>
-    </div>
+    </div> -->
     <div class="bg-black-1 pa-5">
       <div class="al-c">
         <span>Storage</span>
