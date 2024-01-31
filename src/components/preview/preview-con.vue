@@ -46,7 +46,7 @@
                 v-else-if="it.type == 'video'"
                 :src="it.url"
                 class="e-stop"
-                style="max-height: 90vh; margin-top: 5vh"
+                style="max-height: 90vh; max-width: 100%; margin-top: 5vh"
                 controls
               ></video>
               <audio v-else-if="it.type == 'audio'" :src="it.url" controls></audio>
