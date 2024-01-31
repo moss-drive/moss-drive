@@ -189,7 +189,7 @@ export default {
             this.loading = true;
           }
         }
-        const { data } = await this.$http.post("/stone/page/v2", params);
+        const { data } = await this.$http.post("/stone/page/list/v2", params);
         const rows = data.map((it) => {
           const prefix = it.type == "Folder";
           let name = it.name;
