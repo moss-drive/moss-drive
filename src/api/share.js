@@ -13,9 +13,7 @@ export function fetchShareVaild(data) {
 }
 
 export function fetchShareList(params) {
-  return request.get("/share/list", {
-    params,
-  });
+  return request.post("/share/list/v2", params);
 }
 
 export function fetchStoneSave(data) {
