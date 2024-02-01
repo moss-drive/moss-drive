@@ -187,7 +187,7 @@ export default {
         row.amount = row.amount || "-";
         row.amounts = amounts;
         // row.href = `https://mumbai.polygonscan.com/tx/${row.txHash}`;
-        row.href = `https://optimistic.etherscan.io/tx/${row.txHash}`;
+        row.href = `https://testnet.blastscan.io/tx/${row.txHash}`;
         row.sHash = row.txHash.substr(0, 5) + "..." + row.txHash.substr(row.txHash.length - 3, 3);
       });
       this.loading = false;
