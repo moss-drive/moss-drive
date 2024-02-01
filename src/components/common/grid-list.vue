@@ -28,7 +28,7 @@ body.touch .grid-item.hover {
   <grid-loading :num="6" v-if="!rows" />
   <empty-stone v-else-if="!rows.length" />
   <div class="row pos-r driver-grid">
-    <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
+    <div class="col-4 col-sm-3 col-md-2 col-xl-1 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
         class="ta-c driver-list-item grid-item pb-4"
