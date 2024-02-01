@@ -3,7 +3,7 @@
     <div class="mr-2">
       Stone ID <b class="color-1">#{{ info.stoneId }}</b>
     </div>
-    <div class="mr-2">
+    <!-- <div class="mr-2">
       <q-btn
         :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"
         target="_blank"
@@ -18,7 +18,7 @@
           <span class="color-1 ml-1 fz-12">Key TXs</span>
         </div>
       </q-btn>
-    </div>
+    </div> -->
     <div>
       <q-btn color="info" rounded unelevated size="xs" dense>
         <div class="al-c px-2">
