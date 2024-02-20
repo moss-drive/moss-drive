@@ -98,7 +98,7 @@ export default {
         {
           name: "land",
           align: "left",
-          label: "Resource",
+          label: "LAND Amount",
           field: "land",
           style: " font-size: 14px",
         },
