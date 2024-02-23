@@ -1,14 +1,40 @@
 <template>
-  <q-btn rounded color="primary" @click="handleClick" v-if="!isConnect || !isOpChain">
-    {{ showText }}
-  </q-btn>
-  <slot v-else></slot>
+  <div>
+    <q-btn rounded color="primary" @click="getAccount" v-if="!isConnect"> Connect Wallet </q-btn>
+    <q-btn-dropdown color="primary" v-else-if="!isChoosed">
+      <template v-slot:label>
+        <div class="al-c">
+          <q-icon left name="error_outline" />
+          <span class="ml-2">Switch Network</span>
+        </div>
+      </template>
+
+      <q-list>
+        <q-item
+          clickable
+          v-close-popup
+          @click="switchNet(it.id)"
+          v-for="it in netList"
+          :key="it.name"
+        >
+          <div class="al-c">
+            <q-avatar size="22px">
+              <img :src="`/img/common/${it.icon}`" />
+            </q-avatar>
+            <span class="ml-2">{{ it.name }}</span>
+          </div>
+        </q-item>
+      </q-list>
+    </q-btn-dropdown>
+    <slot v-else></slot>
+    <!-- <div>{{ isChoosed }}</div> -->
+  </div>
 </template>
 
 <script>
-const { VITE_MOSS_CHAINID } = import.meta.env;
 import { mapState } from "vuex";
-import { switchNet } from "@/utils/wallet";
+import { switchNet, netList } from "../../utils/wallet";
+
 export default {
   props: {
     sameAddr: {
@@ -19,6 +45,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    fixId: Number,
   },
   data() {
     return {
@@ -30,21 +57,25 @@ export default {
     ...mapState({
       uid: (s) => s.loginData.uuid,
     }),
+    chain_id() {
+      return Number(this.chainId);
+    },
+    isChoosed() {
+      return !!this.netList.find((it) => it.id == this.chain_id);
+    },
+    netList() {
+      return netList.filter((it) => {
+        if (!this.fixId) return true;
+        return it.id == this.fixId;
+      });
+    },
     addrMatch() {
       if (!this.accounts.length) return false;
       return this.accounts[0]?.toLowerCase() == this.uid?.toLowerCase();
     },
-    showText() {
-      if (!this.addrMatch) return "Connect Wallet";
-      if (!this.isOpChain) return "Switch Network";
-      return "";
-    },
     isConnect() {
       if (this.sameAddr) return this.addrMatch;
       return this.accounts.length > 0;
-    },
-    isOpChain() {
-      return this.chainId == this.genChainId(VITE_MOSS_CHAINID);
     },
   },
   created() {
@@ -52,15 +83,7 @@ export default {
     this.getAccount();
   },
   methods: {
-    async handleClick() {
-      if (!this.isConnect) {
-        await this.getAccount();
-      } else if (!this.isOpChain) {
-        await this.switchOpChain();
-      } else {
-        // do something slot method
-      }
-    },
+    switchNet,
     async getAccount() {
       try {
         const accounts = await window.ethereum.request({
@@ -84,21 +107,23 @@ export default {
         this.$alert(msg);
       }
     },
-    onChange() {
-      this.$emit("change");
+    onChange(obj) {
+      this.$emit("change", obj);
     },
     initWallet() {
       window.ethereum.on("accountsChanged", (accounts) => {
         this.accounts = accounts;
-        this.onChange();
+        this.onChange({
+          accounts,
+        });
       });
       window.ethereum.on("chainChanged", (chainId) => {
+        console.log(chainId);
         this.chainId = chainId;
-        this.onChange();
+        this.onChange({
+          chainId,
+        });
       });
-    },
-    async switchOpChain() {
-      await switchNet(VITE_MOSS_CHAINID);
     },
     genChainId(id) {
       return "0x" + Number(id).toString(16);

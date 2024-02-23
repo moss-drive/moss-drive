@@ -1,4 +1,17 @@
-const ChainCfg = {
+export const netList = [
+  {
+    name: "Optimism",
+    icon: "net-op.png",
+    id: 11155420,
+  },
+  {
+    name: "Blast",
+    icon: "net-blast.png",
+    id: 168587773,
+  },
+];
+
+export const chainMap = {
   10: {
     chainId: "0xa",
     chainName: "Optimism LlamaNodes",
@@ -20,10 +33,20 @@ const ChainCfg = {
       decimals: 18,
     },
   },
+  168587773: {
+    chainId: "0xa0c71fd",
+    chainName: "Blast Sepolia Testnet",
+    rpcUrls: ["https://sepolia.blast.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
 };
 
 async function addChain(id) {
-  let params = ChainCfg[id];
+  let params = chainMap[id];
   if (!window.ethereum || !params) {
     return false;
   }

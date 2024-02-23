@@ -1,6 +1,5 @@
 <template>
   <q-btn
-    v-show="!asMobile"
     class="ml-3"
     :class="{
       'q-px-sm': !asMobile,
@@ -11,31 +10,18 @@
     :size="btnSize"
   >
     <q-avatar size="22px">
-      <img src="/img/temp/net-op.png" />
+      <img src="/img/common/net-error.svg" />
     </q-avatar>
-    <span v-if="!asMobile" class="ml-2 fz-14">Optimism</span>
+    <!-- <span v-if="!asMobile" class="ml-2 fz-14">Optimism</span> -->
 
     <q-menu style="width: 150px" auto-close>
       <q-list>
-        <q-item clickable>
+        <q-item clickable v-for="it in netList" :key="it.name">
           <div class="al-c">
             <q-avatar size="22px">
-              <img src="/img/temp/net-op.png" />
+              <img :src="`/img/common/${it.icon}`" />
             </q-avatar>
-            <span class="ml-2">Optimism</span>
-          </div>
-        </q-item>
-        <q-item>
-          <div class="al-c">
-            <q-avatar size="22px">
-              <img src="/img/temp/net-blast.png" />
-            </q-avatar>
-            <div class="ml-2">
-              <div class="fz-12 bdrs-100" style="background: #004d3b; padding: 1px 4px">
-                Coming soon
-              </div>
-              <p class="op-7">Blast</p>
-            </div>
+            <span class="ml-2">{{ it.name }}</span>
           </div>
         </q-item>
       </q-list>
@@ -45,12 +31,14 @@
 
 <script>
 import { useQuasar } from "quasar";
+import { netList } from "../../utils/wallet";
 
 export default {
   data() {
     const { screen } = useQuasar();
     return {
       screen,
+      netList,
     };
   },
   computed: {

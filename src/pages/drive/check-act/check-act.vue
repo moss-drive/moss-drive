@@ -104,11 +104,11 @@ export default {
       // console.log(name, rows);
       const item = this.checkItem;
       if (name == "publish") {
-        if (this.stoneNum) {
-          return this.$alert(
-            "In order to enable creators to concentrate more on managing their Stones effectively, the current version only permits users to create ONE Stone. We will introduce the option to create multiple Stones in future releases."
-          );
-        }
+        // if (this.stoneNum) {
+        //   return this.$alert(
+        //     "In order to enable creators to concentrate more on managing their Stones effectively, the current version only permits users to create ONE Stone. We will introduce the option to create multiple Stones in future releases."
+        //   );
+        // }
         if (localStorage.bindX) {
           localStorage.bindX = "";
           return location.reload();
