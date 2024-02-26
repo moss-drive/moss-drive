@@ -69,6 +69,9 @@ export const chainAddrList = [
     name: "Optimism",
     coin: {
       eth: optimisETH,
+      usdc: optimisUSDC,
+      usdt: optimisUSDT,
+      dai: optimisDAI,
     },
     landRecharge: optimismRecharge,
     chainId: 10,

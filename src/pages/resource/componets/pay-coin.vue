@@ -25,7 +25,15 @@
 </template>
 
 <script>
+import { chainAddrList } from "../utils/chainAddrs";
+
 export default {
+  props: {
+    chainId: {
+      type: String,
+      default: "",
+    },
+  },
   emits: ["onSelectCoin"],
   data() {
     return {
@@ -33,40 +41,47 @@ export default {
     };
   },
   computed: {
+    curChainInfo() {
+      return chainAddrList.find((it) => it.chainId == this.chainId);
+    },
     coinList() {
+      if (!this.curChainInfo) return [];
+      let arr = Object.keys(this.curChainInfo.coin);
       const coinList = [
-        // {
-        //   label: "USDC",
-        //   showLabel: "USDC",
-        //   name: "USDC Coin",
-        //   img: "/img/resource/symbal-icons/usdc.svg",
-        //   stablecoin: true,
-        // },
-        // {
-        //   label: "USDT",
-        //   showLabel: "USDT",
-        //   name: "Tether USD",
-        //   img: "/img/resource/symbal-icons/usdt.svg",
-        //   stablecoin: true,
-        // },
-        // {
-        //   label: "DAI",
-        //   showLabel: "DAI",
-        //   name: "Dai Stablecoin",
-        //   img: "/img/resource/symbal-icons/dai.svg",
-        //   stablecoin: true,
-        // },
-
+        {
+          label: "USDC",
+          name: "USDC Coin",
+          img: "/img/resource/symbal-icons/usdc.svg",
+          stablecoin: true,
+        },
+        {
+          label: "USDT",
+          name: "Tether USD",
+          img: "/img/resource/symbal-icons/usdt.svg",
+          stablecoin: true,
+        },
+        {
+          label: "DAI",
+          name: "Dai Stablecoin",
+          img: "/img/resource/symbal-icons/dai.svg",
+          stablecoin: true,
+        },
         {
           label: "ETH",
-          showLabel: "ETH",
           name: "ETH",
           img: "/img/resource/symbal-icons/eth.svg",
           stablecoin: false,
         },
       ];
-
-      return coinList;
+      let finalCoins = [];
+      for (const item of coinList) {
+        for (const it of arr) {
+          if (item.label.toLowerCase() == it.toLowerCase()) {
+            finalCoins.push(item);
+          }
+        }
+      }
+      return finalCoins;
     },
   },
   methods: {

@@ -18,7 +18,7 @@
 
         <div class="recharge-act d-flex">
           <pay-network class="flex-1" @onNetwork="handleNetwork"></pay-network>
-          <pay-coin class="flex-1" @onSelectCoin="onSelectCoin"></pay-coin>
+          <pay-coin class="flex-1" :chainId="chainId" @onSelectCoin="onSelectCoin"></pay-coin>
         </div>
 
         <div class="recharge-bar al-c space-btw">
