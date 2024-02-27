@@ -153,9 +153,19 @@
               isAll ? "Collapse" : "Advanced Settings"
             }}</q-btn>
           </div>
-          <q-btn flat color="white" label="Cancel" v-if="!saving" @click="showPop = false" />
-          <wallet-control @change="onWalletChange">
-            <q-btn rounded color="primary" :loading="saving" @click="onSubmit">Create</q-btn>
+          <q-btn
+            class="mr-2"
+            flat
+            color="white"
+            label="Cancel"
+            v-if="!saving"
+            @click="showPop = false"
+          />
+          <wallet-control @change="onWalletChange" v-slot="{ chainId }">
+            <q-btn rounded color="primary" :loading="saving" @click="onSubmit">
+              <net-icon :chainId="chainId" />
+              <span class="ml-2">Create</span>
+            </q-btn>
           </wallet-control>
         </q-card-actions>
       </template>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <q-btn-dropdown color="primary" v-if="fromTop || (isConnect && !isChoosed)">
+    <net-choose :is-connect="isConnect" v-if="fromTop" @click="onChoose" @item="onItem" />
+    <q-btn rounded color="primary" @click="getAccount" v-else-if="!isConnect">
+      Connect Wallet
+    </q-btn>
+    <q-btn-dropdown color="primary" v-else-if="!isChoosed">
       <template v-slot:label>
         <net-icon :chainId="chainId" v-if="fromTop"></net-icon>
         <div class="al-c" v-else>
@@ -26,10 +30,7 @@
         </q-item>
       </q-list>
     </q-btn-dropdown>
-    <q-btn rounded color="primary" @click="getAccount" v-else-if="!isConnect">
-      Connect Wallet
-    </q-btn>
-    <slot v-else></slot>
+    <slot v-else :chainId="chainId"></slot>
     <!-- <div>{{ isChoosed }}</div> -->
   </div>
 </template>
@@ -88,6 +89,14 @@ export default {
   },
   methods: {
     switchNet,
+    onChoose() {
+      if (!this.isConnect) {
+        this.getAccount();
+      }
+    },
+    onItem(it) {
+      this.switchNet(it.id);
+    },
     async getAccount() {
       try {
         const accounts = await window.ethereum.request({
@@ -115,6 +124,7 @@ export default {
       this.$emit("change", obj);
     },
     initWallet() {
+      this.setChainId();
       window.ethereum.on("accountsChanged", (accounts) => {
         this.accounts = accounts;
         this.onChange({
@@ -127,6 +137,12 @@ export default {
         this.onChange({
           chainId,
         });
+        this.setChainId();
+      });
+    },
+    setChainId() {
+      this.$setState({
+        myChainId: this.chainId,
       });
     },
     genChainId(id) {
@@ -135,5 +151,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

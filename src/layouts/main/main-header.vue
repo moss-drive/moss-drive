@@ -32,7 +32,7 @@ import HeaderRight from "../header-right.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <net-choose />
+  <wallet-control fromTop />
 
   <header-right />
 </template>

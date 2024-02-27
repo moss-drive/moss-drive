@@ -1,6 +1,12 @@
 <template>
   <q-avatar :size="size + 'px'" v-if="src">
-    <q-img :src="src" :placeholder-src="defsrc" width="size" :ratio="1" :spinner-size="size - 8">
+    <q-img
+      :src="src"
+      :placeholder-src="defsrc"
+      :width="size + 'px'"
+      :ratio="1"
+      :spinner-size="size - 8 + 'px'"
+    >
       <template v-slot:error>
         <div class="pos-mask bg-dark"></div>
       </template>

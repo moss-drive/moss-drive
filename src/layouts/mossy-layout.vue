@@ -30,7 +30,7 @@ import HeaderRight from "./header-right.vue";
           <img src="/img/common/my-moss.svg" width="20" />
           <span class="ml-2" v-if="!asMobile">My Moss</span>
         </q-btn>
-        <net-choose />
+        <wallet-control fromTop />
         <header-right />
       </div>
     </q-header>

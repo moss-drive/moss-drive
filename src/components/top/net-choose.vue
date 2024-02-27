@@ -8,15 +8,19 @@
     rounded
     :round="asMobile"
     :size="btnSize"
+    @click="$emit('click')"
   >
-    <q-avatar size="22px">
-      <img src="/img/common/net-error.svg" />
-    </q-avatar>
+    <net-icon />
     <!-- <span v-if="!asMobile" class="ml-2 fz-14">Optimism</span> -->
 
-    <q-menu style="width: 150px" auto-close>
+    <q-menu v-if="isConnect" style="width: 150px" auto-close>
       <q-list>
-        <q-item clickable v-for="it in netList" :key="it.name">
+        <q-item
+          @click="$emit('item', it)"
+          :clickable="myChainId != it.id"
+          v-for="it in netList"
+          :key="it.name"
+        >
           <div class="al-c">
             <q-avatar size="22px">
               <img :src="`/img/common/${it.icon}`" />
@@ -30,10 +34,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { useQuasar } from "quasar";
 import { netList } from "../../utils/wallet";
 
 export default {
+  props: {
+    isConnect: Boolean,
+  },
   data() {
     const { screen } = useQuasar();
     return {
@@ -42,6 +50,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      myChainId: (s) => s.myChainId,
+    }),
     asMobile() {
       return this.screen.width < 690;
     },
