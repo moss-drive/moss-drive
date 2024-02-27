@@ -287,7 +287,7 @@ export default {
           await mossHub.checkNet();
           this.mossHub = mossHub;
         } catch (error) {
-          this.$alert(error.message);
+          this.$toast(error.message);
         }
       }
       return this.mossHub;

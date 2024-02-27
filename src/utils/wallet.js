@@ -11,6 +11,12 @@ export const netList = [
   },
 ];
 
+export function getNetIcon(id) {
+  const row = netList.find((it) => it.id == id);
+  if (!row) return "net-error.svg";
+  return row.icon;
+}
+
 export const chainMap = {
   10: {
     chainId: "0xa",

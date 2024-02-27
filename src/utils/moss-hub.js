@@ -1,6 +1,6 @@
 import { MossHub__factory, Helpers__factory } from "moss-v5";
 import { providers, utils } from "ethers";
-const { VITE_MOSS_HUB_CONTRACT, VITE_MOSS_HELPER_CONTRACT, VITE_MOSS_CHAINID } = import.meta.env;
+const { VITE_MOSS_HUB_CONTRACT, VITE_MOSS_HELPER_CONTRACT } = import.meta.env;
 
 export class MossHub {
   constructor() {
@@ -25,18 +25,7 @@ export class MossHub {
   }
 
   async checkNet() {
-    const id = VITE_MOSS_CHAINID;
-    try {
-      await this.getWalletAddr();
-      if (this.chainId != id) {
-        throw new Error("Wrong Network");
-      }
-    } catch (error) {
-      throw new Error("Please connect your wallet");
-    }
-    if (this.chainId != id) {
-      // return this.switchNet(id);
-    }
+    await this.getWalletAddr();
   }
 
   genChainId(id) {

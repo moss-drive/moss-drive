@@ -1,9 +1,9 @@
 <template>
   <div>
-    <q-btn rounded color="primary" @click="getAccount" v-if="!isConnect"> Connect Wallet </q-btn>
-    <q-btn-dropdown color="primary" v-else-if="!isChoosed">
+    <q-btn-dropdown color="primary" v-if="fromTop || (isConnect && !isChoosed)">
       <template v-slot:label>
-        <div class="al-c">
+        <net-icon :chainId="chainId" v-if="fromTop"></net-icon>
+        <div class="al-c" v-else>
           <q-icon left name="error_outline" />
           <span class="ml-2">Switch Network</span>
         </div>
@@ -26,6 +26,9 @@
         </q-item>
       </q-list>
     </q-btn-dropdown>
+    <q-btn rounded color="primary" @click="getAccount" v-else-if="!isConnect">
+      Connect Wallet
+    </q-btn>
     <slot v-else></slot>
     <!-- <div>{{ isChoosed }}</div> -->
   </div>
@@ -37,6 +40,7 @@ import { switchNet, netList } from "../../utils/wallet";
 
 export default {
   props: {
+    fromTop: Boolean,
     sameAddr: {
       type: Boolean,
       default: true, // invalid login addr eq wallet addr
