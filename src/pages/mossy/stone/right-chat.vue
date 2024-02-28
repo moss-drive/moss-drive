@@ -102,6 +102,7 @@ export default {
             stoneId: this.stoneId,
             page: this.page,
             size: this.size,
+            chainId: this.info.chainId,
           },
           noTip: 1,
         });

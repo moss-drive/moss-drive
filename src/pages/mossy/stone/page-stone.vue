@@ -74,6 +74,7 @@ export default {
         const { data } = await this.$http.get("/stone/account", {
           params: {
             stoneId: this.stoneId,
+            chainId: this.chainId,
           },
         });
         this.balance = data.accountBalance * 1;
