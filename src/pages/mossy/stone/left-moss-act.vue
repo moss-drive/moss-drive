@@ -63,7 +63,7 @@
         </q-card-section>
         <q-card-actions align="right" class="text-primary">
           <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
-          <wallet-control @change="onWalletChange">
+          <wallet-control :fixId="info.chainId" @change="onWalletChange">
             <q-btn
               rounded
               color="primary"
@@ -90,6 +90,7 @@ const initForm = {
 };
 export default {
   props: {
+    info: Object,
     stoneId: null,
     balance: null,
   },

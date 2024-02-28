@@ -45,7 +45,7 @@
               <span class="op-8 ml-1">{{ item.twitterName }}</span>
             </div>
             <q-btn
-              :href="'/' + item.stoneId"
+              :href="$getStoneLink(item)"
               target="_blank"
               color="primary"
               rounded
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     onRow(item) {
-      window.open(`/${item.stoneId}`);
+      window.open(this.$getStoneLink(item));
     },
   },
 };

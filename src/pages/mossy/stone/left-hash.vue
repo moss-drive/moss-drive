@@ -3,6 +3,10 @@
     <div class="mr-2">
       Stone ID <b class="color-1">#{{ info.stoneId }}</b>
     </div>
+    <div class="mr-2 al-c">
+      <span class="mr-1">Network</span>
+      <net-icon :chainId="info.chainId" :size="18" />
+    </div>
     <div class="mr-2">
       <q-btn
         :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"

@@ -59,6 +59,8 @@ import ListRank from "./list-rank.vue";
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     const { type = "LATEST" } = this.$route.query;
@@ -75,8 +77,15 @@ export default {
       noMore: false,
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      myChainId: (s) => s.myChainId * 1,
+    }),
+  },
   watch: {
+    myChainId() {
+      this.getList();
+    },
     type(type) {
       this.$router.replace({
         path: "/mossy",
@@ -112,7 +121,7 @@ export default {
             type: this.type,
             page: this.page,
             size,
-            // chainId: 11155420,
+            chainId: this.myChainId,
           },
         });
         if (data.length < size - 5) {

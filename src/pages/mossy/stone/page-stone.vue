@@ -20,6 +20,7 @@ import StoneRight from "./stone-right.vue";
 
 <script>
 import { mapState } from "vuex";
+const { VITE_OP_CHAINID } = import.meta.env;
 
 export default {
   computed: {
@@ -40,6 +41,7 @@ export default {
   },
   created() {
     this.stoneId = this.$route.params.catchAll[0];
+    this.chainId = this.$route.query.chainId || VITE_OP_CHAINID;
     if (!/^\d+$/.test(this.stoneId)) {
       this.$router.replace("/");
       return;
@@ -53,6 +55,7 @@ export default {
         const { data } = await this.$http.get("/stone/meta", {
           params: {
             stoneId: this.stoneId,
+            chainId: this.chainId,
           },
         });
         if (data.stoneId) {

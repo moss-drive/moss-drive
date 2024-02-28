@@ -54,7 +54,7 @@ import LeftMossAct from "./left-moss-act.vue";
           <span>Hold</span>
           <span class="fz-18 color-2 ml-1">{{ balance || "0" }}</span>
         </div>
-        <left-moss-act :stoneId="info.stoneId" :balance="balance" />
+        <left-moss-act :info="info" :stoneId="info.stoneId" :balance="balance" />
       </div>
     </div>
     <left-list :stoneId="info.stoneId" :id="info.id" :balance="balance" />

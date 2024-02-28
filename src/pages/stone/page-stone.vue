@@ -44,6 +44,10 @@ import StoneEdit from "./stone-edit.vue";
                 <span class="op-8">{{ row.label }}</span>
                 <b class="color-2 fz-18 ml-2">{{ row.val || "-" }}</b>
               </p>
+              <p>
+                <span class="op-8 mr-2">Network</span>
+                <net-icon :chainId="row.chainId" :size="20" />
+              </p>
             </div>
           </div>
           <div class="mt-4">
@@ -69,7 +73,7 @@ import StoneEdit from "./stone-edit.vue";
               >Resend</q-btn
             > -->
             <q-btn
-              :href="`/${it.stoneId}`"
+              :href="$getStoneLink(it)"
               target="_blank"
               color="primary"
               class="flex-1"

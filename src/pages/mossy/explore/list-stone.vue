@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-md">
     <router-link
-      :to="`/${it.stoneId}`"
+      :to="$getStoneLink(it)"
       target="_blank"
       class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
       v-for="(it, i) in list"

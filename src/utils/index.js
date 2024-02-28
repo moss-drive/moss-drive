@@ -20,6 +20,9 @@ export default {
       await copyToClipboard(txt);
       if (msg) window.$toast(msg, 1);
     };
+    global.$getStoneLink = (it) => {
+      return `/${it.stoneId}?chainId=${it.chainId}`;
+    };
     global.$getShareLink = (id) => {
       return `${location.origin}/s/${id}`;
     };
