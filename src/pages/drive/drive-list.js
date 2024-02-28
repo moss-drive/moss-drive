@@ -5,6 +5,7 @@ export default {
     ...mapState({
       uid: (s) => s.loginData.uuid,
       stsData: (s) => s.stsData,
+      myChainId: (s) => s.myChainId,
     }),
   },
   data() {

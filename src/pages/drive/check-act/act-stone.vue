@@ -198,6 +198,7 @@ export default {
     ...mapState({
       uid: (s) => s.loginData.uuid,
       myChainId: (s) => s.myChainId,
+      stoneList: (s) => s.stoneList,
     }),
   },
   data() {
@@ -224,6 +225,15 @@ export default {
         ...initForm,
         stoneName: val.name,
       };
+    },
+    myChainId() {
+      const one = this.stoneList.find((it) => it.chainId == this.myChainId);
+      if (one && this.showPop) {
+        this.showPop = false;
+        this.$alert(
+          "On this network, the folder 'stone' already exists. Please switch networks to create."
+        );
+      }
     },
   },
   created() {},

@@ -44,12 +44,7 @@
           indeterminate-value="not-empty"
         />
 
-        <slot
-          name="act"
-          :checked="checked"
-          :obj-list="objRows"
-          :stone-num="stoneList.length"
-        ></slot>
+        <slot name="act" :checked="checked" :obj-list="objRows"></slot>
 
         <div class="pos-r ml-auto mr-2 bd-1">
           <icon-search class="y-center ev-n" style="left: 10px" />
@@ -167,8 +162,12 @@ export default {
           return it.folderPath == obj.key;
         });
         let { type } = obj;
-        if (stone) type = "stone";
-        let icon = `/img/driver/icon_${type}.png`;
+        let icon = type;
+        if (stone) {
+          // type = "stone";
+          icon = "stone";
+        }
+        icon = `/img/driver/icon_${icon}.png`;
         if (type == "image" && obj.url) {
           icon = obj.url + "?width=200";
           // if (!this.$inDev) {

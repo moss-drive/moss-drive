@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       accounts: [],
-      chainId: window.ethereum.chainId,
+      chainId: null,
     };
   },
   computed: {
@@ -85,8 +85,11 @@ export default {
     },
   },
   created() {
-    this.initWallet();
-    this.getAccount();
+    if (window.ethereum) {
+      this.chainId = window.ethereum.chainId;
+      this.initWallet();
+      this.getAccount();
+    }
   },
   methods: {
     switchNet,
@@ -134,7 +137,7 @@ export default {
       });
       window.ethereum.on("chainChanged", (chainId) => {
         console.log(chainId);
-        this.chainId = chainId;
+        this.chainId = chainId * 1;
         this.onChange({
           chainId,
         });
@@ -143,7 +146,7 @@ export default {
     },
     setChainId() {
       this.$setState({
-        myChainId: this.chainId,
+        myChainId: this.chainId * 1,
       });
     },
     genChainId(id) {

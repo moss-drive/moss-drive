@@ -45,7 +45,6 @@ export default {
   props: {
     checked: Array,
     objList: Array,
-    stoneNum: Number,
   },
   data() {
     const { screen } = useQuasar();
@@ -56,6 +55,8 @@ export default {
   computed: {
     ...mapState({
       userInfo: (s) => s.userInfo,
+      stoneList: (s) => s.stoneList,
+      myChainId: (s) => s.myChainId,
     }),
     objMenus() {
       const len = this.checked.length;
@@ -104,11 +105,12 @@ export default {
       // console.log(name, rows);
       const item = this.checkItem;
       if (name == "publish") {
-        // if (this.stoneNum) {
-        //   return this.$alert(
-        //     "In order to enable creators to concentrate more on managing their Stones effectively, the current version only permits users to create ONE Stone. We will introduce the option to create multiple Stones in future releases."
-        //   );
-        // }
+        const one = this.stoneList.find((it) => it.chainId == this.myChainId);
+        if (one) {
+          return this.$alert(
+            "n order to enable creators to concentrate more on managing their Stones effectively, only one 'Stone' allowed, but can be deployed across multiple chains."
+          );
+        }
         if (localStorage.bindX) {
           localStorage.bindX = "";
           return location.reload();
