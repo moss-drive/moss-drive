@@ -8,7 +8,7 @@ import { getNetIcon } from "../../utils/wallet";
 
 export default {
   props: {
-    chainId: Number,
+    chainId: [Number, String],
     size: {
       type: Number,
       default: 22,

@@ -76,6 +76,7 @@ export default {
     },
     addrMatch() {
       if (!this.accounts.length) return false;
+      if (this.fromTop) return true;
       return this.accounts[0]?.toLowerCase() == this.uid?.toLowerCase();
     },
     isConnect() {

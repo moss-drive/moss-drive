@@ -60,6 +60,7 @@ import ListRank from "./list-rank.vue";
 
 <script>
 import { mapState } from "vuex";
+const { VITE_OP_CHAINID } = import.meta.env;
 
 export default {
   data() {
@@ -116,13 +117,16 @@ export default {
           this.noMore = false;
         }
         const size = this.type == "RANKING_LIST" ? 10 : 36;
+        const params = {
+          type: this.type,
+          page: this.page,
+          size,
+        };
+        if (this.myChainId && this.myChainId != VITE_OP_CHAINID) {
+          params.chainId = this.myChainId;
+        }
         const { data } = await this.$http.get("/stone/square", {
-          params: {
-            type: this.type,
-            page: this.page,
-            size,
-            chainId: this.myChainId,
-          },
+          params,
         });
         if (data.length < size - 5) {
           this.noMore = true;
