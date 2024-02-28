@@ -171,7 +171,7 @@ export default {
     },
     getUrl(it) {
       let pre = "http://127.0.0.1:5174/";
-      pre = "https://preview.4everland.org/";
+      pre = "https://vue-preview.4everland.app/";
       let url = pre + `?src=${encodeURIComponent(it.url)}`;
       if (it.cidOnly) {
         url += `&name=${it.name}`;
