@@ -46,7 +46,7 @@ export const chainMap = {
   168587773: {
     chainId: "0xa0c71fd",
     chainName: "Blast Sepolia Testnet",
-    rpcUrls: ["https://sepolia.blast.io"],
+    rpcUrls: ["https://blast-sepolia.blockpi.network/v1/rpc/public"],
     nativeCurrency: {
       name: "ETH",
       symbol: "ETH",
