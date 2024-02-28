@@ -1,20 +1,16 @@
 <template>
   <div class="network-radio-container al-c">
     <div class="title fz-16 fw-b mr-1">Network</div>
-    <div class="row q-col-gutter-sm flex-1">
-      <div class="col-12" v-for="(it, i) in chainList" :key="`md-${i}`">
-        <div
-          class="radio-item al-c cursor-p"
-          @click="onSelect(it.chainId)"
-          :class="{
-            active: selected == it.chainId,
-          }"
-        >
-          <img :src="it.img" width="22" />
-          <span class="fz-14 ml-1">{{ it.name }}</span>
-        </div>
-      </div>
-    </div>
+    <q-select
+      class="flex-1"
+      dense
+      outlined
+      v-model="selected"
+      map-options
+      options-html
+      @update:model-value="handleChange"
+      :options="chainList"
+    />
   </div>
 </template>
 
@@ -58,12 +54,19 @@ export default {
         //   name: "zkSync Era",
         //   img: "/img/resource/chain-icons/zksync.svg",
         //   chainId: this.$inDev ? 280 : 324,
+        //   value: this.$inDev ? 280 : 324,
         // },
         {
-          label: "Optimism",
+          label: `<div class="al-c"><img src="/img/resource/chain-icons/optimism.svg" width="24" alt="" /><span class="ml-2">Optimism</span></div>`,
           name: "Optimism",
-          img: "/img/resource/chain-icons/optimism.svg",
           chainId: 10,
+          value: 10,
+        },
+        {
+          label: `<div class="al-c"><img src="/img/resource/chain-icons/everpay.svg" width="24" alt="" /><span class="ml-2">Everpay</span></div>`,
+          name: "Everpay",
+          chainId: 99999999,
+          value: 99999999,
         },
       ];
 
@@ -74,24 +77,37 @@ export default {
     window.ethereum.on("chainChanged", this.initSeleted);
     this.initSeleted();
   },
+  unmounted() {
+    window.ethereum.off("chainChanged", this.initSeleted);
+  },
   methods: {
     initSeleted() {
-      this.selected = parseInt(window.ethereum.chainId);
-      this.$emit("onNetwork", this.selected);
+      let selected = parseInt(window.ethereum.chainId);
+      const index = this.chainList.findIndex((it) => it.chainId == selected);
+      // this.selected =
+      if (index == -1) {
+        this.selected = "-";
+        this.$emit("onNetwork");
+      } else {
+        this.selected = selected;
+        this.$emit("onNetwork", this.selected);
+      }
     },
     async onSelect(chainId) {
       try {
         if (this.selected == chainId) return;
         this.selected = chainId;
-        await this.switchNet(chainId);
+        if (this.selected !== 99999999) {
+          await switchNet(chainId);
+        }
         this.$emit("onNetwork", this.selected);
       } catch (error) {
         console.log(error);
         this.initSeleted();
       }
     },
-    async switchNet(id) {
-      await switchNet(id);
+    handleChange({ chainId }) {
+      this.onSelect(chainId);
     },
   },
 };
