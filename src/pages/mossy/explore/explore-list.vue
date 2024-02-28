@@ -60,7 +60,6 @@ import ListRank from "./list-rank.vue";
 
 <script>
 import { mapState } from "vuex";
-const { VITE_OP_CHAINID } = import.meta.env;
 
 export default {
   data() {
@@ -122,7 +121,7 @@ export default {
           page: this.page,
           size,
         };
-        if (this.myChainId && this.myChainId != VITE_OP_CHAINID) {
+        if (this.$getNetItem(this.myChainId)) {
           params.chainId = this.myChainId;
         }
         const { data } = await this.$http.get("/stone/square", {

@@ -15,6 +15,10 @@ export const netList = [
   },
 ];
 
+export function getNetItem(id) {
+  return netList.find((it) => it.id == id);
+}
+
 export function getNetIcon(id, field = "icon") {
   const row = netList.find((it) => it.id == id);
   if (!row) return "net-error.svg";

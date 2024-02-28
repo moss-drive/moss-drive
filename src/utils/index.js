@@ -1,6 +1,7 @@
 import "./extend";
 import bucket from "./bucket";
 import http from "./http";
+import { getNetItem } from "./wallet";
 import { EventBus, copyToClipboard } from "quasar";
 import { utils } from "ethers";
 const { VITE_BASE_URL } = import.meta.env;
@@ -26,6 +27,7 @@ export default {
     global.$getShareLink = (id) => {
       return `${location.origin}/s/${id}`;
     };
+    global.$getNetItem = getNetItem;
     global.$inDev = /foreverland/.test(VITE_BASE_URL);
 
     global.$openLink = (url) => {
