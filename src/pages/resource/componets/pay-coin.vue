@@ -1,26 +1,16 @@
 <template>
   <div class="al-c">
     <div class="fz-16 fw-b mr-1">Token</div>
-    <div class="al-c flex-wrap flex-1">
-      <div
-        @click="onSelect(it)"
-        class="coin-label py-2 pl-4 cursor-p d-flex space-btw"
-        :class="{
-          active: selected == it.label,
-        }"
-        v-for="(it, i) in coinList"
-        :key="i"
-      >
-        <div class="al-c flex-1">
-          <img :src="it.img" width="24" />
-          <div class="fz-12 ml-2">
-            <span class="fz-14 name fw-b">
-              {{ it.name }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <q-select
+      class="flex-1"
+      dense
+      outlined
+      :model-value="modelValue"
+      map-options
+      options-html
+      @update:model-value="onSelect"
+      :options="coinList"
+    />
   </div>
 </template>
 
@@ -33,11 +23,14 @@ export default {
       type: String,
       default: "",
     },
+    modelValue: {
+      type: String,
+    },
   },
-  emits: ["onSelectCoin"],
+  emits: ["onSelectCoin", "update:modelValue"],
   data() {
     return {
-      selected: "ETH",
+      selected: "-",
     };
   },
   computed: {
@@ -49,34 +42,26 @@ export default {
       let arr = Object.keys(this.curChainInfo.coin);
       const coinList = [
         {
-          label: "USDC",
-          name: "USDC Coin",
-          img: "/img/resource/symbal-icons/usdc.svg",
-          stablecoin: true,
+          label: `<div class="al-c"><img src="/img/resource/symbol-icons/usdc.svg" width="24" alt="" /><span class="ml-2">USD Coin</span></div>`,
+          value: "USDC",
         },
         {
-          label: "USDT",
-          name: "Tether USD",
-          img: "/img/resource/symbal-icons/usdt.svg",
-          stablecoin: true,
+          label: `<div class="al-c"><img src="/img/resource/symbol-icons/usdt.svg" width="24" alt="" /><span class="ml-2">Tether USD</span></div>`,
+          value: "USDT",
         },
         {
-          label: "DAI",
-          name: "Dai Stablecoin",
-          img: "/img/resource/symbal-icons/dai.svg",
-          stablecoin: true,
+          label: `<div class="al-c"><img src="/img/resource/symbol-icons/dai.svg" width="24" alt="" /><span class="ml-2">Dai Stablecoin</span></div>`,
+          value: "DAI",
         },
         {
-          label: "ETH",
-          name: "ETH",
-          img: "/img/resource/symbal-icons/eth.svg",
-          stablecoin: false,
+          label: `<div class="al-c"><img src="/img/resource/symbol-icons/eth.svg" width="24" alt="" /><span class="ml-2">ETH</span></div>`,
+          value: "ETH",
         },
       ];
       let finalCoins = [];
       for (const item of coinList) {
         for (const it of arr) {
-          if (item.label.toLowerCase() == it.toLowerCase()) {
+          if (item.value.toLowerCase() == it.toLowerCase()) {
             finalCoins.push(item);
           }
         }
@@ -86,14 +71,9 @@ export default {
   },
   methods: {
     onSelect(item) {
-      this.selected = item.label;
+      this.selected = item.value;
+      this.$emit("update:modelValue", item.value);
       this.$emit("onSelectCoin", item);
-    },
-  },
-
-  watch: {
-    chainId() {
-      this.selected = "USDC";
     },
   },
 };

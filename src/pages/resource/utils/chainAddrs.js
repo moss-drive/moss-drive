@@ -76,4 +76,14 @@ export const chainAddrList = [
     landRecharge: optimismRecharge,
     chainId: 10,
   },
+  {
+    name: "everPay",
+    coin: {
+      usdc: optimisUSDC,
+      usdt: optimisUSDT,
+      dai: optimisDAI,
+    },
+    landRecharge: optimismRecharge,
+    chainId: 99999999,
+  },
 ];
