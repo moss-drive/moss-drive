@@ -108,7 +108,7 @@ export default {
         const one = this.stoneList.find((it) => it.chainId == this.myChainId);
         if (one) {
           return this.$alert(
-            "In order to enable creators to concentrate more on managing their Stones effectively, only one 'Stone' allowed, but can be deployed across multiple chains."
+            "On this network, the 'Stone' already exists. Please switch networks to create."
           );
         }
         if (localStorage.bindX) {
