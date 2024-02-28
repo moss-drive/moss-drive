@@ -75,6 +75,7 @@ import { mapState } from "vuex";
 
 export default {
   props: {
+    info: Object,
     stoneId: null,
     balance: null,
   },
@@ -155,6 +156,7 @@ export default {
         toFolderPath: prefix,
         type: "STONE",
         stoneId: this.stoneId,
+        chainId: this.info.chainId,
         paths: this.checked,
       });
       return data.count;
@@ -175,6 +177,7 @@ export default {
       try {
         const params = {
           stoneId: this.stoneId,
+          chainId: this.info.chainId,
           relativePath: this.curFolder,
           delimiter: "/",
           size: 30,
