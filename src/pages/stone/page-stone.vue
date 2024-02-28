@@ -44,9 +44,9 @@ import StoneEdit from "./stone-edit.vue";
                 <span class="op-8">{{ row.label }}</span>
                 <b class="color-2 fz-18 ml-2">{{ row.val || "-" }}</b>
               </p>
-              <p>
+              <p class="al-c mt-1">
                 <span class="op-8 mr-2">Network</span>
-                <net-icon :chainId="row.chainId" :size="20" />
+                <net-icon :chainId="it.chainId" :size="20" />
               </p>
             </div>
           </div>
