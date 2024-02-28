@@ -32,7 +32,11 @@ import StoneEdit from "./stone-edit.vue";
         <img src="/img/stone/stone-head.png" height="40" class="d-b" />
         <!--  -->
         <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
-          <div class="pos-a right-0 top-0 m-3 pa-1 hover-1" @click="$refs.edit.onEdit(it)">
+          <div
+            v-if="it.stoneId"
+            class="pos-a right-0 top-0 m-3 pa-1 hover-1"
+            @click="$refs.edit.onEdit(it)"
+          >
             <img src="/img/stone/stone-edit.svg" width="20" />
           </div>
           <div class="al-c">
