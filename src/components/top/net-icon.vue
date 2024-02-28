@@ -1,5 +1,5 @@
 <template>
-  <q-img :src="imgSrc" :ratio="1" :width="size + 'px'" />
+  <img :src="imgSrc" :width="field == 'icon' ? size : null" :height="size" />
 </template>
 
 <script>
@@ -13,6 +13,10 @@ export default {
       type: Number,
       default: 22,
     },
+    field: {
+      type: String,
+      default: "icon",
+    },
   },
   computed: {
     ...mapState({
@@ -20,7 +24,7 @@ export default {
     }),
     imgSrc() {
       const id = this.chainId || this.myChainId;
-      const icon = getNetIcon(id);
+      const icon = getNetIcon(id, this.field);
       return `/img/common/${icon}`;
     },
   },

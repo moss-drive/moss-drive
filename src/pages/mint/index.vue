@@ -264,7 +264,7 @@ import faq_icon_0 from "@/assets/imgs/mint/faq_0.png";
 import faq_icon_1 from "@/assets/imgs/mint/faq_1.png";
 import faq_icon_2 from "@/assets/imgs/mint/faq_2.png";
 
-const { VITE_MOSS_CHAINID, VITE_MOSS_NFT_MINT_CONTRACT } = import.meta.env;
+const { VITE_OP_CHAINID, VITE_MOSS_NFT_MINT_CONTRACT } = import.meta.env;
 
 export default {
   name: "MintIndex",
@@ -388,8 +388,8 @@ Tokenization of Spaces: Creators can tokenize their spaces, allowing users to bu
     },
     async checkNet() {
       const chainId = window.ethereum.chainId;
-      if (chainId != VITE_MOSS_CHAINID) {
-        await switchNet(VITE_MOSS_CHAINID);
+      if (chainId != VITE_OP_CHAINID) {
+        await switchNet(VITE_OP_CHAINID);
       }
       await this.initContract();
     },

@@ -25,10 +25,12 @@ import HeaderRight from "../../layouts/header-right.vue";
           <img src="/img/home/moss-txt.svg" height="26" class="ml-2" />
         </a>
         <div class="ml-auto"></div>
-        <net-choose class="mr-3" />
-        <div v-if="loginData.uuid">
-          <header-right :border="false"></header-right>
-        </div>
+        <template v-if="loginData.uuid">
+          <wallet-control fromTop class="mr-3" />
+          <div>
+            <header-right :border="false"></header-right>
+          </div>
+        </template>
       </div>
     </div>
     <div class="row flex-1" style="">

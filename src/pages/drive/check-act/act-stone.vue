@@ -161,9 +161,9 @@
             v-if="!saving"
             @click="showPop = false"
           />
-          <wallet-control @change="onWalletChange" v-slot="{ chainId }">
+          <wallet-control @change="onWalletChange">
             <q-btn rounded color="primary" :loading="saving" @click="onSubmit">
-              <net-icon :chainId="chainId" />
+              <net-icon />
               <span class="ml-2">Create</span>
             </q-btn>
           </wallet-control>
@@ -176,7 +176,7 @@
 <script>
 import { mapState } from "vuex";
 import { MossHub } from "../../../utils/moss-hub";
-const { VITE_MEDIA_PRE } = import.meta.env;
+const { VITE_MEDIA_PRE, VITE_OP_CHAINID } = import.meta.env;
 
 const initForm = {
   stoneName: "",
@@ -197,6 +197,7 @@ export default {
   computed: {
     ...mapState({
       uid: (s) => s.loginData.uuid,
+      myChainId: (s) => s.myChainId,
     }),
   },
   data() {
@@ -211,6 +212,7 @@ export default {
       rowId: null,
       mossHub: null,
       uploading: false,
+      opChainId: VITE_OP_CHAINID,
     };
   },
   watch: {
@@ -268,7 +270,7 @@ export default {
       const form = { ...this.form };
       form.folderPath = this.checkItem.key;
       form.bucketName = this.$bucket.defBucket;
-      form.chainId = this.mossHub.chainId + "";
+      form.chainId = this.myChainId;
       if (!form.avatar) {
         form.avatar = "/img/stone/def-cover.png";
       }
@@ -307,7 +309,7 @@ export default {
       try {
         this.$loading("Checking");
         const { data } = await this.$http.post("/stone/nft/valid", {
-          chainId: this.mossHub.chainId + "",
+          chainId: this.opChainId,
         });
         this.$loadingClose();
         valid = data.valid;

@@ -1,20 +1,24 @@
+const { VITE_OP_CHAINID, VITE_BLAST_CHAINID } = import.meta.env;
+
 export const netList = [
   {
     name: "Optimism",
     icon: "net-op.png",
-    id: 11155420,
+    icon2: "net-op-2.svg",
+    id: VITE_OP_CHAINID * 1,
   },
   {
     name: "Blast",
     icon: "net-blast.png",
-    id: 168587773,
+    icon2: "net-blast-2.png",
+    id: VITE_BLAST_CHAINID * 1,
   },
 ];
 
-export function getNetIcon(id) {
+export function getNetIcon(id, field = "icon") {
   const row = netList.find((it) => it.id == id);
   if (!row) return "net-error.svg";
-  return row.icon;
+  return row[field];
 }
 
 export const chainMap = {
