@@ -51,6 +51,12 @@
               {{ props.row.author }}
             </div>
           </q-td>
+          <q-td key="chainId" :props="props">
+            <div class="d-flex al-c">
+              <net-icon :chainId="props.row.chainId" :size="18" class="mr-2" />
+              {{ getNetItem(props.row.chainId).name }}
+            </div>
+          </q-td>
           <q-td key="currentPrice" :props="props">
             {{ props.row.amounts + " ETH" }}
           </q-td>
@@ -86,10 +92,12 @@
 import { fetchCollections } from "@/api/collection.js";
 import emptyImg from "/img/stone/default-empty.png";
 import { BigNumber } from "ethers";
+import { getNetItem } from "@/utils/wallet.js";
 
 const columns = [
   { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
   { name: "author", align: "left", label: "Author", field: "author", sortable: false },
+  { name: "chainId", align: "left", label: "Network", field: "chainId", sortable: false },
   {
     name: "currentPrice",
     align: "left",
@@ -117,6 +125,7 @@ export default {
     this.getList();
   },
   methods: {
+    getNetItem,
     async getList() {
       const params = {
         page: this.page,

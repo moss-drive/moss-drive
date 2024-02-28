@@ -30,6 +30,12 @@
           <q-td key="stoneName" :props="props">
             {{ props.row.stoneName }}
           </q-td>
+          <q-td key="chainId" :props="props">
+            <div class="d-flex al-c">
+              <net-icon :chainId="props.row.chainId" :size="18" class="mr-2" />
+              {{ getNetItem(props.row.chainId).name }}
+            </div>
+          </q-td>
           <q-td key="createdAt" :props="props">
             {{ formatTime(props.row.createdAt * 1000) }}
           </q-td>
@@ -119,9 +125,12 @@ import { BigNumber } from "ethers";
 import { fetchTransaction } from "@/api/txs.js";
 import emptyImg from "/img/stone/default-empty.png";
 import { format } from "quasar";
+import { getNetItem } from "@/utils/wallet.js";
+
 const columns = [
   { name: "index", align: "left", label: "#", field: "index", sortable: false },
   { name: "stoneName", align: "left", label: "Stone Name", field: "stoneName", sortable: false },
+  { name: "chainId", align: "left", label: "Network", field: "chainId", sortable: false },
   { name: "createdAt", align: "left", label: "Date", field: "createdAt", sortable: false },
   {
     name: "action",
@@ -164,6 +173,7 @@ export default {
     this.getList();
   },
   methods: {
+    getNetItem,
     async getList() {
       const params = {
         page: this.page,
