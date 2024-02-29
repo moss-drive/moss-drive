@@ -59,6 +59,9 @@
                 {{ props.row.twitterName }}
               </span>
             </q-td>
+            <q-td key="chainId" :props="props">
+              <net-icon :chainId="props.row.chainId" :size="18" class="mr-2" />
+            </q-td>
             <q-td key="arrow" :props="props">
               <img width="24" src="/img/mossy/icon/arrows.svg" alt="" />
             </q-td>
@@ -104,6 +107,7 @@ export default {
           label: "Author",
           field: "twitterName",
         },
+        { name: "chainId", align: "left", label: "Network", field: "chainId" },
         {
           name: "arrow",
           align: "left",
