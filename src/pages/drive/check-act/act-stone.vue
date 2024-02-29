@@ -305,7 +305,7 @@ export default {
     async initMoss() {
       if (!this.mossHub) {
         try {
-          const mossHub = new MossHub();
+          const mossHub = new MossHub(this.myChainId);
           await mossHub.checkNet();
           this.mossHub = mossHub;
         } catch (error) {
