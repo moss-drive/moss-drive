@@ -231,7 +231,7 @@ export default {
       if (one && this.showPop) {
         this.showPop = false;
         this.$alert(
-          "On this network, the folder 'stone' already exists. Please switch networks to create."
+          "On this network, the 'Stone' already exists. Please switch networks to create."
         );
       }
     },
