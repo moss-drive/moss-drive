@@ -106,7 +106,7 @@ export default {
   data() {
     return {
       depositDialog: false,
-      coinType: "USDC",
+      coinType: "ETH",
       amount: "",
       countEthLoading: false,
       chainId: "",
@@ -212,20 +212,11 @@ export default {
       }
     },
     async handleEthRecharge() {
-      if (this.disabled) return;
-      try {
-        this.$loading("Loading...");
-        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
-          value: this.ethAmount,
-        });
-        const receipt = await tx.wait();
-        console.log(receipt);
-        this.$alert("recharge success!!");
-        this.depositDialog = false;
-      } catch (error) {
-        this.onErr(error);
-      }
-      this.$loadingClose();
+      const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
+        value: this.ethAmount,
+      });
+      const receipt = await tx.wait();
+      console.log(receipt);
     },
     async initEverPay() {
       try {
@@ -424,7 +415,6 @@ export default {
       this.approving = false;
     },
     async handleApprove() {
-      if (this.disabled) return;
       this.approving = true;
       this.popup = true;
       this.stepIdx = 0;

@@ -59,8 +59,8 @@ export default {
         },
       ];
       let finalCoins = [];
-      for (const item of coinList) {
-        for (const it of arr) {
+      for (const it of arr) {
+        for (const item of coinList) {
           if (item.value.toLowerCase() == it.toLowerCase()) {
             finalCoins.push(item);
           }
