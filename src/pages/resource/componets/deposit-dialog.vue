@@ -1,10 +1,19 @@
 <template>
   <div>
-    <q-dialog v-model="depositDialog" @update:modelValue="handleDialog">
+    <q-dialog v-model="depositDialog" persistent>
       <div>
         <div class="recharge-container">
           <div class="deposit-container">
-            <div class="fz-20 fw-b mb-4">Deposit</div>
+            <div class="fz-20 fw-b mb-4 al-c space-btw">
+              <span>Deposit</span>
+              <img
+                class="cursor-p"
+                @click="depositDialog = false"
+                src="/img/resource/dialog-close.svg"
+                width="12"
+                alt=""
+              />
+            </div>
             <div class="deposite-section mb-6">
               <div class="al-c recharge-input">
                 <input maxlength="8" class="r-ipt flex-1" v-model="amount" type="text" />
@@ -41,24 +50,30 @@
               </div>
             </div>
 
-            <q-btn
-              v-if="!isApproved"
-              :loading="approving"
-              flat
-              class="recharge-btn fz-16 cursor-p"
-              @click="handleApprove"
-              :disable="disabled"
-              >Approve</q-btn
+            <q-btn flat v-if="stepIdx == 2" class="recharge-btn fz-16 cursor-p" @click="handleDone"
+              >Done</q-btn
             >
-            <q-btn
-              v-else
-              flat
-              :loading="depositing"
-              class="recharge-btn fz-16 cursor-p"
-              @click="handleRechargeLand"
-              :disable="disabled"
-              >Confirm</q-btn
-            >
+
+            <div v-else>
+              <q-btn
+                v-if="!isApproved"
+                :loading="approving"
+                flat
+                class="recharge-btn fz-16 cursor-p"
+                @click="handleApprove"
+                :disable="disabled"
+                >Approve</q-btn
+              >
+              <q-btn
+                v-else
+                flat
+                :loading="depositing"
+                class="recharge-btn fz-16 cursor-p"
+                @click="handleRechargeLand"
+                :disable="disabled"
+                >Confirm</q-btn
+              >
+            </div>
           </div>
         </div>
         <deposit-dialog-popup :class="{ popup: popup }" :stepIdx="stepIdx"></deposit-dialog-popup>
@@ -304,11 +319,6 @@ export default {
       }
       this.depositing = false;
     },
-    handleDialog(val) {
-      if (!val) {
-        this.popup = false;
-      }
-    },
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -436,6 +446,9 @@ export default {
       this.approving = false;
       this.checkApprove();
     },
+    handleDone() {
+      location.reload();
+    },
   },
   components: {
     PayCoin,
@@ -455,6 +468,13 @@ export default {
         debounce(() => {
           this.usdc2eth();
         });
+      }
+    },
+    depositDialog(val) {
+      if (!val) {
+        this.popup = false;
+        this.stepIdx = 0;
+        this.amount = "";
       }
     },
   },
