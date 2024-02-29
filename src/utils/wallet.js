@@ -1,4 +1,5 @@
 const { VITE_OP_CHAINID, VITE_BLAST_CHAINID } = import.meta.env;
+const { VITE_OP_BLOCKURL, VITE_BLAST_BLOCKURL } = import.meta.env;
 
 export const netList = [
   {
@@ -6,14 +7,14 @@ export const netList = [
     icon: "net-op.png",
     icon2: "net-op-2.svg",
     id: VITE_OP_CHAINID * 1,
-    blockUrl: "https://optimistic.etherscan.io",
+    blockUrl: VITE_OP_BLOCKURL,
   },
   {
     name: "Blast",
     icon: "net-blast.png",
     icon2: "net-blast-2.png",
     id: VITE_BLAST_CHAINID * 1,
-    blockUrl: "https://testnet.blastscan.io",
+    blockUrl: VITE_BLAST_BLOCKURL,
   },
 ];
 
