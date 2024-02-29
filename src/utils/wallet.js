@@ -6,12 +6,14 @@ export const netList = [
     icon: "net-op.png",
     icon2: "net-op-2.svg",
     id: VITE_OP_CHAINID * 1,
+    blockUrl: "https://optimistic.etherscan.io",
   },
   {
     name: "Blast",
     icon: "net-blast.png",
     icon2: "net-blast-2.png",
     id: VITE_BLAST_CHAINID * 1,
+    blockUrl: "https://testnet.blastscan.io",
   },
 ];
 
