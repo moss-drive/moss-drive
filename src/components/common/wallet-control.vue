@@ -125,7 +125,7 @@ export default {
           return;
         }
         let msg = error.message;
-        this.$alert(msg);
+        this.$toast(msg);
       }
     },
     onChange(obj) {
