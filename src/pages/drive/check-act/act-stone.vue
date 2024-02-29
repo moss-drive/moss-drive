@@ -231,7 +231,7 @@ export default {
       if (one && this.showPop) {
         this.showPop = false;
         this.$alert(
-          "On this network, the folder 'stone' already exists. Please switch networks to create."
+          "On this network, the 'Stone' already exists. Please switch networks to create."
         );
       }
     },
@@ -305,7 +305,7 @@ export default {
     async initMoss() {
       if (!this.mossHub) {
         try {
-          const mossHub = new MossHub();
+          const mossHub = new MossHub(this.myChainId);
           await mossHub.checkNet();
           this.mossHub = mossHub;
         } catch (error) {

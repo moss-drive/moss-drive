@@ -157,9 +157,7 @@ export default {
       }
     },
     goStone(row, index) {
-      // this.$router.push({ path: "/mossy/stone", query: { id: row.id } });
-
-      window.open(`${window.location.origin}/${row.stoneId}`);
+      window.open(this.$getStoneLink(row));
     },
     isOver6Decimals(num) {
       return (num.toString().split(".")[1] || []).length > 6;

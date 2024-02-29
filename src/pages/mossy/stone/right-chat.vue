@@ -85,6 +85,7 @@ export default {
         await this.$http.put("/message/board", {
           message,
           stoneId: this.stoneId,
+          chainId: this.info.chainId,
         });
         this.curList = [];
         this.page = 1;

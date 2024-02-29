@@ -42,7 +42,7 @@ import { switchNet, netList } from "../../utils/wallet";
 export default {
   props: {
     fromTop: Boolean,
-    sameAddr: {
+    needSame: {
       type: Boolean,
       default: true, // invalid login addr eq wallet addr
     },
@@ -62,6 +62,9 @@ export default {
     ...mapState({
       uid: (s) => s.loginData.uuid,
     }),
+    account() {
+      return this.accounts[0];
+    },
     chain_id() {
       return Number(this.chainId);
     },
@@ -77,10 +80,10 @@ export default {
     addrMatch() {
       if (!this.accounts.length) return false;
       if (this.fromTop) return true;
-      return this.accounts[0]?.toLowerCase() == this.uid?.toLowerCase();
+      return this.account?.toLowerCase() == this.uid?.toLowerCase();
     },
     isConnect() {
-      if (this.sameAddr) return this.addrMatch;
+      if (this.needSame) return this.addrMatch;
       return this.accounts.length > 0;
     },
   },
@@ -107,7 +110,8 @@ export default {
           method: "eth_requestAccounts",
         });
         this.accounts = accounts;
-        if (this.sameAddr && !this.addrMatch) {
+        if (this.needSame && !this.addrMatch) {
+          console.log(this.account, "not same", this.uid);
           throw new Error(
             `Please use the wallet address associated with the current account for signing. The current account is ${this.uid?.cutStr(
               4,
