@@ -60,6 +60,16 @@ export const chainMap = {
       decimals: 18,
     },
   },
+  81457: {
+    chainId: "0x13e31",
+    chainName: "Blast Mainnet",
+    rpcUrls: ["https://rpc.blast.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
 };
 
 async function addChain(id) {

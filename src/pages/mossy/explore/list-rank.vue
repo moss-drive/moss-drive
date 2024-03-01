@@ -39,7 +39,10 @@
                 </div>
               </div>
             </div>
-            <p class="fz-18 fw-b line-1">{{ item.stoneName }}</p>
+            <p class="fz-16 fw-b line-1">
+              <net-icon :chainId="item.chainId" :size="8" field="icon2" />
+              <span class="ml-1">{{ item.stoneName }}</span>
+            </p>
             <div class="mt-1 fz-14 al-c">
               <user-avatar :src="item.twitterAvatar" :uid="item.uid" :size="18" />
               <span class="op-8 ml-1">{{ item.twitterName }}</span>
@@ -64,6 +67,7 @@
             <th class="text-left">#</th>
             <th class="text-left">Stone</th>
             <th class="text-left">Author</th>
+            <th class="text-left">Network</th>
             <th class="text-left">Pool Value</th>
             <th class="text-left">Current Price</th>
             <th class="text-left">Supply</th>
@@ -86,6 +90,9 @@
               <td class="">
                 <user-avatar :src="item.twitterAvatar" :uid="item.uid" :size="24" />
                 <span class="ml-1"> {{ item.twitterName }}</span>
+              </td>
+              <td class="text-left">
+                <net-icon :chainId="item.chainId" :size="20" />
               </td>
               <td class="text-left fw-b">{{ $formatEther(item.worth) }} ETH</td>
               <td class="text-left fw-b">{{ $formatEther(item.price) }} ETH</td>
