@@ -91,7 +91,6 @@ import {
   BlastOracleLand__factory,
 } from "@4everland/land-v5";
 import { optimismRecharge, chainAddrList, blastRecharge } from "../utils/chainAddrs";
-console.log(optimismRecharge);
 import PayCoin from "./pay-coin.vue";
 import PayNetwork from "./pay-network.vue";
 import ResourceCount from "./resource-count.vue";
