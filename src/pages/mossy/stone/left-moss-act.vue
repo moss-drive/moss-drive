@@ -108,7 +108,11 @@ export default {
       isDone: false,
     };
   },
-  watch: {},
+  watch: {
+    myChainId() {
+      this.checkAmount();
+    },
+  },
   computed: {
     ...mapState({
       userInfo: (s) => s.userInfo,
