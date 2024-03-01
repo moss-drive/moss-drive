@@ -71,8 +71,9 @@ export default {
         this.selected = chainId;
         if (this.selected !== 99999999) {
           await switchNet(chainId);
+        } else {
+          this.$emit("onNetwork", this.selected);
         }
-        // this.$emit("onNetwork", this.selected);
       } catch (error) {
         console.log(error);
         this.initSeleted();
