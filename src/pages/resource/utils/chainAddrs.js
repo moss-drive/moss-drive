@@ -1,8 +1,9 @@
-const inDev = process.env.NODE_ENV != "production";
+const inDev = import.meta.env.DEV;
+
+console.log(inDev);
 export const optimismRecharge = inDev
   ? "0x3cA298d7A98262C0598dd91Ce926f23e51c4b293"
   : "0x19f240DD39FEF12D139a4E0Ae81f44945c06092f";
-
 export const MumbaiUSDC = inDev
   ? "0x673Df4EF6C1e3994f502325a3181a0b4175F1333"
   : "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
@@ -85,5 +86,15 @@ export const chainAddrList = [
     },
     landRecharge: optimismRecharge,
     chainId: 99999999,
+  },
+  {
+    name: "Blast",
+    coin: {
+      usdc: optimisUSDC,
+      usdt: optimisUSDT,
+      dai: optimisDAI,
+    },
+    landRecharge: optimismRecharge,
+    chainId: 81457,
   },
 ];

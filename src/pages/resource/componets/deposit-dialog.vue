@@ -125,7 +125,7 @@ export default {
   async created() {
     window.ethereum.on("accountsChanged", this.handleAccountsChanged);
     await this.getAccount();
-    this.checkApprove();
+    // this.checkApprove();
   },
   unmounted() {
     window.ethereum.off("accountsChanged", this.handleAccountsChanged);
@@ -141,11 +141,6 @@ export default {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       return UNILand__factory.connect(optimismRecharge, signer);
-    },
-    ERC20() {
-      let provider = new providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      return ICoin__factory.connect(this.coinAddr, signer);
     },
     LandRecharge() {
       let provider = new providers.Web3Provider(window.ethereum);
@@ -190,20 +185,21 @@ export default {
     },
     async onNetwork(chain) {
       this.chainId = chain;
-      if (this.chainId == 99999999) {
+      if (this.chainId != 10) {
         this.coinType = "USDC";
+      }
+      if (this.chainId == 99999999) {
         await this.initEverPay();
         return;
       }
-      if (!this.coinType) return;
-      if (this.coinType == "ETH") {
-        this.usdc2eth();
-      } else {
-        await this.checkApprove();
-      }
+      await this.chainChanged();
     },
     async onSelectCoin() {
       if (this.chainId == 99999999) return;
+      await this.chainChanged();
+    },
+
+    async chainChanged() {
       if (!this.coinType) return;
       if (this.coinType == "ETH") {
         this.usdc2eth();
@@ -211,13 +207,7 @@ export default {
         await this.checkApprove();
       }
     },
-    async handleEthRecharge() {
-      const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
-        value: this.ethAmount,
-      });
-      const receipt = await tx.wait();
-      console.log(receipt);
-    },
+
     async initEverPay() {
       try {
         const everPay = new Everpay();
@@ -309,6 +299,13 @@ export default {
         this.onErr(error);
       }
       this.depositing = false;
+    },
+    async handleEthRecharge() {
+      const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
+        value: this.ethAmount,
+      });
+      const receipt = await tx.wait();
+      console.log(receipt);
     },
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
@@ -403,8 +400,11 @@ export default {
       if (!this.curChainInfo) return;
       this.approving = true;
       try {
-        const allowance = await this.ERC20.allowance(this.account, this.curChainInfo.landRecharge);
-        this.curAmountDecimals = await this.ERC20.decimals();
+        let provider = new providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        let ERC20 = ICoin__factory.connect(this.coinAddr, signer);
+        const allowance = await ERC20.allowance(this.account, this.curChainInfo.landRecharge);
+        this.curAmountDecimals = await ERC20.decimals();
         console.log(allowance, "allowance");
         this.allowance = allowance;
       } catch (error) {
@@ -419,11 +419,14 @@ export default {
       this.popup = true;
       this.stepIdx = 0;
       try {
-        let gas = await this.ERC20.estimateGas.approve(this.curChainInfo.landRecharge, uint256Max);
+        let provider = new providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        let ERC20 = ICoin__factory.connect(this.coinAddr, signer);
+        let gas = await ERC20.estimateGas.approve(this.curChainInfo.landRecharge, uint256Max);
         console.log("gas", gas);
-        let gasPrice = await this.ERC20.provider.getGasPrice();
+        let gasPrice = await ERC20.provider.getGasPrice();
 
-        const tx = await this.ERC20.approve(this.curChainInfo.landRecharge, uint256Max, {
+        const tx = await ERC20.approve(this.curChainInfo.landRecharge, uint256Max, {
           gasLimit: gas.mul(15).div(10),
           gasPrice: gasPrice.mul(12).div(10),
         });

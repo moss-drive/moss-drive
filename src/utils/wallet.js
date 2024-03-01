@@ -96,6 +96,7 @@ export async function switchNet(id) {
     });
   } catch (error) {
     console.log("switch error", error);
+    console.log(error.code);
     if (error.code == 4902 || error.data?.originalError.code == 4902) {
       await addChain(id);
     } else {

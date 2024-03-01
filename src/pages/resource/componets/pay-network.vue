@@ -8,6 +8,7 @@
       v-model="selected"
       map-options
       options-html
+      option-value="chainId"
       @update:model-value="handleChange"
       :options="chainList"
     />
@@ -25,48 +26,20 @@ export default {
   computed: {
     chainList() {
       const list = [
-        // {
-        //   label: "Polygon",
-        //   name: "Polygon",
-        //   img: "/img/resource/chain-icons/polygon.svg",
-        //   chainId: this.$inDev ? 80001 : 137,
-        // },
-        // {
-        //   label: "Ethereum",
-        //   name: "Ethereum",
-        //   img: "/img/resource/chain-icons/ethereum.svg",
-        //   chainId: this.$inDev ? 11155111 : 1,
-        // },
-        // {
-        //   label: "BSC",
-        //   name: "BSC",
-        //   img: "/img/resource/chain-icons/bsc.svg",
-        //   chainId: this.$inDev ? 97 : 56,
-        // },
-        // {
-        //   label: "Arbitrum",
-        //   name: "Arbitrum",
-        //   img: "/img/resource/chain-icons/arbitrum.svg",
-        //   chainId: this.$inDev ? 421613 : 42161,
-        // },
-        // {
-        //   label: "zkSync",
-        //   name: "zkSync Era",
-        //   img: "/img/resource/chain-icons/zksync.svg",
-        //   chainId: this.$inDev ? 280 : 324,
-        //   value: this.$inDev ? 280 : 324,
-        // },
         {
           label: `<div class="al-c"><img src="/img/resource/chain-icons/optimism.svg" width="24" alt="" /><span class="ml-2">Optimism</span></div>`,
           name: "Optimism",
           chainId: 10,
-          value: 10,
         },
+        // {
+        //   label: `<div class="al-c"><img src="/img/resource/chain-icons/blast.svg" width="24" alt="" /><span class="ml-2">Blast</span></div>`,
+        //   name: "Blast",
+        //   chainId: 81457,
+        // },
         {
           label: `<div class="al-c"><img src="/img/resource/chain-icons/everpay.svg" width="24" alt="" /><span class="ml-2">Everpay</span></div>`,
           name: "Everpay",
           chainId: 99999999,
-          value: 99999999,
         },
       ];
 
@@ -84,7 +57,6 @@ export default {
     initSeleted() {
       let selected = parseInt(window.ethereum.chainId);
       const index = this.chainList.findIndex((it) => it.chainId == selected);
-      // this.selected =
       if (index == -1) {
         this.selected = "-";
         this.$emit("onNetwork");
@@ -100,7 +72,7 @@ export default {
         if (this.selected !== 99999999) {
           await switchNet(chainId);
         }
-        this.$emit("onNetwork", this.selected);
+        // this.$emit("onNetwork", this.selected);
       } catch (error) {
         console.log(error);
         this.initSeleted();
