@@ -163,7 +163,7 @@ export default {
       this.tableLoading = false;
     },
     onRow(it) {
-      window.open(location.origin + `/${it.stoneId}`);
+      window.open(location.origin + `/${it.stoneId}?chainId=${it.chainId}`);
     },
     handleBack() {
       this.searchKey = "";
