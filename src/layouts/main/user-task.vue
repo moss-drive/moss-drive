@@ -136,7 +136,12 @@
               </q-avatar>
               <div>
                 <div class="task-name">{{ item.name }}</div>
-                <div class="task-desc">+{{ item.reward }} Points</div>
+                <div class="task-desc">
+                  +{{ item.reward }} Points
+                  <span v-if="item.expiredAt" class="task-expired"
+                    >Expires {{ formatTimestamp(item.expiredAt) }}</span
+                  >
+                </div>
               </div>
             </div>
             <div>
@@ -272,6 +277,29 @@ export default {
     async onPopupMint(item, data) {
       await this.$alert(data.message, { title: data.tips });
       this.init();
+    },
+    formatTimestamp(timestamp) {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const date = new Date(timestamp);
+      const month = months[date.getMonth()];
+      const day = date.getDate();
+      const year = date.getFullYear();
+      const hours = date.getUTCHours().toString().padStart(2, "0");
+      const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+      return `${month} ${day}, ${year} at ${hours}:${minutes}`;
     },
   },
 };
