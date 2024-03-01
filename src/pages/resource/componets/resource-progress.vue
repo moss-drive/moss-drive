@@ -3,10 +3,27 @@
     <div class="resource-info mb-2 al-c space-btw">
       <div>{{ name }}</div>
 
-      <div class="fz-12 resource-usage">
-        <span class="land-to-resource fz-12 mr-2" v-show="showConversion"
-          >+ {{ land2Resource.transformSize }} {{ name == "Storage (IPFS)" ? " * 1 mo" : "" }}</span
-        >
+      <div class="fz-12 resource-usage al-c">
+        <div>
+          <q-tooltip
+            anchor="top middle"
+            self="bottom middle"
+            max-width="300px"
+            class="bg-black-8 fz-12"
+          >
+            {{
+              name == "Storage (IPFS)"
+                ? `The computation method for IPFS consumption is Time * Space. This value is only an
+            estimate of the storage that LAND balance can consume in one month. The final charge
+            will still be based on the actual storage used`
+                : "The estimated resources usable with the current LAND balance"
+            }}
+          </q-tooltip>
+          <span class="land-to-resource fz-12 mr-2 cursor-p" v-show="showConversion"
+            >+ {{ land2Resource.transformSize }}
+            {{ name == "Storage (IPFS)" ? " * 1 mo" : "" }}</span
+          >
+        </div>
         <span class="resource-num fz-20" :style="{ color: color }">{{ used.num }}</span>
         <span class="unit">{{ used.unit }}</span>
         <span>/</span>

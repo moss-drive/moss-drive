@@ -16,12 +16,12 @@
               <div class="land-content-bottom mt-1">≈{{ land2Usd }}USD</div>
             </div>
             <div class="al-c flex-wrap" style="justify-content: flex-end">
-              <div
+              <!-- <div
                 class="conversion-btn ta-c cursor-p mt-2"
                 @click="showConversion = !showConversion"
               >
                 Conversion
-              </div>
+              </div> -->
               <div class="deposit-btn ta-c fw-b cursor-p mt-2 ml-4" @click="handleDeposit">
                 Deposit
               </div>
@@ -86,7 +86,7 @@ import BillDetails from "./componets/bill-details.vue";
 export default {
   data() {
     return {
-      showConversion: false,
+      showConversion: true,
     };
   },
   created() {

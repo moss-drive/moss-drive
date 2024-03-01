@@ -60,6 +60,16 @@ export const chainMap = {
       decimals: 18,
     },
   },
+  81457: {
+    chainId: "0x13e31",
+    chainName: "Blast",
+    rpcUrls: ["https://rpc.blast.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
 };
 
 async function addChain(id) {
@@ -86,6 +96,7 @@ export async function switchNet(id) {
     });
   } catch (error) {
     console.log("switch error", error);
+    console.log(error.code);
     if (error.code == 4902 || error.data?.originalError.code == 4902) {
       await addChain(id);
     } else {
