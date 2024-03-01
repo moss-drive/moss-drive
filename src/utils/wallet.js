@@ -62,7 +62,7 @@ export const chainMap = {
   },
   81457: {
     chainId: "0x13e31",
-    chainName: "Blast",
+    chainName: "Blast Mainnet",
     rpcUrls: ["https://rpc.blast.io"],
     nativeCurrency: {
       name: "ETH",
