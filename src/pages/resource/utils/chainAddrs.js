@@ -1,8 +1,6 @@
 const inDev = import.meta.env.DEV;
-
-console.log(inDev);
 export const optimismRecharge = inDev
-  ? "0x3cA298d7A98262C0598dd91Ce926f23e51c4b293"
+  ? "0x19f240DD39FEF12D139a4E0Ae81f44945c06092f"
   : "0x19f240DD39FEF12D139a4E0Ae81f44945c06092f";
 export const MumbaiUSDC = inDev
   ? "0x673Df4EF6C1e3994f502325a3181a0b4175F1333"
@@ -65,6 +63,18 @@ export const optimisETH = inDev
   ? "0x4200000000000000000000000000000000000006"
   : "0x4200000000000000000000000000000000000006";
 
+export const blastRecharge = inDev
+  ? "0xB7eB58402Fa60ad0764e383a9BF4a9117a32D462"
+  : "0xB7eB58402Fa60ad0764e383a9BF4a9117a32D462";
+
+export const blastUSDB = inDev
+  ? "0x4300000000000000000000000000000000000003"
+  : "0x4300000000000000000000000000000000000003";
+
+export const blastETH = inDev
+  ? "0x4200000000000000000000000000000000000006"
+  : "0x4200000000000000000000000000000000000006";
+
 export const chainAddrList = [
   {
     name: "Optimism",
@@ -90,11 +100,10 @@ export const chainAddrList = [
   {
     name: "Blast",
     coin: {
-      usdc: optimisUSDC,
-      usdt: optimisUSDT,
-      dai: optimisDAI,
+      eth: blastETH,
+      usdb: blastUSDB,
     },
-    landRecharge: optimismRecharge,
+    landRecharge: blastRecharge,
     chainId: 81457,
   },
 ];

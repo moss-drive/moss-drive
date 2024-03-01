@@ -31,11 +31,11 @@ export default {
           name: "Optimism",
           chainId: 10,
         },
-        // {
-        //   label: `<div class="al-c"><img src="/img/resource/chain-icons/blast.svg" width="24" alt="" /><span class="ml-2">Blast</span></div>`,
-        //   name: "Blast",
-        //   chainId: 81457,
-        // },
+        {
+          label: `<div class="al-c"><img src="/img/resource/chain-icons/blast.svg" width="24" alt="" /><span class="ml-2">Blast</span></div>`,
+          name: "Blast",
+          chainId: 81457,
+        },
         {
           label: `<div class="al-c"><img src="/img/resource/chain-icons/everpay.svg" width="24" alt="" /><span class="ml-2">Everpay</span></div>`,
           name: "Everpay",
@@ -67,10 +67,12 @@ export default {
     },
     async onSelect(chainId) {
       try {
+        console.log(chainId);
         if (this.selected == chainId) return;
         this.selected = chainId;
         if (this.selected !== 99999999) {
           await switchNet(chainId);
+          this.$emit("onNetwork", this.selected);
         } else {
           this.$emit("onNetwork", this.selected);
         }

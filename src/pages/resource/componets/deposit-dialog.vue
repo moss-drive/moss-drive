@@ -88,8 +88,10 @@ import {
   UNILand__factory,
   Land__factory,
   ICoin__factory,
+  BlastOracleLand__factory,
 } from "@4everland/land-v5";
-import { optimismRecharge, chainAddrList } from "../utils/chainAddrs";
+import { optimismRecharge, chainAddrList, blastRecharge } from "../utils/chainAddrs";
+console.log(optimismRecharge);
 import PayCoin from "./pay-coin.vue";
 import PayNetwork from "./pay-network.vue";
 import ResourceCount from "./resource-count.vue";
@@ -113,6 +115,7 @@ export default {
       usdcAmount: BigNumber.from("0"),
       ethAmount: BigNumber.from("0"),
       allowance: BigNumber.from("0"),
+      blastUnitPrice: BigNumber.from("0"),
       curAmountDecimals: 18,
       popup: false,
       account: null,
@@ -120,15 +123,16 @@ export default {
       depositing: false,
       everPayTokenList: [],
       stepIdx: 0,
+      blastUnitPriceTimer: null,
     };
   },
   async created() {
     window.ethereum.on("accountsChanged", this.handleAccountsChanged);
     await this.getAccount();
-    // this.checkApprove();
   },
   unmounted() {
     window.ethereum.off("accountsChanged", this.handleAccountsChanged);
+    clearTimeout(this.blastUnitPriceTimer);
   },
   computed: {
     ...mapState({
@@ -140,12 +144,13 @@ export default {
     opEthLandRecharge() {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
+      console.log(optimismRecharge);
       return UNILand__factory.connect(optimismRecharge, signer);
     },
     LandRecharge() {
       let provider = new providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      return Land__factory.connect(this.curChainInfo.landRecharge, signer);
+      return BlastOracleLand__factory.connect(this.curChainInfo.landRecharge, signer);
     },
     transformAmount() {
       if (this.coinType == "ETH") {
@@ -185,12 +190,28 @@ export default {
     },
     async onNetwork(chain) {
       this.chainId = chain;
-      if (this.chainId != 10) {
-        this.coinType = "USDC";
-      }
       if (this.chainId == 99999999) {
+        this.coinType = "USDC";
         await this.initEverPay();
+        if (this.blastUnitPriceTimer) {
+          clearInterval(this.blastUnitPriceTimer);
+        }
         return;
+      } else if (this.chainId == 81457) {
+        this.coinType = "ETH";
+        await this.getBlastEthUnitPrice();
+        let value = this.usdcAmount
+          .mul((1e18).toString())
+          .mul((1e18).toString())
+          .div(this.blastUnitPrice);
+        this.ethAmount = value;
+        this.blastUnitPriceTimer = setInterval(() => {
+          this.getBlastEthUnitPrice();
+        }, 20000);
+      } else {
+        if (this.blastUnitPriceTimer) {
+          clearInterval(this.blastUnitPriceTimer);
+        }
       }
       await this.chainChanged();
     },
@@ -202,7 +223,9 @@ export default {
     async chainChanged() {
       if (!this.coinType) return;
       if (this.coinType == "ETH") {
-        this.usdc2eth();
+        if (this.chainId == 10) {
+          this.usdc2eth();
+        }
       } else {
         await this.checkApprove();
       }
@@ -211,7 +234,6 @@ export default {
     async initEverPay() {
       try {
         const everPay = new Everpay();
-        console.log(this.account);
         const data = await everPay.balances({
           account: this.account,
         });
@@ -301,11 +323,19 @@ export default {
       this.depositing = false;
     },
     async handleEthRecharge() {
-      const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
-        value: this.ethAmount,
-      });
-      const receipt = await tx.wait();
-      console.log(receipt);
+      if (this.chainId == 10) {
+        const tx = await this.opEthLandRecharge.mintByETH(this.euid, {
+          value: this.ethAmount,
+        });
+        const receipt = await tx.wait();
+        console.log(receipt);
+      } else {
+        const tx = await this.LandRecharge.mintByETH(this.euid, {
+          value: this.ethAmount,
+        });
+        const receipt = await tx.wait();
+        console.log(receipt);
+      }
     },
     async usdc2eth() {
       let provider = new providers.Web3Provider(window.ethereum);
@@ -343,6 +373,19 @@ export default {
       }
       this.countEthLoading = false;
     },
+
+    async getBlastEthUnitPrice() {
+      try {
+        let provider = new providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const BlastOracleLand = BlastOracleLand__factory.connect(blastRecharge, signer);
+        this.blastUnitPrice = await BlastOracleLand.callStatic.fetchPrice();
+        console.log(formatEther(this.blastUnitPrice));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     onErr(err) {
       if (!err) return console.log("---- err null");
       if (/unknown account/.test(err.message)) {
@@ -459,7 +502,15 @@ export default {
       }
       if (this.coinType == "ETH") {
         debounce(() => {
-          this.usdc2eth();
+          if (this.chainId == 10) {
+            this.usdc2eth();
+          } else {
+            let value = this.usdcAmount
+              .mul((1e18).toString())
+              .mul((1e18).toString())
+              .div(this.blastUnitPrice);
+            this.ethAmount = value;
+          }
         });
       }
     },
