@@ -16,9 +16,9 @@
     <q-menu v-if="isConnect" style="width: 150px" auto-close>
       <q-list>
         <q-item
-          @click="$emit('item', it)"
+          @click="onItem(it)"
           :clickable="myChainId != it.id"
-          v-for="it in netList"
+          v-for="it in list"
           :key="it.name"
         >
           <div class="al-c">
@@ -53,11 +53,27 @@ export default {
     ...mapState({
       myChainId: (s) => s.myChainId,
     }),
+    list() {
+      return [
+        ...netList,
+        {
+          name: "Blast Testnet ",
+          icon: "net-blast.png",
+          link: "https://blast-test.mymoss.io/",
+        },
+      ];
+    },
     asMobile() {
       return this.screen.width < 690;
     },
     btnSize() {
       return this.asMobile ? "12px" : null;
+    },
+  },
+  methods: {
+    onItem(it) {
+      if (it.link) window.open(it.link);
+      else this.$emit("item", it);
     },
   },
 };
