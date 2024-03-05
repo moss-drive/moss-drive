@@ -7,7 +7,7 @@
       <span class="mr-1">Network</span>
       <net-icon :chainId="info.chainId" :size="18" />
     </div>
-    <div class="mr-2">
+    <div class="mr-2" v-if="info.chainId == opChainId">
       <q-btn
         :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"
         target="_blank"
@@ -68,9 +68,16 @@
 </template>
 
 <script>
+const { VITE_OP_CHAINID } = import.meta.env;
+
 export default {
   props: {
     info: Object,
+  },
+  data() {
+    return {
+      opChainId: VITE_OP_CHAINID,
+    };
   },
   methods: {
     getArLink(hash) {
