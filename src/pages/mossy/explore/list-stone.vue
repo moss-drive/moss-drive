@@ -9,8 +9,8 @@
     >
       <div class="d-flex bg-dark2 pa-4 bdrs-8 pos-r hover-2" v-ripple.early>
         <div class="flex-3 shrink-1 mr-2 h-flex">
-          <div class="fz-15 fw-b line-3 lh-1 wb-all">
-            <net-icon :chainId="it.chainId" :size="8" field="icon2" />
+          <div class="fz-15 fw-b line-3 lh-12 wb-all">
+            <net-icon :chainId="it.chainId" :size="12" field="icon2" />
             <span class="ml-1">{{ it.stoneName }}</span>
           </div>
           <div class="mt-2 mb-1 al-c">

@@ -40,7 +40,7 @@
               </div>
             </div>
             <p class="fz-16 fw-b line-1">
-              <net-icon :chainId="item.chainId" :size="8" field="icon2" />
+              <net-icon :chainId="item.chainId" :size="12" field="icon2" />
               <span class="ml-1">{{ item.stoneName }}</span>
             </p>
             <div class="mt-1 fz-14 al-c">
