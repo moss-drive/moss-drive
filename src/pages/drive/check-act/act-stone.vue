@@ -13,7 +13,7 @@
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
           <div class="mt-1 fz-14">You successfully created a stone!</div>
           <div class="mt-8">
-            <q-btn
+            <!-- <q-btn class="mr-3"
               :href="`https://twitter.com/intent/tweet?text=Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉%0A%0A${encodeURIComponent(
                 this.shareUrl
               )}`"
@@ -23,10 +23,8 @@
             >
               <span>Share to</span>
               <img src="/img/common/x0.svg" width="20" class="ml-2" />
-            </q-btn>
-            <q-btn class="ml-3" outline :to="`/stone`" @click="onDone" color="primary"
-              >My Stones</q-btn
-            >
+            </q-btn> -->
+            <q-btn outline :to="`/stone`" @click="onDone" color="primary">My Stones</q-btn>
           </div>
         </div>
       </q-card-section>
