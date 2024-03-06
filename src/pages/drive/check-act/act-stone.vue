@@ -217,7 +217,7 @@ export default {
       mossForm: { ...initMossForm },
       tempImg: null,
       saving: false,
-      isDone: !false,
+      isDone: false,
       sharing: false,
       rowId: null,
       mossHub: null,
@@ -245,18 +245,30 @@ export default {
       }
     },
   },
-  created() {},
+  created() {
+    if (this.$route.query.test_x) {
+      this.isDone = true;
+    }
+  },
   methods: {
     async onShare() {
       try {
+        const text = `Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉 https://www.mymoss.io/`;
+        await this.$confirm(text, {
+          title: "Share to X",
+        });
         this.sharing = true;
-        const { data } = await this.$http.post("/twitter/tweet");
-        console.log(data);
-        window.open(
-          `https://twitter.com/intent/tweet?text=Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉%0A%0A${encodeURIComponent(
-            location.origin
-          )}`
-        );
+        const { data } = await this.$http.post("/twitter/tweet", {
+          message: text,
+        });
+        if (data) {
+          window.open(data);
+        } else {
+          this.$toast("Shared to X", true);
+        }
+        // window.open(
+        //   `https://twitter.com/intent/tweet?text=`+text
+        // );
       } catch (error) {
         //
       }
