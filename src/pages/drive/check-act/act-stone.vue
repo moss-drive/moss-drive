@@ -13,17 +13,16 @@
           <q-img src="/img/stone/stone-done.png" width="280px"></q-img>
           <div class="mt-1 fz-14">You successfully created a stone!</div>
           <div class="mt-8">
-            <!-- <q-btn class="mr-3"
-              :href="`https://twitter.com/intent/tweet?text=Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉%0A%0A${encodeURIComponent(
-                this.shareUrl
-              )}`"
-              target="_blank"
+            <q-btn
+              :loading="sharing"
+              @click="onShare"
+              class="mr-3"
               color="primary"
               style="width: 160px"
             >
               <span>Share to</span>
               <img src="/img/common/x0.svg" width="20" class="ml-2" />
-            </q-btn> -->
+            </q-btn>
             <q-btn outline :to="`/stone`" @click="onDone" color="primary">My Stones</q-btn>
           </div>
         </div>
@@ -209,9 +208,6 @@ export default {
       myChainId: (s) => s.myChainId,
       stoneList: (s) => s.stoneList,
     }),
-    shareUrl() {
-      return location.origin;
-    },
   },
   data() {
     return {
@@ -221,7 +217,8 @@ export default {
       mossForm: { ...initMossForm },
       tempImg: null,
       saving: false,
-      isDone: false,
+      isDone: !false,
+      sharing: false,
       rowId: null,
       mossHub: null,
       uploading: false,
@@ -250,6 +247,21 @@ export default {
   },
   created() {},
   methods: {
+    async onShare() {
+      try {
+        this.sharing = true;
+        const { data } = await this.$http.post("/twitter/tweet");
+        console.log(data);
+        window.open(
+          `https://twitter.com/intent/tweet?text=Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉%0A%0A${encodeURIComponent(
+            location.origin
+          )}`
+        );
+      } catch (error) {
+        //
+      }
+      this.sharing = false;
+    },
     onSubmit() {
       this.$refs.form.validate().then((suc) => {
         if (suc) this.onCreate();
