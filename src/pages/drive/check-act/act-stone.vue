@@ -220,6 +220,7 @@ export default {
       isDone: false,
       sharing: false,
       rowId: null,
+      newRow: null,
       mossHub: null,
       uploading: false,
       opChainId: VITE_OP_CHAINID,
@@ -228,7 +229,7 @@ export default {
   watch: {
     checkItem(val) {
       if (!val) return;
-      this.rowId = null;
+      this.newRow = null;
       this.tempImg = null;
       this.form = {
         ...initForm,
@@ -323,7 +324,7 @@ export default {
       try {
         this.saving = true;
         const { data } = await this.$http.post("/stone", form);
-        this.rowId = data.id;
+        this.newRow = data;
         this.$loading("Pending...");
         await tx.wait(1);
         this.isDone = true;
@@ -350,49 +351,17 @@ export default {
       }
       return this.mossHub;
     },
-    async checkNft() {
-      let valid = false;
-      try {
-        this.$loading("Checking");
-        const { data } = await this.$http.post("/stone/nft/valid", {
-          chainId: this.opChainId,
-        });
-        this.$loadingClose();
-        valid = data.valid;
-        if (this.$inDev) valid = true;
-        if (!valid) {
-          await this.$confirm(
-            `Hey you! Looking to create a Stone? You'll need the 'Mystery of Moss Origins' NFT first. `,
-            {
-              confirmText: "Start by adopting one!",
-            }
-          );
-          window.open("https://opensea.io/collection/mymoss");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      this.$loadingClose();
-      return valid;
-    },
     async onCreate() {
       const mossHub = await this.initMoss();
       if (!mossHub) return;
       try {
-        // const valid = await this.checkNft();
-        // if (!valid) return;
         const addr = await mossHub.getWalletAddr();
         this.form.address = addr;
         const form = this.mossForm;
         const timeoutAt = Math.floor((Date.now() + 3 * 60e3) / 1e3);
         this.saving = true;
-        // await this.setTimeoutAt(timeoutAt);
         const price = mossHub.parseEther(form.floorPrice);
         const args = [
-          // price,
-          // form.intNum,
-          // form.tokenNum,
-          // form.stepNum,
           timeoutAt,
           {
             value: price.add(price.mul(25).div(1e3)),
@@ -408,18 +377,6 @@ export default {
         if (error) this.$bus.emit("wallet-error", error);
       }
       //
-    },
-    setTimeoutAt(timeoutAt) {
-      this.$http.put(
-        "/stone/timeout",
-        {},
-        {
-          params: {
-            id: this.rowId,
-            timeoutAt,
-          },
-        }
-      );
     },
   },
 };
