@@ -69,7 +69,6 @@
                 <q-input
                   filled
                   v-model="form.stoneName"
-                  dense
                   label="Stone name *"
                   hint=""
                   :rules="[
@@ -81,7 +80,6 @@
                   class="mt-2"
                   filled
                   v-model="form.bio"
-                  dense=""
                   type="textarea"
                   rows="3"
                   label="Description"
