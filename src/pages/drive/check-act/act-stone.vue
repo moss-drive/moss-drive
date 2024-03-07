@@ -253,15 +253,24 @@ export default {
   },
   methods: {
     async onShare() {
-      const { stoneId } = this.newRow || {};
-      let url = location.origin;
-      if (stoneId) {
-        url += this.$getStoneLink(this.newRow);
+      try {
+        this.sharing = true;
+        const { data } = await this.$http.get("/stone");
+        const row = data[0] || {};
+        let url = location.origin;
+        if (row.stoneId) {
+          url += this.$getStoneLink(row);
+          const text =
+            `Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉 %0A%0A` +
+            encodeURIComponent(url);
+          window.open(`https://twitter.com/intent/tweet?text=` + text);
+        } else {
+          this.$toast("Generating Stone ID, please be patient.");
+        }
+      } catch (error) {
+        console.log(error);
       }
-      const text =
-        `Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉 %0A%0A` +
-        encodeURIComponent(url);
-      window.open(`https://twitter.com/intent/tweet?text=` + text);
+      this.sharing = false;
     },
     onSubmit() {
       this.$refs.form.validate().then((suc) => {
