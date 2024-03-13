@@ -51,7 +51,6 @@ export default {
       default: false,
     },
     fixId: Number,
-    forId: Number,
   },
   data() {
     return {
@@ -62,7 +61,11 @@ export default {
   computed: {
     ...mapState({
       uid: (s) => s.loginData.uuid,
+      forChainId: (s) => s.forChainId,
     }),
+    fixChainId() {
+      return this.fixId || this.forChainId;
+    },
     account() {
       return this.accounts[0];
     },
@@ -74,8 +77,8 @@ export default {
     },
     netList() {
       return netList.filter((it) => {
-        if (!this.fixId) return true;
-        return it.id == this.fixId;
+        if (!this.fixChainId) return true;
+        return it.id == this.fixChainId;
       });
     },
     addrMatch() {
@@ -89,11 +92,8 @@ export default {
     },
   },
   watch: {
-    forId(val) {
-      console.log("forid", val);
-      if (val && this.isConnect) {
-        this.switchNet(val);
-      }
+    forChainId(val) {
+      this.setForChainId(val);
     },
   },
   created() {
@@ -101,10 +101,16 @@ export default {
       this.chainId = window.ethereum.chainId;
       this.initWallet();
       this.getAccount();
+      this.setForChainId(this.forChainId);
     }
   },
   methods: {
     switchNet,
+    setForChainId(val) {
+      if (val && this.chainId != val && this.isConnect) {
+        this.switchNet(val);
+      }
+    },
     onChoose() {
       if (!this.isConnect) {
         this.getAccount();
