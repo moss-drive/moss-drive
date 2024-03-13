@@ -36,17 +36,16 @@
 <script>
 import { mapState } from "vuex";
 import { useQuasar } from "quasar";
-import { netList } from "../../utils/wallet";
 
 export default {
   props: {
     isConnect: Boolean,
+    netList: Array,
   },
   data() {
     const { screen } = useQuasar();
     return {
       screen,
-      netList,
     };
   },
   computed: {
@@ -55,7 +54,7 @@ export default {
     }),
     list() {
       return [
-        ...netList,
+        ...this.netList,
         {
           name: "Blast Testnet ",
           icon: "net-blast.png",

@@ -16,6 +16,7 @@
 import { useQuasar } from "quasar";
 import { mapState } from "vuex";
 import TaskControl from "./pages/drive/task-control.vue";
+const { VITE_BLAST_CHAINID } = import.meta.env;
 
 export default {
   name: "App",
@@ -108,12 +109,6 @@ export default {
     };
   },
   watch: {
-    query(val) {
-      const { chain } = val;
-      if (chain) {
-        localStorage.defChain = chain;
-      }
-    },
     uid() {
       this.getUserInfo();
     },
@@ -126,6 +121,11 @@ export default {
     },
   },
   mounted() {
+    if (location.host == "blast.mymoss.io") {
+      this.$setStore({
+        forChainId: VITE_BLAST_CHAINID * 1,
+      });
+    }
     this.onInit();
   },
   methods: {

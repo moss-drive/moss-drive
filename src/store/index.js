@@ -30,6 +30,7 @@ const store = createStore({
     isFocus: true,
     showProgress: false,
     myChainId: null,
+    forChainId: null,
   },
   mutations: {
     [SET_DATA](state, data) {

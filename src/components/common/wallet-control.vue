@@ -1,6 +1,12 @@
 <template>
   <div>
-    <net-choose :is-connect="isConnect" v-if="fromTop" @click="onChoose" @item="onItem" />
+    <net-choose
+      :netList="netList"
+      :is-connect="isConnect"
+      v-if="fromTop"
+      @click="onChoose"
+      @item="onItem"
+    />
     <q-btn rounded color="primary" @click="getAccount" v-else-if="!isConnect">
       Connect Wallet
     </q-btn>
@@ -95,9 +101,19 @@ export default {
     forChainId(val) {
       this.setForChainId(val);
     },
+    chainId(val) {
+      this.onChange({
+        chainId: val,
+      });
+      this.$setState({
+        myChainId: val * 1,
+      });
+    },
   },
   created() {
-    if (window.ethereum && this.uid) {
+    if (!window.ethereum) {
+      this.chainId = null;
+    } else if (this.uid) {
       this.chainId = window.ethereum.chainId;
       this.initWallet();
       this.getAccount();
@@ -107,7 +123,7 @@ export default {
   methods: {
     switchNet,
     setForChainId(val) {
-      if (val && this.chainId != val && this.isConnect) {
+      if (val && this.chainId != val) {
         this.switchNet(val);
       }
     },
@@ -147,7 +163,6 @@ export default {
       this.$emit("change", obj);
     },
     initWallet() {
-      this.setChainId();
       window.ethereum.on("accountsChanged", (accounts) => {
         this.accounts = accounts;
         this.onChange({
@@ -157,17 +172,9 @@ export default {
       window.ethereum.on("chainChanged", (chainId) => {
         console.log(chainId);
         this.chainId = chainId * 1;
-        this.onChange({
-          chainId,
-        });
-        this.setChainId();
       });
     },
-    setChainId() {
-      this.$setState({
-        myChainId: this.chainId * 1,
-      });
-    },
+
     genChainId(id) {
       return "0x" + Number(id).toString(16);
     },

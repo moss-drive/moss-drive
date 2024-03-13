@@ -80,6 +80,7 @@ export default {
   computed: {
     ...mapState({
       myChainId: (s) => s.myChainId * 1,
+      forChainId: (s) => s.forChainId * 1,
     }),
   },
   watch: {
@@ -121,7 +122,9 @@ export default {
           page: this.page,
           size,
         };
-        if (this.$getNetItem(this.myChainId)) {
+        if (this.forChainId) {
+          params.chainId = this.forChainId;
+        } else if (this.$getNetItem(this.myChainId)) {
           params.chainId = this.myChainId;
         }
         const { data } = await this.$http.get("/stone/square", {

@@ -41,7 +41,6 @@ import HeaderRight from "../header-right.vue";
 import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
 import { mapState } from "vuex";
-const { VITE_BLAST_CHAINID } = import.meta.env;
 
 export default {
   data() {
@@ -82,19 +81,8 @@ export default {
     path() {
       this.searchKey = "";
     },
-    myChainId(val) {
-      if (val && val == this.forChainId) {
-        localStorage.defChain = "";
-      }
-    },
   },
-  mounted() {
-    if (localStorage.defChain == "blast") {
-      setTimeout(() => {
-        this.forChainId = VITE_BLAST_CHAINID * 1;
-      }, 500);
-    }
-  },
+
   methods: {
     onNew() {
       this.$bus.emit("click-new");
