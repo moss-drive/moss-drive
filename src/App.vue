@@ -30,6 +30,9 @@ export default {
     path() {
       return this.$route.path;
     },
+    query() {
+      return this.$route.query;
+    },
   },
   setup() {
     const $q = useQuasar();
@@ -105,6 +108,12 @@ export default {
     };
   },
   watch: {
+    query(val) {
+      const { chain } = val;
+      if (chain) {
+        localStorage.defChain = chain;
+      }
+    },
     uid() {
       this.getUserInfo();
     },
