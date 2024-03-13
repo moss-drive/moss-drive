@@ -89,6 +89,10 @@ export default {
     },
   },
   mounted() {
+    const { chain } = this.$route.query;
+    if (chain) {
+      localStorage.defChain = chain;
+    }
     if (localStorage.defChain == "blast") {
       setTimeout(() => {
         this.forChainId = VITE_BLAST_CHAINID * 1;
