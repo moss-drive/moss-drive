@@ -32,7 +32,7 @@ import HeaderRight from "../header-right.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <wallet-control fromTop />
+  <wallet-control fromTop :forId="forChainId" />
 
   <header-right />
 </template>
@@ -40,6 +40,8 @@ import HeaderRight from "../header-right.vue";
 <script>
 import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
+import { mapState } from "vuex";
+const { VITE_BLAST_CHAINID } = import.meta.env;
 
 export default {
   data() {
@@ -47,9 +49,13 @@ export default {
     return {
       screen,
       searchKey: "",
+      forChainId: null,
     };
   },
   computed: {
+    ...mapState({
+      myChainId: (s) => s.myChainId,
+    }),
     path() {
       return this.$route.path;
     },
@@ -76,6 +82,18 @@ export default {
     path() {
       this.searchKey = "";
     },
+    myChainId(val) {
+      if (val && val == this.forChainId) {
+        localStorage.defChain = "";
+      }
+    },
+  },
+  mounted() {
+    if (localStorage.defChain == "blast") {
+      setTimeout(() => {
+        this.forChainId = VITE_BLAST_CHAINID * 1;
+      }, 500);
+    }
   },
   methods: {
     onNew() {

@@ -167,7 +167,7 @@
             v-if="!saving"
             @click="showPop = false"
           />
-          <wallet-control @change="onWalletChange">
+          <wallet-control needSame @change="onWalletChange">
             <q-btn rounded color="primary" :loading="saving" @click="onSubmit">
               <net-icon />
               <span class="ml-2">Create</span>

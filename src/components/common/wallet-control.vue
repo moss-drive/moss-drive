@@ -44,13 +44,14 @@ export default {
     fromTop: Boolean,
     needSame: {
       type: Boolean,
-      default: true, // invalid login addr eq wallet addr
+      // default: true, // invalid login addr eq wallet addr
     },
     noInvited: {
       type: Boolean,
       default: false,
     },
     fixId: Number,
+    forId: Number,
   },
   data() {
     return {
@@ -85,6 +86,14 @@ export default {
     isConnect() {
       if (this.needSame) return this.addrMatch;
       return this.accounts.length > 0;
+    },
+  },
+  watch: {
+    forId(val) {
+      console.log("forid", val);
+      if (val && this.isConnect) {
+        this.switchNet(val);
+      }
     },
   },
   created() {
