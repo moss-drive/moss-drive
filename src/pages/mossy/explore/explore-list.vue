@@ -59,6 +59,7 @@ import ListRank from "./list-rank.vue";
 </template>
 
 <script>
+import { debounce } from "@/utils/helper";
 import { mapState } from "vuex";
 
 export default {
@@ -85,7 +86,7 @@ export default {
   },
   watch: {
     myChainId() {
-      this.getList();
+      this.fetchList();
     },
     type(type) {
       this.$router.replace({
@@ -98,13 +99,18 @@ export default {
     },
   },
   created() {
-    this.getList();
+    this.fetchList();
   },
   methods: {
     async onLoad(index, done) {
       console.log(index);
       await this.getList(true);
       done();
+    },
+    fetchList() {
+      debounce(() => {
+        this.getList();
+      });
     },
     async getList(isMore) {
       try {
@@ -130,6 +136,9 @@ export default {
         const { data } = await this.$http.get("/stone/square", {
           params,
         });
+        if (this.$getNetItem(this.myChainId) && params.chainId != this.myChainId) {
+          return;
+        }
         if (data.length < size - 5) {
           this.noMore = true;
         }
