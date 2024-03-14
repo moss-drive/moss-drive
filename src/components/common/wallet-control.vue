@@ -113,7 +113,7 @@ export default {
   created() {
     if (!window.ethereum) {
       this.chainId = null;
-    } else if (this.uid) {
+    } else {
       this.chainId = window.ethereum.chainId;
       this.initWallet();
       this.getAccount();
@@ -156,7 +156,8 @@ export default {
           return;
         }
         let msg = error.message;
-        this.$alert(msg);
+        if (this.needSame) this.$alert(msg);
+        else this.$toast(msg);
       }
     },
     onChange(obj) {
