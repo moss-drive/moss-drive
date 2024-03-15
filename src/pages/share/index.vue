@@ -386,6 +386,10 @@ export default {
     },
     onRowClick({ row, index }) {
       if (!row.prefix) {
+        if (!this.uid) {
+          this.$bus.emit("show-login");
+          return;
+        }
         this.viewIdx = index;
         this.showPreview = true;
         return;
