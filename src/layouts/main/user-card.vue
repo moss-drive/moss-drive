@@ -7,6 +7,11 @@
     display: block;
   }
 }
+.code-input {
+  min-width: 180px;
+  border: 1px solid #fff8;
+  padding: 4px 8px;
+}
 </style>
 
 <template>
@@ -64,43 +69,28 @@
         </div>
       </div>
       <div class="pa-4" v-show="tabIdx == 'invite'">
-        <div v-if="!inviteList">
+        <div v-if="!inviteInfo">
           <div class="mb-3" v-for="i in 3" :key="i">
             <q-skeleton type="QSlider" />
           </div>
         </div>
-        <template v-else>
-          <div
-            v-for="row in inviteList"
-            :key="row.code"
-            class="bg-info bdrs-100 py-2 px-3 mb-3 al-c"
-          >
-            <div class="mr-auto fz-16">
-              <span class="none-select op-6 mr-1">#</span>
-              <span
-                :class="{
-                  'txt-del op-7 none-select': row.used,
-                }"
-                >{{ row.code }}</span
-              >
-            </div>
-            <q-btn style="background: #334155" rounded flat v-if="row.used">
-              <span class="mr-2">Used by</span>
-              <a
-                v-if="row.usedByTwitter"
-                class="color-a line-1"
-                :href="`https://twitter.com/${row.usedByTwitter}`"
-                target="_blank"
-                >@{{ row.usedByTwitter.cutStr(4, 4) }}</a
-              >
-              <span v-else>{{ row.usedByAddress.cutStr(5, 4) }}</span>
-            </q-btn>
-            <q-btn @click="$copy(row.code)" color="primary" rounded v-else>
-              <icon-copy color="#333" />
-              <span class="ml-2">Copy</span>
-            </q-btn>
+        <div class="py-8" v-else>
+          <!-- new invite -->
+          <div class="al-c">
+            <span class="mr-3">Invite Code</span>
+            <div class="code-input">{{ inviteInfo.code }}</div>
+            <icon-copy class="ml-3 hover-1" color="#fff" @click="$copy(inviteInfo.code)" />
           </div>
-        </template>
+          <div class="al-c mt-5">
+            <span class="mr-3 shrink-0">Invite Link</span>
+            <div class="code-input line-1">{{ inviteInfo.link }}</div>
+            <icon-copy class="ml-3 hover-1" color="#fff" @click="$copy(inviteInfo.link)" />
+          </div>
+          <div class="al-c mt-5">
+            <span class="mr-3 shrink-0">My Invited</span>
+            <span>{{ inviteInfo.num || 0 }}</span>
+          </div>
+        </div>
       </div>
       <div v-show="tabIdx == 'settings'">
         <q-list>
@@ -141,7 +131,7 @@ export default {
       tabIdx: "nft",
       nftList: null,
       nftErr: null,
-      inviteList: null,
+      inviteInfo: null,
       inviteErr: null,
     };
   },
@@ -191,15 +181,16 @@ export default {
     },
     async getInvites() {
       try {
-        this.inviteErr = null;
         const { data } = await this.$http.get("/invitation/usages");
-        data.forEach((row) => {
-          row.code = "Moss_" + row.code;
-        });
+        const info = {
+          ...data[0],
+        };
+        info.code = "Moss_" + info.code;
+        info.link = location.origin + "/?invite=" + info.code;
         // data[0].used = 1;
-        this.inviteList = data;
+        this.inviteInfo = info;
       } catch (error) {
-        this.inviteErr = error.message;
+        console.log(error);
       }
     },
     onSetting(row) {
