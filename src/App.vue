@@ -101,7 +101,7 @@ export default {
         title,
         color: "primary",
         prompt: {
-          model: "",
+          model: opts.value || "",
           type: "text", // optional
         },
         ...opts,

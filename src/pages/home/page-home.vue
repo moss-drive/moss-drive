@@ -91,5 +91,11 @@ export default {
       return "y-center";
     },
   },
+  mounted() {
+    const { invite } = this.$route.query;
+    if (invite) {
+      localStorage.inviteCode = invite;
+    }
+  },
 };
 </script>
