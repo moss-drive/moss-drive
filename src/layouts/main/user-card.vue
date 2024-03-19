@@ -84,7 +84,7 @@
           <div class="al-c mt-5">
             <span class="mr-3 shrink-0">Invite Link</span>
             <div class="code-input line-1">{{ inviteInfo.link }}</div>
-            <icon-copy class="ml-3 hover-1" color="#fff" @click="$copy(inviteInfo.link)" />
+            <icon-copy class="ml-3 hover-1 shrink-0" color="#fff" @click="$copy(inviteInfo.link)" />
           </div>
           <div class="al-c mt-5">
             <span class="mr-3 shrink-0">My Invited</span>
