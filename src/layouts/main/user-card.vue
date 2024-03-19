@@ -88,7 +88,7 @@
           </div>
           <div class="al-c mt-5">
             <span class="mr-3 shrink-0">My Invited</span>
-            <span>{{ inviteInfo.num || 0 }}</span>
+            <span>{{ inviteInfo.invitees || 0 }}</span>
           </div>
         </div>
       </div>
