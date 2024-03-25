@@ -161,7 +161,6 @@ export default {
       if (needInput) {
         try {
           code = await this.$prompt("Invitation Code", {
-            value,
             cancel: {
               label: "Skip",
               color: "#000",
@@ -197,6 +196,7 @@ export default {
     },
     async onLoginData(data) {
       try {
+        console.log(data);
         this.$loading("Login....");
         // const { data } = await this.$http.post(`/st/${stoken}`);
         if (data.isInvited || this.noInvited) {
