@@ -157,7 +157,8 @@ export default {
     },
     async showInvite() {
       let code = localStorage.inviteCode || "";
-      if (!code) {
+      const needInput = !code;
+      if (needInput) {
         try {
           code = await this.$prompt("Invitation Code", {
             value,
@@ -190,7 +191,7 @@ export default {
         this.onRedirect();
       } catch (error) {
         this.$toast(error.message);
-        this.showInvite();
+        if (needInput) this.showInvite();
       }
       this.loading = false;
     },
