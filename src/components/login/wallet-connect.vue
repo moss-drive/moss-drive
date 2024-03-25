@@ -169,11 +169,11 @@ export default {
             // html: true,
             // msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
           });
-          code = code.trim().replace(/^Moss_/i, "");
         } catch (error) {
           code = "moss-egg";
         }
       }
+      code = code.trim().replace(/^Moss_/i, "");
       try {
         this.loading = true;
         await this.$http.post(
