@@ -156,22 +156,23 @@ export default {
       if (redirectTo != this.$route.path) this.$router.replace(redirectTo);
     },
     async showInvite() {
-      const value = localStorage.inviteCode || "";
-      let code = "";
-      try {
-        code = await this.$prompt("Invitation Code", {
-          value,
-          cancel: {
-            label: "Skip",
-            color: "#000",
-            flat: true,
-          },
-          // html: true,
-          // msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
-        });
-        code = code.trim().replace(/^Moss_/i, "");
-      } catch (error) {
-        code = value || "moss-egg";
+      let code = localStorage.inviteCode || "";
+      if (!code) {
+        try {
+          code = await this.$prompt("Invitation Code", {
+            value,
+            cancel: {
+              label: "Skip",
+              color: "#000",
+              flat: true,
+            },
+            // html: true,
+            // msg: '<a href="https://discord.com/invite/4everland" target="_blank">How to Get?</a>',
+          });
+          code = code.trim().replace(/^Moss_/i, "");
+        } catch (error) {
+          code = "moss-egg";
+        }
       }
       try {
         this.loading = true;
