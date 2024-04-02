@@ -9,8 +9,9 @@
 }
 .code-input {
   min-width: 180px;
-  border: 1px solid #fff8;
-  padding: 4px 8px;
+  padding-left: 10px;
+  background: #1e293b;
+  border-radius: 100px;
 }
 </style>
 
@@ -74,21 +75,29 @@
             <q-skeleton type="QSlider" />
           </div>
         </div>
-        <div class="py-8" v-else>
+        <div class="py-5" v-else>
           <!-- new invite -->
+          <div class="al-c mb-5">
+            <b class="mr-3 shrink-0">My Invited</b>
+            <b class="color-1">{{ inviteInfo.invitees || 0 }}</b>
+          </div>
           <div class="al-c">
-            <span class="mr-3">Invite Code</span>
-            <div class="code-input">{{ inviteInfo.code }}</div>
-            <icon-copy class="ml-3 hover-1" color="#fff" @click="$copy(inviteInfo.code)" />
+            <b class="mr-3">Invite Code</b>
+            <div class="code-input al-c">
+              <span>{{ inviteInfo.code }}</span>
+              <q-btn class="ml-auto" round dense color="primary" @click="$copy(inviteInfo.code)">
+                <icon-copy />
+              </q-btn>
+            </div>
           </div>
           <div class="al-c mt-5">
-            <span class="mr-3 shrink-0">Invite Link</span>
-            <div class="code-input line-1">{{ inviteInfo.link }}</div>
-            <icon-copy class="ml-3 hover-1 shrink-0" color="#fff" @click="$copy(inviteInfo.link)" />
-          </div>
-          <div class="al-c mt-5">
-            <span class="mr-3 shrink-0">My Invited</span>
-            <span>{{ inviteInfo.invitees || 0 }}</span>
+            <b class="mr-3 shrink-0">Invite Link</b>
+            <div class="code-input al-c">
+              <span class="line-1">{{ inviteInfo.link }}</span>
+              <q-btn class="ml-auto" round dense color="primary" @click="$copy(inviteInfo.link)">
+                <icon-copy />
+              </q-btn>
+            </div>
           </div>
         </div>
       </div>
