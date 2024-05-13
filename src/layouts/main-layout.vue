@@ -20,40 +20,46 @@ import MainDrawer from "./main/main-drawer.vue";
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-primary bdb-1">
-      <q-toolbar class="main-toolbar bg-header">
-        <q-btn
-          class="m-toggle-btn"
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+    <q-header class="bg-primary">
+      <div class="bg-header">
+        <q-toolbar class="main-toolbar bdb-1">
+          <q-btn
+            class="m-toggle-btn"
+            flat
+            dense
+            round
+            icon="menu"
+            aria-label="Menu"
+            @click="leftDrawerOpen = !leftDrawerOpen"
+          />
 
-        <q-toolbar-title>
-          <b class="fz-16">{{ title }}</b>
-          <div class="ml-1 d-ib" v-if="title == 'My Resources'">
-            <img
-              src="/img/resource/help.svg"
-              style="vertical-align: middle"
-              width="16"
-              class="cursor-p"
-            />
-            <q-tooltip
-              anchor="top middle"
-              self="bottom middle"
-              max-width="300px"
-              class="bg-black-8 fz-12"
-            >
-              Moss operates on 4EVERLAND storage, therefore the resources you consume and the
-              remaining resources are aligned with your 4EVERLAND account.
-            </q-tooltip>
-          </div>
-        </q-toolbar-title>
-        <main-header />
-      </q-toolbar>
+          <q-toolbar-title>
+            <b class="fz-16">{{ title }}</b>
+            <div class="ml-1 d-ib" v-if="title == 'My Resources'">
+              <img
+                src="/img/resource/help.svg"
+                style="vertical-align: middle"
+                width="16"
+                class="cursor-p"
+              />
+              <q-tooltip
+                anchor="top middle"
+                self="bottom middle"
+                max-width="300px"
+                class="bg-black-8 fz-12"
+              >
+                Moss operates on 4EVERLAND storage, therefore the resources you consume and the
+                remaining resources are aligned with your 4EVERLAND account.
+              </q-tooltip>
+            </div>
+          </q-toolbar-title>
+          <main-header />
+        </q-toolbar>
+        <div class="al-c white">
+          <span>Switch Network</span>
+          <span class="ml-auto">Blast</span>
+        </div>
+      </div>
     </q-header>
 
     <q-drawer :width="240" class="bg-primary" v-model="leftDrawerOpen" show-if-above>

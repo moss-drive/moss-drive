@@ -7,7 +7,7 @@
 
 <script setup>
 import UserCard from "./main/user-card.vue";
-import UserTask from "./main/user-task.vue";
+import UserPoint from "./main/user-point.vue";
 </script>
 
 <template>
@@ -21,20 +21,7 @@ import UserTask from "./main/user-task.vue";
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <q-btn size="sm" rounded color="info" style="padding: 5px 8px" v-if="!noInvited">
-        <img src="/img/mossy/icon/ic-coin.png" width="26" />
-        <span class="text-white ml-1 fz-14">{{ pointInfo.total }}</span>
-        <q-menu
-          anchor="bottom middle"
-          :offset="[0, 10]"
-          self="top middle"
-          :style="{
-            width: Math.min(screen.width - 30, 480) + 'px',
-          }"
-        >
-          <user-task :userInfo="userInfo" :uid="uid" />
-        </q-menu>
-      </q-btn>
+      <user-point v-if="!noInvited" :menuWidth="menuWidth" />
       <q-btn
         size="sm"
         class="ml-4"
@@ -50,7 +37,7 @@ import UserTask from "./main/user-task.vue";
         />
         <q-menu
           :style="{
-            width: Math.min(screen.width - 30, 480) + 'px',
+            width: menuWidth + 'px',
           }"
           class="mh-600"
           :offset="[300, 10]"
@@ -75,7 +62,7 @@ import UserTask from "./main/user-task.vue";
         <q-menu
           :offset="[0, 10]"
           :style="{
-            width: Math.min(screen.width - 30, 400) + 'px',
+            width: menuWidth + 'px',
           }"
           class="mh-600"
         >
@@ -90,6 +77,7 @@ import UserTask from "./main/user-task.vue";
 import { mapState } from "vuex";
 import { useQuasar } from "quasar";
 import MessageNotice from "./components/message-notice.vue";
+
 export default {
   props: {
     border: {
@@ -114,7 +102,9 @@ export default {
       userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
     }),
-    ...mapState("taskStore", ["pointInfo"]),
+    menuWidth() {
+      return Math.min(this.screen.width - 30, 400);
+    },
     uname() {
       const { name } = this.userInfo;
       if (name) return name.cutStr(6, 6);
