@@ -20,9 +20,9 @@ import MainDrawer from "./main/main-drawer.vue";
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-primary">
-      <div class="bg-header">
-        <q-toolbar class="main-toolbar bdb-1">
+    <q-header>
+      <div class="bg-primary">
+        <q-toolbar class="main-toolbar bdb-1 bg-header">
           <q-btn
             class="m-toggle-btn"
             flat
@@ -53,12 +53,10 @@ import MainDrawer from "./main/main-drawer.vue";
               </q-tooltip>
             </div>
           </q-toolbar-title>
+
           <main-header />
         </q-toolbar>
-        <div class="al-c white">
-          <span>Switch Network</span>
-          <span class="ml-auto">Blast</span>
-        </div>
+        <mobile-toolbar class="bg-header" v-if="asMobile" />
       </div>
     </q-header>
 
@@ -78,6 +76,7 @@ import MainDrawer from "./main/main-drawer.vue";
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import { getFileSize } from "../utils/helper";
 
 export default {
@@ -89,10 +88,15 @@ export default {
     title() {
       return this.meta?.title;
     },
+    asMobile() {
+      return this.screen.width < 690;
+    },
   },
   data() {
+    const { screen } = useQuasar();
     return {
       leftDrawerOpen: false,
+      screen,
     };
   },
   created() {

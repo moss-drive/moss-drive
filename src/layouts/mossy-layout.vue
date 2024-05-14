@@ -19,20 +19,22 @@ import HeaderRight from "./header-right.vue";
 
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header class="bg-dark text-white bdb-1">
-      <div class="al-c pl-4 pr-4" style="height: 64px">
+    <q-header class="bg-dark text-white">
+      <div class="al-c pl-4 pr-4 bdb-1" style="height: 64px">
         <a href="/mossy" class="al-c">
           <img src="/img/mossy.png" :width="asMobile ? 30 : 40" />
           <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
         </a>
+        <wallet-control fromTop v-if="!asMobile" />
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
           <img src="/img/common/my-moss.svg" width="20" />
           <span class="ml-2" v-if="!asMobile">My Moss</span>
         </q-btn>
-        <wallet-control fromTop />
+
         <header-right />
       </div>
+      <mobile-toolbar v-if="asMobile" />
     </q-header>
 
     <q-page-container>

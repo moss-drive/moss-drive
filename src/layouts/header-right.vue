@@ -7,24 +7,25 @@
 
 <script setup>
 import UserCard from "./main/user-card.vue";
-import UserPoint from "./main/user-point.vue";
 </script>
 
 <template>
   <div
-    class="ml-5 h100p pl-5 pr-4 al-c"
+    class="ml-5 h100p pl-5 al-c"
     :class="{
       'bdl-1': border,
+      'pr-4': !asMobile,
     }"
   >
     <template v-if="!uid">
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <user-point v-if="!noInvited" :menuWidth="menuWidth" />
+      <div class="mr-4 al-c" v-if="!asMobile">
+        <user-point v-if="!noInvited" :menuWidth="menuWidth" />
+      </div>
       <q-btn
         size="sm"
-        class="ml-4"
         round
         color="info"
         style="padding: 7px"

@@ -32,8 +32,6 @@ import HeaderRight from "../header-right.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <wallet-control fromTop :forId="forChainId" />
-
   <header-right />
 </template>
 
@@ -48,7 +46,6 @@ export default {
     return {
       screen,
       searchKey: "",
-      forChainId: null,
     };
   },
   computed: {

@@ -7,16 +7,8 @@
       <span class="mr-1">Network</span>
       <net-icon :chainId="info.chainId" :size="18" />
     </div>
-    <div class="mr-2" v-if="info.chainId == opChainId">
-      <q-btn
-        :href="`https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/${info.stoneId}`"
-        target="_blank"
-        color="info"
-        rounded
-        unelevated
-        size="xs"
-        dense
-      >
+    <div class="mr-2" v-if="txLink">
+      <q-btn :href="txLink" target="_blank" color="info" rounded unelevated size="xs" dense>
         <div class="al-c px-2">
           <img src="/img/mossy/icon/ic-trans.svg" width="16" />
           <span class="color-1 ml-1 fz-12">Key TXs</span>
@@ -78,6 +70,17 @@ export default {
     return {
       opChainId: VITE_OP_CHAINID,
     };
+  },
+  computed: {
+    txLink() {
+      let pre = "";
+      if (this.info.chainId == this.opChainId) {
+        pre = "https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/";
+      } else {
+        pre = "https://opensea.io/assets/blast/0x824812adfa718c272626660d96184df907aacf8a/";
+      }
+      if (pre) return pre + this.info.stoneId;
+    },
   },
   methods: {
     getArLink(hash) {
