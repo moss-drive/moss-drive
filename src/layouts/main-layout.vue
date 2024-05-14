@@ -61,7 +61,7 @@ import MainDrawer from "./main/main-drawer.vue";
     </q-header>
 
     <q-drawer :width="240" class="bg-primary" v-model="leftDrawerOpen" show-if-above>
-      <main-drawer />
+      <main-drawer :asMobile="asMobile" />
     </q-drawer>
 
     <q-page-container>

@@ -19,9 +19,12 @@ import UsageInfo from "./usage-info.vue";
 
 <template>
   <div class="main-drawer h100p h-flex">
-    <a href="/" class="">
-      <img src="/img/logo.svg" height="80" />
-    </a>
+    <div class="d-flex al-end py-3">
+      <a href="/" class="ml-5">
+        <img src="/img/logo.svg" height="40" />
+      </a>
+      <wallet-control fromTop v-if="!asMobile" />
+    </div>
     <div class="q-pa-md ta-c px-6">
       <q-btn href="/mossy" target="_blank" rounded class="btn-mossy" style="width: 100%">
         <img src="/img/mossy.png" width="40" />
@@ -60,6 +63,9 @@ import UsageInfo from "./usage-info.vue";
 
 <script>
 export default {
+  props: {
+    asMobile: Boolean,
+  },
   computed: {
     path() {
       return this.$route.path;
