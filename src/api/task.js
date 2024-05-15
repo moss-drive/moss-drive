@@ -6,6 +6,10 @@ export function fetchPoint() {
   return request.get("/activities/point/overview");
 }
 
+export function fetchBlastPoint() {
+  return request.get("/users/blast/points").then((res) => res.data);
+}
+
 export function fetchDailyList() {
   return request.get("/activities/daily");
 }

@@ -1,4 +1,5 @@
 import { fetchPoint } from "@/api/task";
+import { fetchBlastPoint } from "../../api/task";
 
 const taskStore = {
   namespaced: true,
@@ -14,12 +15,18 @@ const taskStore = {
   },
   actions: {
     async getPoint({ commit }) {
+      const { data } = await fetchPoint();
+      let blast;
       try {
-        const { data } = await fetchPoint();
-        commit("SET_POINT", data);
+        blast = await fetchBlastPoint();
+        console.log({ blast });
       } catch (error) {
-        console.log(error);
+        console.log("blast", error);
       }
+      commit("SET_POINT", {
+        ...data,
+        blast,
+      });
     },
   },
 };
