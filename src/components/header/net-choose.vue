@@ -1,12 +1,6 @@
 <template>
-  <q-btn
-    class="ml-3 btn-bd-1 q-px-sm bg-header"
-    flat
-    rounded
-    :size="btnSize"
-    @click="$emit('click')"
-  >
-    <net-icon />
+  <q-btn class="ml-3 btn-bd-1 px-1 bg-header" flat rounded :size="btnSize" @click="$emit('click')">
+    <net-icon :size="dense ? 18 : 24" />
     <span class="ml-2 fz-13" v-if="!dense">
       <span v-if="curItem">{{ curItem.name }}</span>
       <span v-else>Switch Network</span>
@@ -70,7 +64,7 @@ export default {
       return this.screen.width < 690;
     },
     btnSize() {
-      return this.dense ? "12px" : null;
+      return this.dense ? "xs" : "sm";
     },
   },
   methods: {
