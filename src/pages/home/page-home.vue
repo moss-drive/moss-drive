@@ -24,9 +24,8 @@ import HeaderRight from "../../layouts/header-right.vue";
           <img src="/img/moss.svg" height="40" />
           <img src="/img/home/moss-txt.svg" height="26" class="ml-2" />
         </a>
-        <div class="ml-auto"></div>
         <template v-if="loginData.uuid">
-          <wallet-control fromTop class="mr-3" />
+          <wallet-control fromTop class="mr-auto" />
           <div>
             <header-right :border="false"></header-right>
           </div>

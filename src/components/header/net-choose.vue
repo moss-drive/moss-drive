@@ -1,17 +1,17 @@
 <template>
   <q-btn
-    class="ml-3"
-    :class="{
-      'q-px-sm': !asMobile,
-    }"
-    color="info"
+    class="ml-3 btn-bd-1 q-px-sm bg-header"
+    flat
     rounded
-    :round="asMobile"
     :size="btnSize"
     @click="$emit('click')"
   >
     <net-icon />
-    <!-- <span v-if="!asMobile" class="ml-2 fz-14">Optimism</span> -->
+    <span class="ml-2 fz-13" v-if="!dense">
+      <span v-if="curItem">{{ curItem.name }}</span>
+      <span v-else>Switch Network</span>
+    </span>
+    <img src="/img/common/ic-down.svg" width="10" class="ml-2" />
 
     <q-menu v-if="isConnect" style="width: 150px" auto-close>
       <q-list>
@@ -41,6 +41,7 @@ export default {
   props: {
     isConnect: Boolean,
     netList: Array,
+    dense: Boolean,
   },
   data() {
     const { screen } = useQuasar();
@@ -62,11 +63,14 @@ export default {
         },
       ];
     },
+    curItem() {
+      return this.netList.find((it) => it.id == this.myChainId);
+    },
     asMobile() {
       return this.screen.width < 690;
     },
     btnSize() {
-      return this.asMobile ? "12px" : null;
+      return this.dense ? "12px" : null;
     },
   },
   methods: {

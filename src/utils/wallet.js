@@ -24,7 +24,7 @@ export function getNetItem(id) {
 
 export function getNetIcon(id, field = "icon") {
   const row = netList.find((it) => it.id == id);
-  if (!row) return "net-error.svg";
+  if (!row) return "net-switch.svg";
   return row[field];
 }
 

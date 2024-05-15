@@ -18,6 +18,10 @@ $warning   : #f2ab3d;
   pointer-events: none;
 }
 
+.btn-bd-1 {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 @media (max-width: 600px) {
   .q-col-gutter-lg .col-12 {
     padding: 12px;

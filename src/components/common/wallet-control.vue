@@ -3,6 +3,7 @@
     <net-choose
       :netList="netList"
       :is-connect="isConnect"
+      :dense="dense"
       v-if="fromTop"
       @click="onChoose"
       @item="onItem"
@@ -48,6 +49,7 @@ import { switchNet, netList } from "../../utils/wallet";
 export default {
   props: {
     fromTop: Boolean,
+    dense: Boolean,
     needSame: {
       type: Boolean,
       // default: true, // invalid login addr eq wallet addr
