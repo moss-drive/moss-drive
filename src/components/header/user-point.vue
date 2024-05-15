@@ -14,7 +14,7 @@ import UserTask from "./user-task.vue";
 
 <template>
   <div class="al-c">
-    <q-btn v-if="blastPoint" size="sm" rounded color="info" class="btn-sm1 mr-3">
+    <q-btn v-if="myChainId == blastId" size="sm" rounded color="info" class="btn-sm1 mr-3">
       <img src="/img/common/net-blast.png" width="26" class="bd-img" />
       <span class="text-white ml-1 fz-14">{{ blastPoint }}</span>
       <q-menu :offset="[0, 10]" style="width: 300px">
@@ -43,6 +43,7 @@ import UserTask from "./user-task.vue";
 
 <script>
 import { mapState } from "vuex";
+const { VITE_BLAST_CHAINID } = import.meta.env;
 
 export default {
   props: {
@@ -52,11 +53,17 @@ export default {
     ...mapState({
       userInfo: (s) => s.userInfo,
       uid: (s) => s.loginData.uuid,
+      myChainId: (s) => s.myChainId,
     }),
     ...mapState("taskStore", ["pointInfo"]),
     blastPoint() {
       return this.pointInfo.blast?.points || "0";
     },
+  },
+  data() {
+    return {
+      blastId: VITE_BLAST_CHAINID,
+    };
   },
 };
 </script>
