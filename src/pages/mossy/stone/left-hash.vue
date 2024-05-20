@@ -60,26 +60,25 @@
 </template>
 
 <script>
-const { VITE_OP_CHAINID } = import.meta.env;
+const { VITE_OP_CHAINID, VITE_BLAST_CHAINID } = import.meta.env;
 
 export default {
   props: {
     info: Object,
   },
   data() {
-    return {
-      opChainId: VITE_OP_CHAINID,
-    };
+    return {};
   },
   computed: {
     txLink() {
       let pre = "";
-      if (this.info.chainId == this.opChainId) {
+      const { chainId, stoneId } = this.info;
+      if (chainId == VITE_OP_CHAINID * 1) {
         pre = "https://opensea.io/assets/optimism/0x8a6569e85c97a1bbe2d4ea539a0c9c873c5f55fe/";
-      } else {
+      } else if (chainId == VITE_BLAST_CHAINID * 1) {
         pre = "https://opensea.io/assets/blast/0x824812adfa718c272626660d96184df907aacf8a/";
       }
-      if (pre) return pre + this.info.stoneId;
+      if (pre) return pre + stoneId;
     },
   },
   methods: {

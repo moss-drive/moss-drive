@@ -18,8 +18,8 @@ export const netList = [
   },
   {
     name: "Taiko",
-    icon: "net-taiko.svg",
-    icon2: "net-taiko.svg",
+    icon: "net-taiko.png",
+    icon2: "net-taiko-2.png",
     id: VITE_TAIKO_CHAINID * 1,
     blockUrl: VITE_TK_BLOCKURL,
   },
