@@ -1,26 +1,32 @@
 import { MossHub__factory, Helpers__factory } from "moss-v5";
 import { providers, utils } from "ethers";
 const {
-  VITE_OP_CHAINID,
+  VITE_BLAST_CHAINID,
+  VITE_TAIKO_CHAINID,
   VITE_OP_CONTRACT,
   VITE_BL_CONTRACT,
   VITE_OP_HELPER_CONTRACT,
   VITE_BL_HELPER_CONTRACT,
+  VITE_TK_CONTRACT,
+  VITE_TK_HELPER_CONTRACT,
 } = import.meta.env;
 
 const map1 = {
   OP: VITE_OP_CONTRACT,
   BL: VITE_BL_CONTRACT,
+  TK: VITE_TK_CONTRACT,
 };
 const map2 = {
   OP: VITE_OP_HELPER_CONTRACT,
   BL: VITE_BL_HELPER_CONTRACT,
+  TK: VITE_TK_HELPER_CONTRACT,
 };
 
 export class MossHub {
   constructor(chainId) {
-    const type = chainId == VITE_OP_CHAINID ? "OP" : "BL";
-    console.log(type, map1[type]);
+    let type = "OP";
+    if (chainId == VITE_BLAST_CHAINID) type = "BL";
+    else if (chainId == VITE_TAIKO_CHAINID) type = "TK";
     this.client = MossHub__factory.connect(map1[type], this.signer);
     this.helper = Helpers__factory.connect(map2[type], this.signer);
   }

@@ -1,5 +1,5 @@
-const { VITE_OP_CHAINID, VITE_BLAST_CHAINID } = import.meta.env;
-const { VITE_OP_BLOCKURL, VITE_BLAST_BLOCKURL } = import.meta.env;
+const { VITE_OP_CHAINID, VITE_BLAST_CHAINID, VITE_TAIKO_CHAINID } = import.meta.env;
+const { VITE_OP_BLOCKURL, VITE_BLAST_BLOCKURL, VITE_TK_BLOCKURL } = import.meta.env;
 
 export const netList = [
   {
@@ -15,6 +15,13 @@ export const netList = [
     icon2: "net-blast-2.png",
     id: VITE_BLAST_CHAINID * 1,
     blockUrl: VITE_BLAST_BLOCKURL,
+  },
+  {
+    name: "Taiko",
+    icon: "net-taiko.svg",
+    icon2: "net-taiko.svg",
+    id: VITE_TAIKO_CHAINID * 1,
+    blockUrl: VITE_TK_BLOCKURL,
   },
 ];
 
@@ -64,6 +71,16 @@ export const chainMap = {
     chainId: "0x13e31",
     chainName: "Blast Mainnet",
     rpcUrls: ["https://rpc.blast.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  167009: {
+    chainId: "0x28c61",
+    chainName: "Taiko Hekla L2",
+    rpcUrls: ["https://rpc.hekla.taiko.xyz"],
     nativeCurrency: {
       name: "ETH",
       symbol: "ETH",
