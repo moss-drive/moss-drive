@@ -87,6 +87,16 @@ export const chainMap = {
       decimals: 18,
     },
   },
+  167000: {
+    chainId: "0x28c58",
+    chainName: "Taiko Mainnet",
+    rpcUrls: ["https://rpc.mainnet.taiko.xyz"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
 };
 
 async function addChain(id) {
