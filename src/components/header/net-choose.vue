@@ -50,11 +50,11 @@ export default {
     list() {
       return [
         ...this.netList,
-        {
-          name: "Blast Testnet ",
-          icon: "net-blast.png",
-          link: "https://blast-test.mymoss.io/",
-        },
+        // {
+        //   name: "Blast Testnet ",
+        //   icon: "net-blast.png",
+        //   link: "https://blast-test.mymoss.io/",
+        // },
       ];
     },
     curItem() {

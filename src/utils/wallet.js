@@ -1,5 +1,15 @@
-const { VITE_OP_CHAINID, VITE_BLAST_CHAINID, VITE_TAIKO_CHAINID } = import.meta.env;
-const { VITE_OP_BLOCKURL, VITE_BLAST_BLOCKURL, VITE_TK_BLOCKURL } = import.meta.env;
+const {
+  VITE_OP_BLOCKURL,
+  VITE_OP_CHAINID,
+  VITE_BLAST_CHAINID,
+  VITE_BLAST_BLOCKURL,
+  VITE_TAIKO_CHAINID,
+  VITE_TK_BLOCKURL,
+  VITE_ZK_CHAINID,
+  VITE_ZK_BLOCKURL,
+  VITE_OPTO_CHAINID,
+  VITE_OPTO_BLOCKURL,
+} = import.meta.env;
 
 export const netList = [
   {
@@ -24,6 +34,24 @@ export const netList = [
     blockUrl: VITE_TK_BLOCKURL,
   },
 ];
+if (VITE_ZK_CHAINID) {
+  netList.push({
+    name: "zkSync",
+    icon: "net-zk.png",
+    icon2: "net-zk-2.png",
+    id: VITE_ZK_CHAINID * 1,
+    blockUrl: VITE_ZK_BLOCKURL,
+  });
+}
+if (VITE_OPTO_CHAINID) {
+  netList.push({
+    name: "Optopia",
+    icon: "net-opto.png",
+    icon2: "net-opto-2.png",
+    id: VITE_OPTO_CHAINID * 1,
+    blockUrl: VITE_OPTO_BLOCKURL,
+  });
+}
 
 export function getNetItem(id) {
   return netList.find((it) => it.id == id);
@@ -91,6 +119,26 @@ export const chainMap = {
     chainId: "0x28c58",
     chainName: "Taiko Mainnet",
     rpcUrls: ["https://rpc.mainnet.taiko.xyz"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  324: {
+    chainId: "0x144",
+    chainName: "zkSync Mainnet",
+    rpcUrls: ["https://mainnet.era.zksync.io"],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  62050: {
+    chainId: "0xf262",
+    chainName: "Optopia Mainnet",
+    rpcUrls: ["https://rpc-mainnet.optopia.ai"],
     nativeCurrency: {
       name: "ETH",
       symbol: "ETH",
