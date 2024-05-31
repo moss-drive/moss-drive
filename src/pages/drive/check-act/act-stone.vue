@@ -256,7 +256,7 @@ export default {
         const { data } = await this.$http.get("/stone");
         const row = data[0] || {};
         let url = location.origin;
-        if (row.stoneId) {
+        if (row.stoneId > -1) {
           url += this.$getStoneLink(row);
           const text =
             `Hey you! I just crafted a Stone on @mymoss_io to share some cool files I've got. Dive in and take a peek! 😉 %0A%0A` +

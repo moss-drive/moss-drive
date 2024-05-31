@@ -33,7 +33,7 @@ import StoneEdit from "./stone-edit.vue";
         <!--  -->
         <div class="bg-card-1 stone-card pa-4 pos-r" style="top: -13px">
           <div
-            v-if="it.stoneId"
+            v-if="it.stoneId > -1"
             class="pos-a right-0 top-0 m-3 pa-1 hover-1"
             @click="$refs.edit.onEdit(it)"
           >
