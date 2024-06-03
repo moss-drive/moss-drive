@@ -19,6 +19,10 @@ const {
   VITE_OPTO_CHAINID,
   VITE_OPTO_CONTRACT,
   VITE_OPTO_HELPER_CONTRACT,
+
+  VITE_OPBNB_CHAINID,
+  VITE_OPBNB_CONTRACT,
+  VITE_OPBNB_HELPER_CONTRACT,
 } = import.meta.env;
 
 const map1 = {
@@ -27,6 +31,7 @@ const map1 = {
   TK: VITE_TK_CONTRACT,
   ZK: VITE_ZK_CONTRACT,
   OPTO: VITE_OPTO_CONTRACT,
+  OPBNB: VITE_OPBNB_CONTRACT,
 };
 const map2 = {
   OP: VITE_OP_HELPER_CONTRACT,
@@ -34,6 +39,7 @@ const map2 = {
   TK: VITE_TK_HELPER_CONTRACT,
   ZK: VITE_ZK_HELPER_CONTRACT,
   OPTO: VITE_OPTO_HELPER_CONTRACT,
+  OPBNB: VITE_OPBNB_HELPER_CONTRACT,
 };
 
 export class MossHub {
@@ -43,6 +49,7 @@ export class MossHub {
     else if (chainId == VITE_TAIKO_CHAINID) type = "TK";
     else if (chainId == VITE_ZK_CHAINID) type = "ZK";
     else if (chainId == VITE_OPTO_CHAINID) type = "OPTO";
+    else if (chainId == VITE_OPBNB_CHAINID) type = "OPBNB";
     this.client = MossHub__factory.connect(map1[type], this.signer);
     this.helper = Helpers__factory.connect(map2[type], this.signer);
   }

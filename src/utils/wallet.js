@@ -9,6 +9,8 @@ const {
   VITE_ZK_BLOCKURL,
   VITE_OPTO_CHAINID,
   VITE_OPTO_BLOCKURL,
+  VITE_OPBNB_CHAINID,
+  VITE_OPBNB_BLOCKURL,
 } = import.meta.env;
 
 export const netList = [
@@ -50,6 +52,15 @@ if (VITE_OPTO_CHAINID) {
     icon2: "net-opto-2.png",
     id: VITE_OPTO_CHAINID * 1,
     blockUrl: VITE_OPTO_BLOCKURL,
+  });
+}
+if (VITE_OPBNB_CHAINID) {
+  netList.push({
+    name: "opBNB",
+    icon: "net-opbnb.png",
+    icon2: "net-opbnb-2.png",
+    id: VITE_OPBNB_CHAINID * 1,
+    blockUrl: VITE_OPBNB_BLOCKURL,
   });
 }
 
@@ -142,6 +153,16 @@ export const chainMap = {
     nativeCurrency: {
       name: "ETH",
       symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  204: {
+    chainId: "0xcc",
+    chainName: "opBNB Mainnet",
+    rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+    nativeCurrency: {
+      name: "BNB",
+      symbol: "BNB",
       decimals: 18,
     },
   },
