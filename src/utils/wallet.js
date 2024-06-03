@@ -28,14 +28,16 @@ export const netList = [
     id: VITE_BLAST_CHAINID * 1,
     blockUrl: VITE_BLAST_BLOCKURL,
   },
-  {
+];
+if (VITE_TAIKO_CHAINID) {
+  netList.push({
     name: "Taiko",
     icon: "net-taiko.png",
     icon2: "net-taiko-2.png",
     id: VITE_TAIKO_CHAINID * 1,
     blockUrl: VITE_TK_BLOCKURL,
-  },
-];
+  });
+}
 if (VITE_ZK_CHAINID) {
   netList.push({
     name: "zkSync",
