@@ -25,7 +25,7 @@ import HeaderRight from "../../layouts/header-right.vue";
           <img src="/img/home/moss-txt.svg" height="26" class="ml-2" />
         </a>
         <template v-if="loginData.uuid">
-          <div class="ml-auto">
+          <div class="ml-auto mr-3">
             <header-right :border="false"></header-right>
           </div>
         </template>
