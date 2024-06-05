@@ -23,7 +23,6 @@ import UsageInfo from "./usage-info.vue";
       <a href="/" class="ml-5">
         <img src="/img/logo.svg" height="40" />
       </a>
-      <wallet-control fromTop dense v-if="!asMobile" />
     </div>
     <div class="q-pa-md ta-c px-6">
       <q-btn href="/mossy" target="_blank" rounded class="btn-mossy" style="width: 100%">

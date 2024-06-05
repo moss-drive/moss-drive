@@ -14,6 +14,29 @@ import UserTask from "./user-task.vue";
 
 <template>
   <div class="al-c">
+    <q-btn
+      size="sm"
+      round
+      color="info"
+      style="padding: 7px"
+      class="mr-3"
+      @click="unRead = false"
+      v-if="!noInvited"
+    >
+      <img
+        :src="unRead ? '/img/mossy/icon/ic-bell-active.svg' : '/img/mossy/icon/ic-bell.svg'"
+        width="22"
+      />
+      <q-menu
+        :style="{
+          width: menuWidth + 'px',
+        }"
+        class="mh-600"
+        :offset="[300, 10]"
+      >
+        <message-notice></message-notice>
+      </q-menu>
+    </q-btn>
     <q-btn v-if="myChainId == blastId" size="sm" rounded color="info" class="btn-sm1 mr-3">
       <img src="/img/common/net-blast.png" width="26" class="bd-img" />
       <span class="text-white ml-1 fz-14">{{ blastPoint }}</span>
@@ -63,7 +86,33 @@ export default {
   data() {
     return {
       blastId: VITE_BLAST_CHAINID,
+      unRead: false,
     };
+  },
+  watch: {
+    uid(val) {
+      if (val) {
+        this.$store.dispatch("taskStore/getPoint");
+        this.checkRead();
+      }
+    },
+  },
+  mounted() {
+    if (this.uid) {
+      this.$store.dispatch("taskStore/getPoint");
+      this.checkRead();
+    }
+  },
+  created() {},
+  methods: {
+    async checkRead() {
+      try {
+        const { data } = await this.$http.get("/broadcast/unread");
+        this.unRead = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

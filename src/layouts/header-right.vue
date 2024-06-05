@@ -11,7 +11,7 @@ import UserCard from "./main/user-card.vue";
 
 <template>
   <div
-    class="ml-5 h100p pl-5 al-c"
+    class="ml-5 h100p pl-2 al-c"
     :class="{
       'bdl-1': border,
       'pr-4': !asMobile,
@@ -21,32 +21,10 @@ import UserCard from "./main/user-card.vue";
       <wallet-connect size="md" bg="#1E293B" keep :asMobile="asMobile" :noInvited="noInvited" />
     </template>
     <template v-else>
-      <div class="mr-4 al-c" v-if="!asMobile">
+      <div class="ml-2 al-c" v-if="!asMobile">
         <user-point v-if="!noInvited" :menuWidth="menuWidth" />
       </div>
-      <q-btn
-        size="sm"
-        round
-        color="info"
-        style="padding: 7px"
-        @click="unRead = false"
-        v-if="!noInvited"
-      >
-        <img
-          :src="unRead ? '/img/mossy/icon/ic-bell-active.svg' : '/img/mossy/icon/ic-bell.svg'"
-          width="22"
-        />
-        <q-menu
-          :style="{
-            width: menuWidth + 'px',
-          }"
-          class="mh-600"
-          :offset="[300, 10]"
-        >
-          <message-notice></message-notice>
-        </q-menu>
-      </q-btn>
-
+      <wallet-control fromTop />
       <q-btn
         class="ml-3"
         :class="{
@@ -77,7 +55,6 @@ import UserCard from "./main/user-card.vue";
 <script>
 import { mapState } from "vuex";
 import { useQuasar } from "quasar";
-import MessageNotice from "./components/message-notice.vue";
 
 export default {
   props: {
@@ -94,8 +71,6 @@ export default {
     const { screen } = useQuasar();
     return {
       screen,
-      searchKey: "",
-      unRead: false,
     };
   },
   computed: {
@@ -119,34 +94,6 @@ export default {
     },
     btnSize() {
       return this.asMobile ? "12px" : null;
-    },
-  },
-  watch: {
-    uid(val) {
-      if (val) {
-        this.$store.dispatch("taskStore/getPoint");
-        this.checkRead();
-      }
-    },
-  },
-  mounted() {
-    if (this.uid) {
-      this.$store.dispatch("taskStore/getPoint");
-      this.checkRead();
-    }
-  },
-  components: {
-    MessageNotice,
-  },
-  created() {},
-  methods: {
-    async checkRead() {
-      try {
-        const { data } = await this.$http.get("/broadcast/unread");
-        this.unRead = data;
-      } catch (error) {
-        console.log(error);
-      }
     },
   },
 };
