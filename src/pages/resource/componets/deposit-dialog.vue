@@ -86,11 +86,10 @@
 import {
   IQuoter__factory,
   UNILand__factory,
-  Land__factory,
   ICoin__factory,
   BlastOracleLand__factory,
 } from "@4everland/land-v5";
-import { optimismRecharge, chainAddrList, blastRecharge } from "../utils/chainAddrs";
+import { optimismRecharge, chainAddrList } from "../utils/chainAddrs";
 import PayCoin from "./pay-coin.vue";
 import PayNetwork from "./pay-network.vue";
 import ResourceCount from "./resource-count.vue";
@@ -137,6 +136,9 @@ export default {
     ...mapState({
       userInfo: (s) => s.userInfo,
     }),
+    nativeToken() {
+      return this.coinType == "ETH" || this.coinType == "BNB";
+    },
     disabled() {
       return !this.amount || !this.coinType || !this.chainId;
     },
@@ -152,7 +154,7 @@ export default {
       return BlastOracleLand__factory.connect(this.curChainInfo.landRecharge, signer);
     },
     transformAmount() {
-      if (this.coinType == "ETH") {
+      if (this.nativeToken) {
         return (formatEther(this.ethAmount) * 1).toFixed(5);
       } else {
         return this.usdcAmount.toString();
@@ -167,7 +169,7 @@ export default {
     },
     isApproved() {
       if (this.chainId == 99999999) return true;
-      if (this.coinType == "ETH") return true;
+      if (this.nativeToken) return true;
       return this.allowance.eq(uint256Max) || this.allowance.gte(this.usdcAmount);
     },
     payAmounts() {
@@ -181,6 +183,9 @@ export default {
     },
     euid() {
       return uid2euid(this.userInfo.uid);
+    },
+    rechargeAddr() {
+      return this.curChainInfo.landRecharge;
     },
   },
   methods: {
@@ -196,8 +201,12 @@ export default {
           clearInterval(this.blastUnitPriceTimer);
         }
         return;
-      } else if (this.chainId == 81457) {
+      } else if (this.chainId == 81457 || this.chainId == 204) {
         this.coinType = "ETH";
+
+        if (this.chainId == 204) {
+          this.coinType = "BNB";
+        }
         await this.getBlastEthUnitPrice();
         let value = this.usdcAmount
           .mul((1e18).toString())
@@ -208,6 +217,7 @@ export default {
           this.getBlastEthUnitPrice();
         }, 20000);
       } else {
+        this.coinType = "ETH";
         if (this.blastUnitPriceTimer) {
           clearInterval(this.blastUnitPriceTimer);
         }
@@ -221,7 +231,7 @@ export default {
 
     async chainChanged() {
       if (!this.coinType) return;
-      if (this.coinType == "ETH") {
+      if (this.nativeToken) {
         if (this.chainId == 10) {
           this.usdc2eth();
         }
@@ -301,7 +311,7 @@ export default {
           return;
         }
         let receipt = "";
-        if (this.coinType == "ETH") {
+        if (this.nativeToken) {
           if (!this.ethAmount) return;
           await this.handleEthRecharge();
         } else {
@@ -377,7 +387,7 @@ export default {
       try {
         let provider = new providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const BlastOracleLand = BlastOracleLand__factory.connect(blastRecharge, signer);
+        const BlastOracleLand = BlastOracleLand__factory.connect(this.rechargeAddr, signer);
         this.blastUnitPrice = await BlastOracleLand.callStatic.fetchPrice();
         console.log(formatEther(this.blastUnitPrice));
       } catch (error) {
@@ -499,7 +509,7 @@ export default {
       } else {
         this.usdcAmount = BigNumber.from("0");
       }
-      if (this.coinType == "ETH") {
+      if (this.nativeToken) {
         debounce(() => {
           if (this.chainId == 10) {
             this.usdc2eth();

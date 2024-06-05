@@ -186,6 +186,7 @@ export default {
       id *= 1;
       if ([137, 80001].includes(id)) return "Polygon";
       if ([56, 97].includes(id)) return "BSC";
+      if ([204].includes(id)) return "OpBNB";
       if ([42161].includes(id)) return "Arbitrum";
       if ([280, 324].includes(id)) return "zkSync";
       if ([9999999].includes(id)) return "everPay";

@@ -166,6 +166,8 @@ export const getTxLink = (hash, net = "Polygon") => {
     pre = "https://scrollscan.com/tx/";
   } else if (net == "Blast") {
     pre = " https://blastscan.io/tx/";
+  } else if (net == "OpBNB") {
+    pre = " https://opbnbscan.com/tx/";
   }
   return pre + hash;
 };

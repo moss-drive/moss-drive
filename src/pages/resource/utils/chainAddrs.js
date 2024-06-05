@@ -75,7 +75,17 @@ export const blastETH = inDev
   ? "0x4200000000000000000000000000000000000006"
   : "0x4200000000000000000000000000000000000006";
 
+export const opBNBRecharge = "0xfE99cdC31A0D588AB940aB7143533242AEf5276d";
+
 export const chainAddrList = [
+  {
+    name: "OpBNB",
+    coin: {
+      bnb: "",
+    },
+    landRecharge: opBNBRecharge,
+    chainId: 204,
+  },
   {
     name: "Optimism",
     coin: {

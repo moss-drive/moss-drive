@@ -27,6 +27,11 @@ export default {
     chainList() {
       const list = [
         {
+          label: `<div class="al-c"><img src="/img/resource/chain-icons/opbnb.svg" width="24" alt="" /><span class="ml-2">OpBNB</span></div>`,
+          name: "OpBNB",
+          chainId: 204,
+        },
+        {
           label: `<div class="al-c"><img src="/img/resource/chain-icons/optimism.svg" width="24" alt="" /><span class="ml-2">Optimism</span></div>`,
           name: "Optimism",
           chainId: 10,

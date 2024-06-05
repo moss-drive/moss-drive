@@ -61,6 +61,10 @@ export default {
           label: `<div class="al-c"><img src="/img/resource/symbol-icons/eth.svg" width="24" alt="" /><span class="ml-2">USDB</span></div>`,
           value: "USDB",
         },
+        {
+          label: `<div class="al-c"><img src="/img/resource/chain-icons/opbnb.svg" width="24" alt="" /><span class="ml-2">BNB</span></div>`,
+          value: "BNB",
+        },
       ];
       let finalCoins = [];
       for (const it of arr) {
