@@ -1,7 +1,7 @@
 <template>
   <q-btn class="ml-3 btn-bd-1 px-1 bg-header" flat rounded :size="btnSize" @click="$emit('click')">
     <net-icon :size="dense ? 18 : 24" />
-    <span class="ml-2 fz-13" v-if="!dense">
+    <span class="ml-2 fz-13" v-if="!asMobile">
       <span v-if="curItem">{{ curItem.name }}</span>
       <span v-else>Switch Network</span>
     </span>

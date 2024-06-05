@@ -25,7 +25,6 @@ import HeaderRight from "./header-right.vue";
           <img src="/img/mossy.png" :width="asMobile ? 30 : 40" />
           <img class="ml-2" src="/img/mossy/mossy-text.svg" :height="asMobile ? 20 : 28" />
         </a>
-        <wallet-control fromTop v-if="!asMobile" />
         <div class="mr-auto"></div>
         <q-btn :href="isLogin ? '/file' : '/'" rounded color="primary">
           <img src="/img/common/my-moss.svg" width="20" />
