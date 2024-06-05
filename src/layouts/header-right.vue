@@ -25,18 +25,10 @@ import UserCard from "./main/user-card.vue";
         <user-point v-if="!noInvited" :menuWidth="menuWidth" />
       </div>
       <wallet-control fromTop />
-      <q-btn
-        class="ml-3"
-        :class="{
-          'q-px-sm': !asMobile,
-        }"
-        color="info"
-        rounded
-        :round="asMobile"
-        :size="btnSize"
-      >
+      <q-btn class="ml-3 btn-sm1" color="info" rounded>
         <user-avatar :src="userInfo.avatarUrl" :uid="uid" />
         <span v-if="!asMobile" class="ml-2 fz-14">{{ uname }}</span>
+        <img src="/img/common/ic-down.svg" width="10" class="ml-2" />
 
         <q-menu
           :offset="[0, 10]"
