@@ -112,18 +112,23 @@ export default {
       });
     },
   },
-  created() {
+  async created() {
+    this.setChainId();
     if (!window.ethereum) {
-      this.chainId = null;
-    } else {
-      this.chainId = window.ethereum.chainId;
-      this.initWallet();
-      this.getAccount();
-      this.setForChainId(this.forChainId);
+      await this.$sleep(1000);
+      this.setChainId();
+      if (!window.ethereum) this.chainId = null;
     }
   },
   methods: {
     switchNet,
+    setChainId() {
+      if (!window.ethereum) return console.log("no ethereum");
+      this.chainId = window.ethereum.chainId;
+      this.initWallet();
+      this.getAccount();
+      this.setForChainId(this.fixChainId);
+    },
     setForChainId(val) {
       if (val && this.chainId != val) {
         this.switchNet(val);

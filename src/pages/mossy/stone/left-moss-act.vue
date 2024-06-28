@@ -62,7 +62,14 @@
           </div>
         </q-card-section>
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat color="white" label="Cancel" v-if="!buying" @click="showPop = false" />
+          <q-btn
+            class="mr-2"
+            flat
+            color="white"
+            label="Cancel"
+            v-if="!buying"
+            @click="showPop = false"
+          />
           <wallet-control needSame :fixId="info.chainId" @change="onWalletChange">
             <q-btn
               rounded

@@ -31,7 +31,7 @@ export default {
       showPop: false,
       expanded: false,
       error: {
-        message: "Someting went wrong!",
+        message: "Something went wrong!",
       },
     };
   },
@@ -49,7 +49,7 @@ export default {
       if (/insufficient funds/i.test(msg)) {
         msg = "Insufficient balance in your wallet.";
       } else {
-        msg = "Someting went wrong!";
+        msg = "Something went wrong!";
       }
       return msg;
     },
