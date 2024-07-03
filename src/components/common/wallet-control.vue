@@ -114,11 +114,10 @@ export default {
   },
   async created() {
     this.setChainId();
-    console.log("created", this.chainId);
     if (!this.chainId) {
-      await this.$sleep(500);
-      this.setChainId();
-      if (!window.ethereum) this.chainId = null;
+      setTimeout(() => {
+        this.setChainId();
+      }, 500)
     }
   },
   methods: {
