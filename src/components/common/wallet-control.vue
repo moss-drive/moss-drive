@@ -114,8 +114,9 @@ export default {
   },
   async created() {
     this.setChainId();
-    if (!window.ethereum) {
-      await this.$sleep(1000);
+    console.log("created", this.chainId);
+    if (!this.chainId) {
+      await this.$sleep(500);
       this.setChainId();
       if (!window.ethereum) this.chainId = null;
     }
@@ -125,6 +126,7 @@ export default {
     setChainId() {
       if (!window.ethereum) return console.log("no ethereum");
       this.chainId = window.ethereum.chainId;
+      console.log("chainId", this.chainId);
       this.initWallet();
       this.getAccount();
       this.setForChainId(this.fixChainId);
