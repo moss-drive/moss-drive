@@ -11,6 +11,8 @@ const {
   VITE_OPTO_BLOCKURL,
   VITE_OPBNB_CHAINID,
   VITE_OPBNB_BLOCKURL,
+  VITE_HASHKEY_CHAINID,
+  VITE_HASHKEY_BLOCKURL,
 } = import.meta.env;
 
 export const netList = [
@@ -63,6 +65,15 @@ if (VITE_OPBNB_CHAINID) {
     icon2: "net-opbnb-2.png",
     id: VITE_OPBNB_CHAINID * 1,
     blockUrl: VITE_OPBNB_BLOCKURL,
+  });
+}
+if (VITE_HASHKEY_CHAINID) {
+  netList.push({
+    name: "Hashkey",
+    icon: "net-hashkey.png",
+    icon2: "net-hashkey-2.png",
+    id: VITE_HASHKEY_CHAINID * 1,
+    blockUrl: VITE_HASHKEY_BLOCKURL,
   });
 }
 
